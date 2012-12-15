@@ -4,6 +4,7 @@ package
 	import com.larrio.math.unsign;
 	
 	import flash.display.Sprite;
+	import flash.utils.ByteArray;
 	
 	
 	/**
@@ -21,15 +22,14 @@ package
 		{
 			var str:String = "1111";
 			
-			var num:uint = uint(parseInt(str, 2));
-			trace(num.toString(2));
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeByte(0xFF);
 			
-			var result:int = sign(num, str.length);
-			trace(result);
+			bytes.position = 0;
+			var num:uint = bytes.readByte() & 0xFF;
 			
-			num = unsign(result, str.length);
-			trace(num.toString(2));
-			
+			trace(num.toString(16).toUpperCase());
+						
 		}
 	}
 }
