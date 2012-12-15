@@ -3,6 +3,7 @@ package
 	import com.larrio.math.sign;
 	import com.larrio.math.unsign;
 	import com.larrio.utils.ByteDecoder;
+	import com.larrio.utils.ByteEncoder;
 	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
@@ -24,13 +25,27 @@ package
 			var num:uint = Math.ceil(0xFF * Math.random());
 			trace(num.toString(2));
 			
-			var bytes:ByteDecoder = new ByteDecoder();
-			bytes.writeByte(num);
+			var decoder:ByteDecoder = new ByteDecoder();
+			decoder.writeByte(num);
 			
-			bytes.position = 0;
-			num = bytes.readUB(5);
+			decoder.position = 0;
+			num = decoder.readUB(5);
 			
+			num = 0x1F2;
 			trace(num.toString(2));
+			
+			var encoder:ByteEncoder = new ByteEncoder();
+			encoder.writeUB(num, 9);
+			encoder.position = 0;
+			
+			trace(unsign(encoder.readByte(), 8).toString(2));
+			
+			num = 0xFFFFFFFF;
+			trace(num.toString(16).toUpperCase());
+			
+			num >>= 8;
+			trace(num.toString(16).toUpperCase());
+
 		}
 	}
 }
