@@ -2,6 +2,7 @@ package
 {
 	import com.larrio.math.sign;
 	import com.larrio.math.unsign;
+	import com.larrio.utils.SWFByteArray;
 	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
@@ -20,16 +21,16 @@ package
 		 */
 		public function Main()
 		{
-			var str:String = "1111";
+			var num:uint = Math.ceil(0xFF * Math.random());
+			trace(num.toString(2));
 			
-			var bytes:ByteArray = new ByteArray();
-			bytes.writeByte(0xFF);
+			var bytes:SWFByteArray = new SWFByteArray();
+			bytes.writeByte(num);
 			
 			bytes.position = 0;
-			var num:uint = bytes.readByte() & 0xFF;
+			num = bytes.readUB(8);
 			
-			trace(num.toString(16).toUpperCase());
-						
+			trace(num.toString(2));
 		}
 	}
 }

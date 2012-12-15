@@ -4,6 +4,8 @@ package com.larrio.utils
 	
 	import flash.utils.ByteArray;
 	
+	import flashx.textLayout.elements.BreakElement;
+	
 	/**
 	 * 字节读取工具类
 	 * @author larryhou
@@ -12,6 +14,7 @@ package com.larrio.utils
 	public class SWFByteArray extends ByteArray
 	{
 		private var _bitpos:uint;
+		private var _bitbuf:uint;
 		
 		/**
 		 * 构造函数
@@ -20,6 +23,7 @@ package com.larrio.utils
 		public function SWFByteArray()
 		{
 			_bitpos = 0;
+			_bitbuf = 0;
 		}	
 		
 		/**
@@ -27,7 +31,7 @@ package com.larrio.utils
 		 */		
 		private function byteAlign():void
 		{
-			_bitpos = 0;
+			_bitpos = 0; _bitbuf = 0;
 		}
 		
 		/**
@@ -35,7 +39,44 @@ package com.larrio.utils
 		 */		
 		public function readUB(length:uint):uint
 		{
-			return 0;
+			if (length == 0) return 0;
+			
+			var result:uint = 0;
+			var left:int = length;
+			
+			if (_bitpos == 0)
+			{
+				_bitbuf = readUI8();
+				_bitpos = 8;
+			}
+			
+			var shift:int;
+			while (true)
+			{
+				shift = left - _bitpos;
+				if (shift > 0)
+				{
+					// 跨字节，取整个字节放到高位
+					result |= _bitbuf << shift;
+					left -= shift;
+					
+					// 读取下一个字节
+					_bitbuf = readUI8();
+					_bitpos = 8;
+				}
+				else
+				{
+					// 取出left个高位放到result低位
+					result |= _bitbuf >> -shift;
+					 
+					_bitpos -= left;		
+					_bitbuf &= 0xFF >> (8 - _bitpos); // 取出shift个低位存储到bitbuf
+					
+					break;
+				}
+			}
+			
+			return result;
 		}
 		
 		/**
