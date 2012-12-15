@@ -2,7 +2,7 @@ package
 {
 	import com.larrio.math.sign;
 	import com.larrio.math.unsign;
-	import com.larrio.utils.SWFByteArray;
+	import com.larrio.utils.ByteDecoder;
 	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
@@ -24,7 +24,7 @@ package
 			var num:uint = Math.ceil(0xFF * Math.random());
 			trace(num.toString(2));
 			
-			var bytes:SWFByteArray = new SWFByteArray();
+			var bytes:ByteDecoder = new ByteDecoder();
 			bytes.writeByte(num);
 			
 			bytes.position = 0;

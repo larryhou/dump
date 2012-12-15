@@ -7,20 +7,20 @@ package com.larrio.utils
 	import flashx.textLayout.elements.BreakElement;
 	
 	/**
-	 * 字节读取工具类
+	 * SWF字节解码器
 	 * @author larryhou
 	 * @createTime Dec 15, 2012 2:49:46 PM
 	 */
-	public class SWFByteArray extends ByteArray
+	public class ByteDecoder extends ByteArray
 	{
 		private var _bitpos:uint;
 		private var _bitbuf:uint;
 		
 		/**
 		 * 构造函数
-		 * create a [SWFByteArray] object
+		 * create a [ByteDecoder] object
 		 */
-		public function SWFByteArray()
+		public function ByteDecoder()
 		{
 			_bitpos = 0;
 			_bitbuf = 0;
@@ -206,48 +206,5 @@ package com.larrio.utils
 			return sign(readEU32(), 32);
 		}
 		
-		/**
-		 * 写入N位无符号整形
-		 */		
-		public function writeUB(length:uint):void
-		{
-			if (length == 0) return;
-			
-			var result:uint = 0;
-			var left:int = length;
-			
-			if (_bitpos == 0)
-			{
-				_bitbuf = readUI8();
-				_bitpos = 8;
-			}
-			
-			var shift:int;
-			while (true)
-			{
-				shift = left - _bitpos;
-				if (shift > 0)
-				{
-					// 跨字节，取整个字节放到高位
-					result |= _bitbuf << shift;
-					left -= shift;
-					
-					// 读取下一个字节
-					_bitbuf = readUI8();
-					_bitpos = 8;
-				}
-				else
-				{
-					// 取出left个高位放到result低位
-					result |= _bitbuf >> -shift;
-					
-					_bitpos -= left;		
-					_bitbuf &= 0xFF >> (8 - _bitpos); // 取出shift个低位存储到bitbuf
-					
-					break;
-				}
-			}
-		}
-
 	}
 }
