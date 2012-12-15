@@ -1,5 +1,8 @@
 package
 {
+	import com.larrio.math.sign;
+	import com.larrio.math.unsign;
+	
 	import flash.display.Sprite;
 	
 	
@@ -16,6 +19,16 @@ package
 		 */
 		public function Main()
 		{
+			var str:String = "1111";
+			
+			var num:uint = uint(parseInt(str, 2));
+			trace(num.toString(2));
+			
+			var result:int = sign(num, str.length);
+			trace(result);
+			
+			num = unsign(result, str.length);
+			trace(num.toString(2));
 			
 		}
 	}

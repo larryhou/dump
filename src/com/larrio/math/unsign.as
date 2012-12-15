@@ -10,7 +10,7 @@ package com.larrio.math
 	 * @param length	整形最大占用位数，默认4字节32位
 	 * @return 无符号整形
 	 */		
-	private function unsign(value:int, length:uint = 32):int
+	public function unsign(value:int, length:uint = 32):int
 	{
 		length = Math.min(32, Math.max(1, length)) - 1;
 		
