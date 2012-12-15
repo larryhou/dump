@@ -141,11 +141,9 @@ package com.larrio.utils
 			while (value > 0)
 			{
 				byte = value & 0x7F;			
-				value >>>= 7;
+				if ((value >>>= 7) > 0) byte |= (1 << 7);
 				
-				if (value > 0) value |= 1 << 7;
-				
-				writeByte(value & 0x7F);
+				writeByte(byte);
 			}
 		}
 		

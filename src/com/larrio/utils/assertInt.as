@@ -11,7 +11,9 @@ package com.larrio.utils
 	 */		
 	public function assertInt(value:int, size:uint):void
 	{
-		assertTrue(value >= -(1 << (size - 1)), value + "超出类型下限！");
-		assertTrue(value <= (1 << (size - 1) - 1), value + "超出类型上限！");
+		const MAX_VALUE:uint = 1 << (size - 1);
+		
+		assertTrue(value >= -MAX_VALUE, value + "超出类型下限：" + (-MAX_VALUE));
+		assertTrue(value <= MAX_VALUE - 1, value + "超出类型上限！" + (MAX_VALUE - 1));
 	}
 }

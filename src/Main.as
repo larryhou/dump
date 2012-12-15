@@ -4,6 +4,7 @@ package
 	import com.larrio.math.unsign;
 	import com.larrio.utils.ByteDecoder;
 	import com.larrio.utils.ByteEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
@@ -21,31 +22,28 @@ package
 		 * create a [Main] object
 		 */
 		public function Main()
+		{		
+			loop();
+		}
+		
+		private function loop(index:int = 1):void
 		{
-			var num:uint = Math.ceil(0xFF * Math.random());
-			trace(num.toString(2));
+			if (index >= 100)return;
 			
-			var decoder:ByteDecoder = new ByteDecoder();
-			decoder.writeByte(num);
-			
-			decoder.position = 0;
-			num = decoder.readUB(5);
-			
-			num = 0x1F2;
-			trace(num.toString(2));
+			var num:uint = uint.MAX_VALUE * Math.random() >> 0;
 			
 			var encoder:ByteEncoder = new ByteEncoder();
-			encoder.writeUB(num, 9);
-			encoder.position = 0;
+			encoder.writeES32(num);
 			
-			trace(unsign(encoder.bytes[0], 8).toString(2));
+			var decoder:ByteDecoder = new ByteDecoder();
+			decoder.writeBytes(encoder);
 			
-			num = 0xFF;
-			trace(num.toString(16).toUpperCase());
+			decoder.position = 0;
+			var result:uint = decoder.readEU32();
 			
-			num >>>= 1;
-			trace(num.toString(16).toUpperCase());
-
+			assertTrue(num == result);
+			
+			arguments.callee(++index);
 		}
 	}
 }
