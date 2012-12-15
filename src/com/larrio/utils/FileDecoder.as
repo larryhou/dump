@@ -4,8 +4,6 @@ package com.larrio.utils
 	
 	import flash.utils.ByteArray;
 	
-	import flashx.textLayout.elements.BreakElement;
-	
 	/**
 	 * SWF字节解码器
 	 * @author larryhou

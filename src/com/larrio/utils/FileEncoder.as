@@ -4,9 +4,6 @@ package com.larrio.utils
 	
 	import flash.utils.ByteArray;
 	
-	import flashx.textLayout.debug.assert;
-	import flashx.textLayout.elements.BreakElement;
-	
 	/**
 	 * SWF字节编码器
 	 * @author larryhou
