@@ -205,5 +205,49 @@ package com.larrio.utils
 		{
 			return sign(readEU32(), 32);
 		}
+		
+		/**
+		 * 写入N位无符号整形
+		 */		
+		public function writeUB(length:uint):void
+		{
+			if (length == 0) return;
+			
+			var result:uint = 0;
+			var left:int = length;
+			
+			if (_bitpos == 0)
+			{
+				_bitbuf = readUI8();
+				_bitpos = 8;
+			}
+			
+			var shift:int;
+			while (true)
+			{
+				shift = left - _bitpos;
+				if (shift > 0)
+				{
+					// 跨字节，取整个字节放到高位
+					result |= _bitbuf << shift;
+					left -= shift;
+					
+					// 读取下一个字节
+					_bitbuf = readUI8();
+					_bitpos = 8;
+				}
+				else
+				{
+					// 取出left个高位放到result低位
+					result |= _bitbuf >> -shift;
+					
+					_bitpos -= left;		
+					_bitbuf &= 0xFF >> (8 - _bitpos); // 取出shift个低位存储到bitbuf
+					
+					break;
+				}
+			}
+		}
+
 	}
 }

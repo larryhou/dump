@@ -28,7 +28,7 @@ package
 			bytes.writeByte(num);
 			
 			bytes.position = 0;
-			num = bytes.readUB(8);
+			num = bytes.readUB(5);
 			
 			trace(num.toString(2));
 		}
