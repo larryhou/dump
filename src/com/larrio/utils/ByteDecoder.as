@@ -206,5 +206,10 @@ package com.larrio.utils
 			return sign(readEU32(), 32);
 		}
 		
+		/**
+		 * 对超类进行引用
+		 */		
+		public function get bytes():ByteArray { return super; }
+		
 	}
 }

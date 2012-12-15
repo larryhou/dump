@@ -38,12 +38,12 @@ package
 			encoder.writeUB(num, 9);
 			encoder.position = 0;
 			
-			trace(unsign(encoder.readByte(), 8).toString(2));
+			trace(unsign(encoder.bytes[0], 8).toString(2));
 			
-			num = 0xFFFFFFFF;
+			num = 0xFF;
 			trace(num.toString(16).toUpperCase());
 			
-			num >>= 8;
+			num >>>= 1;
 			trace(num.toString(16).toUpperCase());
 
 		}

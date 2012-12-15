@@ -5,6 +5,7 @@ package com.larrio.utils
 	import flash.utils.ByteArray;
 	
 	import flashx.textLayout.debug.assert;
+	import flashx.textLayout.elements.BreakElement;
 	
 	/**
 	 * SWF字节编码器
@@ -136,7 +137,16 @@ package com.larrio.utils
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFFFF);
 			
-			
+			var byte:uint;
+			while (value > 0)
+			{
+				byte = value & 0x7F;			
+				value >>>= 7;
+				
+				if (value > 0) value |= 1 << 7;
+				
+				writeByte(value & 0x7F);
+			}
 		}
 		
 		/**
@@ -201,5 +211,10 @@ package com.larrio.utils
 			assertInt(value, 32);			
 			writeEU32(value);
 		}
+		
+		/**
+		 * 对超类进行引用
+		 */		
+		public function get bytes():ByteArray { return super; }
 	}
 }
