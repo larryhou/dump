@@ -2,8 +2,8 @@ package
 {
 	import com.larrio.math.sign;
 	import com.larrio.math.unsign;
-	import com.larrio.utils.ByteDecoder;
-	import com.larrio.utils.ByteEncoder;
+	import com.larrio.utils.FileDecoder;
+	import com.larrio.utils.FileEncoder;
 	import com.larrio.utils.assertTrue;
 	
 	import flash.display.Sprite;
@@ -32,10 +32,10 @@ package
 			
 			var num:uint = uint.MAX_VALUE * Math.random() >> 0;
 			
-			var encoder:ByteEncoder = new ByteEncoder();
+			var encoder:FileEncoder = new FileEncoder();
 			encoder.writeES32(num);
 			
-			var decoder:ByteDecoder = new ByteDecoder();
+			var decoder:FileDecoder = new FileDecoder();
 			decoder.writeBytes(encoder);
 			
 			decoder.position = 0;

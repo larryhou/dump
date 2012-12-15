@@ -12,16 +12,16 @@ package com.larrio.utils
 	 * @author larryhou
 	 * @createTime Dec 15, 2012 4:22:02 PM
 	 */
-	dynamic public class ByteEncoder extends ByteArray
+	dynamic public class FileEncoder extends ByteArray
 	{
 		private var _byte:uint;
 		private var _bitpos:uint;
 		
 		/**
 		 * 构造函数
-		 * create a [ByteEncoder] object
+		 * create a [FileEncoder] object
 		 */
-		public function ByteEncoder()
+		public function FileEncoder()
 		{
 			_byte = 0;
 			_bitpos = 8;

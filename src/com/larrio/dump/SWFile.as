@@ -1,7 +1,7 @@
 package com.larrio.dump
 {
-	import com.larrio.utils.ByteDecoder;
-	import com.larrio.utils.ByteEncoder;
+	import com.larrio.utils.FileDecoder;
+	import com.larrio.utils.FileEncoder;
 	
 	/**
 	 * SWF文件
@@ -21,8 +21,8 @@ package com.larrio.dump
 		{
 			// 数据化编解码器
 			_codec = new Codec();
-			_codec.encoder = new ByteEncoder();
-			_codec.decoder = new ByteDecoder();
+			_codec.encoder = new FileEncoder();
+			_codec.decoder = new FileDecoder();
 		}
 	}
 }

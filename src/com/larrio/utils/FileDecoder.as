@@ -11,16 +11,16 @@ package com.larrio.utils
 	 * @author larryhou
 	 * @createTime Dec 15, 2012 2:49:46 PM
 	 */
-	public class ByteDecoder extends ByteArray
+	public class FileDecoder extends ByteArray
 	{
 		private var _bitpos:uint;
 		private var _bitbuf:uint;
 		
 		/**
 		 * 构造函数
-		 * create a [ByteDecoder] object
+		 * create a [FileDecoder] object
 		 */
-		public function ByteDecoder()
+		public function FileDecoder()
 		{
 			_bitpos = 0;
 			_bitbuf = 0;
