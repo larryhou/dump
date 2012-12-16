@@ -56,7 +56,7 @@ package com.larrio.dump.doabc
 			_name = decoder.readEU30();
 			_flags = decoder.readUI8();
 			
-			trace("[MethodInfo]" + (_constants.strings[_name] || "()"));
+			trace("[MethodInfo]" + (_constants.strings[_name] || "function()"));
 			
 			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
 			{
