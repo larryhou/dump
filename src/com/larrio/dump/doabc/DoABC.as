@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * DoABC代码
@@ -11,6 +12,12 @@ package com.larrio.dump.doabc
 	 */
 	public class DoABC implements ICodec
 	{
+		private var _majorVersion:uint;
+		private var _minorVersion:uint;
+		
+		private var _constants:ConstantPool;
+		
+		
 		/**
 		 * 构造函数
 		 * create a [DoABC] object
@@ -26,6 +33,15 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_minorVersion = decoder.readUI16();
+			assertTrue(_minorVersion == 16);
+				
+			_majorVersion = decoder.readUI16();
+			assertTrue(_majorVersion == 46);
+			
+			_constants = new ConstantPool();
+			_constants.decode(decoder);
+			
 			
 		}
 		

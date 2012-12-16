@@ -205,6 +205,20 @@ package com.larrio.utils
 		}
 		
 		/**
+		 * 读取字符串
+		 */		
+		public function readSTR():String
+		{
+			var strBytes:ByteArray = new ByteArray();
+			
+			var byte:uint;
+			while ((byte = readUI8()) > 0) strBytes.writeByte(byte);
+			
+			strBytes.position = 0;
+			return strBytes.readMultiByte(strBytes.length, "utf-8");
+		}
+		
+		/**
 		 * 对超类进行引用
 		 */		
 		public function get bytes():ByteArray { return super; }

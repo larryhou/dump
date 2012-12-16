@@ -15,6 +15,9 @@ package com.larrio.dump.tags
 		public static const TYPE:uint = TagType.DO_ABC;
 		
 		private var _abc:DoABC;
+		private var _flags:uint;
+		
+		private var _name:String;
 		
 		/**
 		 * 构造函数
@@ -35,7 +38,27 @@ package com.larrio.dump.tags
 			
 			assertTrue(_type == DoABCTag.TYPE);
 			
+			decoder = new FileDecoder();
+			decoder.writeBytes(_bytes);
+			decoder.position = 0;
+			
+			_flags = decoder.readUI32();	
+			_name = decoder.readSTR();
+			
+			_bytes.length = 0;
+			decoder.readBytes(_bytes);
+			
+			decoder.length = 0;
+			decoder.writeBytes(_bytes);
+			decoder.position = 0;
+			
+			trace(_name);
+			
 			_abc = new DoABC();
+			_abc.decode(decoder);
+			
+			// 垃圾回收
+			decoder.length = 0;
 		}
 		
 		/**
@@ -57,10 +80,17 @@ package com.larrio.dump.tags
 			
 			var decoder:FileDecoder = new FileDecoder();
 			decoder.writeBytes(_bytes);
+			decoder.position = 0;
 			
 			_abc.decode(decoder);
 			
 			decoder.length = 0;
 		}
+
+		/**
+		 * DoABC解析器
+		 */		
+		public function get abc():DoABC { return _abc; }
+
 	}
 }
