@@ -1,6 +1,7 @@
 package com.larrio.dump
 {
 	import com.larrio.dump.model.SWFHeader;
+	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
 	
@@ -21,6 +22,8 @@ package com.larrio.dump
 		
 		// SWF头信息
 		private var _header:SWFHeader;
+		
+		private var _tags:Vector.<SWFTag>;
 		
 		/**
 		 * 构造函数
@@ -54,15 +57,18 @@ package com.larrio.dump
 			
 			_header = new SWFHeader();
 			_header.decode(_decoder);
-			
-			trace(_header.frameRate / 256);
-			trace(_header.frameCount);
 		}
 
 		/**
 		 * SWF头信息
 		 */		
 		public function get header():SWFHeader { return _header; }
+
+		/**
+		 * SWF文件TAG数组
+		 */		
+		public function get tags():Vector.<SWFTag> { return _tags; }
+
 
 	}
 }

@@ -31,6 +31,9 @@ package
 			var size:SWFRect = swf.header.size;
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
+			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+			
+			trace(1 << 8);
 		}
 		
 	}
