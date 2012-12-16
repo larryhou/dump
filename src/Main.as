@@ -54,8 +54,6 @@ package
 			
 			(t as DoABCTag).print();
 			
-			printTypes(OptionDetailKindType, 40);
-			
 		}
 		
 		private function padding(str:String, length:int):String
