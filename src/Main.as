@@ -51,9 +51,6 @@ package
 					break;
 				}
 			}
-			
-			(t as DoABCTag).print();
-			
 		}
 		
 		private function padding(str:String, length:int):String
