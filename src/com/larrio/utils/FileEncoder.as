@@ -85,7 +85,7 @@ package com.larrio.utils
 			assertTrue(value <= 0xFFFF);
 			
 			writeByte(value);
-			writeByte(value >> 8);
+			writeByte(value >>> 8);
 		}
 		
 		/**
@@ -97,8 +97,8 @@ package com.larrio.utils
 			assertTrue(value <= 0xFFFFFF);
 			
 			writeByte(value);
-			writeByte(value >> 8);
-			writeByte(value >> 16);
+			writeByte(value >>> 8);
+			writeByte(value >>> 16);
 		}
 		
 		/**
@@ -110,9 +110,9 @@ package com.larrio.utils
 			assertTrue(value <= 0xFFFFFFFF);
 			
 			writeByte(value);
-			writeByte(value >> 8);
-			writeByte(value >> 16);
-			writeByte(value >> 24);
+			writeByte(value >>> 8);
+			writeByte(value >>> 16);
+			writeByte(value >>> 24);
 		}
 		
 		/**

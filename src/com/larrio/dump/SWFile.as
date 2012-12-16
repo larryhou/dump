@@ -10,8 +10,11 @@ package com.larrio.dump
 	 */
 	public class SWFile
 	{
-		// 编解码工具
-		private var _codec:Codec;
+		// 编码工具
+		private var _encoder:FileEncoder;
+		
+		// 解码工具
+		private var _decoder:FileDecoder;
 		
 		/**
 		 * 构造函数
@@ -20,9 +23,8 @@ package com.larrio.dump
 		public function SWFile()
 		{
 			// 数据化编解码器
-			_codec = new Codec();
-			_codec.encoder = new FileEncoder();
-			_codec.decoder = new FileDecoder();
+			_encoder = new FileEncoder();
+			_decoder = new FileDecoder();
 		}
 	}
 }

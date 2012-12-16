@@ -23,7 +23,9 @@ package
 		 */
 		public function Main()
 		{		
-			loop();
+			var num:uint = 0xF0000000;
+			num >>>= 8;
+			trace(num.toString(16).toUpperCase());
 		}
 		
 		private function loop(index:int = 1):void

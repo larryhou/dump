@@ -1,6 +1,7 @@
 package com.larrio.dump.tags
 {
-	import com.larrio.dump.Codec;
+	import com.larrio.utils.FileDecoder;
+	import com.larrio.utils.FileEncoder;
 	
 	/**
 	 * TAG抽象类
@@ -22,7 +23,7 @@ package com.larrio.dump.tags
 		 * 对二进制进行解码 
 		 * @param codec	编解码数据
 		 */		
-		public function decode(codec:Codec):void
+		public function decode(decoder:FileDecoder):void
 		{
 			
 		}
@@ -31,7 +32,7 @@ package com.larrio.dump.tags
 		 * 对二进制进行编码
 		 * @param codec	编解码数据
 		 */		
-		public function encode(codec:Codec):void
+		public function encode(encoder:FileEncoder):void
 		{
 			
 		}
