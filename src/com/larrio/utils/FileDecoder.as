@@ -211,8 +211,11 @@ package com.larrio.utils
 		{
 			var strBytes:ByteArray = new ByteArray();
 			
-			var byte:uint;
-			while ((byte = readUI8()) > 0) strBytes.writeByte(byte);
+			var byte:int;
+			while ((byte = readUI8()) > 0) 
+			{
+				strBytes.writeByte(byte);
+			}
 			
 			strBytes.position = 0;
 			return strBytes.readMultiByte(strBytes.length, "utf-8");

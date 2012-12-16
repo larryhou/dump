@@ -38,32 +38,33 @@ package com.larrio.dump.doabc
 		{
 			var length:int, i:int;
 			
-			length = decoder.readEU30() + 1;
+			length = decoder.readEU30();
 			_ints = new Vector.<int>(length, true);
 			for (i = 1; i < length; i++)
 			{
 				_ints[i] = decoder.readES32();
 			}
 			
-			length = decoder.readEU30() + 1;
+			length = decoder.readEU30();
 			_uints = new Vector.<uint>(length, true);
 			for (i = 1; i < length; i++)
 			{
 				_uints[i] = decoder.readEU32();
 			}
 			
-			length = decoder.readEU30() + 1;
+			length = decoder.readEU30();
 			_doubles = new Vector.<Number>(length, true);
 			for (i = 1; i < length; i++)
 			{
 				_doubles[i] = decoder.readDouble();
 			}
 			
-			length = decoder.readEU30() + 1;
+			length = decoder.readEU30();
 			_strings = new Vector.<String>(length, true);
 			for (i = 1; i < length; i++)
 			{
-				_strings[i] = decoder.readSTR();
+				_strings[i] = decoder.readUTFBytes(decoder.readEU30());
+				
 				trace(_strings[i]);
 			}
 
