@@ -42,9 +42,9 @@ package com.larrio.dump.doabc
 			_returnType = decoder.readEU30();
 			
 			_paramTypes = new Vector.<uint>(_length, true);
-			for (i = 0; i < length; i++)
+			for (i = 0; i < _length; i++)
 			{
-				_paramTypes.push(decoder.readEU30());
+				_paramTypes[i] = decoder.readEU30();
 			}
 			
 			_name = decoder.readEU30();
