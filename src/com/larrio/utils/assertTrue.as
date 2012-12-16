@@ -13,7 +13,7 @@ package com.larrio.utils
 	{
 		if (!value)
 		{
-			msg ||= "Assert Failed!..oops";
+			msg ||= "OOPS...";
 			throw new ArgumentError(msg);
 		}
 	}

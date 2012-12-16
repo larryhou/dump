@@ -56,14 +56,7 @@ package com.larrio.dump.doabc
 			_name = decoder.readEU30();
 			_flags = decoder.readUI8();
 			
-			try
-			{
-				trace("[MethodInfo]" + _constants.strings[_name]);
-			} 
-			catch(error:Error) 
-			{
-				trace(error);
-			}
+			trace("[MethodInfo]" + (_constants.strings[_name] || "()"));
 			
 			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
 			{
@@ -86,7 +79,7 @@ package com.larrio.dump.doabc
 					
 					assertTrue(_paramNames[i] >= 0 && _paramNames[i] < _constants.strings.length);
 				}
-			}			
+			}
 		}
 		
 		/**

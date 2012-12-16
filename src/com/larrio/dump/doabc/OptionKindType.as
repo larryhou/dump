@@ -6,7 +6,7 @@ package com.larrio.dump.doabc
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 6:47:27 PM
 	 */
-	public class OptionDetailKindType
+	public class OptionKindType
 	{
 		/**
 		 * 双精度浮点型 

@@ -5,13 +5,14 @@ package com.larrio.dump.doabc
 	import com.larrio.utils.FileEncoder;
 	
 	/**
-	 * 函数可选传参信息
+	 * 可选传参详细信息
 	 * @author larryhou
-	 * @createTime Dec 16, 2012 6:22:05 PM
+	 * @createTime Dec 16, 2012 6:43:27 PM
 	 */
 	public class OptionInfo implements ICodec
 	{
-		private var _details:Vector.<OptionDetailInfo>;
+		private var _index:uint;
+		private var _kind:uint;
 		
 		private var _constants:ConstantPool;
 		
@@ -19,9 +20,9 @@ package com.larrio.dump.doabc
 		 * 构造函数
 		 * create a [OptionInfo] object
 		 */
-		public function OptionInfo(constant:ConstantPool)
+		public function OptionInfo(constants:ConstantPool)
 		{
-			_constants = constant;
+			_constants = constants;
 		}
 		
 		/**
@@ -30,15 +31,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			var _length:uint, i:int;
-			
-			_length = decoder.readES30();
-			_details = new Vector.<OptionDetailInfo>(_length, true);
-			for (i = 0; i < _length; i++)
-			{
-				_details[i] = new OptionDetailInfo(_constants);
-				_details[i].decode(decoder);
-			}
+			_index = decoder.readEU30();
+			_kind = decoder.readUI8();
 		}
 		
 		/**
@@ -49,11 +43,18 @@ package com.larrio.dump.doabc
 		{
 			
 		}
-
+		
 		/**
-		 * 可选参数详细信息
+		 * 指向常量池某个数组的索引值 
 		 */		
-		public function get details():Vector.<OptionDetailInfo> { return _details; }
-
+		public function get index():uint { return _index; }
+		
+		/**
+		 * 该属性确定了value具体指向哪个常量数组 
+		 * @return 
+		 * 
+		 */		
+		public function get kind():uint { return _kind; }
+		
 	}
 }

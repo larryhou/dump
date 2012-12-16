@@ -4,7 +4,7 @@ package
 	import com.larrio.dump.doabc.MethodFlagType;
 	import com.larrio.dump.doabc.MultiKindType;
 	import com.larrio.dump.doabc.NSKindType;
-	import com.larrio.dump.doabc.OptionDetailKindType;
+	import com.larrio.dump.doabc.OptionKindType;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.SWFTag;
