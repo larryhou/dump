@@ -1,25 +1,12 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.doabc.MethodFlagType;
-	import com.larrio.dump.doabc.MultiKindType;
-	import com.larrio.dump.doabc.NSKindType;
-	import com.larrio.dump.doabc.OptionKindType;
 	import com.larrio.dump.model.SWFRect;
-	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
-	import com.larrio.math.sign;
-	import com.larrio.math.unsign;
-	import com.larrio.utils.FileDecoder;
-	import com.larrio.utils.FileEncoder;
 	import com.larrio.utils.assertTrue;
-	import com.larrio.utils.printTypes;
 	
 	import flash.display.Sprite;
-	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
-	import flash.utils.describeType;
 	
 	
 	/**
