@@ -1,6 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.MethodFlagType;
 	import com.larrio.dump.doabc.MultiKindType;
 	import com.larrio.dump.doabc.NSKindType;
 	import com.larrio.dump.model.SWFRect;
@@ -51,6 +52,8 @@ package
 			}
 			
 			(t as DoABCTag).print();
+			
+			printTypes(MethodFlagType, 40);
 			
 		}
 		

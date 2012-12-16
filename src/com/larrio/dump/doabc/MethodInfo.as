@@ -36,6 +36,22 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			return;
+			
+			var _length:uint, i:int;
+			
+			_length = decoder.readEU30();
+			_returnType = decoder.readEU30();
+			
+			_paramTypes = new Vector.<uint>(_length, true);
+			for (i = 0; i < length; i++)
+			{
+				_paramTypes.push(decoder.readEU30());
+			}
+			
+			_name = decoder.readEU30();
+			
+			_flags = decoder.readUI8();
 			
 		}
 		
