@@ -11,6 +11,8 @@ package com.larrio.dump.doabc
 	 */
 	public class NamespaceSetInfo implements ICodec
 	{
+		private var _namespaces:Vector.<uint>;
+		
 		/**
 		 * 构造函数
 		 * create a [NamespaceSetInfo] object
@@ -26,7 +28,10 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_namespaces = new Vector.<uint>;
 			
+			var length:uint = decoder.readEU30();
+			while(length-- > 0) _namespaces.push(decoder.readEU30());
 		}
 		
 		/**
@@ -37,5 +42,11 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 命名空间索引数组
+		 */		
+		public function get namespaces():Vector.<uint> { return _namespaces; }
+
 	}
 }

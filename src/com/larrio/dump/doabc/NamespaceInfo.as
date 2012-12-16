@@ -41,5 +41,17 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * @see NSKindType
+		 */		
+		public function get kind():uint { return _kind; }
+
+		/**
+		 * 命名空间标识符索引
+		 */		
+		public function get name():uint { return _name; }
+
+
 	}
 }

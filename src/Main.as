@@ -1,6 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.MultiKindType;
 	import com.larrio.dump.doabc.NSKindType;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
@@ -51,7 +52,6 @@ package
 			
 			(t as DoABCTag).print();
 			
-			printTypes(NSKindType, 45);
 		}
 		
 		private function padding(str:String, length:int):String
