@@ -57,6 +57,19 @@ package com.larrio.dump
 			
 			_header = new SWFHeader();
 			_header.decode(_decoder);
+			
+			_tags = new Vector.<SWFTag>;
+			
+			var tag:SWFTag;
+			while (_decoder.bytesAvailable)
+			{
+				tag = new SWFTag();
+				tag.decode(_decoder);
+				
+				trace("0x" + tag.type.toString(16).toUpperCase());
+				
+				_tags.push(tag);
+			}
 		}
 
 		/**
@@ -68,7 +81,6 @@ package com.larrio.dump
 		 * SWF文件TAG数组
 		 */		
 		public function get tags():Vector.<SWFTag> { return _tags; }
-
 
 	}
 }

@@ -33,7 +33,7 @@ package
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			trace(1 << 8);
+			//trace((1 << 6) - 1);
 		}
 		
 	}
