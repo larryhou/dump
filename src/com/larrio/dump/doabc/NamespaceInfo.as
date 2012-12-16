@@ -11,6 +11,9 @@ package com.larrio.dump.doabc
 	 */
 	public class NamespaceInfo implements ICodec
 	{
+		private var _kind:uint;
+		private var _name:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [NamespaceInfo] object
@@ -26,7 +29,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			
+			_kind = decoder.readUI8();
+			_name = decoder.readEU30();
 		}
 		
 		/**

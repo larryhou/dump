@@ -65,6 +65,15 @@ package com.larrio.dump.doabc
 			{
 				_strings[i] = decoder.readUTFBytes(decoder.readEU30());
 			}
+			
+			length = decoder.readEU30();
+			_namespaces = new Vector.<NamespaceInfo>(length, true);
+			for (i = 1; i < length; i++)
+			{
+				_namespaces[i] = new NamespaceInfo();
+				_namespaces[i].decode(decoder);
+			}
+
 
 		}
 		

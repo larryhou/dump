@@ -1,6 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.NSKindType;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.SWFTag;
@@ -10,6 +11,7 @@ package
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
 	import com.larrio.utils.assertTrue;
+	import com.larrio.utils.printTypes;
 	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
@@ -48,6 +50,8 @@ package
 			}
 			
 			(t as DoABCTag).print();
+			
+			printTypes(NSKindType, 45);
 		}
 		
 		private function padding(str:String, length:int):String
