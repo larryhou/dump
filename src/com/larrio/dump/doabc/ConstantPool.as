@@ -64,8 +64,6 @@ package com.larrio.dump.doabc
 			for (i = 1; i < length; i++)
 			{
 				_strings[i] = decoder.readUTFBytes(decoder.readEU30());
-				
-				trace(_strings[i]);
 			}
 
 		}
