@@ -57,8 +57,10 @@ package com.larrio.dump.doabc
 			_methods = new Vector.<MethodInfo>(length, true);
 			for (i = 0; i < length; i++)
 			{
-				_methods[i] = new MethodInfo();
+				_methods[i] = new MethodInfo(_constants);
 				_methods[i].decode(decoder);
+				
+				trace(_constants.strings[_methods[i].name]);
 			}
 			
 		}

@@ -21,13 +21,15 @@ package com.larrio.dump.doabc
 		private var _paramNames:Vector.<uint>;
 		private var _options:Vector.<OptionInfo>;
 		
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [MethodInfo] object
 		 */
-		public function MethodInfo()
+		public function MethodInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**
@@ -49,6 +51,8 @@ package com.larrio.dump.doabc
 			
 			_name = decoder.readEU30();
 			_flags = decoder.readUI8();
+			
+			trace(_constants.strings[_name]);
 			
 			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
 			{
@@ -80,5 +84,36 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 指向strings常量数组的索引
+		 */		
+		public function get name():uint { return _name; }
+
+		/**
+		 * 指向mutiname常量数组的索引
+		 */		
+		public function get returnType():uint { return _returnType; }
+
+		/**
+		 * 函数单字节标记位 
+		 */		
+		public function get flags():uint { return _flags; }
+
+		/**
+		 * 指向srings常量数组的索引 
+		 */		
+		public function get paramNames():Vector.<uint> { return _paramNames; }
+
+		/**
+		 * 函数可选参数
+		 */		
+		public function get options():Vector.<OptionInfo> { return _options; }
+
+		/**
+		 * 指向mutiname常量数组的索引
+		 */		
+		public function get paramTypes():Vector.<uint> { return _paramTypes; }
+
 	}
 }
