@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * DoABC之函数信息
@@ -41,12 +42,15 @@ package com.larrio.dump.doabc
 			var _length:uint, i:int;
 			
 			_length = decoder.readEU30();
+			
 			_returnType = decoder.readEU30();
+			assertTrue(_returnType >= 0 && _returnType < _constants.multinames.length);
 			
 			_paramTypes = new Vector.<uint>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
 				_paramTypes[i] = decoder.readEU30();
+				assertTrue(_paramTypes[i] >= 0 && _paramTypes[i] < _constants.multinames.length);
 			}
 			
 			_name = decoder.readEU30();
@@ -67,7 +71,7 @@ package com.larrio.dump.doabc
 				_options = new Vector.<OptionInfo>(_length, true);
 				for (i = 0; i < _length; i++)
 				{
-					_options[i] = new OptionInfo();
+					_options[i] = new OptionInfo(_constants);
 					_options[i].decode(decoder);
 				}
 			}
@@ -79,6 +83,8 @@ package com.larrio.dump.doabc
 				for (i = 0; i < _length; i++)
 				{
 					_paramNames[i] = decoder.readEU30();
+					
+					assertTrue(_paramNames[i] >= 0 && _paramNames[i] < _constants.strings.length);
 				}
 			}			
 		}

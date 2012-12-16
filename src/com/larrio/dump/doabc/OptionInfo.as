@@ -13,13 +13,15 @@ package com.larrio.dump.doabc
 	{
 		private var _details:Vector.<OptionDetailInfo>;
 		
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [OptionInfo] object
 		 */
-		public function OptionInfo()
+		public function OptionInfo(constant:ConstantPool)
 		{
-			
+			_constants = constant;
 		}
 		
 		/**
@@ -34,7 +36,7 @@ package com.larrio.dump.doabc
 			_details = new Vector.<OptionDetailInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_details[i] = new OptionDetailInfo();
+				_details[i] = new OptionDetailInfo(_constants);
 				_details[i].decode(decoder);
 			}
 		}

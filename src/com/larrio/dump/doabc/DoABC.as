@@ -20,7 +20,7 @@ package com.larrio.dump.doabc
 		private var _methods:Vector.<MethodInfo>;
 		private var _methodBodies:Vector.<MethodBodyInfo>;
 		
-		private var _metadatas:Vector.<MetaDataInfo>;
+		private var _metadatas:Vector.<MetadataInfo>;
 		
 		private var _instances:Vector.<InstanceInfo>;
 		private var _classes:Vector.<ClassInfo>;
@@ -61,6 +61,13 @@ package com.larrio.dump.doabc
 				_methods[i].decode(decoder);
 			}
 			
+			_length = decoder.readEU30();
+			_metadatas = new Vector.<MetadataInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_metadatas[i] = new MetadataInfo(_constants);
+				_metadatas[i].decode(decoder);
+			}
 		}
 		
 		/**

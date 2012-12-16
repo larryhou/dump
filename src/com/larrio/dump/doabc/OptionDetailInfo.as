@@ -14,13 +14,15 @@ package com.larrio.dump.doabc
 		private var _index:uint;
 		private var _kind:uint;
 		
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [OptionDetailInfo] object
 		 */
-		public function OptionDetailInfo()
+		public function OptionDetailInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**
