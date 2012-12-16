@@ -12,13 +12,10 @@ package com.larrio.math
 	 */		
 	public function sign(value:uint, size:uint = 32):int
 	{
-		size = Math.min(32, Math.max(1, size)) - 1;
+		size = Math.min(32, Math.max(1, size));
 		
-		var mask:uint = 1, offset:uint = 0;		
-		while(offset++ < size) mask = mask << 1 | 1;
-		
-		var flag:uint = 1 << size;
-		if ((value & flag) > 0) value |= ~mask;		
+		var shift:uint = 32 - size;
+		value = (value << shift) >> shift;
 		
 		return int(value);
 	}

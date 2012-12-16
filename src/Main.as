@@ -1,5 +1,7 @@
 package
 {
+	import com.larrio.dump.SWFile;
+	import com.larrio.dump.model.SWFRect;
 	import com.larrio.math.sign;
 	import com.larrio.math.unsign;
 	import com.larrio.utils.FileDecoder;
@@ -23,29 +25,13 @@ package
 		 */
 		public function Main()
 		{		
-			var num:uint = 0xF0000000;
-			num >>>= 8;
-			trace(num.toString(16).toUpperCase());
+			var swf:SWFile = new SWFile(loaderInfo.bytes);
+			swf.decode();
+			
+			var size:SWFRect = swf.header.size;
+			assertTrue(size.width == stage.stageWidth);
+			assertTrue(size.height == stage.stageHeight);
 		}
 		
-		private function loop(index:int = 1):void
-		{
-			if (index >= 100)return;
-			
-			var num:uint = uint.MAX_VALUE * Math.random() >> 0;
-			
-			var encoder:FileEncoder = new FileEncoder();
-			encoder.writeES32(num);
-			
-			var decoder:FileDecoder = new FileDecoder();
-			decoder.writeBytes(encoder);
-			
-			decoder.position = 0;
-			var result:uint = decoder.readEU32();
-			
-			assertTrue(num == result);
-			
-			arguments.callee(++index);
-		}
 	}
 }

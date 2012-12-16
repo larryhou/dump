@@ -56,7 +56,7 @@ package com.larrio.utils
 				{
 					// 跨字节，取整个字节放到高位
 					result |= _bitbuf << shift;
-					left -= shift;
+					left -= _bitpos;
 					
 					// 读取下一个字节
 					_bitbuf = readUI8();
