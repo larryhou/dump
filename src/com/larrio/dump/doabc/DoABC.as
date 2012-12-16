@@ -17,6 +17,15 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
+		private var _methods:Vector.<MethodInfo>;
+		private var _methodBodies:Vector.<MethodBodyInfo>;
+		
+		private var _metadatas:Vector.<MetaDataInfo>;
+		
+		private var _instances:Vector.<InstanceInfo>;
+		private var _classes:Vector.<ClassInfo>;
+		
+		private var _scripts:Vector.<ScriptInfo>;
 		
 		/**
 		 * 构造函数
