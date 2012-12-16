@@ -5,27 +5,17 @@ package com.larrio.dump.doabc
 	import com.larrio.utils.FileEncoder;
 	
 	/**
-	 * DoABC之函数信息
+	 * 函数可选传参信息
 	 * @author larryhou
-	 * @createTime Dec 16, 2012 3:42:20 PM
+	 * @createTime Dec 16, 2012 6:22:05 PM
 	 */
-	public class MethodInfo implements ICodec
+	public class OptionInfo implements ICodec
 	{
-		private var _name:uint;
-		
-		private var _returnType:uint;
-		private var _paramTypes:Vector.<uint>;
-		
-		private var _flags:uint;
-		
-		private var _params:Vector.<ParamInfo>;
-		private var _options:Vector.<OptionInfo>;
-		
 		/**
 		 * 构造函数
-		 * create a [MethodInfo] object
+		 * create a [OptionInfo] object
 		 */
-		public function MethodInfo()
+		public function OptionInfo()
 		{
 			
 		}

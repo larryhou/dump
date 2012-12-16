@@ -51,6 +51,15 @@ package com.larrio.dump.doabc
 			_constants = new ConstantPool();
 			_constants.decode(decoder);
 			
+			var length:uint, i:int;
+			
+			length = decoder.readEU30();
+			_methods = new Vector.<MethodInfo>(length, true);
+			for (i = 0; i < length; i++)
+			{
+				_methods[i] = new MethodInfo();
+				_methods[i].decode(decoder);
+			}
 			
 		}
 		
