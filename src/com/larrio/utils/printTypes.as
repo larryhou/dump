@@ -8,7 +8,7 @@ package com.larrio.utils
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 5:17:33 PM
 	 */
-	public function printTypes(cls:Class, length:uint):void
+	public function printTypes(cls:Class, length:uint, upper:Boolean = false):void
 	{
 		var list:Array = [];
 		
@@ -24,7 +24,9 @@ package com.larrio.utils
 			
 			map[type] = key;
 			list.push(item = {name:key});
-			item.data = padding("public static const " + split(key), length) + ":uint = " + padding("0x" + type.toString(16).toUpperCase() + ";", 5) + " // " + type;
+			
+			key = upper? split(key) : key;
+			item.data = padding("public static const " + key, length) + ":uint = " + padding("0x" + type.toString(16).toUpperCase() + ";", 5) + " // " + type;
 		}
 		
 		list.sortOn("name");
