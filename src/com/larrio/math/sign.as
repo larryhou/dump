@@ -15,8 +15,6 @@ package com.larrio.math
 		size = Math.min(32, Math.max(1, size));
 		
 		var shift:uint = 32 - size;
-		value = (value << shift) >> shift;
-		
-		return int(value);
+		return int((value << shift) >> shift);
 	}
 }
