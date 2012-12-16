@@ -5,7 +5,7 @@ package com.larrio.dump.tags
 	import com.larrio.utils.assertTrue;
 	
 	/**
-	 * 
+	 * 代码指令TAG
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 2:25:00 PM
 	 */
