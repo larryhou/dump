@@ -18,7 +18,7 @@ package com.larrio.dump.doabc
 		
 		private var _flags:uint;
 		
-		private var _params:Vector.<ParamInfo>;
+		private var _paramNames:Vector.<uint>;
 		private var _options:Vector.<OptionInfo>;
 		
 		/**
@@ -36,8 +36,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			return;
-			
 			var _length:uint, i:int;
 			
 			_length = decoder.readEU30();
@@ -54,14 +52,24 @@ package com.larrio.dump.doabc
 			
 			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
 			{
-				
+				_length = decoder.readEU30();
+				_options = new Vector.<OptionInfo>(_length, true);
+				for (i = 0; i < _length; i++)
+				{
+					_options[i] = new OptionInfo();
+					_options[i].decode(decoder);
+				}
 			}
 			
 			if ((_flags & MethodFlagType.HAS_PARAM_NAMES) == MethodFlagType.HAS_PARAM_NAMES)
 			{
-				
-			}
-			
+				_length = _paramTypes.length;
+				_paramNames = new Vector.<uint>(_length, true);
+				for (i = 0; i < _length; i++)
+				{
+					_paramNames[i] = decoder.readEU30();
+				}
+			}			
 		}
 		
 		/**

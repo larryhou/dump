@@ -11,6 +11,9 @@ package com.larrio.dump.doabc
 	 */
 	public class OptionDetailInfo implements ICodec
 	{
+		private var _value:uint;
+		private var _kind:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [OptionDetailInfo] object
@@ -26,7 +29,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			
+			_value = decoder.readEU30();
+			_kind = decoder.readUI8();
 		}
 		
 		/**
@@ -37,5 +41,18 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 指向常量池某个数组的索引值 
+		 */		
+		public function get value():uint { return _value; }
+
+		/**
+		 * 该属性确定了value具体指向哪个常量数组 
+		 * @return 
+		 * 
+		 */		
+		public function get kind():uint { return _kind; }
+
 	}
 }
