@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * 命名空间集合
@@ -13,13 +14,15 @@ package com.larrio.dump.doabc
 	{
 		private var _namespaces:Vector.<uint>;
 		
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [NamespaceSetInfo] object
 		 */
-		public function NamespaceSetInfo()
+		public function NamespaceSetInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**
@@ -32,6 +35,12 @@ package com.larrio.dump.doabc
 			
 			var length:uint = decoder.readEU30();
 			while(length-- > 0) _namespaces.push(decoder.readEU30());
+			
+			// TODO: hard code unit test
+			for each(var index:uint in _namespaces)
+			{
+				assertTrue(index >= 0 && index < _constants.namespaces.length);
+			}
 		}
 		
 		/**

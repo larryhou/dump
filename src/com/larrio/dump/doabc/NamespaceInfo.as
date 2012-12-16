@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * DoABC之命名空间
@@ -14,13 +15,15 @@ package com.larrio.dump.doabc
 		private var _kind:uint;
 		private var _name:uint;
 		
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [NamespaceInfo] object
 		 */
-		public function NamespaceInfo()
+		public function NamespaceInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**
@@ -31,6 +34,9 @@ package com.larrio.dump.doabc
 		{
 			_kind = decoder.readUI8();
 			_name = decoder.readEU30();
+			
+			// TODO: hard code unit test
+			assertTrue(_name >= 0 && _name < _constants.strings.length);
 		}
 		
 		/**

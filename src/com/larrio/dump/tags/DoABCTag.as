@@ -52,7 +52,7 @@ package com.larrio.dump.tags
 			decoder.writeBytes(_bytes);
 			decoder.position = 0;
 			
-			trace(_name);
+			trace("[DoABCTag]" + _name);
 			
 			_abc = new DoABC();
 			_abc.decode(decoder);

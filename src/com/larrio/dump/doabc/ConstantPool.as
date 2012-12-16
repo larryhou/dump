@@ -71,32 +71,23 @@ package com.larrio.dump.doabc
 			_namespaces = new Vector.<NamespaceInfo>(length, true);
 			for (i = 1; i < length; i++)
 			{
-				_namespaces[i] = new NamespaceInfo();
+				_namespaces[i] = new NamespaceInfo(this);
 				_namespaces[i].decode(decoder);
-				
-				// TODO: hard code unit test
-				assertTrue(_namespaces[i].name >= 0 && _namespaces[i].name < _strings.length);
 			}
 			
 			length = decoder.readEU30();
 			_nssets = new Vector.<NamespaceSetInfo>(length, true);
 			for (i = 1; i < length; i++)
 			{
-				_nssets[i] = new NamespaceSetInfo();
+				_nssets[i] = new NamespaceSetInfo(this);
 				_nssets[i].decode(decoder);
-				
-				// TODO: hard code unit test
-				for each(var index:uint in _nssets[i].namespaces)
-				{
-					assertTrue(index >= 0 && index < _namespaces.length);
-				}
 			}
 			
 			length = decoder.readEU30();
 			_multinames = new Vector.<MultinameInfo>(length, true);
 			for (i = 1; i < length; i++)
 			{
-				_multinames[i] = new MultinameInfo();
+				_multinames[i] = new MultinameInfo(this);
 				_multinames[i].decode(decoder);
 			}
 		}

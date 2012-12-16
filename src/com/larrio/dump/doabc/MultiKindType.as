@@ -29,6 +29,11 @@ package com.larrio.dump.doabc
 		public static const MULTINAME_LA             :uint = 0x1C; // 28
 		
 		/**
+		 * undocumented type 
+		 */		
+		public static const MULTINAME_TYPE           :uint = 0x1D; // 29
+		
+		/**
 		 * QName 
 		 */		
 		public static const QNAME                    :uint = 0x7;  // 7
@@ -57,5 +62,15 @@ package com.larrio.dump.doabc
 		 * RTQNameLA 
 		 */		
 		public static const RT_QNAME_LA              :uint = 0x12; // 18
+		
+		/**
+		 * NameL 
+		 */		
+		public static const NAME_L                   :uint = 0x13; // 19
+		
+		/**
+		 * NameLA 
+		 */		
+		public static const NAME_LA                  :uint = 0x14; // 20
 	}
 }

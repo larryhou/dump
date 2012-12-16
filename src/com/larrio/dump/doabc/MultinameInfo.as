@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * 
@@ -17,14 +18,19 @@ package com.larrio.dump.doabc
 		private var _ns:uint;
 		private var _nsset:uint;
 		
+		private var _multiname:uint;
+		private var _types:Vector.<uint>;
+		
+		private var _constants:ConstantPool;
+		
 		
 		/**
 		 * 构造函数
 		 * create a [MultinameInfo] object
 		 */
-		public function MultinameInfo()
+		public function MultinameInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**
@@ -38,9 +44,13 @@ package com.larrio.dump.doabc
 			switch(_kind)
 			{
 				case MultiKindType.QNAME:
+				case MultiKindType.QNAME_A:
 				{
 					_ns = decoder.readEU30();
+					assertTrue(_ns >= 0 && _ns < _constants.namespaces.length);
+					
 					_name = decoder.readEU30();
+					assertTrue(_name >= 0 && _name < _constants.strings.length);
 					break;
 				}
 						
@@ -48,6 +58,7 @@ package com.larrio.dump.doabc
 				case MultiKindType.RT_QNAME_A:
 				{
 					_name = decoder.readEU30();
+					assertTrue(_name >= 0 && _name < _constants.strings.length);
 					break;
 				}
 					
@@ -57,11 +68,20 @@ package com.larrio.dump.doabc
 					break;
 				}
 					
+				case MultiKindType.NAME_L:
+				case MultiKindType.NAME_LA:
+				{
+					break;
+				}
+					
 				case MultiKindType.MULTINAME:
 				case MultiKindType.MULTINAME_A:
 				{
 					_name = decoder.readEU30();
+					assertTrue(_name >= 0 && _name < _constants.strings.length);
+					
 					_nsset = decoder.readEU30();
+					assertTrue(_nsset >= 0 && _nsset < _constants.nssets.length);
 					break;
 				}
 					
@@ -69,7 +89,31 @@ package com.larrio.dump.doabc
 				case MultiKindType.MULTINAME_LA:
 				{
 					_nsset = decoder.readEU30();
+					assertTrue(_nsset >= 0 && _nsset < _constants.nssets.length);
 					break;
+				}
+					
+				case MultiKindType.MULTINAME_TYPE:
+				{
+					var _length:uint;
+					
+					_multiname = decoder.readEU30();
+					assertTrue(_multiname >= 0 && _multiname < _constants.multinames.length);
+					
+					_length = decoder.readES30();
+					_types = new Vector.<uint>(_length, true);
+					for (var i:int = 0; i < _length; i++)
+					{
+						_types[i] = decoder.readEU30();
+						assertTrue(_types[i] >= 0 && _types[i] < _constants.multinames.length);
+					}
+					
+					break; 
+				}
+					
+				default:
+				{
+					assertTrue(false);break;
 				}
 			}
 		}
@@ -82,5 +126,36 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 指向muilnames常量数组的索引
+		 */		
+		public function get multiname():uint { return _multiname; }
+
+		/**
+		 * 指向muilnames常量数组的索引
+		 */		
+		public function get types():Vector.<uint> { return _types; }
+
+		/**
+		 * multiname类型
+		 */		
+		public function get kind():uint { return _kind; }
+
+		/**
+		 * 指向strings常量数组的索引
+		 */		
+		public function get name():uint { return _name; }
+
+		/**
+		 * 指向namespaces常量数组的索引
+		 */		
+		public function get ns():uint { return _ns; }
+
+		/**
+		 * 指向nssets常量数组的索引
+		 */		
+		public function get nsset():uint { return _nsset; }
+
 	}
 }

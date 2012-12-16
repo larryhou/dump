@@ -54,6 +54,7 @@ package
 			
 			(t as DoABCTag).print();
 			
+			printTypes(MethodFlagType, 45);
 		}
 		
 		private function padding(str:String, length:int):String

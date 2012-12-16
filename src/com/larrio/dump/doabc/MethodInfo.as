@@ -52,7 +52,14 @@ package com.larrio.dump.doabc
 			_name = decoder.readEU30();
 			_flags = decoder.readUI8();
 			
-			trace(_constants.strings[_name]);
+			try
+			{
+				trace("[MethodInfo]" + _constants.strings[_name]);
+			} 
+			catch(error:Error) 
+			{
+				trace(error);
+			}
 			
 			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
 			{
