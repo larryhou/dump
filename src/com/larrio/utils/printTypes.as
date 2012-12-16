@@ -48,7 +48,7 @@ function split(key:String):String
 		str = key.charAt(index);
 		if (str.toLowerCase() != str)
 		{
-			if (index - list[list.length - 1] >= 1) list.push(index);
+			if (index - list[list.length - 1] > 1) list.push(index);
 		}
 		
 		index++;
