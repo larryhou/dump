@@ -36,7 +36,9 @@ package
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			var key:String, type:int;
+			var list:Array = [];
+			
+			var key:String, type:int,item:Object;
 			var map:Dictionary = new Dictionary();
 			var config:XMLList = describeType(TagType).constant;
 			for each(var node:XML in config)
@@ -47,7 +49,14 @@ package
 				assertTrue(map[type] == null);
 				
 				map[type] = key;
-				trace(padding("public static const " + key, 55) + ":uint = 0x" + type.toString(16).toUpperCase() + ";\t// " + type);
+				list.push(item = {name:key});
+				item.data = padding("public static const " + key, 55) + ":uint = " + padding("0x" + type.toString(16).toUpperCase() + ";", 5) + " // " + type;
+			}
+			
+			list.sortOn("name");
+			while(list.length)
+			{
+				trace(list.shift().data);
 			}
 		}
 		
