@@ -25,7 +25,25 @@ package com.larrio.dump.tags
 		 */		
 		public static function create(type:int):SWFTag
 		{
+			switch(type)
+			{
+				case TagType.DO_ABC:
+				{
+					return new DoABCTag();
+				}
+				
+				case TagType.SYMBOL_CLASS:
+				{
+					return new SymbolClassTag();
+				}
+					
+				case TagType.FILE_ATTRIBUTES:
+				{
+					return new FileAttributesTag();
+				}
+			}
 			
+			return new SWFTag();
 		}		
 	}
 }

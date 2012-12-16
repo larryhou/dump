@@ -2,6 +2,7 @@ package com.larrio.dump
 {
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.tags.SWFTag;
+	import com.larrio.dump.tags.TagFactory;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
 	
@@ -60,13 +61,16 @@ package com.larrio.dump
 			
 			_tags = new Vector.<SWFTag>;
 			
-			var tag:SWFTag;
+			var position:uint;
+			var tag:SWFTag, type:uint;
 			while (_decoder.bytesAvailable)
 			{
-				tag = new SWFTag();
-				tag.decode(_decoder);
+				position = _decoder.position;
+				type = _decoder.readUI16() >>> 6;
+				_decoder.position = position;
 				
-				trace("0x" + tag.type.toString(16).toUpperCase());
+				tag = TagFactory.create(type);
+				tag.decode(_decoder);
 				
 				_tags.push(tag);
 			}
