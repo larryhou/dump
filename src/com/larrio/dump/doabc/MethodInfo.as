@@ -50,8 +50,17 @@ package com.larrio.dump.doabc
 			}
 			
 			_name = decoder.readEU30();
-			
 			_flags = decoder.readUI8();
+			
+			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
+			{
+				
+			}
+			
+			if ((_flags & MethodFlagType.HAS_PARAM_NAMES) == MethodFlagType.HAS_PARAM_NAMES)
+			{
+				
+			}
 			
 		}
 		

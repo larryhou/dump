@@ -11,6 +11,8 @@ package com.larrio.dump.doabc
 	 */
 	public class OptionInfo implements ICodec
 	{
+		private var _details:Vector.<OptionDetailInfo>;
+		
 		/**
 		 * 构造函数
 		 * create a [OptionInfo] object
@@ -26,7 +28,15 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			var _length:uint, i:int;
 			
+			_length = decoder.readES30();
+			_details = new Vector.<OptionDetailInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_details[i] = new OptionDetailInfo();
+				_details[i].decode(decoder);
+			}
 		}
 		
 		/**
@@ -37,5 +47,11 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 可选参数详细信息
+		 */		
+		public function get details():Vector.<OptionDetailInfo> { return _details; }
+
 	}
 }
