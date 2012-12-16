@@ -5,27 +5,17 @@ package com.larrio.dump.doabc
 	import com.larrio.utils.FileEncoder;
 	
 	/**
-	 * DoABC常量集合
+	 * DoABC之命名空间
 	 * @author larryhou
-	 * @createTime Dec 16, 2012 3:11:50 PM
+	 * @createTime Dec 16, 2012 3:57:20 PM
 	 */
-	public class ConstantPool implements ICodec
+	public class NamespaceInfo implements ICodec
 	{
-		private var _ints:Vector.<int>;
-		private var _uints:Vector.<uint>;
-		private var _doubles:Vector.<Number>;
-		private var _strings:Vector.<String>;
-		
-		private var _nssets:Vector.<NamespaceSetInfo>;
-		private var _namespaces:Vector.<NamespaceInfo>;
-		
-		private var _multinames:Vector.<MultinameInfo>;
-		
 		/**
 		 * 构造函数
-		 * create a [ConstantPool] object
+		 * create a [NamespaceInfo] object
 		 */
-		public function ConstantPool()
+		public function NamespaceInfo()
 		{
 			
 		}
