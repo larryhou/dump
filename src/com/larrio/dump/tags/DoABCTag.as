@@ -1,5 +1,6 @@
 package com.larrio.dump.tags
 {
+	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
 	import com.larrio.utils.assertTrue;
@@ -12,6 +13,8 @@ package com.larrio.dump.tags
 	public class DoABCTag extends SWFTag
 	{
 		public static const TYPE:uint = TagType.DO_ABC;
+		
+		private var _abc:DoABC;
 		
 		/**
 		 * 构造函数
@@ -31,7 +34,9 @@ package com.larrio.dump.tags
 			super.decode(decoder);
 			
 			assertTrue(_type == DoABCTag.TYPE);
-		}		
+			
+			_abc = new DoABC();
+		}
 		
 		/**
 		 * 二进制编码 
@@ -41,6 +46,21 @@ package com.larrio.dump.tags
 		{
 			super.encode(encoder);
 			
+		}
+		
+		/**
+		 * 打印DoABC解码信息
+		 */		
+		public function print():void
+		{
+			if (!_bytes) return;
+			
+			var decoder:FileDecoder = new FileDecoder();
+			decoder.writeBytes(_bytes);
+			
+			_abc.decode(decoder);
+			
+			decoder.length = 0;
 		}
 	}
 }

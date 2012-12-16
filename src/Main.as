@@ -2,6 +2,8 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.model.SWFRect;
+	import com.larrio.dump.tags.DoABCTag;
+	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	import com.larrio.math.sign;
 	import com.larrio.math.unsign;
@@ -35,6 +37,17 @@ package
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+			
+			var tags:Vector.<SWFTag> = swf.tags;
+			for each(var t:SWFTag in tags)
+			{
+				if (t.type == TagType.DO_ABC)
+				{
+					break;
+				}
+			}
+			
+			(t as DoABCTag).print();
 		}
 		
 		private function padding(str:String, length:int):String
