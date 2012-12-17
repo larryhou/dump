@@ -2,7 +2,7 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.model.SWFRect;
-	import com.larrio.utils.assertTrue;
+	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.display.Sprite;
 	

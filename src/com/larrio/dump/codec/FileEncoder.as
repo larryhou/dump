@@ -3,8 +3,8 @@ package com.larrio.dump.codec
 	import com.larrio.math.unsign;
 	
 	import flash.utils.ByteArray;
-	import com.larrio.utils.assertInt;
-	import com.larrio.utils.assertTrue;
+	import com.larrio.dump.utils.assertInt;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * SWF字节编码器

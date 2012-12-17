@@ -3,7 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.utils.assertTrue;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * DoABC常量集合

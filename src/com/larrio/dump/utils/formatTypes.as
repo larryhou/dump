@@ -1,4 +1,4 @@
-package com.larrio.utils
+package com.larrio.dump.utils
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
