@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * 函数特征信息
@@ -14,7 +15,9 @@ package com.larrio.dump.doabc
 		private var _name:uint;
 		private var _kind:uint;
 		
+		private var _data:TraitData;
 		
+		private var _metadatas:Vector.<uint>;
 		
 		
 		private var _constants:ConstantPool;
@@ -34,7 +37,49 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_name = decoder.readEU30();
+			_kind = decoder.readUI8();
 			
+			_data = new TraitData();
+			switch (_kind)
+			{
+				case TraitType.TRAIT_SLOT:
+				case TraitType.TRAIT_CONST:
+				{
+					_data.id = decoder.readEU30();
+					_data.type = decoder.readEU30();
+					_data.index = decoder.readEU30();
+					if (_data.index)
+					{
+						_data.kind = decoder.readUI8();
+					}
+					
+					break;
+				}
+					
+				case TraitType.TRAIT_CLASS:
+				{
+					_data.id = decoder.readEU30();
+					_data.classi = decoder.readEU30();
+					break;
+				}
+					
+				case TraitType.TRAIT_GETTER:
+				case TraitType.TRAIT_SETTER:
+				case TraitType.TRAIT_METHOD:
+				case TraitType.TRAIT_FUNCTION:
+				{
+					_data.id = decoder.readEU30();
+					_data.method = decoder.readEU30();
+					break;
+				}
+					
+				default:
+				{
+					assertTrue(false);
+					break;
+				}
+			}
 		}
 		
 		/**
@@ -46,4 +91,30 @@ package com.larrio.dump.doabc
 			
 		}
 	}
+}
+
+class TraitData
+{
+	/**
+	 * slot & disp 
+	 */	
+	public var id:uint;
+	
+	/**
+	 * 指向multinames常量数组的索引 
+	 */	
+	public var type:uint;
+	
+	public var index:uint;
+	public var kind:uint;
+	
+	/**
+	 * 指向classes数组的索引 
+	 */	
+	public var classi:uint;
+	
+	/**
+	 * 指向methods常量数组的索引 
+	 */	
+	public var method:uint;
 }
