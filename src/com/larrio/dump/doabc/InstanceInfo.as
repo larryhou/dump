@@ -41,13 +41,14 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			return;
-			
 			_name = decoder.readEU30();
 			_superName = decoder.readEU30();
 			
 			_flags = decoder.readUI8();
-			_protectedNS = decoder.readEU30();
+			if (_flags == InstanceType.CLASS_PROTECTED_NS)
+			{
+				_protectedNS = decoder.readEU30();
+			}
 			
 			var _length:uint, i:int;
 			

@@ -41,7 +41,7 @@ package com.larrio.dump.doabc
 			_kind = decoder.readUI8();
 			
 			_data = new TraitData();
-			switch (_kind)
+			switch (_kind & 0xF)
 			{
 				case TraitType.TRAIT_SLOT:
 				case TraitType.TRAIT_CONST:
@@ -64,20 +64,22 @@ package com.larrio.dump.doabc
 					break;
 				}
 					
-				case TraitType.TRAIT_GETTER:
-				case TraitType.TRAIT_SETTER:
-				case TraitType.TRAIT_METHOD:
-				case TraitType.TRAIT_FUNCTION:
+				default:
 				{
 					_data.id = decoder.readEU30();
 					_data.method = decoder.readEU30();
 					break;
 				}
-					
-				default:
+			}
+			
+			var _length:uint, i:int;
+			if (((_kind >>> 4) & TraitAttriType.METADATA) == TraitAttriType.METADATA)
+			{
+				_length = decoder.readEU30();
+				_metadatas = new Vector.<uint>(_length, true);
+				for (i = 0; i < _length; i++)
 				{
-					assertTrue(false);
-					break;
+					_metadatas[i] = decoder.readEU30();
 				}
 			}
 		}
