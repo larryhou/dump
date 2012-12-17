@@ -3,8 +3,8 @@ package com.larrio.dump
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagFactory;
-	import com.larrio.utils.FileDecoder;
-	import com.larrio.utils.FileEncoder;
+	import com.larrio.dump.codec.FileDecoder;
+	import com.larrio.dump.codec.FileEncoder;
 	
 	import flash.utils.ByteArray;
 	

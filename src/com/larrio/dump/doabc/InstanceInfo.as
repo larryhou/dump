@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.utils.FileDecoder;
-	import com.larrio.utils.FileEncoder;
+	import com.larrio.dump.codec.FileDecoder;
+	import com.larrio.dump.codec.FileEncoder;
 	
 	/**
 	 * DoABC之实例信息

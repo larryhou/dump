@@ -1,8 +1,10 @@
-package com.larrio.utils
+package com.larrio.dump.codec
 {
 	import com.larrio.math.unsign;
 	
 	import flash.utils.ByteArray;
+	import com.larrio.utils.assertInt;
+	import com.larrio.utils.assertTrue;
 	
 	/**
 	 * SWF字节编码器
