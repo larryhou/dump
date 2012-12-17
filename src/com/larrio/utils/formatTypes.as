@@ -66,16 +66,3 @@ function split(key:String):String
 	
 	return result.join("_");
 }
-
-function padding(str:String, length:int, char:String = " ", right:Boolean = true):String
-{
-	if (right)
-	{
-		while(str.length < length) str += char;
-	}
-	else
-	{
-		while(str.length < length) str = char + str;
-	}
-	return str;
-}
