@@ -99,7 +99,6 @@ package com.larrio.dump.doabc
 				_methodBodies[i] = new MethodBodyInfo(_constants);
 				_methodBodies[i].decode(decoder);
 			}
-			
 		}
 		
 		/**

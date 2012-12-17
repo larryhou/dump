@@ -3,6 +3,9 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
+	import com.larrio.utils.printBytes;
+	
+	import flash.utils.ByteArray;
 	
 	/**
 	 * DoABC之函数体
@@ -11,6 +14,20 @@ package com.larrio.dump.doabc
 	 */
 	public class MethodBodyInfo implements ICodec
 	{
+		private var _method:uint;
+		
+		private var _maxStack:uint;
+		
+		private var _localCount:uint;
+		
+		private var _initScopeDepth:uint;
+		private var _maxScopeDepth:uint;
+		
+		private var _code:ByteArray;
+		
+		private var _exceptions:Vector.<ExceptionInfo>;
+		private var _traits:Vector.<TraitInfo>;
+		
 		private var _constants:ConstantPool;
 		
 		/**
@@ -28,7 +45,40 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_method = decoder.readEU30();
 			
+			_maxStack = decoder.readEU30();
+			
+			_localCount = decoder.readEU30();
+			
+			_initScopeDepth = decoder.readEU30();
+			_maxScopeDepth = decoder.readEU30();
+			
+			var _length:uint, i:int;
+			
+			_length = decoder.readEU30();
+			
+			_code = new ByteArray();
+			decoder.readBytes(_code,0, _length);
+			_code.position = 0;
+			
+			printBytes(_code, 6);
+			
+			_length = decoder.readEU30();
+			_exceptions = new Vector.<ExceptionInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_exceptions[i] = new ExceptionInfo(_constants);
+				_exceptions[i].decode(decoder);
+			}
+			
+			_length = decoder.readEU30();
+			_traits = new Vector.<TraitInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_traits[i] = new TraitInfo(_constants);
+				_traits[i].decode(decoder);
+			}
 		}
 		
 		/**
