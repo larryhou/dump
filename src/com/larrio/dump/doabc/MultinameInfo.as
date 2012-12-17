@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -125,6 +125,81 @@ package com.larrio.dump.doabc
 		public function encode(encoder:FileEncoder):void
 		{
 			
+		}
+		
+		/**
+		 * 输出格式化文本
+		 */		
+		public function toString():String
+		{
+			var length:uint, i:int;
+			var result:String = "";
+			switch(_kind)
+			{
+				case MultiKindType.QNAME:
+				case MultiKindType.QNAME_A:
+				{
+					result += _constants.namespaces[_ns];
+					result += _constants.strings[_name];
+					break;
+				}
+					
+				case MultiKindType.RT_QNAME:
+				case MultiKindType.RT_QNAME_A:
+				{
+					result += _constants.strings[_name];
+					break;
+				}
+					
+				case MultiKindType.RT_QNAME_L:
+				case MultiKindType.RT_QNAME_LA:
+				{
+					result += "RTQNameL";
+					break;
+				}
+					
+				case MultiKindType.NAME_L:
+				case MultiKindType.NAME_LA:
+				{
+					result += "NameL";
+					break;
+				}
+					
+				case MultiKindType.MULTINAME:
+				case MultiKindType.MULTINAME_A:
+				{
+					result += _constants.nssets[_nsset];
+					
+					if (result) result += ":";
+					result += _constants.strings[_name];
+					break;
+				}
+					
+				case MultiKindType.MULTINAME_L:
+				case MultiKindType.MULTINAME_LA:
+				{
+					result += _constants.nssets[_nsset];
+					
+					if (result) result += ":";
+					result += "null";
+					break;
+				}
+					
+				case MultiKindType.MULTINAME_TYPE:
+				{
+					result += _constants.multinames[_multiname];
+					
+					length = _types.length;
+					for (i = 0; i < length; i++)
+					{
+						result += _constants.multinames[_types[i]];
+					}
+					break; 
+				}
+					
+			}
+			
+			return result;
 		}
 
 		/**

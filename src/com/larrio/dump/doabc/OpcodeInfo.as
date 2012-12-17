@@ -78,6 +78,18 @@ package com.larrio.dump.doabc
 		}
 		
 		/**
+		 * 获取multiname
+		 * @param index	执行multinames常量数组的索引
+		 * @return 字符串
+		 */		
+		private function getName(index:uint):String
+		{
+			var multinames:Vector.<MultinameInfo> = _constants.multinames;
+			assertTrue(index >= 0 && index < multinames.length);
+		
+		}
+		
+		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
@@ -107,6 +119,48 @@ package com.larrio.dump.doabc
 					case OpcodeType.PUSHSTRING_OP:
 					{
 						item += getSTR(decoder.readES30());
+						break;
+					}
+						
+					case OpcodeType.PUSHNAMESPACE_OP:
+					{
+						item += getNS(decoder.readEU30());
+						break;
+					}
+						
+					case OpcodeType.PUSHINT_OP:
+					{
+						item += _constants.ints[decoder.readES30()];
+						break;
+					}
+						
+					case OpcodeType.PUSHUINT_OP:
+					{
+						item += _constants.uints[decoder.readEU30()];
+						break;
+					}
+						
+					case OpcodeType.PUSHDOUBLE_OP:
+					{
+						item += _constants.doubles[decoder.readEU30()];
+						break;
+					}
+					
+					case OpcodeType.GETSUPER_OP:
+					case OpcodeType.SETSUPER_OP:
+					case OpcodeType.GETPROPERTY_OP:
+					case OpcodeType.INITPROPERTY_OP:
+					case OpcodeType.SETPROPERTY_OP:
+					case OpcodeType.GETLEX_OP:
+					case OpcodeType.FINDPROPSTRICT_OP:
+					case OpcodeType.FINDPROPERTY_OP:
+					case OpcodeType.FINDDEF_OP:
+					case OpcodeType.DELETEPROPERTY_OP:
+					case OpcodeType.ISTYPE_OP:
+					case OpcodeType.COERCE_OP:
+					case OpcodeType.ASTYPE_OP:
+					case OpcodeType.GETDESCENDANTS_OP:
+					{
 						break;
 					}
 						
