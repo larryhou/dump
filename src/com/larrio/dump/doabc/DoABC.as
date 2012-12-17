@@ -70,13 +70,36 @@ package com.larrio.dump.doabc
 			}
 			
 			_length = decoder.readEU30();
-			_classes = new Vector.<ClassInfo>(_length, true);
 			_instances = new Vector.<InstanceInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
 				_instances[i] = new InstanceInfo(_constants);
 				_instances[i].decode(decoder);
 			}
+			
+			_classes = new Vector.<ClassInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_classes[i] = new ClassInfo(_constants);
+				_classes[i].decode(decoder);
+			}
+			
+			_length = decoder.readEU30();
+			_scripts = new Vector.<ScriptInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_scripts[i] = new ScriptInfo(_constants);
+				_scripts[i].decode(decoder);
+			}
+			
+			_length = decoder.readEU30();
+			_methodBodies = new Vector.<MethodBodyInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_methodBodies[i] = new MethodBodyInfo(_constants);
+				_methodBodies[i].decode(decoder);
+			}
+			
 		}
 		
 		/**

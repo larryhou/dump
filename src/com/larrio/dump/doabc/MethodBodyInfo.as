@@ -11,13 +11,15 @@ package com.larrio.dump.doabc
 	 */
 	public class MethodBodyInfo implements ICodec
 	{
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [MethodBodyInfo] object
 		 */
-		public function MethodBodyInfo()
+		public function MethodBodyInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**

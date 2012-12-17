@@ -1,6 +1,5 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
 	
@@ -9,33 +8,33 @@ package com.larrio.dump.doabc
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 3:43:37 PM
 	 */
-	public class ScriptInfo implements ICodec
+	public class ScriptInfo extends ClassInfo
 	{
 		/**
 		 * 构造函数
 		 * create a [ScriptInfo] object
 		 */
-		public function ScriptInfo()
+		public function ScriptInfo(constants:ConstantPool)
 		{
-			
+			super(constants);
 		}
 		
 		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		public function decode(decoder:FileDecoder):void
+		override public function decode(decoder:FileDecoder):void
 		{
-			
+			super.decode(decoder);
 		}
 		
 		/**
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		public function encode(encoder:FileEncoder):void
+		override public function encode(encoder:FileEncoder):void
 		{
-			
+			super.encode(encoder);
 		}
 	}
 }
