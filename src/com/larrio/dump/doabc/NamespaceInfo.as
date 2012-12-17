@@ -54,7 +54,7 @@ package com.larrio.dump.doabc
 		public function get kind():uint { return _kind; }
 
 		/**
-		 * 命名空间标识符索引
+		 * 指向strings常量数组的索引
 		 */		
 		public function get name():uint { return _name; }
 
