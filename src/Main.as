@@ -8,7 +8,7 @@ package
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	import com.larrio.utils.assertTrue;
-	import com.larrio.utils.printTypes;
+	import com.larrio.utils.formatTypes;
 	
 	import flash.display.Sprite;
 	
@@ -34,7 +34,7 @@ package
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			printTypes(OpcodeType, 42, true);
+			formatTypes(OpcodeType, 42, true);
 		}
 		
 		private function padding(str:String, length:int):String
