@@ -5,6 +5,8 @@ package com.larrio.dump.doabc
 	import com.larrio.utils.FileEncoder;
 	
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
+	import flash.utils.describeType;
 	
 	/**
 	 * 解析opcode指令
@@ -13,7 +15,11 @@ package com.larrio.dump.doabc
 	 */
 	public class OpcodeInfo implements ICodec
 	{
+		private static var _map:Dictionary;
+		
 		private var _bytes:ByteArray;
+		
+		private var _code:String;
 		
 		/**
 		 * 构造函数
@@ -21,7 +27,19 @@ package com.larrio.dump.doabc
 		 */
 		public function OpcodeInfo()
 		{
-			
+			if (!_map)
+			{
+				_map = new Dictionary(false);
+				
+				var key:String;
+				var config:XMLList = describeType(OpcodeType).constant;
+				for each (var node:XML in config)
+				{
+					key = String(node.@name);
+					
+					_map[OpcodeType[key]] = key.replace(/_OP$/i, "").toLowerCase();
+				}
+			}
 		}
 		
 		/**
@@ -30,7 +48,15 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_code = "";
 			
+			var item:String, opcode:uint;			
+			while (decoder.bytesAvailable)
+			{
+				item = "";
+				opcode = decoder.readUI8();
+				
+			}
 		}
 		
 		/**
@@ -41,5 +67,10 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 已解码的opcode指令
+		 */		
+		public function get code():String { return _code; }
 	}
 }
