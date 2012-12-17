@@ -2,6 +2,7 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.doabc.InstanceType;
+	import com.larrio.dump.doabc.OpcodeType;
 	import com.larrio.dump.doabc.TraitType;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.SWFTag;
@@ -42,7 +43,7 @@ package
 				}
 			}
 			
-			printTypes(TraitType, 40, true);
+			printTypes(OpcodeType, 40, true);
 		}
 		
 		private function padding(str:String, length:int):String
