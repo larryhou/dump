@@ -45,7 +45,7 @@ package com.larrio.dump.doabc
 			_superName = decoder.readEU30();
 			
 			_flags = decoder.readUI8();
-			if (_flags == InstanceType.CLASS_PROTECTED_NS)
+			if ((_flags & InstanceType.CLASS_PROTECTED_NS) == InstanceType.CLASS_PROTECTED_NS)
 			{
 				_protectedNS = decoder.readEU30();
 			}

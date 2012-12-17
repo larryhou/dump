@@ -73,7 +73,7 @@ package com.larrio.dump.doabc
 			}
 			
 			var _length:uint, i:int;
-			if (((_kind >>> 4) & TraitAttriType.METADATA) == TraitAttriType.METADATA)
+			if (((_kind >> 4) & TraitAttriType.METADATA) == TraitAttriType.METADATA)
 			{
 				_length = decoder.readEU30();
 				_metadatas = new Vector.<uint>(_length, true);

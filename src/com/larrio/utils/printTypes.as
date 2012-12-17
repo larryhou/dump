@@ -26,7 +26,8 @@ package com.larrio.utils
 			list.push(item = {name:key});
 			
 			key = upper? split(key) : key;
-			item.data = padding("public static const " + key, length) + ":uint = " + padding("0x" + type.toString(16).toUpperCase() + ";", 5) + " // " + type;
+			item.data = padding("public static const " + key, length) + ":uint = 0x";
+			item.data += padding(type.toString(16).toUpperCase(), 2, "0", false) + "; // " + type;
 		}
 		
 		list.sortOn("name");
@@ -66,8 +67,15 @@ function split(key:String):String
 	return result.join("_");
 }
 
-function padding(str:String, length:int):String
+function padding(str:String, length:int, char:String = " ", right:Boolean = true):String
 {
-	while(str.length < length) str += " ";
+	if (right)
+	{
+		while(str.length < length) str += char;
+	}
+	else
+	{
+		while(str.length < length) str = char + str;
+	}
 	return str;
 }

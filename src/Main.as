@@ -34,16 +34,7 @@ package
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			var tags:Vector.<SWFTag> = swf.tags;
-			for each(var t:SWFTag in tags)
-			{
-				if (t.type == TagType.DO_ABC)
-				{
-					break;
-				}
-			}
-			
-			printTypes(OpcodeType, 40, true);
+			printTypes(OpcodeType, 42, true);
 		}
 		
 		private function padding(str:String, length:int):String

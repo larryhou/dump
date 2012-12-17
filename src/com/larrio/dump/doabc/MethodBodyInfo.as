@@ -3,7 +3,6 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.utils.FileDecoder;
 	import com.larrio.utils.FileEncoder;
-	import com.larrio.utils.printBytes;
 	
 	import flash.utils.ByteArray;
 	
@@ -61,8 +60,6 @@ package com.larrio.dump.doabc
 			_code = new ByteArray();
 			decoder.readBytes(_code,0, _length);
 			_code.position = 0;
-			
-			printBytes(_code, 6);
 			
 			_length = decoder.readEU30();
 			_exceptions = new Vector.<ExceptionInfo>(_length, true);

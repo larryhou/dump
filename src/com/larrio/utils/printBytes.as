@@ -7,9 +7,13 @@ package com.larrio.utils
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 10:52:32 PM
 	 */
-	public function printBytes(bytes:ByteArray, column:uint = 4):void
+	public function printBytes(source:ByteArray, column:uint = 4, offset:uint = 0, length:uint = 0):void
 	{
 		var hash:Array = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+		
+		var bytes:ByteArray = new ByteArray();
+		bytes.writeBytes(source, offset, length);
+		bytes.position = 0;
 		
 		var result:String = "";
 		var left:String = "", right:String = "";
@@ -39,6 +43,8 @@ package com.larrio.utils
 			while (left.length < length) left += " ";
 			result += left + right;
 		}
+		
+		bytes.length = 0;
 		
 		trace(result);
 	}
