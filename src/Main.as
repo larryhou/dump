@@ -1,10 +1,12 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.InstanceType;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	import com.larrio.utils.assertTrue;
+	import com.larrio.utils.printTypes;
 	
 	import flash.display.Sprite;
 	
@@ -38,6 +40,8 @@ package
 					break;
 				}
 			}
+			
+			printTypes(InstanceType, 40, true);
 		}
 		
 		private function padding(str:String, length:int):String

@@ -11,13 +11,16 @@ package com.larrio.dump.doabc
 	 */
 	public class InstanceInfo implements ICodec
 	{
+		
+		private var _constants:ConstantPool;
+		
 		/**
 		 * 构造函数
 		 * create a [InstanceInfo] object
 		 */
-		public function InstanceInfo()
+		public function InstanceInfo(constants:ConstantPool)
 		{
-			
+			_constants = constants;
 		}
 		
 		/**

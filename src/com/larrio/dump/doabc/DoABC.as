@@ -68,6 +68,15 @@ package com.larrio.dump.doabc
 				_metadatas[i] = new MetadataInfo(_constants);
 				_metadatas[i].decode(decoder);
 			}
+			
+			_length = decoder.readEU30();
+			_classes = new Vector.<ClassInfo>(_length, true);
+			_instances = new Vector.<InstanceInfo>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_instances[i] = new InstanceInfo(_constants);
+				_instances[i].decode(decoder);
+			}
 		}
 		
 		/**
