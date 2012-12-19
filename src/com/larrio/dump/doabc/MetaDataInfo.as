@@ -51,8 +51,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			var result:String = _constants.strings[_name] + ": " + _items.join(" ");
-			return result;
+			return _constants.strings[_name] + ": " + _items.join(" ");
 		}
 		
 		/**
