@@ -1,10 +1,10 @@
 package com.larrio.dump
 {
+	import com.larrio.dump.codec.FileDecoder;
+	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagFactory;
-	import com.larrio.dump.codec.FileDecoder;
-	import com.larrio.dump.codec.FileEncoder;
 	
 	import flash.utils.ByteArray;
 	
@@ -32,9 +32,6 @@ package com.larrio.dump
 		 */
 		public function SWFile(bytes:ByteArray)
 		{
-			// 初始化编码器
-			_encoder = new FileEncoder();
-			
 			// 写入文件二进制已编码字节
 			_decoder = new FileDecoder();
 			_decoder.writeBytes(bytes);
@@ -46,7 +43,16 @@ package com.larrio.dump
 		 */		
 		public function encode():void
 		{
+			if (_encoder)
+			{
+				// 内存释放
+				_encoder.length = 0;
+			}
 			
+			// 初始化编码器
+			_encoder = new FileEncoder();
+			
+			// TODO:编码SWF二进制文件
 		}
 		
 		/**

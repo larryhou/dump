@@ -34,6 +34,11 @@ package
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+			
+			var callback:Function = function (data:Object):void
+			{
+				trace(data);
+			};
 		}
 		
 		private function padding(str:String, length:int):String
