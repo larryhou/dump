@@ -64,7 +64,9 @@ package com.larrio.dump.doabc
 		{
 			var result:String = "class:";
 			result += _abc.constants.multinames[_instance.name];
-			if (_traits.length) result += "\n      [Trait]" + _traits.join("\n      [Trait]");
+			
+			var indent:String = "      ";
+			if (_traits.length) result += "\n" + indent + "[Trait]" + _traits.join("\n" + indent + "[Trait]");
 			return result;
 		}
 
