@@ -2,12 +2,14 @@ package com.larrio.dump.utils
 {
 	import flash.utils.ByteArray;
 	
+	import flashx.textLayout.debug.assert;
+	
 	/**
 	 * 打印二进制数据
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 10:52:32 PM
 	 */
-	public function printHexSTR(source:ByteArray, column:uint = 4, offset:uint = 0, length:uint = 0):void
+	public function hexSTR(source:ByteArray, column:uint = 4, offset:uint = 0, length:uint = 0, ascii:Boolean = false):String
 	{
 		var hash:Array = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
 		
@@ -25,7 +27,7 @@ package com.larrio.dump.utils
 			byte = bytes[bytes.position++];
 			
 			left += hash[byte >>> 4] + hash[byte & 0xF] + " ";
-			right += (byte >= 33 && byte < 127)? String.fromCharCode(byte) : "?";
+			if (ascii) right += (byte >= 33 && byte < 127)? String.fromCharCode(byte) : "?";
 			
 			count++;
 			if (count % 4 == 0) left += " ";
@@ -46,6 +48,6 @@ package com.larrio.dump.utils
 		
 		bytes.length = 0;
 		
-		trace(result);
+		return result;
 	}
 }

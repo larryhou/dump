@@ -4,6 +4,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.utils.hexSTR;
 	import com.larrio.dump.utils.padding;
 	
 	import flash.utils.ByteArray;
@@ -23,15 +24,19 @@ package com.larrio.dump.doabc
 		
 		private var _code:String;
 		
+		private var _abc:DoABC;
 		private var _constants:ConstantPool;
+		
+		private var _method:uint;
 		
 		/**
 		 * 构造函数
 		 * create a [OpcodeInfo] object
 		 */
-		public function OpcodeInfo(constants:ConstantPool)
+		public function OpcodeInfo(abc:DoABC)
 		{
-			_constants = constants;
+			_abc = abc;
+			_constants = _abc.constants;
 			
 			if (!_map)
 			{
@@ -51,8 +56,6 @@ package com.larrio.dump.doabc
 		/**
 		 * 获取字符串常量
 		 * @param index	指向constants常量数组的索引
-		 * @return 字符串
-		 * 
 		 */		
 		private function getSTR(index:uint):String
 		{
@@ -68,7 +71,7 @@ package com.larrio.dump.doabc
 		 * @param index	指向namespaces常量数组的索引
 		 * @return 字符串
 		 */		
-		private function getNS(index:uint):String
+		private function namespaceSTR(index:uint):String
 		{
 			var namespaces:Vector.<NamespaceInfo> = _constants.namespaces;
 			assertTrue(index >= 0 && index < namespaces.length);
@@ -79,10 +82,9 @@ package com.larrio.dump.doabc
 		
 		/**
 		 * 获取multiname
-		 * @param index	执行multinames常量数组的索引
-		 * @return 字符串
+		 * @param index	指向multinames常量数组的索引
 		 */		
-		private function getName(index:uint):String
+		private function multinameSTR(index:uint):String
 		{
 			var multinames:Vector.<MultinameInfo> = _constants.multinames;
 			assertTrue(index >= 0 && index < multinames.length);
@@ -92,24 +94,56 @@ package com.larrio.dump.doabc
 		}
 		
 		/**
+		 * 获取函数名字符串 
+		 * @param index 指向methods常量数组的索引
+		 */		
+		private function methodSTR(index:uint):String
+		{
+			var methods:Vector.<MethodInfo> = _abc.methods;
+			assertTrue(index >= 0 && index < methods.length);
+			
+			return methods[index].toString();
+		}
+		
+		/**
+		 * 获取实例对象名称 
+		 * @param index	指向instances数组的索引
+		 */		
+		private function instanceSTR(index:uint):String
+		{
+			var instances:Vector.<InstanceInfo> = _abc.instances;
+			assertTrue(index >= 0 && index < instances.length);
+			
+			return _constants.multinames[instances[index].name].toString();
+		}
+		
+		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			trace(methodSTR(_method));
+			
 			_code = "";
 			
-			var label:LabelMgr = new LabelMgr();
+			var startAt:uint;
+			var target:uint, pos:uint;
+			
+			var labels:LabelMgr = new LabelMgr();
 			
 			var item:String, opcode:uint;			
 			while (decoder.bytesAvailable)
 			{
+				startAt = decoder.position;
+				
 				item = "";
 				opcode = decoder.readUI8();
+				if (!_map[opcode]) continue;
 				
-				if (opcode == OpcodeType.LABEL_OP || label.has(decoder.position))
+				if (opcode == OpcodeType.LABEL_OP || labels.has(decoder.position - 1))
 				{
-					item = label.get(decoder.position) + ":";
+					item = labels.get(decoder.position - 1) + ":";
 				}
 				
 				item = padding(item, 4, " ", false);
@@ -117,7 +151,7 @@ package com.larrio.dump.doabc
 				
 				switch(opcode)
 				{
-					case OpcodeType.DEBUG_OP:
+					case OpcodeType.DEBUGFILE_OP:
 					case OpcodeType.PUSHSTRING_OP:
 					{
 						item += getSTR(decoder.readES30());
@@ -126,7 +160,7 @@ package com.larrio.dump.doabc
 						
 					case OpcodeType.PUSHNAMESPACE_OP:
 					{
-						item += getNS(decoder.readEU30());
+						item += namespaceSTR(decoder.readEU30());
 						break;
 					}
 						
@@ -163,7 +197,7 @@ package com.larrio.dump.doabc
 					case OpcodeType.ASTYPE_OP:
 					case OpcodeType.GETDESCENDANTS_OP:
 					{
-						item += getName(decoder.readEU30());
+						item += multinameSTR(decoder.readEU30());
 						break;
 					}
 					
@@ -174,23 +208,144 @@ package com.larrio.dump.doabc
 					case OpcodeType.CALLSUPERVOID_OP:
 					case OpcodeType.CALLPROPVOID_OP:
 					{
-						item += getName(decoder.readEU30());
+						item += multinameSTR(decoder.readEU30());
 						item += " (" + decoder.readEU30() + ")";
 						break;
 					}
 						
 					case OpcodeType.NEWFUNCTION_OP:
 					{
-						
+						item += methodSTR(decoder.readEU30());
+						break;
 					}
 						
+					case OpcodeType.CALLSTATIC_OP:
+					{
+						item += methodSTR(decoder.readEU30());
+						item += "(" + decoder.readES30() + ")";
+						break;
+					}
+						
+					case OpcodeType.NEWCLASS_OP:
+					{
+						item += instanceSTR(decoder.readEU30());
+						break;
+					}
+						
+					case OpcodeType.LOOKUPSWITCH_OP:
+					{
+						pos = decoder.position - 1;
+						target = pos + decoder.readS24();
+						
+						var caseCount:uint = decoder.readEU30();
+						
+						item += "default:" + labels.get(target);
+						item += "caseCount:" + caseCount;
+						
+						for (var i:int = 0; i < caseCount; i++)
+						{
+							target = pos + decoder.readS24();
+							item += " " + labels.get(target);
+						}
+						
+						break;
+					}
+						
+					case OpcodeType.JUMP_OP:
+					case OpcodeType.IFTRUE_OP:		case OpcodeType.IFFALSE_OP:
+					case OpcodeType.IFEQ_OP:		case OpcodeType.IFNE_OP:
+					case OpcodeType.IFGE_OP:		case OpcodeType.IFNGE_OP:
+					case OpcodeType.IFGT_OP:		case OpcodeType.IFNGT_OP:
+					case OpcodeType.IFLE_OP:		case OpcodeType.IFNLE_OP:
+					case OpcodeType.IFLT_OP:		case OpcodeType.IFNLT_OP:
+					case OpcodeType.STRICTEQUALS_OP:case OpcodeType.IFSTRICTNE_OP:
+					{
+						var offset:int = decoder.readS24();
+						target = decoder.position + offset;
+						item += labels.get(target);
+						
+						if (!labels.has(decoder.position))
+						{
+							item += "\n";
+						}
+						break;
+					}
+						
+					case OpcodeType.INCLOCAL_OP:
+					case OpcodeType.DECLOCAL_OP:
+					case OpcodeType.INCLOCALI_OP:
+					case OpcodeType.DECLOCALI_OP:
+					case OpcodeType.GETLOCAL_OP:
+					case OpcodeType.SETLOCAL_OP:
+					case OpcodeType.KILL_OP:
+					case OpcodeType.DEBUGLINE_OP:
+					case OpcodeType.GETGLOBALSLOT_OP:
+					case OpcodeType.SETGLOBALSLOT_OP:
+					case OpcodeType.GETSLOT_OP:
+					case OpcodeType.SETSLOT_OP:
+					case OpcodeType.PUSHSHORT_OP:
+					case OpcodeType.NEWCATCH_OP:
+					{
+						item += decoder.readES30();
+						break;
+					}
+						
+					case OpcodeType.DEBUG_OP:
+					{
+						item += decoder.readUI8();
+						item += " " + decoder.readEU30();
+						item += " " + decoder.readUI8();
+						item += " " + decoder.readEU30();
+						break;
+					}
+						
+					case OpcodeType.NEWOBJECT_OP:
+					{
+						item += "{" + decoder.readEU30() + "}";
+						break;
+					}
+						
+					case OpcodeType.NEWARRAY_OP:
+					{
+						item += "[" + decoder.readEU30() + "]";
+						break;
+					}
+						
+					case OpcodeType.CALL_OP:
+					case OpcodeType.CONSTRUCT_OP:
+					case OpcodeType.CONSTRUCTSUPER_OP:
+					{
+						item += "(" + decoder.readEU30() + ")";
+						break;
+					}
+						
+					case OpcodeType.PUSHBYTE_OP:
+					case OpcodeType.GETSCOPEOBJECT_OP:
+					{
+						item += decoder.readUI8();
+						break;
+					}
+						
+					case OpcodeType.HASNEXT2_OP:
+					{
+						item += decoder.readEU30() + " " + decoder.readEU30();
+						break;
+					}
+					
 					default:
 					{
 						break;
 					}
+						
 				}
 				
+				_code += item + "\n";
+				
+				trace(item);
+				//trace(item + "// " + hexSTR(decoder, 2, startAt, decoder.position - startAt));
 			}
+			
+			trace("\n");
 		}
 		
 		/**
@@ -201,11 +356,29 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			return _code;
+		}
 
 		/**
 		 * 已解码的opcode指令
 		 */		
 		public function get code():String { return _code; }
+
+		/**
+		 * 方法引用
+		 */		
+		public function get method():uint { return _method; }
+		public function set method(value:uint):void
+		{
+			_method = value;
+		}
+
 	}
 }
 import flash.utils.Dictionary;
@@ -234,7 +407,7 @@ class LabelMgr
 	{
 		if (!_map[offset])
 		{
-			_map[offset] = "L" + (++_index);
+			_map[offset] = "L" + (_index++);
 		}
 		
 		return _map[offset];

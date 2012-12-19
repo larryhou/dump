@@ -23,6 +23,7 @@ package com.larrio.dump.doabc
 		private var _maxScopeDepth:uint;
 		
 		private var _code:ByteArray;
+		private var _opcode:OpcodeInfo;
 		
 		private var _exceptions:Vector.<ExceptionInfo>;
 		private var _traits:Vector.<TraitInfo>;
@@ -58,7 +59,7 @@ package com.larrio.dump.doabc
 			_length = decoder.readEU30();
 			
 			_code = new ByteArray();
-			decoder.readBytes(_code,0, _length);
+			decoder.readBytes(_code, 0, _length);
 			_code.position = 0;
 			
 			_length = decoder.readEU30();
@@ -76,6 +77,17 @@ package com.larrio.dump.doabc
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 			}
+			
+			// decode opcode
+			decoder = new FileDecoder();
+			decoder.writeBytes(_code);
+			decoder.position = 0;
+			
+			_opcode = new OpcodeInfo(_abc);
+			_opcode.method = _method;
+			_opcode.decode(decoder);
+			
+			decoder.length = 0;
 		}
 		
 		/**
