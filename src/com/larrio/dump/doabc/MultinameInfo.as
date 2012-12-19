@@ -117,7 +117,7 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			trace(toString());
+			trace(this);
 		}
 		
 		/**

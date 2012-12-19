@@ -38,7 +38,7 @@ package com.larrio.dump.doabc
 			// TODO: hard code unit test
 			assertTrue(_name >= 0 && _name < _constants.strings.length);
 			
-			trace(toString());
+			trace(this);
 		}
 		
 		/**
