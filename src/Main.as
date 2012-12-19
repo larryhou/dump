@@ -14,6 +14,13 @@ package
 	 */
 	public class Main extends Sprite
 	{
+		public static var v1:uint;
+		private static var v2:uint;
+		protected static var v3:String;
+		
+		public var version:String = "v1.0";
+		protected var author:String = "larryhou";
+		
 		/**
 		 * 构造函数
 		 * create a [Main] object

@@ -78,8 +78,6 @@ package com.larrio.dump.doabc
 					assertTrue(_paramNames[i] >= 0 && _paramNames[i] < _constants.strings.length);
 				}
 			}
-			
-			trace(this);
 		}
 		
 		/**

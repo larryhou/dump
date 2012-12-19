@@ -4,6 +4,8 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	
+	import flashx.textLayout.formats.WhiteSpaceCollapse;
+	
 	/**
 	 * DoABC之实例信息
 	 * @author larryhou
@@ -67,6 +69,8 @@ package com.larrio.dump.doabc
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 			}
+			
+			trace(this);
 		}
 		
 		/**
@@ -83,17 +87,21 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{			
-			var result:String = "";
-			result += _abc.constants.strings[_name];
-			result += " extends: " + _abc.constants.multinames[_superName];
+			var multinames:Vector.<MultinameInfo> = _abc.constants.multinames;
+			
+			var result:String = "instance:";
+			result += multinames[_name];
+			if (multinames[_superName]) result += " extends " + multinames[_superName];
 			
 			var list:Array = [];
 			for (var i:int = 0; i < _interfaces.length; i++)
 			{
-				list.push(_abc.constants.multinames[_interfaces[i]]);
+				list.push(multinames[_interfaces[i]]);
 			}
 			
-			if (list.length) result += " implements: " + list.join(",");
+			var indent:String = "         ";
+			if (list.length) result += " implements " + list.join(",");
+			if (_traits.length) result += "\n" + indent + "[Trait]" + _traits.join("\n" + indent + "[Trait]");
 			
 			return result;
 		}

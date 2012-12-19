@@ -82,8 +82,6 @@ package com.larrio.dump.doabc
 					_metadatas[i] = decoder.readEU30();
 				}
 			}
-			
-			trace("[TraitInfo]" + this);
 		}
 		
 		/**

@@ -116,8 +116,6 @@ package com.larrio.dump.doabc
 					assertTrue(false);break;
 				}
 			}
-			
-			trace(this);
 		}
 		
 		/**

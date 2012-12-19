@@ -36,5 +36,13 @@ package com.larrio.dump.doabc
 		{
 			super.encode(encoder);
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		override public function toString():String
+		{
+			return "script:[Trait]" + _traits.join("\n       [Trait]");
+		}
 	}
 }

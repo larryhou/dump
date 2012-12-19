@@ -44,6 +44,8 @@ package com.larrio.dump.doabc
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 			}
+			
+			trace(this);
 		}
 		
 		/**
@@ -60,7 +62,10 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			return "";
+			var result:String = "class:";
+			result += _abc.constants.multinames[_instance.name];
+			if (_traits.length) result += "\n      [Trait]" + _traits.join("\n      [Trait]");
+			return result;
 		}
 
 		/**

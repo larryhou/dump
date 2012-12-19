@@ -37,8 +37,6 @@ package com.larrio.dump.doabc
 			
 			// TODO: hard code unit test
 			assertTrue(_name >= 0 && _name < _constants.strings.length);
-			
-			trace(this);
 		}
 		
 		/**
@@ -79,15 +77,9 @@ package com.larrio.dump.doabc
 					break;
 				}
 					
-				case NSKindType.PACKAGE_NAMESPACE:
-				{
-					//key = "package";
-					break;
-				}
-					
 				case NSKindType.STATIC_PROTECTED_NS:
 				{
-					key = "static protected";
+					key = "protected";
 					break;
 				}
 			}	
