@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -20,15 +20,15 @@ package com.larrio.dump.doabc
 		private var _metadatas:Vector.<uint>;
 		
 		
-		private var _constants:ConstantPool;
+		private var _abc:DoABC;
 		
 		/**
 		 * 构造函数
 		 * create a [TraitInfo] object
 		 */
-		public function TraitInfo(constants:ConstantPool)
+		public function TraitInfo(abc:DoABC)
 		{
-			_constants = constants;
+			_abc = abc;
 		}
 		
 		/**
@@ -43,8 +43,8 @@ package com.larrio.dump.doabc
 			_data = new TraitData();
 			switch (_kind & 0xF)
 			{
-				case TraitType.TRAIT_SLOT:
-				case TraitType.TRAIT_CONST:
+				case TraitType.SLOT:
+				case TraitType.CONST:
 				{
 					_data.id = decoder.readEU30();
 					_data.type = decoder.readEU30();
@@ -57,7 +57,7 @@ package com.larrio.dump.doabc
 					break;
 				}
 					
-				case TraitType.TRAIT_CLASS:
+				case TraitType.CLASS:
 				{
 					_data.id = decoder.readEU30();
 					_data.classi = decoder.readEU30();
@@ -82,6 +82,8 @@ package com.larrio.dump.doabc
 					_metadatas[i] = decoder.readEU30();
 				}
 			}
+			
+			trace("[TraitInfo]" + this);
 		}
 		
 		/**
@@ -91,6 +93,51 @@ package com.larrio.dump.doabc
 		public function encode(encoder:FileEncoder):void
 		{
 			
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:String = "";
+			result += _abc.constants.multinames[_name] + ":";
+			
+			switch (_kind & 0xF)
+			{
+				case TraitType.SLOT:
+				case TraitType.CONST:
+				{
+					result += _abc.constants.multinames[_data.type];
+					break;
+				}
+					
+				case TraitType.CLASS:
+				{
+					result += "Class";
+					break;
+				}
+					
+				case TraitType.GETTER:
+				{
+					result += "getter";
+					break;
+				}
+					
+				case TraitType.SETTER:
+				{
+					result += "setter";
+					break;
+				}
+					
+				default:
+				{
+					result += "Function";
+					break;
+				}
+			}
+			
+			return result;
 		}
 	}
 }

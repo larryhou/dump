@@ -73,14 +73,15 @@ package com.larrio.dump.doabc
 			_instances = new Vector.<InstanceInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_instances[i] = new InstanceInfo(_constants);
+				_instances[i] = new InstanceInfo(this);
 				_instances[i].decode(decoder);
 			}
 			
 			_classes = new Vector.<ClassInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_classes[i] = new ClassInfo(_constants);
+				_classes[i] = new ClassInfo(this);
+				_classes[i].instance = _instances[i];
 				_classes[i].decode(decoder);
 			}
 			
@@ -88,7 +89,7 @@ package com.larrio.dump.doabc
 			_scripts = new Vector.<ScriptInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_scripts[i] = new ScriptInfo(_constants);
+				_scripts[i] = new ScriptInfo(this);
 				_scripts[i].decode(decoder);
 			}
 			
@@ -96,7 +97,7 @@ package com.larrio.dump.doabc
 			_methodBodies = new Vector.<MethodBodyInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_methodBodies[i] = new MethodBodyInfo(_constants);
+				_methodBodies[i] = new MethodBodyInfo(this);
 				_methodBodies[i].decode(decoder);
 			}
 		}
@@ -109,6 +110,52 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 大版本号
+		 */		
+		public function get majorVersion():uint { return _majorVersion; }
+
+		/**
+		 * 小版本号
+		 */		
+		public function get minorVersion():uint { return _minorVersion; }
+
+		/**
+		 * 常量池
+		 */		
+		public function get constants():ConstantPool { return _constants; }
+
+		/**
+		 * 函数信息
+		 */		
+		public function get methods():Vector.<MethodInfo> { return _methods; }
+
+		/**
+		 * 类方法bytecode实体
+		 */		
+		public function get methodBodies():Vector.<MethodBodyInfo> { return _methodBodies; }
+
+		/**
+		 * metadata
+		 */		
+		public function get metadatas():Vector.<MetadataInfo> { return _metadatas; }
+
+		/**
+		 * 对应类定义声明的成员变量
+		 */		
+		public function get instances():Vector.<InstanceInfo> { return _instances; }
+
+		/**
+		 * 类定义
+		 */		
+		public function get classes():Vector.<ClassInfo> { return _classes; }
+
+		/**
+		 * scripts
+		 */		
+		public function get scripts():Vector.<ScriptInfo> { return _scripts; }
+
 		
 	}
 }

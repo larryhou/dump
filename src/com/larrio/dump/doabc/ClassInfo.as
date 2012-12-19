@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	
 	/**
 	 * DoABC之类信息
@@ -14,15 +14,17 @@ package com.larrio.dump.doabc
 		protected var _initializer:uint;
 		protected var _traits:Vector.<TraitInfo>;
 		
-		protected var _constants:ConstantPool;
+		protected var _abc:DoABC;
+		
+		protected var _instance:InstanceInfo;
 		
 		/**
 		 * 构造函数
 		 * create a [ClassInfo] object
 		 */
-		public function ClassInfo(constants:ConstantPool)
+		public function ClassInfo(abc:DoABC)
 		{
-			_constants = constants;
+			_abc = abc;
 		}
 		
 		/**
@@ -39,7 +41,7 @@ package com.larrio.dump.doabc
 			_traits = new Vector.<TraitInfo>(_lenght, true);
 			for (i = 0; i < _lenght; i++)
 			{
-				_traits[i] = new TraitInfo(_constants);
+				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 			}
 		}
@@ -52,6 +54,14 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			return "";
+		}
 
 		/**
 		 * 指向methods数组的索引
@@ -63,6 +73,16 @@ package com.larrio.dump.doabc
 		 * 类特征信息
 		 */		
 		public function get traits():Vector.<TraitInfo> { return _traits; }
+
+		/**
+		 * class对应instance
+		 */		
+		public function get instance():InstanceInfo { return _instance; }
+		public function set instance(value:InstanceInfo):void
+		{
+			_instance = value;
+		}
+
 
 	}
 }

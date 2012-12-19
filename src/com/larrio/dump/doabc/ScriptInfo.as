@@ -14,9 +14,9 @@ package com.larrio.dump.doabc
 		 * 构造函数
 		 * create a [ScriptInfo] object
 		 */
-		public function ScriptInfo(constants:ConstantPool)
+		public function ScriptInfo(abc:DoABC)
 		{
-			super(constants);
+			super(abc);
 		}
 		
 		/**

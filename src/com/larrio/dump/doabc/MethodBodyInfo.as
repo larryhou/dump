@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	
 	import flash.utils.ByteArray;
 	
@@ -27,15 +27,15 @@ package com.larrio.dump.doabc
 		private var _exceptions:Vector.<ExceptionInfo>;
 		private var _traits:Vector.<TraitInfo>;
 		
-		private var _constants:ConstantPool;
+		private var _abc:DoABC;
 		
 		/**
 		 * 构造函数
 		 * create a [MethodBodyInfo] object
 		 */
-		public function MethodBodyInfo(constants:ConstantPool)
+		public function MethodBodyInfo(abc:DoABC)
 		{
-			_constants = constants;
+			_abc = abc;
 		}
 		
 		/**
@@ -65,7 +65,7 @@ package com.larrio.dump.doabc
 			_exceptions = new Vector.<ExceptionInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_exceptions[i] = new ExceptionInfo(_constants);
+				_exceptions[i] = new ExceptionInfo(_abc.constants);
 				_exceptions[i].decode(decoder);
 			}
 			
@@ -73,7 +73,7 @@ package com.larrio.dump.doabc
 			_traits = new Vector.<TraitInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_traits[i] = new TraitInfo(_constants);
+				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 			}
 		}

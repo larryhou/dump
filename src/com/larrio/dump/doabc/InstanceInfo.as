@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	
 	/**
 	 * DoABC之实例信息
@@ -23,16 +23,15 @@ package com.larrio.dump.doabc
 		
 		private var _traits:Vector.<TraitInfo>;
 		
-		
-		private var _constants:ConstantPool;
+		private var _abc:DoABC;
 		
 		/**
 		 * 构造函数
 		 * create a [InstanceInfo] object
 		 */
-		public function InstanceInfo(constants:ConstantPool)
+		public function InstanceInfo(abc:DoABC)
 		{
-			_constants = constants;
+			_abc = abc;
 		}
 		
 		/**
@@ -65,7 +64,7 @@ package com.larrio.dump.doabc
 			_traits = new Vector.<TraitInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_traits[i] = new TraitInfo(_constants);
+				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 			}
 		}
@@ -77,6 +76,26 @@ package com.larrio.dump.doabc
 		public function encode(encoder:FileEncoder):void
 		{
 			
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{			
+			var result:String = "";
+			result += _abc.constants.strings[_name];
+			result += " extends: " + _abc.constants.multinames[_superName];
+			
+			var list:Array = [];
+			for (var i:int = 0; i < _interfaces.length; i++)
+			{
+				list.push(_abc.constants.multinames[_interfaces[i]]);
+			}
+			
+			if (list.length) result += " implements: " + list.join(",");
+			
+			return result;
 		}
 
 		/**
@@ -114,7 +133,5 @@ package com.larrio.dump.doabc
 		 * 实例特征信息数组
 		 */		
 		public function get traits():Vector.<TraitInfo> { return _traits; }
-
-
 	}
 }

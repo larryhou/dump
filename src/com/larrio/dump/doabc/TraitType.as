@@ -11,36 +11,36 @@ package com.larrio.dump.doabc
 		/**
 		 * class 
 		 */		
-		public static const TRAIT_CLASS         :uint = 0x4;  // 4
+		public static const CLASS         :uint = 0x4;  // 4
 		
 		/**
 		 * const 
 		 */		
-		public static const TRAIT_CONST         :uint = 0x6;  // 6
+		public static const CONST         :uint = 0x6;  // 6
 		
 		/**
 		 * funtion 
 		 */		
-		public static const TRAIT_FUNCTION      :uint = 0x5;  // 5
+		public static const FUNCTION      :uint = 0x5;  // 5
 		
 		/**
 		 * getter 
 		 */		
-		public static const TRAIT_GETTER        :uint = 0x2;  // 2
+		public static const GETTER        :uint = 0x2;  // 2
 		
 		/**
 		 * method 
 		 */		
-		public static const TRAIT_METHOD        :uint = 0x1;  // 1
+		public static const METHOD        :uint = 0x1;  // 1
 		
 		/**
 		 * setter 
 		 */		
-		public static const TRAIT_SETTER        :uint = 0x3;  // 3
+		public static const SETTER        :uint = 0x3;  // 3
 		
 		/**
 		 * slot 
 		 */		
-		public static const TRAIT_SLOT          :uint = 0x0;  // 0
+		public static const SLOT          :uint = 0x0;  // 0
 	}
 }
