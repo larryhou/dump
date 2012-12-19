@@ -209,7 +209,7 @@ package com.larrio.dump.doabc
 					case OpcodeType.CALLPROPVOID_OP:
 					{
 						item += multinameSTR(decoder.readEU30());
-						item += " (" + decoder.readEU30() + ")";
+						item += "(" + decoder.readEU30() + ")";
 						break;
 					}
 						
