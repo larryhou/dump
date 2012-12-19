@@ -57,15 +57,15 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			var result:String = "";
+			var result:Array = [];
 			
 			var length:int = _namespaces.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				result += _constants.namespaces[_namespaces[i]] + ",";
+				result[i] = _constants.namespaces[_namespaces[i]] ;
 			}
 			
-			return result;
+			return result.join(",");
 		}
 
 		/**

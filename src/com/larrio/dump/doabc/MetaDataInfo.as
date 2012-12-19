@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -43,7 +43,16 @@ package com.larrio.dump.doabc
 			{
 				_items[i] = new MetadataItemInfo(_constants);
 				_items[i].decode(decoder);
-			}			
+			}	
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:String = _constants.strings[_name] + ": " + _items.join(" ");
+			return result;
 		}
 		
 		/**

@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -80,6 +80,8 @@ package com.larrio.dump.doabc
 					assertTrue(_paramNames[i] >= 0 && _paramNames[i] < _constants.strings.length);
 				}
 			}
+			
+			trace(this);
 		}
 		
 		/**
@@ -89,6 +91,36 @@ package com.larrio.dump.doabc
 		public function encode(encoder:FileEncoder):void
 		{
 			
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:String = _constants.strings[_name];
+			
+			var item:String, list:Array = [];
+			for (var i:int = 0; i < _paramTypes.length; i++)
+			{
+				item = ""
+				if (_paramNames)
+				{
+					item += _constants.strings[_paramNames[i]] + ":";
+				}
+				
+				item += _constants.multinames[_paramTypes[i]];
+				
+				list.push(item);
+			}
+			
+			result += "(" + list.join(", ") + ")";
+			if (_constants.multinames[_returnType])
+			{
+				result += ":" + _constants.multinames[_returnType];
+			}
+			
+			return result;
 		}
 
 		/**

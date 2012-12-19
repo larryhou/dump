@@ -37,6 +37,8 @@ package com.larrio.dump.doabc
 			
 			// TODO: hard code unit test
 			assertTrue(_name >= 0 && _name < _constants.strings.length);
+			
+			trace(toString());
 		}
 		
 		/**
@@ -54,14 +56,43 @@ package com.larrio.dump.doabc
 		public function toString():String
 		{
 			var result:String = "";
-			if (_kind == NSKindType.PRIVATE_NS)
+			result += _constants.strings[_name];
+			
+			var key:String;
+			switch (_kind)
 			{
-				result = "private";
-			}
-			else
-			{
-				result = _constants.strings[_name];
-			}
+				case NSKindType.PRIVATE_NS:
+				{
+					key = "private";
+					break;
+				}
+					
+				case NSKindType.PACKAGE_INTERNAL_NS:
+				{
+					key = "internal";
+					break;
+				}
+					
+				case NSKindType.PROTECTED_NAMESPACE:
+				{
+					key = "protected";
+					break;
+				}
+					
+				case NSKindType.PACKAGE_NAMESPACE:
+				{
+					//key = "package";
+					break;
+				}
+					
+				case NSKindType.STATIC_PROTECTED_NS:
+				{
+					key = "static protected";
+					break;
+				}
+			}	
+			
+			if (key) result += ":" + key;
 			
 			return result;
 		}
@@ -75,7 +106,5 @@ package com.larrio.dump.doabc
 		 * 指向strings常量数组的索引
 		 */		
 		public function get name():uint { return _name; }
-
-
 	}
 }

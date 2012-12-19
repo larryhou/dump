@@ -73,8 +73,8 @@ package com.larrio.dump.doabc
 			var namespaces:Vector.<NamespaceInfo> = _constants.namespaces;
 			assertTrue(index >= 0 && index < namespaces.length);
 			
-			if (index == 0) return "*";
-			return _constants.strings[namespaces[index].name];
+			if (index == 0) return "public";
+			return namespaces[index].toString();
 		}
 		
 		/**
@@ -86,7 +86,9 @@ package com.larrio.dump.doabc
 		{
 			var multinames:Vector.<MultinameInfo> = _constants.multinames;
 			assertTrue(index >= 0 && index < multinames.length);
-		
+			
+			if (index == 0) return "*";
+			return multinames[index].toString();
 		}
 		
 		/**
@@ -161,7 +163,25 @@ package com.larrio.dump.doabc
 					case OpcodeType.ASTYPE_OP:
 					case OpcodeType.GETDESCENDANTS_OP:
 					{
+						item += getName(decoder.readEU30());
 						break;
+					}
+					
+					case OpcodeType.CONSTRUCTPROP_OP:
+					case OpcodeType.CALLPROPERTY_OP:
+					case OpcodeType.CALLPROPLEX_OP:
+					case OpcodeType.CALLSUPER_OP:
+					case OpcodeType.CALLSUPERVOID_OP:
+					case OpcodeType.CALLPROPVOID_OP:
+					{
+						item += getName(decoder.readEU30());
+						item += " (" + decoder.readEU30() + ")";
+						break;
+					}
+						
+					case OpcodeType.NEWFUNCTION_OP:
+					{
+						
 					}
 						
 					default:

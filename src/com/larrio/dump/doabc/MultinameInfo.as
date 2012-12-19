@@ -116,6 +116,8 @@ package com.larrio.dump.doabc
 					assertTrue(false);break;
 				}
 			}
+			
+			trace(toString());
 		}
 		
 		/**
@@ -140,6 +142,8 @@ package com.larrio.dump.doabc
 				case MultiKindType.QNAME_A:
 				{
 					result += _constants.namespaces[_ns];
+					
+					if (result) result += ":";
 					result += _constants.strings[_name];
 					break;
 				}
@@ -179,9 +183,6 @@ package com.larrio.dump.doabc
 				case MultiKindType.MULTINAME_LA:
 				{
 					result += _constants.nssets[_nsset];
-					
-					if (result) result += ":";
-					result += "null";
 					break;
 				}
 					
