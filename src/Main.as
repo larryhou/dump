@@ -39,6 +39,9 @@ package
 			{
 				trace(data);
 			};
+			
+			var container:Sprite = new Sprite();
+			container["name"] = "dump";
 		}
 		
 		private function padding(str:String, length:int):String

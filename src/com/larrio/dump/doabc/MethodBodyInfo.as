@@ -98,5 +98,46 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+
+		/**
+		 * 指向methods数组的索引
+		 */		
+		public function get method():uint { return _method; }
+
+		/**
+		 * max stack
+		 */		
+		public function get maxStack():uint { return _maxStack; }
+
+		/**
+		 * 局部变量变量数量
+		 */		
+		public function get localCount():uint { return _localCount; }
+
+		/**
+		 * init scope depth
+		 */		
+		public function get initScopeDepth():uint { return _initScopeDepth; }
+
+		/**
+		 * max scope depth
+		 */		
+		public function get maxScopeDepth():uint { return _maxScopeDepth; }
+
+		/**
+		 * 代码
+		 */		
+		public function get opcode():OpcodeInfo { return _opcode; }
+
+		/**
+		 * exception
+		 */		
+		public function get exceptions():Vector.<ExceptionInfo> { return _exceptions; }
+
+		/**
+		 * 函数特征
+		 */		
+		public function get traits():Vector.<TraitInfo> { return _traits; }
+
 	}
 }
