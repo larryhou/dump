@@ -41,7 +41,7 @@ package com.larrio.dump.doabc
 			var appending:String = "";
 			
 			// instance class info
-			if (script.variables) appending += "\n\t" + script.variables.join("\n\t");
+			if (script.variables) appending += "\nPACKAGE MEMBERS:\n\t" + script.variables.join("\n\t");
 			if (script.methods)
 			{				
 				length = script.methods.length;
@@ -58,11 +58,8 @@ package com.larrio.dump.doabc
 			
 			if (appending)
 			{
-				_content += "\nPACKAGE MEMBERS:";
-				_content += "\n" + appending;
+				_content += appending;
 			}
-			
-			_content += "\n";
 			
 			trace(_content);
 		}
@@ -89,8 +86,11 @@ package com.larrio.dump.doabc
 			
 			if (list.length) _content += " implements " + list.join(",");
 			
-			_content += "\n";
-			if(info.traits.length) _content += "\nSTATIC MEMBERS:";
+			if(info.traits.length) 
+			{
+				_content += "\n";
+				_content += "\nSTATIC MEMBERS:";
+			}
 			
 			// static class info
 			if (info.variables) _content += "\n\t" + info.variables.join("\n\t");
@@ -106,8 +106,11 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			_content += "\n";
-			if (instance.traits.length) _content += "\nINSTANCE MEMBERS:";
+			if (instance.traits.length)
+			{
+				_content += "\n";
+				_content += "\nINSTANCE MEMBERS:";
+			}
 
 			// instance class info
 			if (instance.variables) _content += "\n\t" + instance.variables.join("\n\t");
