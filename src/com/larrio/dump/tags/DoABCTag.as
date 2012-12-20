@@ -53,7 +53,7 @@ package com.larrio.dump.tags
 			decoder.position = 0;
 			
 			trace("---------------------------------");
-			trace("{DoABCTag}" + _name);
+			//trace("{DoABCTag}" + _name);
 			
 			_abc = new DoABC();
 			_abc.decode(decoder);

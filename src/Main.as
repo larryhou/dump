@@ -41,6 +41,14 @@ package
 			var callback:Function = function (data:Object):void
 			{
 				trace(data);
+				
+				var image:Sprite = new Sprite;
+				trace(image.name);
+				
+				var fuck:Function = function(name:String):void
+				{
+					trace("Fuck You!" + name);
+				}
 			};
 			
 			var container:Sprite = new Sprite();

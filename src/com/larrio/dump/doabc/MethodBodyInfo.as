@@ -120,13 +120,16 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
+			var i:int;
 			var result:String = _abc.methods[_method].toString();
 			result += "\n    maxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
 			result += "\n" + _opcode.toString();
 			
+			//if (_traits.length) result += "\n    [Trait]" + _traits.join("\n    [Trait]");
+			
 			if (_opcode.closures)
 			{
-				for (var i:int = 0; i < _opcode.closures.length; i++)
+				for (i = 0; i < _opcode.closures.length; i++)
 				{
 					result += "\n" + _abc.methodBodies[_opcode.closures[i]];
 				}
