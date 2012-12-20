@@ -21,6 +21,8 @@ package
 		public var version:String = "v1.0";
 		protected var author:String = "larryhou";
 		
+		private var data:Class;
+		
 		/**
 		 * 构造函数
 		 * create a [Main] object

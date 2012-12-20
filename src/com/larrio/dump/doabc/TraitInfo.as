@@ -98,15 +98,21 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			var result:String = "";
-			result += _abc.constants.multinames[_name] + ":";
+			var result:String;
+			result = _abc.constants.multinames[_name] + ":";
 			
 			switch (_kind & 0xF)
 			{
 				case TraitType.SLOT:
+				{
+					result += _abc.constants.multinames[_data.type];
+					break;
+				}
+					
 				case TraitType.CONST:
 				{
 					result += _abc.constants.multinames[_data.type];
+					result = "const " + result;
 					break;
 				}
 					
@@ -137,6 +143,17 @@ package com.larrio.dump.doabc
 			
 			return result;
 		}
+
+		/**
+		 * 特征名称
+		 */		
+		public function get name():uint { return _name; }
+
+		/**
+		 * 特征类型
+		 */		
+		public function get kind():uint { return _kind; }
+
 	}
 }
 
