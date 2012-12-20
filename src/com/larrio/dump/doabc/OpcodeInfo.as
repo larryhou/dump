@@ -342,10 +342,10 @@ package com.larrio.dump.doabc
 				_code += item + "\n";
 				
 				//trace(item);
-				trace(item + "// " + hexSTR(decoder, 2, startAt, decoder.position - startAt));
+				//trace(item + "// " + hexSTR(decoder, 2, startAt, decoder.position - startAt));
 			}
 			
-			trace("\n");
+			//trace("\n");
 		}
 		
 		/**
