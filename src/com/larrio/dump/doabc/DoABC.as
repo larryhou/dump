@@ -27,6 +27,8 @@ package com.larrio.dump.doabc
 		
 		private var _scripts:Vector.<ScriptInfo>;
 		
+		private var _files:Vector.<ClassFile>;
+		
 		/**
 		 * 构造函数
 		 * create a [DoABC] object
@@ -100,6 +102,13 @@ package com.larrio.dump.doabc
 				_methodBodies[i] = new MethodBodyInfo(this);
 				_methodBodies[i].decode(decoder);
 			}
+			
+			_length = _classes.length;
+			_files = new Vector.<ClassFile>(_length, true);
+			for (i = 0; i < _length; i++)
+			{
+				_files[i] = new ClassFile(_classes[i]);
+			}
 		}
 		
 		/**
@@ -155,6 +164,11 @@ package com.larrio.dump.doabc
 		 * scripts
 		 */		
 		public function get scripts():Vector.<ScriptInfo> { return _scripts; }
+
+		/**
+		 * 类文件
+		 */		
+		public function get files():Vector.<ClassFile> { return _files; }
 
 	}
 }
