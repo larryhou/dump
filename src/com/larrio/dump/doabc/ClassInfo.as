@@ -65,6 +65,7 @@ package com.larrio.dump.doabc
 					{
 						if (!_classes) _classes = new Vector.<TraitInfo>;
 						_classes.push(_traits[i]);
+						break;
 					}
 						
 					default:

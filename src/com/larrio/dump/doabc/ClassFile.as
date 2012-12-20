@@ -41,7 +41,7 @@ package com.larrio.dump.doabc
 			var appending:String = "";
 			
 			// instance class info
-			if (script.variables) appending += "\nPACKAGE MEMBERS:\n\t" + script.variables.join("\n\t");
+			if (script.variables) appending += "\n\t" + script.variables.join("\n\t");
 			if (script.methods)
 			{				
 				length = script.methods.length;
@@ -58,7 +58,7 @@ package com.larrio.dump.doabc
 			
 			if (appending)
 			{
-				_content += appending;
+				_content += "\nPACKAGE MEMBERS:" + appending;
 			}
 			
 			trace(_content);
