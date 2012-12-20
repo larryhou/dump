@@ -48,6 +48,11 @@ package
 				var fuck:Function = function(name:String):void
 				{
 					trace("Fuck You!" + name);
+					
+					var callback:Function = function(value:uint):String
+					{
+						return value.toString();
+					}
 				}
 			};
 			
