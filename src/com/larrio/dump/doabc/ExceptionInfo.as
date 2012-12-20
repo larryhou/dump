@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	
 	/**
 	 * handler
@@ -51,6 +51,18 @@ package com.larrio.dump.doabc
 		public function encode(encoder:FileEncoder):void
 		{
 			
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:String = "";
+			result += _constants.strings[_name] + " type:" + _constants.strings[_type];
+			result += " from:" + _from + " to:" + _to + " target:" + _target;
+			
+			return result;
 		}
 
 		/**

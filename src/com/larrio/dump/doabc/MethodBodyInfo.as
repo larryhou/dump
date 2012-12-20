@@ -98,6 +98,18 @@ package com.larrio.dump.doabc
 		{
 			
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:String = _abc.methods[_method].toString();
+			result += " maxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
+			result += "\n" + _opcode.toString();
+			if (_traits.length) result += "\n\t" + _traits.join("\n\t");
+			return result;
+		}
 
 		/**
 		 * 指向methods数组的索引
