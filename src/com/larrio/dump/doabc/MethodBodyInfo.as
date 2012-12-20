@@ -88,6 +88,8 @@ package com.larrio.dump.doabc
 			_opcode.decode(decoder);
 			
 			decoder.length = 0;
+			
+			trace(this);
 		}
 		
 		/**
@@ -107,7 +109,7 @@ package com.larrio.dump.doabc
 			var result:String = _abc.methods[_method].toString();
 			result += "\nmaxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
 			result += "\n" + _opcode.toString();
-			if (_traits.length) result += "\n\t" + _traits.join("\n\t");
+			if (_traits.length) result += "\n\t[Trait]" + _traits.join("\n\t[Trait]");
 			return result;
 		}
 

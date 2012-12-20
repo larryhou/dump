@@ -5,6 +5,7 @@ package
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.display.Sprite;
+	import flash.utils.ByteArray;
 	
 	
 	/**
@@ -44,6 +45,8 @@ package
 			
 			var container:Sprite = new Sprite();
 			container["name"] = "dump";
+			
+			var test:ByteArray = new ByteArray;
 		}
 		
 		private function padding(str:String, length:int):String

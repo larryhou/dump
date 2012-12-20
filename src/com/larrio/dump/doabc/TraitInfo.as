@@ -97,8 +97,9 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			var result:String;
-			result = _abc.constants.multinames[_name] + ":";
+			var result:String = "";
+			result = _abc.constants.multinames[_name].toString();
+			if (result) result += ":";
 			
 			switch (_kind & 0xF)
 			{
@@ -140,7 +141,7 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			return result;
+			return result + " " + _data.id;
 		}
 
 		/**

@@ -29,9 +29,9 @@ package com.larrio.dump.doabc
 		public static const MULTINAME_LA             :uint = 0x1C; // 28
 		
 		/**
-		 * undocumented type 
+		 * vector type 
 		 */		
-		public static const MULTINAME_TYPE           :uint = 0x1D; // 29
+		public static const MULTINAME_VECTOR         :uint = 0x1D; // 29
 		
 		/**
 		 * QName 

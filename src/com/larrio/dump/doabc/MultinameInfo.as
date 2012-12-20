@@ -93,7 +93,7 @@ package com.larrio.dump.doabc
 					break;
 				}
 					
-				case MultiKindType.MULTINAME_TYPE:
+				case MultiKindType.MULTINAME_VECTOR:
 				{
 					var _length:uint;
 					
@@ -184,15 +184,19 @@ package com.larrio.dump.doabc
 					break;
 				}
 					
-				case MultiKindType.MULTINAME_TYPE:
+				case MultiKindType.MULTINAME_VECTOR:
 				{
 					result += _constants.multinames[_multiname];
+					if (result) result += ".<";
 					
 					length = _types.length;
 					for (i = 0; i < length; i++)
 					{
 						result += _constants.multinames[_types[i]];
 					}
+					
+					result += ">";
+					
 					break; 
 				}
 					
