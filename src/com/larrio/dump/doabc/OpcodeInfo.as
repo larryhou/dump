@@ -123,7 +123,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			trace(methodSTR(_method));
+			//trace(methodSTR(_method));
 			
 			_code = "";
 			
@@ -240,9 +240,9 @@ package com.larrio.dump.doabc
 						var caseCount:uint = decoder.readEU30();
 						
 						item += "default:" + labels.get(target);
-						item += "caseCount:" + caseCount;
+						item += " caseCount:" + caseCount;
 						
-						for (var i:int = 0; i < caseCount; i++)
+						for (var i:int = 0; i <= caseCount; i++)
 						{
 							target = pos + decoder.readS24();
 							item += " " + labels.get(target);
@@ -341,8 +341,8 @@ package com.larrio.dump.doabc
 				
 				_code += item + "\n";
 				
-				trace(item);
-				//trace(item + "// " + hexSTR(decoder, 2, startAt, decoder.position - startAt));
+				//trace(item);
+				trace(item + "// " + hexSTR(decoder, 2, startAt, decoder.position - startAt));
 			}
 			
 			trace("\n");
