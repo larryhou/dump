@@ -65,9 +65,6 @@ package com.larrio.dump.doabc
 			
 			_initializer = decoder.readEU30();
 			
-			_methods = new Vector.<TraitInfo>;
-			_variables = new Vector.<TraitInfo>;
-			
 			_length = decoder.readES30();
 			_traits = new Vector.<TraitInfo>(_length, true);
 			for (i = 0; i < _length; i++)
@@ -83,12 +80,14 @@ package com.larrio.dump.doabc
 					case TraitType.METHOD:
 					case TraitType.FUNCTION:
 					{
+						if (!_methods) _methods = new Vector.<TraitInfo>;
 						_methods.push(_traits[i]);
 						break;
 					}
 					
-					default :
+					default:
 					{
+						if (!_variables) _variables = new Vector.<TraitInfo>;
 						_variables.push(_traits[i]);
 						break;
 					}

@@ -15,7 +15,7 @@ package com.larrio.dump.doabc
 		private var _name:uint;
 		private var _kind:uint;
 		
-		private var _data:TraitData;
+		private var _data:TraitDataInfo;
 		
 		private var _metadatas:Vector.<uint>;
 		
@@ -39,7 +39,7 @@ package com.larrio.dump.doabc
 			_name = decoder.readEU30();
 			_kind = decoder.readUI8();
 			
-			_data = new TraitData();
+			_data = new TraitDataInfo();
 			switch (_kind & 0xF)
 			{
 				case TraitType.SLOT:
@@ -154,30 +154,4 @@ package com.larrio.dump.doabc
 		public function get kind():uint { return _kind; }
 
 	}
-}
-
-class TraitData
-{
-	/**
-	 * slot & disp 
-	 */	
-	public var id:uint;
-	
-	/**
-	 * 指向multinames常量数组的索引 
-	 */	
-	public var type:uint;
-	
-	public var index:uint;
-	public var kind:uint;
-	
-	/**
-	 * 指向classes数组的索引 
-	 */	
-	public var classi:uint;
-	
-	/**
-	 * 指向methods常量数组的索引 
-	 */	
-	public var method:uint;
 }
