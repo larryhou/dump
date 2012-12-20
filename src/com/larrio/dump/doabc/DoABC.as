@@ -103,11 +103,11 @@ package com.larrio.dump.doabc
 				_methodBodies[i].decode(decoder);
 			}
 			
-			_length = _classes.length;
+			_length = _scripts.length;
 			_files = new Vector.<ClassFile>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_files[i] = new ClassFile(_classes[i], this);
+				_files[i] = new ClassFile(_scripts[i], this);
 			}
 		}
 		
