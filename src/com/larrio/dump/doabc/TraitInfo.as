@@ -153,5 +153,10 @@ package com.larrio.dump.doabc
 		 */		
 		public function get kind():uint { return _kind; }
 
+		/**
+		 * 变长度特征信息数据
+		 */		
+		public function get data():TraitDataInfo { return _data; }
+
 	}
 }
