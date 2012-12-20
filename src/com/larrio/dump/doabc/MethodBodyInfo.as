@@ -5,6 +5,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.interfaces.ICodec;
 	
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	/**
 	 * DoABC之函数体
@@ -29,6 +30,8 @@ package com.larrio.dump.doabc
 		private var _traits:Vector.<TraitInfo>;
 		
 		private var _abc:DoABC;
+		
+		private var _slots:Dictionary;
 		
 		/**
 		 * 构造函数
@@ -70,12 +73,16 @@ package com.larrio.dump.doabc
 				_exceptions[i].decode(decoder);
 			}
 			
+			_slots = new Dictionary(false);
+			
 			_length = decoder.readEU30();
 			_traits = new Vector.<TraitInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
+				
+				_slots[_traits[i].data.id] = _traits[i];
 			}
 			
 			// decode opcode
@@ -102,12 +109,21 @@ package com.larrio.dump.doabc
 		}
 		
 		/**
+		 * 获取某个slot位置的特征属性 
+		 * @param slot 
+		 */		
+		public function getTraitAt(slot:uint):TraitInfo
+		{
+			return _slots[slot];
+		}
+		
+		/**
 		 * 字符串输出
 		 */		
 		public function toString():String
 		{
 			var result:String = _abc.methods[_method].toString();
-			result += "\nmaxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
+			result += "\n    maxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
 			result += "\n" + _opcode.toString();
 			if (_traits.length) result += "\n\t[Trait]" + _traits.join("\n\t[Trait]");
 			return result;

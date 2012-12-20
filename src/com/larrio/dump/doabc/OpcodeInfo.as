@@ -118,6 +118,14 @@ package com.larrio.dump.doabc
 		}
 		
 		/**
+		 * 获取slot特征信息 
+		 */		
+		private function slotSTR(id:uint):String
+		{
+			return _abc.methodBodies[_method].getTraitAt(id).toString();
+		}
+		
+		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
@@ -281,12 +289,17 @@ package com.larrio.dump.doabc
 					case OpcodeType.DEBUGLINE_OP:
 					case OpcodeType.GETGLOBALSLOT_OP:
 					case OpcodeType.SETGLOBALSLOT_OP:
-					case OpcodeType.GETSLOT_OP:
-					case OpcodeType.SETSLOT_OP:
 					case OpcodeType.PUSHSHORT_OP:
 					case OpcodeType.NEWCATCH_OP:
 					{
 						item += decoder.readES30();
+						break;
+					}
+						
+					case OpcodeType.GETSLOT_OP:
+					case OpcodeType.SETSLOT_OP:
+					{
+						item += slotSTR(decoder.readEU30());
 						break;
 					}
 						

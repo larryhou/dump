@@ -141,7 +141,7 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			return result + " " + _data.id;
+			return result;
 		}
 
 		/**
