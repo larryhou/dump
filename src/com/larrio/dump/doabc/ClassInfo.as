@@ -2,21 +2,15 @@ package com.larrio.dump.doabc
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	
 	/**
-	 * DoABC之类信息
+	 * DoABC之代码信息
 	 * @author larryhou
-	 * @createTime Dec 16, 2012 3:46:41 PM
+	 * @createTime Dec 16, 2012 3:43:37 PM
 	 */
-	public class ClassInfo implements ICodec
+	public class ClassInfo extends ScriptInfo
 	{
-		protected var _initializer:uint;
-		protected var _traits:Vector.<TraitInfo>;
-		
-		protected var _abc:DoABC;
-		
-		protected var _instance:InstanceInfo;
+		private var _instance:InstanceInfo;
 		
 		/**
 		 * 构造函数
@@ -24,43 +18,31 @@ package com.larrio.dump.doabc
 		 */
 		public function ClassInfo(abc:DoABC)
 		{
-			_abc = abc;
+			super(abc);
 		}
 		
 		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		public function decode(decoder:FileDecoder):void
+		override public function decode(decoder:FileDecoder):void
 		{
-			_initializer = decoder.readEU30();
-			
-			var _lenght:uint, i:int;
-			
-			_lenght = decoder.readEU30();
-			_traits = new Vector.<TraitInfo>(_lenght, true);
-			for (i = 0; i < _lenght; i++)
-			{
-				_traits[i] = new TraitInfo(_abc);
-				_traits[i].decode(decoder);
-			}
-			
-			trace(this);
+			super.decode(decoder);
 		}
 		
 		/**
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		public function encode(encoder:FileEncoder):void
+		override public function encode(encoder:FileEncoder):void
 		{
-			
+			super.encode(encoder);
 		}
 		
 		/**
 		 * 字符串输出
 		 */		
-		public function toString():String
+		override public function toString():String
 		{
 			var result:String = "class:";
 			result += _abc.constants.multinames[_instance.name];
@@ -69,18 +51,7 @@ package com.larrio.dump.doabc
 			if (_traits.length) result += "\n" + indent + "[Trait]" + _traits.join("\n" + indent + "[Trait]");
 			return result;
 		}
-
-		/**
-		 * 指向methods数组的索引
-		 * static initializer for class
-		 */		
-		public function get initializer():uint { return _initializer; }
-
-		/**
-		 * 类特征信息
-		 */		
-		public function get traits():Vector.<TraitInfo> { return _traits; }
-
+		
 		/**
 		 * class对应instance
 		 */		
@@ -89,7 +60,6 @@ package com.larrio.dump.doabc
 		{
 			_instance = value;
 		}
-
 
 	}
 }

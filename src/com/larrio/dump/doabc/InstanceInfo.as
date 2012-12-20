@@ -65,6 +65,9 @@ package com.larrio.dump.doabc
 			
 			_initializer = decoder.readEU30();
 			
+			_methods = new Vector.<TraitInfo>;
+			_variables = new Vector.<TraitInfo>;
+			
 			_length = decoder.readES30();
 			_traits = new Vector.<TraitInfo>(_length, true);
 			for (i = 0; i < _length; i++)
