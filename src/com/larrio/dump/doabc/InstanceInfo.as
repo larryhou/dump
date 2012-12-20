@@ -73,7 +73,7 @@ package com.larrio.dump.doabc
 				_traits[i].decode(decoder);
 				
 				// 特征归类
-				switch (_traits[i].kind)
+				switch (_traits[i].kind & 0xF)
 				{
 					case TraitType.GETTER:
 					case TraitType.SETTER:
@@ -93,8 +93,6 @@ package com.larrio.dump.doabc
 					}
 				}
 			}
-			
-			trace(this);
 		}
 		
 		/**

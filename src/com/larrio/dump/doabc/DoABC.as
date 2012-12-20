@@ -107,7 +107,7 @@ package com.larrio.dump.doabc
 			_files = new Vector.<ClassFile>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
-				_files[i] = new ClassFile(_classes[i]);
+				_files[i] = new ClassFile(_classes[i], this);
 			}
 		}
 		
