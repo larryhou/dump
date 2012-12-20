@@ -60,6 +60,9 @@ package
 			container["name"] = "dump";
 			
 			var test:ByteArray = new ByteArray;
+			
+			var list:Array = [];
+			for (var i:int = 0; i < 100; i++) list.push(i);
 		}
 		
 		private function padding(str:String, length:int):String

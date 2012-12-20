@@ -124,12 +124,14 @@ package com.larrio.dump.doabc
 		private function slotSTR(id:uint):String
 		{
 			var body:MethodBodyInfo = _abc.methodBodies[_method];
+			
+			// FIXME: sometimes cannot get slot info
 			return (body.getTraitAt(id) || id).toString();
 		}
 		
 		/**
 		 * 二进制解码 
-		 * @param decoder	解码器
+		 * @param decoder	解码器 
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
