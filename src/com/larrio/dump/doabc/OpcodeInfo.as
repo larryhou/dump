@@ -28,6 +28,7 @@ package com.larrio.dump.doabc
 		private var _constants:ConstantPool;
 		
 		private var _method:uint;
+		private var _closures:Vector.<uint>;
 		
 		/**
 		 * 构造函数
@@ -131,8 +132,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			//trace(methodSTR(_method));
-			
 			_code = "";
 			
 			var startAt:uint;
@@ -223,7 +222,11 @@ package com.larrio.dump.doabc
 						
 					case OpcodeType.NEWFUNCTION_OP:
 					{
-						item += methodSTR(decoder.readEU30());
+						target = decoder.readEU30();
+						item += methodSTR(target);
+						
+						if (!_closures) _closures = new Vector.<uint>;
+						_closures.push(target);
 						break;
 					}
 						
@@ -391,6 +394,12 @@ package com.larrio.dump.doabc
 		{
 			_method = value;
 		}
+
+		/**
+		 * 闭包函数
+		 */		
+		public function get closures():Vector.<uint> { return _closures; }
+
 
 	}
 }

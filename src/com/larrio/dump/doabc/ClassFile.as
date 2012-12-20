@@ -61,7 +61,7 @@ package com.larrio.dump.doabc
 				_content += "\nPACKAGE MEMBERS:" + appending;
 			}
 			
-			//trace(_content);
+			trace(_content);
 		}
 		
 		// 处理类文件
