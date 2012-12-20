@@ -19,7 +19,6 @@ package com.larrio.dump.doabc
 		
 		private var _metadatas:Vector.<uint>;
 		
-		
 		private var _abc:DoABC;
 		
 		/**

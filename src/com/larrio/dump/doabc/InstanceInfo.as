@@ -27,6 +27,9 @@ package com.larrio.dump.doabc
 		
 		private var _abc:DoABC;
 		
+		private var _variables:Vector.<TraitInfo>;
+		private var _methods:Vector.<TraitInfo>;
+		
 		/**
 		 * 构造函数
 		 * create a [InstanceInfo] object
@@ -68,6 +71,25 @@ package com.larrio.dump.doabc
 			{
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
+				
+				// 特征归类
+				switch (_traits[i].kind)
+				{
+					case TraitType.GETTER:
+					case TraitType.SETTER:
+					case TraitType.METHOD:
+					case TraitType.FUNCTION:
+					{
+						_methods.push(_traits[i]);
+						break;
+					}
+					
+					default :
+					{
+						_variables.push(_traits[i]);
+						break;
+					}
+				}
 			}
 			
 			trace(this);
@@ -141,5 +163,16 @@ package com.larrio.dump.doabc
 		 * 实例特征信息数组
 		 */		
 		public function get traits():Vector.<TraitInfo> { return _traits; }
+
+		/**
+		 * 实例成员变量
+		 */		
+		public function get variables():Vector.<TraitInfo> { return _variables; }
+
+		/**
+		 * 实例方法
+		 */		
+		public function get methods():Vector.<TraitInfo> { return _methods; }
+
 	}
 }
