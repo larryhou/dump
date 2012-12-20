@@ -230,6 +230,6 @@ package com.larrio.dump.doabc
 		 * 指向nssets常量数组的索引
 		 */		
 		public function get nsset():uint { return _nsset; }
-
+		
 	}
 }

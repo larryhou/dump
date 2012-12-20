@@ -60,6 +60,5 @@ package com.larrio.dump.doabc
 		{
 			_instance = value;
 		}
-
 	}
 }
