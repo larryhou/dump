@@ -67,7 +67,12 @@ package com.larrio.dump.tags
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
-			super.encode(encoder);
+			writeTagHeader(encoder);
+			
+			encoder.writeUI32(_flags);
+			encoder.writeSTR(_name);
+			
+			_abc.encode(encoder);
 		}
 		
 		/**
