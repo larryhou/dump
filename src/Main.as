@@ -39,7 +39,7 @@ package
 			swf.decode();
 			
 			bytes = swf.encode();
-			assertTrue(bytes.length == swf.header.length);
+			assertTrue(equals(bytes, loaderInfo.bytes));
 			
 			swf = new SWFile(bytes);
 			swf.decode();
@@ -66,15 +66,17 @@ package
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 		}
 		
-		private function padding(str:String, length:int):String
+		// 比较两个字节数组是否相等
+		private function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
-			var callback:Function = function(name:String, age:uint, sex:Boolean, high:Number):Object
+			if (b1.length != b2.length) return false;
+			b1.position = b2.position = 0;
+			while (b1.bytesAvailable)
 			{
-				return this;
+				if (b1.readByte() != b2.readByte()) return false;
 			}
 			
-			while(str.length < length) str += " ";
-			return str;
+			return true;
 		}
 		
 	}
