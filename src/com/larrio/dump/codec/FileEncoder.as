@@ -215,12 +215,16 @@ package com.larrio.dump.codec
 		 */		
 		public function writeSTR(content:String):void
 		{
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeMultiByte(content, "utf-8");
+			bytes.position = 0;
 			
+			while (bytes.bytesAvailable)
+			{
+				writeByte(bytes.readByte());
+			}
+			
+			writeByte(0);
 		}
-		
-		/**
-		 * 对超类进行引用
-		 */		
-		//public function get bytes():ByteArray { return super; }
 	}
 }

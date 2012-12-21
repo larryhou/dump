@@ -38,31 +38,11 @@ package
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			var callback:Function = function (data:Object):void
-			{
-				trace(data);
-				
-				var image:Sprite = new Sprite;
-				trace(image.name);
-				
-				var fuck:Function = function(name:String):void
-				{
-					trace("Fuck You!" + name);
-					
-					var callback:Function = function(value:uint):String
-					{
-						return value.toString();
-					}
-				}
-			};
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeByte(-2);
 			
-			var container:Sprite = new Sprite();
-			container["name"] = "dump";
+			trace(bytes[0]);
 			
-			var test:ByteArray = new ByteArray;
-			
-			var list:Array = [];
-			for (var i:int = 0; i < 100; i++) list.push(i);
 		}
 		
 		private function padding(str:String, length:int):String
