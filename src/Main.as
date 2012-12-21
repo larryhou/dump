@@ -67,6 +67,11 @@ package
 		
 		private function padding(str:String, length:int):String
 		{
+			var callback:Function = function():Object
+			{
+				return this;
+			}
+			
 			while(str.length < length) str += " ";
 			return str;
 		}
