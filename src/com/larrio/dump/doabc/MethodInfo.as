@@ -131,11 +131,13 @@ package com.larrio.dump.doabc
 		public function toString():String
 		{
 			var result:String = _constants.strings[_name];
+			if (result.indexOf("/") >= 0) result = result.split("/")[1];
+			if (result && !result.match(/(private|protected)/)) result = "public " + result;
 			
 			var item:String, list:Array = [];
 			for (var i:int = 0; i < _paramTypes.length; i++)
 			{
-				item = ""
+				item = "";
 				if (_paramNames)
 				{
 					item += _constants.strings[_paramNames[i]] + ":";

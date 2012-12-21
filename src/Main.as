@@ -6,7 +6,9 @@ package
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	
 	[SWF(frameRate="60", width="600", height="400")]
@@ -19,7 +21,7 @@ package
 	 */
 	public class Main extends Sprite
 	{
-		public static var v1:uint;
+		public static const v1:uint = 1;
 		private static var v2:uint;
 		protected static var v3:String;
 		
@@ -69,7 +71,7 @@ package
 		}
 		
 		// 比较两个字节数组是否相等
-		private function equals(b1:ByteArray, b2:ByteArray):Boolean
+		protected function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
 			if (b1.length != b2.length) return false;
 			b1.position = b2.position = 0;
@@ -79,6 +81,11 @@ package
 			}
 			
 			return true;
+		}
+		
+		override public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
+		{
+			return super.getBounds(targetCoordinateSpace);
 		}
 		
 	}

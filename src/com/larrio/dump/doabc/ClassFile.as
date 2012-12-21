@@ -50,7 +50,7 @@ package com.larrio.dump.doabc
 					trait = script.methods[i];
 					
 					appending += "\n";
-					appending += "\n" + methodSTR(trait.data.method, abc);
+					appending += "\n" + methodSTR(trait.data.method, abc, trait.kind);
 				}
 			}
 			
@@ -99,7 +99,7 @@ package com.larrio.dump.doabc
 					trait = info.methods[i];
 					
 					_content += "\n";
-					_content += "\n" + methodSTR(trait.data.method, abc);
+					_content += "\n" + methodSTR(trait.data.method, abc, trait.kind);
 				}
 			}
 			
@@ -122,7 +122,7 @@ package com.larrio.dump.doabc
 					trait = instance.methods[i];
 					
 					_content += "\n";
-					_content += "\n" + methodSTR(trait.data.method, abc);
+					_content += "\n" + methodSTR(trait.data.method, abc, trait.kind);
 				}
 			}
 			
@@ -130,11 +130,25 @@ package com.larrio.dump.doabc
 		}
 		
 		// 把函数转换成代码
-		private function methodSTR(method:uint, abc:DoABC):String
+		private function methodSTR(method:uint, abc:DoABC, kind:uint = 0):String
 		{
+			kind >>>= 4;
+			
 			var info:MethodInfo = abc.methods[method];
 			
-			var result:String = info.toString();
+			var result:String = "";
+			if ((kind & TraitAttriType.FINAL) == TraitAttriType.FINAL)
+			{
+				result += "final";
+			}
+			
+			if ((kind & TraitAttriType.OVERRIDE) == TraitAttriType.OVERRIDE)
+			{
+				result += "override";
+			}
+			
+			if (result) result += " ";
+			result += info.toString();
 			if (info.body) result += "\n" + info.body;
 			return result;
 		}
