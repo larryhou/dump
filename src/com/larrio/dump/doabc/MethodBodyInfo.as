@@ -3,7 +3,6 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -34,8 +33,6 @@ package com.larrio.dump.doabc
 		
 		private var _slots:Dictionary;
 		
-		private var _lenR:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [MethodBodyInfo] object
@@ -51,7 +48,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_lenR = decoder.position;
 			_method = decoder.readEU30();
 			
 			// 设置函数体
@@ -92,8 +88,6 @@ package com.larrio.dump.doabc
 				_slots[_traits[i].data.id] = _traits[i];
 			}
 			
-			_lenR = decoder.position - _lenR;
-			
 			// decode opcode
 			decoder = new FileDecoder();
 			decoder.writeBytes(_code);
@@ -110,7 +104,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			var lenR:uint = encoder.position;
 			var length:uint, i:int;
 			
 			encoder.writeEU30(_method);
@@ -141,8 +134,6 @@ package com.larrio.dump.doabc
 				_traits[i].encode(encoder);
 			}
 			
-			lenR = encoder.position - lenR;
-			assertTrue(lenR == _lenR);
 		}
 		
 		/**

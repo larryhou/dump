@@ -23,9 +23,6 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
-		private var _lenR:uint;
-		
-		
 		/**
 		 * 构造函数
 		 * create a [MultinameInfo] object
@@ -41,7 +38,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_lenR = decoder.position;
 			_kind = decoder.readUI8();
 			
 			switch(_kind)
@@ -120,7 +116,6 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -129,8 +124,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			var lenR:uint = encoder.position;
 			var length:uint;
+			
 			encoder.writeUI8(_kind);
 			
 			switch (_kind)
@@ -179,8 +174,6 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			lenR = encoder.position - lenR;
-			assertTrue(lenR == _lenR);
 		}
 		
 		/**

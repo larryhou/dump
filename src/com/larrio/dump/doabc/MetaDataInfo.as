@@ -17,8 +17,6 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
-		private var _lenR:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [MetadataInfo] object
@@ -34,7 +32,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_lenR = decoder.position;
 			var _length:uint;
 			
 			_name = decoder.readEU30();
@@ -48,7 +45,6 @@ package com.larrio.dump.doabc
 				_items[i].decode(decoder);
 			}	
 			
-			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -57,7 +53,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			var lenR:uint = encoder.position;
 			encoder.writeEU30(_name);
 			
 			var length:uint = _items.length;
@@ -67,9 +62,6 @@ package com.larrio.dump.doabc
 			{
 				_items[i].encode(encoder);
 			}
-			
-			lenR = encoder.position - lenR;
-			assertTrue(lenR == _lenR);
 		}
 		
 		/**

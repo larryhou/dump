@@ -3,7 +3,6 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	
@@ -24,8 +23,6 @@ package com.larrio.dump.doabc
 		
 		private var _multinames:Vector.<MultinameInfo>;
 		
-		private var _lenR:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [ConstantPool] object
@@ -41,7 +38,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_lenR = decoder.position;
 			var length:int, i:int;
 			
 			length = decoder.readEU30();
@@ -96,8 +92,6 @@ package com.larrio.dump.doabc
 				_multinames[i].decode(decoder);
 			}
 			
-			_lenR = decoder.position - _lenR;
-			
 		}
 		
 		/**
@@ -106,7 +100,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			var lenR:uint = encoder.position;
 			var bytes:ByteArray;
 			var length:uint, i:int;
 			
@@ -163,8 +156,6 @@ package com.larrio.dump.doabc
 				_multinames[i].encode(encoder);
 			}
 			
-			lenR = encoder.position - lenR;
-			assertTrue(lenR == _lenR);
 		}
 
 		/**

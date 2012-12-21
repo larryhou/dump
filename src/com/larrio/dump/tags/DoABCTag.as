@@ -21,8 +21,6 @@ package com.larrio.dump.tags
 		
 		private var _name:String;
 		
-		private var _lenR:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [DoABCTag] object
@@ -38,9 +36,7 @@ package com.larrio.dump.tags
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
-			
 			super.decode(decoder);
-			
 			
 			assertTrue(_type == DoABCTag.TYPE);
 			
@@ -61,12 +57,8 @@ package com.larrio.dump.tags
 			//trace("---------------------------------");
 			//trace("{DoABCTag}" + _name);
 			
-			_lenR = decoder.position;
 			_abc = new DoABC();
 			_abc.decode(decoder);
-			_lenR = decoder.position - _lenR;
-			
-			assertTrue(_lenR == codes.length);
 		}
 		
 		/**
@@ -75,22 +67,12 @@ package com.larrio.dump.tags
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
-			var position:uint = encoder.position;
-			
 			writeTagHeader(encoder);
-			
-			if (_name == "Main")
-			{
-				trace(_name);
-			}
-			
+						
 			encoder.writeUI32(_flags);
 			encoder.writeSTR(_name);
 			
-			var lenR:uint = encoder.position;
 			_abc.encode(encoder);
-			lenR = encoder.position - lenR;
-			assertTrue(lenR == _lenR);
 		}
 		
 		/**

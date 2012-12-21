@@ -29,8 +29,6 @@ package com.larrio.dump.doabc
 		private var _variables:Vector.<TraitInfo>;
 		private var _methods:Vector.<TraitInfo>;
 		
-		private var _lenR:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [InstanceInfo] object
@@ -46,8 +44,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_lenR = decoder.position;
-			
 			_name = decoder.readEU30();
 			_superName = decoder.readEU30();
 			
@@ -97,7 +93,6 @@ package com.larrio.dump.doabc
 				}
 			}
 			
-			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -106,7 +101,6 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			var lenR:uint = encoder.position;
 			var length:uint, i:int;
 			
 			encoder.writeEU30(_name);
@@ -136,9 +130,6 @@ package com.larrio.dump.doabc
 				_traits[i].encode(encoder);
 			}
 			
-			lenR = encoder.position - lenR;
-			
-			assertTrue(lenR == _lenR);
 		}
 		
 		/**
