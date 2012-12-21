@@ -43,16 +43,15 @@ package com.larrio.dump
 		 */		
 		public function encode():void
 		{
-			if (_encoder)
-			{
-				// 内存释放
-				_encoder.length = 0;
-			}
-			
-			// 初始化编码器
 			_encoder = new FileEncoder();
 			
-			// TODO:编码SWF二进制文件
+			_header.encode(_encoder);
+			
+			var length:int = _tags.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				_tags[i].encode(_encoder);
+			}
 		}
 		
 		/**
