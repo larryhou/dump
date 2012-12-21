@@ -224,7 +224,7 @@ package com.larrio.dump.codec
 		/**
 		 * 对超类进行引用
 		 */		
-		public function get bytes():ByteArray { return super; }
+		//public function get bytes():ByteArray { return super; }
 		
 	}
 }

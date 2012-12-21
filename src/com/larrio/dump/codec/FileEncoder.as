@@ -1,10 +1,10 @@
 package com.larrio.dump.codec
 {
+	import com.larrio.dump.utils.assertInt;
+	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.math.unsign;
 	
 	import flash.utils.ByteArray;
-	import com.larrio.dump.utils.assertInt;
-	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * SWF字节编码器
@@ -210,8 +210,17 @@ package com.larrio.dump.codec
 		}
 		
 		/**
+		 * 写入UTF8字符串 
+		 * @param content	字符串
+		 */		
+		public function writeSTR(content:String):void
+		{
+			
+		}
+		
+		/**
 		 * 对超类进行引用
 		 */		
-		public function get bytes():ByteArray { return super; }
+		//public function get bytes():ByteArray { return super; }
 	}
 }
