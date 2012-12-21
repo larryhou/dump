@@ -29,6 +29,8 @@ package com.larrio.dump.doabc
 		
 		private var _files:Vector.<ClassFile>;
 		
+		private var _lenR:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [DoABC] object
@@ -44,6 +46,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_lenR = decoder.position;
 			_minorVersion = decoder.readUI16();
 			assertTrue(_minorVersion == 16);
 				
@@ -87,6 +90,8 @@ package com.larrio.dump.doabc
 				_classes[i].decode(decoder);
 			}
 			
+			_lenR = decoder.position - _lenR;
+			
 			_length = decoder.readEU30();
 			_scripts = new Vector.<ScriptInfo>(_length, true);
 			for (i = 0; i < _length; i++)
@@ -119,6 +124,7 @@ package com.larrio.dump.doabc
 		{
 			var length:uint, i:int;
 			
+			var lenR:uint = encoder.position;
 			encoder.writeUI16(_minorVersion);
 			encoder.writeUI16(_majorVersion);
 			
@@ -145,12 +151,13 @@ package com.larrio.dump.doabc
 				_instances[i].encode(encoder);
 			}
 			
-			length = _classes.length;
-			encoder.writeEU30(length);
 			for (i = 0; i < length; i++)
 			{
 				_classes[i].encode(encoder);
 			}
+			
+			lenR = encoder.position - lenR;
+			assertTrue(lenR == _lenR);
 			
 			length = _scripts.length;
 			encoder.writeEU30(length);

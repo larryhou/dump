@@ -151,12 +151,19 @@ package com.larrio.dump.codec
 			assertTrue(value <= 0xFFFFFFFF);
 			
 			var byte:uint;
-			while (value > 0)
+			if (value > 0)
 			{
-				byte = value & 0x7F;			
-				if ((value >>>= 7) > 0) byte |= (1 << 7);
-				
-				writeByte(byte);
+				while (value > 0)
+				{
+					byte = value & 0x7F;			
+					if ((value >>>= 7) > 0) byte |= (1 << 7);
+					
+					writeByte(byte);
+				}
+			}
+			else
+			{
+				writeByte(0);
 			}
 		}
 		

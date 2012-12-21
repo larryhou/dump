@@ -16,6 +16,8 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
+		private var _lenR:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [NamespaceSetInfo] object
@@ -31,6 +33,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_lenR = decoder.position;
 			_namespaces = new Vector.<uint>;
 			
 			var length:uint = decoder.readEU30();
@@ -41,6 +44,8 @@ package com.larrio.dump.doabc
 			{
 				assertTrue(index >= 0 && index < _constants.namespaces.length);
 			}
+			
+			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -49,11 +54,17 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var lenR:uint = encoder.position;
 			var length:uint = _namespaces.length;
+			
+			encoder.writeEU30(length);
 			for (var i:int = 0; i < length; i++)
 			{
 				encoder.writeEU30(_namespaces[i]);
 			}
+			
+			lenR = encoder.position - lenR;
+			assertTrue(lenR == _lenR);
 		}
 		
 		/**

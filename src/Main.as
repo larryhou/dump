@@ -58,7 +58,7 @@ package
 			}
 			
 			var abcTag:DoABCTag = swf.tags[i] as DoABCTag;
-			trace(abcTag.abc.files.join("\n"));
+			//trace(abcTag.abc.files.join("\n"));
 						
 			var size:SWFRect = swf.header.size;
 			assertTrue(size.width == stage.stageWidth);

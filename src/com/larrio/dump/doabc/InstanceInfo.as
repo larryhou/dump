@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * DoABC之实例信息
@@ -28,6 +29,8 @@ package com.larrio.dump.doabc
 		private var _variables:Vector.<TraitInfo>;
 		private var _methods:Vector.<TraitInfo>;
 		
+		private var _lenR:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [InstanceInfo] object
@@ -43,6 +46,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_lenR = decoder.position;
+			
 			_name = decoder.readEU30();
 			_superName = decoder.readEU30();
 			
@@ -91,6 +96,8 @@ package com.larrio.dump.doabc
 					}
 				}
 			}
+			
+			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -99,6 +106,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var lenR:uint = encoder.position;
 			var length:uint, i:int;
 			
 			encoder.writeEU30(_name);
@@ -107,7 +115,7 @@ package com.larrio.dump.doabc
 			encoder.writeUI8(_flags);
 			if ((_flags & InstanceType.CLASS_PROTECTED_NS) == InstanceType.CLASS_PROTECTED_NS)
 			{
-				encoder.writeES30(_protectedNS);
+				encoder.writeEU30(_protectedNS);
 			}
 			
 			length = _interfaces.length;
@@ -127,6 +135,10 @@ package com.larrio.dump.doabc
 			{
 				_traits[i].encode(encoder);
 			}
+			
+			lenR = encoder.position - lenR;
+			
+			assertTrue(lenR == _lenR);
 		}
 		
 		/**

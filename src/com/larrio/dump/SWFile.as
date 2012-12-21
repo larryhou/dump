@@ -66,12 +66,7 @@ package com.larrio.dump
 			
 			// 写入压缩前的总字节长度
 			_encoder.writeUI32(_encoder.length + 4 + content.length);
-			
-			if (_header.compressed)
-			{
-				content.compress();
-			}
-			
+			_header.compressed && content.compress();
 			_encoder.writeBytes(content);
 			
 			// 打包输出

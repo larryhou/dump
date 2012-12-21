@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * DoABC之类信息
@@ -22,6 +23,8 @@ package com.larrio.dump.doabc
 		
 		protected var _abc:DoABC;
 		
+		private var _lenR:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [ClassInfo] object
@@ -37,6 +40,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_lenR = decoder.position;
 			_initializer = decoder.readEU30();
 			
 			var _lenght:uint, i:int;
@@ -78,6 +82,7 @@ package com.larrio.dump.doabc
 
 			}
 			
+			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -86,6 +91,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var lenR:uint = encoder.position;
 			var length:uint, i:int;
 			
 			encoder.writeEU30(_initializer);
@@ -97,6 +103,9 @@ package com.larrio.dump.doabc
 			{
 				_traits[i].encode(encoder);
 			}
+			
+			lenR = encoder.position - lenR;
+			assertTrue(lenR == _lenR);
 		}
 		
 		/**

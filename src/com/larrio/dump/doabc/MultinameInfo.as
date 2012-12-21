@@ -23,6 +23,8 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
+		private var _lenR:uint;
+		
 		
 		/**
 		 * 构造函数
@@ -39,6 +41,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_lenR = decoder.position;
 			_kind = decoder.readUI8();
 			
 			switch(_kind)
@@ -116,6 +119,8 @@ package com.larrio.dump.doabc
 					assertTrue(false);break;
 				}
 			}
+			
+			_lenR = decoder.position - _lenR;
 		}
 		
 		/**
@@ -124,6 +129,7 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var lenR:uint = encoder.position;
 			var length:uint;
 			encoder.writeUI8(_kind);
 			
@@ -172,6 +178,9 @@ package com.larrio.dump.doabc
 					break;
 				}
 			}
+			
+			lenR = encoder.position - lenR;
+			assertTrue(lenR == _lenR);
 		}
 		
 		/**
