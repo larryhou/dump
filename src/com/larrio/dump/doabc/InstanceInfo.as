@@ -99,7 +99,34 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
 			
+			encoder.writeEU30(_name);
+			encoder.writeEU30(_superName);
+			
+			encoder.writeUI8(_flags);
+			if ((_flags & InstanceType.CLASS_PROTECTED_NS) == InstanceType.CLASS_PROTECTED_NS)
+			{
+				encoder.writeES30(_protectedNS);
+			}
+			
+			length = _interfaces.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				encoder.writeEU30(_interfaces[i]);
+			}
+			
+			encoder.writeEU30(_initializer);
+			
+			length = _traits.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				_traits[i].encode(encoder);
+			}
 		}
 		
 		/**
