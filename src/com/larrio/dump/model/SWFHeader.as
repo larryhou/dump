@@ -43,7 +43,19 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			if (_compressed)
+			{
+				encoder.writeUI8(("C").charCodeAt(0));
+			}
+			else
+			{
+				encoder.writeUI8(("F").charCodeAt(0));
+			}
 			
+			encoder.writeUI8(("W").charCodeAt(0));
+			encoder.writeUI8(("S").charCodeAt(0));
+			
+			encoder.writeUI8(_version);
 		}
 		
 		/**
@@ -52,11 +64,11 @@ package com.larrio.dump.model
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_signature = String.fromCharCode(decoder.readUI8());			
-			_signature += String.fromCharCode(decoder.readUI8());
-			_signature += String.fromCharCode(decoder.readUI8());
+			_signature = String.fromCharCode(decoder.readUI8());
+			_compressed = (_signature == "C");
 			
-			_compressed = (_signature == "CWS");
+			_signature += String.fromCharCode(decoder.readUI8());
+			_signature += String.fromCharCode(decoder.readUI8());
 			
 			_version = decoder.readUI8();			
 			_length = decoder.readUI32();

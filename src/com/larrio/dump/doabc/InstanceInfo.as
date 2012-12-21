@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * DoABC之实例信息
@@ -91,6 +92,7 @@ package com.larrio.dump.doabc
 					}
 				}
 			}
+			
 		}
 		
 		/**
@@ -99,6 +101,34 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
+			
+			encoder.writeEU30(_name);
+			encoder.writeEU30(_superName);
+			
+			encoder.writeUI8(_flags);
+			if ((_flags & InstanceType.CLASS_PROTECTED_NS) == InstanceType.CLASS_PROTECTED_NS)
+			{
+				encoder.writeEU30(_protectedNS);
+			}
+			
+			length = _interfaces.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				encoder.writeEU30(_interfaces[i]);
+			}
+			
+			encoder.writeEU30(_initializer);
+			
+			length = _traits.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				_traits[i].encode(encoder);
+			}
 			
 		}
 		

@@ -122,7 +122,10 @@ package com.larrio.dump.doabc
 		 */		
 		private function slotSTR(id:uint):String
 		{
-			return _abc.methods[_method].body.getTraitAt(id).toString();
+			var info:MethodInfo = _abc.methods[_method];
+			
+			// FIXME: sometimes cannot get slot info
+			return (info.body.getTraitAt(id) || id).toString();
 		}
 		
 		/**

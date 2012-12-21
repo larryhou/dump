@@ -19,6 +19,8 @@ package com.larrio.dump.tags
 		protected var _length:int;
 		protected var _bytes:ByteArray;
 		
+		protected var _size:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object
@@ -34,15 +36,7 @@ package com.larrio.dump.tags
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			var codeAndLength:uint = decoder.readUI16();
-			
-			_type = codeAndLength >>> 6;
-			_length = codeAndLength & 0x3F;
-			
-			if (_length == 0x3F)
-			{
-				_length = decoder.readS32();
-			}
+			readTagHeader(decoder);
 			
 			assertTrue(_length >= 0, "TAG[0x" + _type.toString(16).toUpperCase() + "]长度不合法：" + _length);
 			
@@ -60,7 +54,46 @@ package com.larrio.dump.tags
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			writeTagHeader(encoder);
 			
+			if (_length > 0)
+			{
+				encoder.writeBytes(_bytes);
+			}
+		}
+		
+		/**
+		 * 写入TAG头信息 
+		 * @param encoder	编码器
+		 */		
+		protected final function writeTagHeader(encoder:FileEncoder):void
+		{
+			if (_length < 0x3F)
+			{
+				encoder.writeUI16( _type << 6 | _length);
+			}
+			else
+			{
+				encoder.writeUI16( _type << 6 | 0x3F);
+				encoder.writeS32(_length);
+			}
+		}
+		
+		/**
+		 * 读取TAG头信息 
+		 * @param decoder	解码器
+		 */		
+		protected final function readTagHeader(decoder:FileDecoder):void
+		{
+			var codeAndLength:uint = decoder.readUI16();
+			
+			_type = codeAndLength >>> 6;
+			_length = codeAndLength & 0x3F;
+			
+			if (_length == 0x3F)
+			{
+				_length = decoder.readS32();
+			}
 		}
 
 		/**

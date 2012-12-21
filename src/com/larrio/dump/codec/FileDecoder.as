@@ -209,22 +209,16 @@ package com.larrio.dump.codec
 		 */		
 		public function readSTR():String
 		{
-			var strBytes:ByteArray = new ByteArray();
+			var bytes:ByteArray = new ByteArray();
 			
 			var byte:int;
 			while ((byte = readUI8()) > 0) 
 			{
-				strBytes.writeByte(byte);
+				bytes.writeByte(byte);
 			}
 			
-			strBytes.position = 0;
-			return strBytes.readMultiByte(strBytes.length, "utf-8");
-		}
-		
-		/**
-		 * 对超类进行引用
-		 */		
-		public function get bytes():ByteArray { return super; }
-		
+			bytes.position = 0;
+			return bytes.readMultiByte(bytes.length, "utf-8");
+		}		
 	}
 }

@@ -1,7 +1,9 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.model.SWFRect;
+	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.display.Sprite;
@@ -30,50 +32,51 @@ package
 		 */
 		public function Main()
 		{		
-			var swf:SWFile = new SWFile(loaderInfo.bytes);
+			var bytes:ByteArray, swf:SWFile;
+			
+			bytes = loaderInfo.bytes;
+			swf = new SWFile(bytes);
 			swf.decode();
 			
+			bytes = swf.encode();
+			assertTrue(equals(bytes, loaderInfo.bytes));
+			
+			swf = new SWFile(bytes);
+			swf.decode();
+			
+			var callback:Function = function(date:Date):String
+			{
+				return String(this);
+			}
+			
+			for (var i:int = 0; i < swf.tags.length; i++)
+			{
+				if (swf.tags[i].type == DoABCTag.TYPE)
+				{
+					break;
+				}
+			}
+			
+			var abcTag:DoABCTag = swf.tags[i] as DoABCTag;
+			trace(abcTag.abc.files.join("\n"));
+						
 			var size:SWFRect = swf.header.size;
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
-			
-			var callback:Function = function (data:Object):void
-			{
-				trace(data);
-				
-				var image:Sprite = new Sprite;
-				trace(image.name);
-				
-				var fuck:Function = function(name:String):void
-				{
-					trace("Fuck You!" + name);
-					
-					var callback:Function = function(value:uint):String
-					{
-						return value.toString();
-					}
-				}
-			};
-			
-			var container:Sprite = new Sprite();
-			container["name"] = "dump";
-			
-			var test:ByteArray = new ByteArray;
-			
-			var list:Array = [];
-			for (var i:int = 0; i < 100; i++) list.push(i);
 		}
 		
-		private function padding(str:String, length:int):String
+		// 比较两个字节数组是否相等
+		private function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
-			var callback:Function = function():Object
+			if (b1.length != b2.length) return false;
+			b1.position = b2.position = 0;
+			while (b1.bytesAvailable)
 			{
-				return this;
+				if (b1.readByte() != b2.readByte()) return false;
 			}
 			
-			while(str.length < length) str += " ";
-			return str;
+			return true;
 		}
 		
 	}

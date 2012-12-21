@@ -117,7 +117,52 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
 			
+			encoder.writeUI16(_minorVersion);
+			encoder.writeUI16(_majorVersion);
+			
+			_constants.encode(encoder);
+			
+			length = _methods.length;
+			encoder.writeEU30(length);
+			for (i = 0; i < length; i++)
+			{
+				_methods[i].encode(encoder);
+			}
+			
+			length = _metadatas.length;
+			encoder.writeEU30(length);
+			for (i = 0; i < length; i++)
+			{
+				_metadatas[i].encode(encoder);
+			}
+			
+			length = _instances.length;
+			encoder.writeEU30(length);
+			for (i = 0; i < length; i++)
+			{
+				_instances[i].encode(encoder);
+			}
+			
+			for (i = 0; i < length; i++)
+			{
+				_classes[i].encode(encoder);
+			}
+			
+			length = _scripts.length;
+			encoder.writeEU30(length);
+			for (i = 0; i < length; i++)
+			{
+				_scripts[i].encode(encoder);
+			}
+			
+			length = _methodBodies.length;
+			encoder.writeEU30(length);
+			for (i = 0; i < length; i++)
+			{
+				_methodBodies[i].encode(encoder);
+			}
 		}
 
 		/**

@@ -1,9 +1,10 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.interfaces.ICodec;
+	
+	import flash.utils.ByteArray;
 	
 	/**
 	 * DoABC常量集合
@@ -90,6 +91,7 @@ package com.larrio.dump.doabc
 				_multinames[i] = new MultinameInfo(this);
 				_multinames[i].decode(decoder);
 			}
+			
 		}
 		
 		/**
@@ -98,6 +100,61 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var bytes:ByteArray;
+			var length:uint, i:int;
+			
+			length = _ints.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				encoder.writeES32(_ints[i]);
+			}
+			
+			length = _uints.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				encoder.writeEU32(_uints[i]);
+			}
+			
+			length = _doubles.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				encoder.writeDouble(_doubles[i]);
+			}
+			
+			length = _strings.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				bytes = new ByteArray();
+				bytes.writeUTFBytes(_strings[i]);
+				
+				encoder.writeEU30(bytes.length);
+				encoder.writeBytes(bytes);
+			}
+			
+			length = _namespaces.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				_namespaces[i].encode(encoder);
+			}
+			
+			length = _nssets.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				_nssets[i].encode(encoder);
+			}
+			
+			length = _multinames.length;
+			encoder.writeEU30(length);
+			for (i = 1; i < length; i++)
+			{
+				_multinames[i].encode(encoder);
+			}
 			
 		}
 

@@ -39,7 +39,12 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			
+			encoder.writeUB(_nbits, 5);
+			encoder.writeSB(_minX, _nbits);
+			encoder.writeSB(_maxX, _nbits);
+			encoder.writeSB(_minY, _nbits);
+			encoder.writeSB(_maxY, _nbits);
+			encoder.flush();
 		}
 		
 		/**

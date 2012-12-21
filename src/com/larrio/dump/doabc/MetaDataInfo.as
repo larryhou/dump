@@ -44,14 +44,7 @@ package com.larrio.dump.doabc
 				_items[i] = new MetadataItemInfo(_constants);
 				_items[i].decode(decoder);
 			}	
-		}
-		
-		/**
-		 * 字符串输出
-		 */		
-		public function toString():String
-		{
-			return _constants.strings[_name] + ": " + _items.join(" ");
+			
 		}
 		
 		/**
@@ -60,7 +53,23 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			encoder.writeEU30(_name);
 			
+			var length:uint = _items.length;
+			encoder.writeEU30(length);
+			
+			for (var i:int = 0; i < length; i++)
+			{
+				_items[i].encode(encoder);
+			}
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			return _constants.strings[_name] + ": " + _items.join(" ");
 		}
 		
 		/**

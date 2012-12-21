@@ -86,6 +86,17 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
+			
+			encoder.writeEU30(_initializer);
+			
+			length = _traits.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				_traits[i].encode(encoder);
+			}
 			
 		}
 		

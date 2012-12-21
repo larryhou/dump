@@ -5,6 +5,8 @@ package com.larrio.dump.tags
 	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.utils.ByteArray;
+	
 	/**
 	 * 代码指令TAG
 	 * @author larryhou
@@ -45,21 +47,18 @@ package com.larrio.dump.tags
 			_flags = decoder.readUI32();	
 			_name = decoder.readSTR();
 			
-			_bytes.length = 0;
-			decoder.readBytes(_bytes);
+			var codes:ByteArray = new ByteArray();
+			decoder.readBytes(codes);
 			
 			decoder.length = 0;
-			decoder.writeBytes(_bytes);
+			decoder.writeBytes(codes);
 			decoder.position = 0;
 			
-			trace("---------------------------------");
+			//trace("---------------------------------");
 			//trace("{DoABCTag}" + _name);
 			
 			_abc = new DoABC();
 			_abc.decode(decoder);
-			
-			// 垃圾回收
-			decoder.length = 0;
 		}
 		
 		/**
@@ -68,8 +67,12 @@ package com.larrio.dump.tags
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
-			super.encode(encoder);
+			writeTagHeader(encoder);
+						
+			encoder.writeUI32(_flags);
+			encoder.writeSTR(_name);
 			
+			_abc.encode(encoder);
 		}
 		
 		/**

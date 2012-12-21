@@ -23,7 +23,6 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
-		
 		/**
 		 * 构造函数
 		 * create a [MultinameInfo] object
@@ -116,6 +115,7 @@ package com.larrio.dump.doabc
 					assertTrue(false);break;
 				}
 			}
+			
 		}
 		
 		/**
@@ -124,6 +124,55 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint;
+			
+			encoder.writeUI8(_kind);
+			
+			switch (_kind)
+			{
+				case MultiKindType.QNAME:
+				case MultiKindType.QNAME_A:
+				{
+					encoder.writeEU30(_ns);
+					encoder.writeEU30(_name);
+					break;
+				}
+					
+				case MultiKindType.RT_QNAME:
+				case MultiKindType.RT_QNAME_A:
+				{
+					encoder.writeEU30(_name);
+					break;
+				}
+					
+				case MultiKindType.MULTINAME:
+				case MultiKindType.MULTINAME_A:
+				{
+					encoder.writeEU30(_name);
+					encoder.writeEU30(_nsset);
+					break;
+				}
+					
+				case MultiKindType.MULTINAME_L:
+				case MultiKindType.MULTINAME_LA:
+				{
+					encoder.writeEU30(_nsset);
+					break;
+				}
+					
+				case MultiKindType.MULTINAME_VECTOR:
+				{
+					encoder.writeEU30(_multiname);
+					
+					length = _types.length;
+					encoder.writeEU30(length);
+					for (var i:int = 0; i < length; i++)
+					{
+						encoder.writeEU30(_types[i]);
+					}
+					break;
+				}
+			}
 			
 		}
 		

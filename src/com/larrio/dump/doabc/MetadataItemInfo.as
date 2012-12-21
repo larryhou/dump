@@ -45,7 +45,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			
+			encoder.writeEU30(_key);
+			encoder.writeEU30(_value);
 		}
 		
 		/**

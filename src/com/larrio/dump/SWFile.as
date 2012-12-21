@@ -41,18 +41,40 @@ package com.larrio.dump
 		/**
 		 * 二进制编码 
 		 */		
-		public function encode():void
+		public function encode():ByteArray
 		{
-			if (_encoder)
+			var length:int;
+			var content:FileEncoder;
+			
+			content = new FileEncoder();
+			
+			_header.size.encode(content);
+			
+			content.writeUI16(_header.frameRate);
+			content.writeUI16(_header.frameCount);
+			
+			length = _tags.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				// 内存释放
-				_encoder.length = 0;
+				_tags[i].encode(content);
 			}
 			
-			// 初始化编码器
+			// SWF二进制封包
 			_encoder = new FileEncoder();
 			
-			// TODO:编码SWF二进制文件
+			_header.encode(_encoder);
+			
+			// 写入压缩前的总字节长度
+			_encoder.writeUI32(_encoder.length + 4 + content.length);
+			_header.compressed && content.compress();
+			_encoder.writeBytes(content);
+			
+			// 打包输出
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeBytes(_encoder);
+			bytes.position = 0;
+			
+			return bytes;
 		}
 		
 		/**

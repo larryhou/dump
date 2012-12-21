@@ -1,10 +1,10 @@
 package com.larrio.dump.codec
 {
+	import com.larrio.dump.utils.assertInt;
+	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.math.unsign;
 	
 	import flash.utils.ByteArray;
-	import com.larrio.dump.utils.assertInt;
-	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * SWF字节编码器
@@ -13,7 +13,7 @@ package com.larrio.dump.codec
 	 */
 	dynamic public class FileEncoder extends ByteArray
 	{
-		private var _byte:uint;
+		private var _currentByte:uint;
 		private var _bitpos:uint;
 		
 		/**
@@ -22,8 +22,22 @@ package com.larrio.dump.codec
 		 */
 		public function FileEncoder()
 		{
-			_byte = 0;
+			_currentByte = 0;
 			_bitpos = 8;
+		}
+		
+		/**
+		 * 写入当前字节，位操作时需要调用
+		 */		
+		public function flush():void
+		{
+			if (_bitpos != 8)
+			{
+				writeByte(_currentByte);
+				
+				_currentByte = 0;
+				_bitpos = 8;
+			}
 		}
 		
 		/**
@@ -38,19 +52,19 @@ package com.larrio.dump.codec
 				if (size > _bitpos)
 				{
 					//if more bits left to write than shift out what will fit
-					_byte |= value << (32 - size) >>> (32 - _bitpos);
+					_currentByte |= value << (32 - size) >>> (32 - _bitpos);
 					size -= _bitpos;
 					
 					// shift all the way left, then right to right
 					// justify the data to be or'ed in
-					writeByte(_byte);
+					writeByte(_currentByte);
 					
-					_byte = 0;
+					_currentByte = 0;
 					_bitpos = 8;
 				}
 				else
 				{
-					_byte |= value << (32 - size) >>> (32 - _bitpos);
+					_currentByte |= value << (32 - size) >>> (32 - _bitpos);
 					_bitpos -= size;
 					
 					size = 0;
@@ -58,9 +72,9 @@ package com.larrio.dump.codec
 					if (_bitpos == 0)
 					{
 						//if current byte is filled
-						writeByte(_byte);
+						writeByte(_currentByte);
 						
-						_byte = 0;
+						_currentByte = 0;
 						_bitpos = 8;
 					}
 				}
@@ -137,12 +151,19 @@ package com.larrio.dump.codec
 			assertTrue(value <= 0xFFFFFFFF);
 			
 			var byte:uint;
-			while (value > 0)
+			if (value > 0)
 			{
-				byte = value & 0x7F;			
-				if ((value >>>= 7) > 0) byte |= (1 << 7);
-				
-				writeByte(byte);
+				while (value > 0)
+				{
+					byte = value & 0x7F;			
+					if ((value >>>= 7) > 0) byte |= (1 << 7);
+					
+					writeByte(byte);
+				}
+			}
+			else
+			{
+				writeByte(0);
 			}
 		}
 		
@@ -210,8 +231,22 @@ package com.larrio.dump.codec
 		}
 		
 		/**
-		 * 对超类进行引用
+		 * 写入UTF8字符串 
+		 * @param content	字符串
 		 */		
-		public function get bytes():ByteArray { return super; }
+		public function writeSTR(content:String):void
+		{
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeMultiByte(content, "utf-8");
+			bytes.position = 0;
+			
+			while (bytes.bytesAvailable)
+			{
+				writeByte(bytes.readByte());
+			}
+			
+			writeByte(0);
+		}
+		
 	}
 }
