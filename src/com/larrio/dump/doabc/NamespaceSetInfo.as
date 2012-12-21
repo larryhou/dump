@@ -49,7 +49,11 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			
+			var length:uint = _namespaces.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				encoder.writeEU30(_namespaces[i]);
+			}
 		}
 		
 		/**
