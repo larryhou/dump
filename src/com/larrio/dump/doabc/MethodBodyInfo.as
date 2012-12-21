@@ -96,9 +96,6 @@ package com.larrio.dump.doabc
 			_opcode = new OpcodeInfo(_abc);
 			_opcode.method = _method;
 			_opcode.decode(decoder);
-			
-			decoder.length = 0;
-			
 		}
 		
 		/**
@@ -107,7 +104,35 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
 			
+			encoder.writeEU30(_method);
+			
+			encoder.writeEU30(_maxStack);
+			encoder.writeEU30(_localCount);
+			
+			encoder.writeEU30(_initScopeDepth);
+			encoder.writeEU30(_maxScopeDepth);
+			
+			length = _code.length;
+			encoder.writeEU30(length);
+			encoder.writeBytes(_code);
+			
+			length = _exceptions.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				_exceptions[i].encode(encoder);
+			}
+			
+			length = _traits.length;
+			encoder.writeEU30(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				_traits[i].encode(encoder);
+			}
 		}
 		
 		/**
