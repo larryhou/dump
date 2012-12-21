@@ -41,17 +41,38 @@ package com.larrio.dump
 		/**
 		 * 二进制编码 
 		 */		
-		public function encode():void
+		public function encode():ByteArray
 		{
+			var length:int;
+			var content:FileEncoder;
+			
+			content = new FileEncoder();
+			
+			_header.size.encode(content);
+			
+			content.writeUI16(_header.frameRate);
+			content.writeUI16(_header.frameCount);
+			
+			length = _tags.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				_tags[i].encode(content);
+			}
+			
+			if (_header.compressed) content.compress();
+			
+			// 封包
 			_encoder = new FileEncoder();
 			
 			_header.encode(_encoder);
+			_encoder.writeBytes(content);
 			
-			var length:int = _tags.length;
-			for (var i:int = 0; i < length; i++)
-			{
-				_tags[i].encode(_encoder);
-			}
+			// 打包输出
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeBytes(_encoder);
+			bytes.position = 0;
+			
+			return bytes;
 		}
 		
 		/**

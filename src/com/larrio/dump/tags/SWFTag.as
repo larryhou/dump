@@ -19,6 +19,8 @@ package com.larrio.dump.tags
 		protected var _length:int;
 		protected var _bytes:ByteArray;
 		
+		protected var _size:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object
@@ -60,7 +62,20 @@ package com.larrio.dump.tags
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			if (_length < 0x3F)
+			{
+				encoder.writeUI16( _type << 6 | _length);
+			}
+			else
+			{
+				encoder.writeUI16( _type << 6 | 0x3F);
+				encoder.writeS32(_length);
+			}
 			
+			if (_length > 0)
+			{
+				encoder.writeBytes(_bytes);
+			}
 		}
 
 		/**

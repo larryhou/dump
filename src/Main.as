@@ -30,19 +30,22 @@ package
 		 */
 		public function Main()
 		{		
-			var swf:SWFile = new SWFile(loaderInfo.bytes);
+			var bytes:ByteArray, swf:SWFile;
+			
+			bytes = loaderInfo.bytes;
+			swf = new SWFile(bytes);
+			swf.decode();
+			
+			bytes = swf.encode();
+			assertTrue(bytes.length == swf.header.length);
+			
+			swf = new SWFile(bytes);
 			swf.decode();
 			
 			var size:SWFRect = swf.header.size;
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
-			
-			var bytes:ByteArray = new ByteArray();
-			bytes.writeByte(-2);
-			
-			trace(bytes[0]);
-			
 		}
 		
 		private function padding(str:String, length:int):String

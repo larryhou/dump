@@ -13,7 +13,7 @@ package com.larrio.dump.codec
 	 */
 	dynamic public class FileEncoder extends ByteArray
 	{
-		private var _byte:uint;
+		private var _currentByte:uint;
 		private var _bitpos:uint;
 		
 		/**
@@ -22,8 +22,22 @@ package com.larrio.dump.codec
 		 */
 		public function FileEncoder()
 		{
-			_byte = 0;
+			_currentByte = 0;
 			_bitpos = 8;
+		}
+		
+		/**
+		 * 写入当前字节，位操作时需要调用
+		 */		
+		public function flush():void
+		{
+			if (_bitpos != 8)
+			{
+				writeByte(_currentByte);
+				
+				_currentByte = 0;
+				_bitpos = 8;
+			}
 		}
 		
 		/**
@@ -38,19 +52,19 @@ package com.larrio.dump.codec
 				if (size > _bitpos)
 				{
 					//if more bits left to write than shift out what will fit
-					_byte |= value << (32 - size) >>> (32 - _bitpos);
+					_currentByte |= value << (32 - size) >>> (32 - _bitpos);
 					size -= _bitpos;
 					
 					// shift all the way left, then right to right
 					// justify the data to be or'ed in
-					writeByte(_byte);
+					writeByte(_currentByte);
 					
-					_byte = 0;
+					_currentByte = 0;
 					_bitpos = 8;
 				}
 				else
 				{
-					_byte |= value << (32 - size) >>> (32 - _bitpos);
+					_currentByte |= value << (32 - size) >>> (32 - _bitpos);
 					_bitpos -= size;
 					
 					size = 0;
@@ -58,9 +72,9 @@ package com.larrio.dump.codec
 					if (_bitpos == 0)
 					{
 						//if current byte is filled
-						writeByte(_byte);
+						writeByte(_currentByte);
 						
-						_byte = 0;
+						_currentByte = 0;
 						_bitpos = 8;
 					}
 				}
@@ -226,5 +240,6 @@ package com.larrio.dump.codec
 			
 			writeByte(0);
 		}
+		
 	}
 }
