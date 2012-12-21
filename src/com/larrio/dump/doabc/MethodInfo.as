@@ -88,7 +88,39 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
 			
+			length = _paramTypes.length;
+			
+			encoder.writeEU30(length);
+			encoder.writeEU30(_returnType);
+			
+			for (i = 0; i < length; i++)
+			{
+				encoder.writeEU30(_paramTypes[i]);
+			}
+			
+			encoder.writeEU30(_name);
+			encoder.writeUI8(_flags);
+			
+			if ((_flags & MethodFlagType.HAS_OPTIONAL) == MethodFlagType.HAS_OPTIONAL)
+			{
+				length = _options.length;
+				encoder.writeEU30(length);
+				for (i = 0; i < length; i++)
+				{
+					_options[i].encode(encoder);
+				}
+			}
+			
+			if ((_flags & MethodFlagType.HAS_PARAM_NAMES) == MethodFlagType.HAS_PARAM_NAMES)
+			{
+				length = _paramNames.length;
+				for (i = 0; i < length; i++)
+				{
+					encoder.writeEU30(_paramNames[i]);
+				}
+			}
 		}
 		
 		/**
