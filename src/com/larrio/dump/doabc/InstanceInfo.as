@@ -4,8 +4,6 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	
-	import flashx.textLayout.formats.WhiteSpaceCollapse;
-	
 	/**
 	 * DoABC之实例信息
 	 * @author larryhou

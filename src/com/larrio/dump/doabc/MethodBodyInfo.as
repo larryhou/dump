@@ -50,6 +50,9 @@ package com.larrio.dump.doabc
 		{
 			_method = decoder.readEU30();
 			
+			// 设置函数体
+			_abc.methods[_method].body = this;
+			
 			_maxStack = decoder.readEU30();
 			
 			_localCount = decoder.readEU30();
@@ -95,6 +98,7 @@ package com.larrio.dump.doabc
 			_opcode.decode(decoder);
 			
 			decoder.length = 0;
+			
 		}
 		
 		/**
@@ -121,11 +125,9 @@ package com.larrio.dump.doabc
 		public function toString():String
 		{
 			var i:int;
-			var result:String = _abc.methods[_method].toString();
-			result += "\n    maxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
+			var result:String = "";
+			result += "    maxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
 			result += "\n" + _opcode.toString();
-			
-			//if (_traits.length) result += "\n    [Trait]" + _traits.join("\n    [Trait]");
 			
 			if (_opcode.closures)
 			{

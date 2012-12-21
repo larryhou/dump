@@ -48,11 +48,9 @@ package com.larrio.dump.doabc
 				for (i = 0; i < length; i++)
 				{
 					trait = script.methods[i];
-					if (trait.data.method < abc.methodBodies.length)
-					{
-						appending += "\n";
-						appending += "\n" + abc.methodBodies[trait.data.method];
-					}
+					
+					appending += "\n";
+					appending += "\n" + methodSTR(trait.data.method, abc);
 				}
 			}
 			
@@ -102,7 +100,7 @@ package com.larrio.dump.doabc
 					trait = info.methods[i];
 					
 					_content += "\n";
-					_content += "\n" + abc.methodBodies[trait.data.method];
+					_content += "\n" + methodSTR(trait.data.method, abc);
 				}
 			}
 			
@@ -116,25 +114,30 @@ package com.larrio.dump.doabc
 			if (instance.variables) _content += "\n\t" + instance.variables.join("\n\t");
 			if (instance.methods)
 			{
-				if (instance.initializer < abc.methodBodies.length)
-				{
-					_content += "\n";
-					_content += "\n" + abc.methodBodies[instance.initializer];
-				}
+				_content += "\n";
+				_content += "\n" + methodSTR(instance.initializer, abc);
 				
 				length = instance.methods.length;
 				for (i = 0; i < length; i++)
 				{
 					trait = instance.methods[i];
-					if (trait.data.method < abc.methodBodies.length)
-					{
-						_content += "\n";
-						_content += "\n" + abc.methodBodies[trait.data.method];
-					}
+					
+					_content += "\n";
+					_content += "\n" + methodSTR(trait.data.method, abc);
 				}
 			}
 			
 			_content += "\n";
+		}
+		
+		// 把函数转换成代码
+		private function methodSTR(method:uint, abc:DoABC):String
+		{
+			var info:MethodInfo = abc.methods[method];
+			
+			var result:String = info.toString();
+			if (info.body) result += "\n" + info.body;
+			return result;
 		}
 		
 		/**

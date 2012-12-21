@@ -1,8 +1,8 @@
 package com.larrio.dump.tags
 {
-	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**

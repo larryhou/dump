@@ -24,6 +24,8 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
+		private var _body:MethodBodyInfo;
+		
 		/**
 		 * 构造函数
 		 * create a [MethodInfo] object
@@ -148,6 +150,15 @@ package com.larrio.dump.doabc
 		 * 指向mutiname常量数组的索引
 		 */		
 		public function get paramTypes():Vector.<uint> { return _paramTypes; }
+
+		/**
+		 * 函数体：包含执行代码
+		 */		
+		public function get body():MethodBodyInfo { return _body; }
+		public function set body(value:MethodBodyInfo):void
+		{
+			_body = value;
+		}
 
 	}
 }

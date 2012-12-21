@@ -13,7 +13,7 @@ package com.larrio.dump.doabc
 		
 		/**
 		 * 构造函数
-		 * create a [ClassInfo] object
+		 * create a [ScriptInfo] object
 		 */
 		public function ScriptInfo(abc:DoABC)
 		{

@@ -24,7 +24,7 @@ package com.larrio.dump.doabc
 		
 		/**
 		 * 构造函数
-		 * create a [ScriptInfo] object
+		 * create a [ClassInfo] object
 		 */
 		public function ClassInfo(abc:DoABC)
 		{
@@ -77,6 +77,7 @@ package com.larrio.dump.doabc
 				}
 
 			}
+			
 		}
 		
 		/**
