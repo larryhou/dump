@@ -50,7 +50,13 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			encoder.writeEU30(_from);
+			encoder.writeEU30(_to);
 			
+			encoder.writeEU30(_target);
+			
+			encoder.writeEU30(_type);
+			encoder.writeEU30(_name);
 		}
 		
 		/**
