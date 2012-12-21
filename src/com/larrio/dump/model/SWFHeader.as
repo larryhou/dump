@@ -56,9 +56,6 @@ package com.larrio.dump.model
 			encoder.writeUI8(("S").charCodeAt(0));
 			
 			encoder.writeUI8(_version);
-			
-			// TODO: 放到外面动态计算
-			encoder.writeUI32(_length);
 		}
 		
 		/**

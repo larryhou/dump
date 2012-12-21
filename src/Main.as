@@ -1,7 +1,9 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.model.SWFRect;
+	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.display.Sprite;
@@ -42,6 +44,22 @@ package
 			swf = new SWFile(bytes);
 			swf.decode();
 			
+			var callback:Function = function(date:Date):String
+			{
+				return String(this);
+			}
+			
+			for (var i:int = 0; i < swf.tags.length; i++)
+			{
+				if (swf.tags[i].type == DoABCTag.TYPE)
+				{
+					break;
+				}
+			}
+			
+			var abcTag:DoABCTag = swf.tags[i] as DoABCTag;
+			trace(abcTag.abc.files.join("\n"));
+						
 			var size:SWFRect = swf.header.size;
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
@@ -50,7 +68,7 @@ package
 		
 		private function padding(str:String, length:int):String
 		{
-			var callback:Function = function():Object
+			var callback:Function = function(name:String, age:uint, sex:Boolean, high:Number):Object
 			{
 				return this;
 			}
