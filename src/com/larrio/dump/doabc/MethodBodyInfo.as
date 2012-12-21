@@ -133,6 +133,7 @@ package com.larrio.dump.doabc
 			{
 				for (i = 0; i < _opcode.closures.length; i++)
 				{
+					result += "\n" + _abc.methods[_opcode.closures[i]];
 					result += "\n" + _abc.methodBodies[_opcode.closures[i]];
 				}
 			}
