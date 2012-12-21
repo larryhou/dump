@@ -9,6 +9,8 @@ package
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
 	
+	[SWF(frameRate="60", width="600", height="400")]
+	[Event(name="complete", type="flash.events.Event")]
 	
 	/**
 	 * 
