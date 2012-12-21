@@ -47,20 +47,28 @@ package com.larrio.dump.doabc
 		}
 		
 		/**
-		 * 字符串输出
-		 */		
-		public function toString():String
-		{
-			return _constants.strings[_name] + ": " + _items.join(" ");
-		}
-		
-		/**
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			encoder.writeEU30(_name);
 			
+			var length:uint = _items.length;
+			encoder.writeES30(length);
+			
+			for (var i:int = 0; i < length; i++)
+			{
+				_items[i].encode(encoder);
+			}
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			return _constants.strings[_name] + ": " + _items.join(" ");
 		}
 		
 		/**
