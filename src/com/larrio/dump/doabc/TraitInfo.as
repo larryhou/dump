@@ -89,7 +89,51 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var length:uint, i:int;
 			
+			encoder.writeEU30(_name);
+			encoder.writeUI8(_kind);
+			
+			switch (_kind & 0xF)
+			{
+				case TraitType.SLOT:
+				case TraitType.CONST:
+				{
+					encoder.writeEU30(_data.id);
+					encoder.writeEU30(_data.type);
+					encoder.writeEU30(_data.index);
+					if (_data.index)
+					{
+						encoder.writeUI8(_data.kind);
+					}
+					break;
+				}
+					
+				case TraitType.CLASS:
+				{
+					encoder.writeEU30(_data.id);
+					encoder.writeEU30(_data.classi);
+					break;
+				}
+					
+				default:
+				{
+					encoder.writeEU30(_data.id);
+					encoder.writeEU30(_data.method);
+					break;
+				}
+			}
+			
+			if (((_kind >> 4) & TraitAttriType.METADATA) == TraitAttriType.METADATA)
+			{
+				length = _metadatas.length;
+				
+				encoder.writeEU30(length);
+				for (i = 0; i < length; i++)
+				{
+					encoder.writeEU30(_metadatas[i]);
+				}
+			}
 		}
 		
 		/**
