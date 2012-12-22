@@ -11,6 +11,7 @@ package com.larrio.dump.encrypt
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.SymbolClassTag;
 	import com.larrio.dump.tags.TagType;
+	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.Dictionary;
 	
@@ -91,6 +92,7 @@ package com.larrio.dump.encrypt
 				return s1.length > s2.length? -1 : 1;
 			});
 			
+			
 			var name:String;
 			for each(item in _queue)
 			{
@@ -133,11 +135,17 @@ package com.larrio.dump.encrypt
 		private function createEncryptSTR(source:String):String
 		{
 			var result:String = "";
+			
+			var code:int;
 			while (result.length < source.length)
 			{
-				result += String.fromCharCode(97 + Math.random() * (122 - 97) >> 0);
-				//result += String.fromCharCode(33 + Math.random() * (126 - 33) >> 0);
+				code = 33 + Math.random() * (126 - 33) >> 0;
+				//code = 97 + Math.random() * (122 - 97) >> 0;
+				result += String.fromCharCode(code);
+				
 			}
+			
+			assertTrue(result.length == source.length);
 			
 			return result;
 		}

@@ -46,6 +46,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="TestMain.as"/>
     <application path="EncryptMain.as"/>
     <application path="Main.as"/>
   </applications>

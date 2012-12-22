@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	
@@ -23,6 +24,8 @@ package com.larrio.dump.doabc
 		
 		private var _multinames:Vector.<MultinameInfo>;
 		
+		private var _lenR:uint;
+				
 		/**
 		 * 构造函数
 		 * create a [ConstantPool] object
@@ -61,12 +64,15 @@ package com.larrio.dump.doabc
 				_doubles[i] = decoder.readDouble();
 			}
 			
+			_lenR = decoder.position;
 			length = decoder.readEU30();
 			_strings = new Vector.<String>(length, true);
 			for (i = 1; i < length; i++)
 			{
 				_strings[i] = decoder.readUTFBytes(decoder.readEU30());
 			}
+			
+			_lenR = decoder.position - _lenR;
 			
 			length = decoder.readEU30();
 			_namespaces = new Vector.<NamespaceInfo>(length, true);
@@ -124,6 +130,7 @@ package com.larrio.dump.doabc
 				encoder.writeDouble(_doubles[i]);
 			}
 			
+			var lenR:uint = encoder.position;
 			length = _strings.length;
 			encoder.writeEU30(length);
 			for (i = 1; i < length; i++)
@@ -134,6 +141,9 @@ package com.larrio.dump.doabc
 				encoder.writeEU30(bytes.length);
 				encoder.writeBytes(bytes);
 			}
+			
+			lenR = encoder.position - lenR;
+			assertTrue(lenR == _lenR, _strings.join("\n"))
 			
 			length = _namespaces.length;
 			encoder.writeEU30(length);
