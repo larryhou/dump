@@ -68,7 +68,7 @@ package com.larrio.dump.doabc
 					
 				case NSKindType.PACKAGE_INTERNAL_NS:
 				{
-					key = "internal";
+					//key = "internal";
 					break;
 				}
 					
