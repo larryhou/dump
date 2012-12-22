@@ -13,6 +13,9 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.SYMBOL_CLASS;
 		
+		private var _ids:Vector.<uint>;
+		private var _symbols:Vector.<String>;
+		
 		/**
 		 * 构造函数
 		 * create a [SymbolClassTag] object
@@ -32,6 +35,22 @@ package com.larrio.dump.tags
 			
 			assertTrue(_type == SymbolClassTag.TYPE);
 			
+			decoder = new FileDecoder();
+			decoder.writeBytes(_bytes);
+			decoder.position = 0;
+			
+			var length:uint, i:int;
+			length = decoder.readUI16();
+			
+			_ids = new Vector.<uint>(length, true);
+			_symbols = new Vector.<String>(length, true);
+			
+			for (i = 0; i < length; i++)
+			{
+				_ids[i] = decoder.readUI16();
+				_symbols[i] = decoder.readSTR();
+			}
+			
 		}
 		
 		/**
@@ -40,7 +59,18 @@ package com.larrio.dump.tags
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
-			super.encode(encoder);
+			writeTagHeader(encoder);
+			
+			var length:uint, i:int;
+			
+			length = _ids.length;
+			encoder.writeUI16(length);
+			
+			for (i = 0; i < length; i++)
+			{
+				encoder.writeUI16(_ids[i]);
+				encoder.writeSTR(_symbols[i]);
+			}
 			
 		}
 		

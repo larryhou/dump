@@ -33,6 +33,8 @@ package com.larrio.dump.tags
 		{
 			super.decode(decoder);
 			
+			assertTrue(_type == FrameLabelTag.TYPE);
+			
 			decoder = new FileDecoder();
 			decoder.writeBytes(_bytes);
 			decoder.position = 0;
