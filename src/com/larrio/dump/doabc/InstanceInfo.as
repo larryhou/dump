@@ -29,6 +29,8 @@ package com.larrio.dump.doabc
 		private var _variables:Vector.<TraitInfo>;
 		private var _methods:Vector.<TraitInfo>;
 		
+		private var _protocol:Boolean;
+		
 		/**
 		 * 构造函数
 		 * create a [InstanceInfo] object
@@ -51,6 +53,12 @@ package com.larrio.dump.doabc
 			if ((_flags & InstanceType.CLASS_PROTECTED_NS) == InstanceType.CLASS_PROTECTED_NS)
 			{
 				_protectedNS = decoder.readEU30();
+			}
+			
+			_protocol = false;
+			if ((_flags & InstanceType.CLASS_INTERFACE) == InstanceType.CLASS_INTERFACE)
+			{
+				_protocol = true;
 			}
 			
 			var _length:uint, i:int;
@@ -201,6 +209,12 @@ package com.larrio.dump.doabc
 		 * 实例方法
 		 */		
 		public function get methods():Vector.<TraitInfo> { return _methods; }
+
+		/**
+		 * 是否为接口
+		 */		
+		public function get protocol():Boolean { return _protocol; }
+
 
 	}
 }

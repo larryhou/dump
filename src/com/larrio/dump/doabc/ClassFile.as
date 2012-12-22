@@ -66,13 +66,28 @@ package com.larrio.dump.doabc
 		{
 			var trait:TraitInfo;
 			var length:int, i:int;
-			
-			var instance:InstanceInfo = info.instance;
 			var multinames:Vector.<MultinameInfo> = abc.constants.multinames;
+			
+			var option:String = "";
+			var instance:InstanceInfo = info.instance;
+			if ((instance.flags & InstanceType.CLASS_FINAL) == InstanceType.CLASS_FINAL)
+			{
+				option += "final ";
+			}
+			
+			if ((instance.flags & InstanceType.CLASS_SEALED) != InstanceType.CLASS_SEALED)
+			{
+				option += "dynamic ";
+			}
+			
+			if ((instance.flags & InstanceType.CLASS_PROTECTED_NS) == InstanceType.CLASS_PROTECTED_NS)
+			{
+				//option += "protected ";
+			}
 			
 			_name = multinames[instance.name].toString();
 			
-			_content += "class " + _name;
+			_content += option + (instance.protocol? "interface " : "class ") + _name;
 			if (multinames[instance.superName]) _content += " extends " + multinames[instance.superName];
 			
 			var list:Array = [];
@@ -113,8 +128,11 @@ package com.larrio.dump.doabc
 			if (instance.variables) _content += "\n\t" + variableSTR(instance.variables, abc);
 			if (instance.methods)
 			{
-				_content += "\n";
-				_content += "\n" + methodSTR(instance.initializer, abc);
+				if (!instance.protocol)
+				{
+					_content += "\n";
+					_content += "\n" + methodSTR(instance.initializer, abc);
+				}
 				
 				length = instance.methods.length;
 				for (i = 0; i < length; i++)
