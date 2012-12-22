@@ -7,9 +7,9 @@ package com.larrio.dump.encrypt
 	import com.larrio.dump.doabc.ScriptInfo;
 	import com.larrio.dump.doabc.TraitInfo;
 	import com.larrio.dump.tags.DoABCTag;
+	import com.larrio.dump.tags.FrameLabelTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
-	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.Dictionary;
 	
@@ -20,6 +20,7 @@ package com.larrio.dump.encrypt
 	 */
 	public class FileEncryptor
 	{
+		private var _files:Vector.<SWFile>;
 		private var _queue:Vector.<EncryptItem>;
 		
 		private var _map:Dictionary;
@@ -31,6 +32,7 @@ package com.larrio.dump.encrypt
 		 */
 		public function FileEncryptor()
 		{
+			_files = new Vector.<SWFile>;
 			_queue = new Vector.<EncryptItem>;
 			
 			_map = new Dictionary(true);
@@ -105,6 +107,30 @@ package com.larrio.dump.encrypt
 					}
 				}
 			}
+			
+			var swf:SWFile;
+			for each (swf in _files)
+			{
+				length = swf.tags.length;
+				for (i = 0; i < length; i++)
+				{
+					var label:FrameLabelTag;
+					if (swf.tags[i].type == TagType.FRAME_LABEL)
+					{
+						label = swf.tags[i] as FrameLabelTag;
+						for (name in _map)
+						{
+							value = label.name;
+							if (value.indexOf(name) >= 0)
+							{
+								value = value.replace(new RegExp(name, "g"), _map[name]);
+								label.name = value;
+								break;
+							}
+						}
+					}
+				}
+			}
 		}
 		
 		// 获取加密字符串
@@ -126,6 +152,8 @@ package com.larrio.dump.encrypt
 		 */		
 		public function addFile(swf:SWFile):void
 		{
+			_files.push(swf);
+			
 			var list:Vector.<DoABCTag> = new Vector.<DoABCTag>();
 			for each(var tag:SWFTag in swf.tags)
 			{

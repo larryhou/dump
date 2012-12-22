@@ -34,7 +34,7 @@ package
 			
 			// 导出加密后的SWF
 			bytes = swf.encode();
-			//new FileReference().save(bytes, "encrypt.swf");
+			new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			

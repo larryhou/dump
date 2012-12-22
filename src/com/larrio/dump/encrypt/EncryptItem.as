@@ -1,6 +1,7 @@
 package com.larrio.dump.encrypt
 {
 	import com.larrio.dump.tags.DoABCTag;
+	import com.larrio.dump.tags.FrameLabelTag;
 	
 	/**
 	 * 
