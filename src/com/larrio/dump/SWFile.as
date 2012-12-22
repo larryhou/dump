@@ -4,7 +4,9 @@ package com.larrio.dump
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.tags.SWFTag;
+	import com.larrio.dump.tags.SymbolClassTag;
 	import com.larrio.dump.tags.TagFactory;
+	import com.larrio.dump.tags.TagType;
 	
 	import flash.utils.ByteArray;
 	
@@ -25,6 +27,8 @@ package com.larrio.dump
 		private var _header:SWFHeader;
 		
 		private var _tags:Vector.<SWFTag>;
+		
+		private var _symbol:SymbolClassTag;
 		
 		/**
 		 * 构造函数
@@ -102,6 +106,11 @@ package com.larrio.dump
 				tag = TagFactory.create(type);
 				tag.decode(_decoder);
 				
+				if (tag.type == TagType.SYMBOL_CLASS)
+				{
+					_symbol = tag as SymbolClassTag;
+				}
+				
 				_tags.push(tag);
 			}
 		}
@@ -115,6 +124,11 @@ package com.larrio.dump
 		 * SWF文件TAG数组
 		 */		
 		public function get tags():Vector.<SWFTag> { return _tags; }
+
+		/**
+		 * SWF链接名TAG
+		 */		
+		public function get symbol():SymbolClassTag { return _symbol; }
 
 	}
 }
