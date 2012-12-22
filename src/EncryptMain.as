@@ -21,7 +21,8 @@ package
 			var file:SWFile = new SWFile(loaderInfo.bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
-			encryptor.encrypt(file);
+			encryptor.addFile(file);
+			encryptor.encrypt();
 		}
 	}
 }

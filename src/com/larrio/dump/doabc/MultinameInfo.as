@@ -191,7 +191,7 @@ package com.larrio.dump.doabc
 				{
 					result += _constants.namespaces[_ns];
 					
-					if (result) result += " ";
+					if (result) result += ":";
 					result += _constants.strings[_name];
 					break;
 				}
@@ -222,7 +222,7 @@ package com.larrio.dump.doabc
 				{
 					result += _constants.nssets[_nsset];
 					
-					if (result) result += " ";
+					if (result) result += ":";
 					result += _constants.strings[_name];
 					break;
 				}
