@@ -204,5 +204,11 @@ package com.larrio.dump.doabc
 		 */		
 		public function get data():TraitDataInfo { return _data; }
 
+		/**
+		 * 特征元数据
+		 */		
+		public function get metadatas():Vector.<uint> { return _metadatas; }
+
+
 	}
 }

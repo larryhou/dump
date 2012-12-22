@@ -41,7 +41,7 @@ package com.larrio.dump.doabc
 			var appending:String = "";
 			
 			// instance class info
-			if (script.variables) appending += "\n\t" + script.variables.join("\n\t");
+			if (script.variables) appending += "\n\t" + variableSTR(script.variables, abc);
 			if (script.methods)
 			{				
 				length = script.methods.length;
@@ -50,7 +50,7 @@ package com.larrio.dump.doabc
 					trait = script.methods[i];
 					
 					appending += "\n";
-					appending += "\n" + methodSTR(trait.data.method, abc, trait.kind);
+					appending += "\n" + methodSTR(trait.data.method, abc, trait);
 				}
 			}
 			
@@ -90,7 +90,7 @@ package com.larrio.dump.doabc
 			}
 			
 			// static class info
-			if (info.variables) _content += "\n\t" + info.variables.join("\n\t");
+			if (info.variables) _content += "\n\t" + variableSTR(info.variables, abc);
 			if (info.methods)
 			{				
 				length = info.methods.length;
@@ -99,7 +99,7 @@ package com.larrio.dump.doabc
 					trait = info.methods[i];
 					
 					_content += "\n";
-					_content += "\n" + methodSTR(trait.data.method, abc, trait.kind);
+					_content += "\n" + methodSTR(trait.data.method, abc, trait);
 				}
 			}
 			
@@ -110,7 +110,7 @@ package com.larrio.dump.doabc
 			}
 
 			// instance class info
-			if (instance.variables) _content += "\n\t" + instance.variables.join("\n\t");
+			if (instance.variables) _content += "\n\t" + variableSTR(instance.variables, abc);
 			if (instance.methods)
 			{
 				_content += "\n";
@@ -122,35 +122,84 @@ package com.larrio.dump.doabc
 					trait = instance.methods[i];
 					
 					_content += "\n";
-					_content += "\n" + methodSTR(trait.data.method, abc, trait.kind);
+					_content += "\n" + methodSTR(trait.data.method, abc, trait);
 				}
 			}
 			
 			_content += "\n";
 		}
 		
-		// 把函数转换成代码
-		private function methodSTR(method:uint, abc:DoABC, kind:uint = 0):String
+		// 变量转换成字符串
+		private function variableSTR(variables:Vector.<TraitInfo>, abc:DoABC):String
 		{
-			kind >>>= 4;
+			var trait:TraitInfo;
+			var length:uint, i:int;
 			
+			var item:String;
+			var result:Array = [];
+			
+			length = variables.length;
+			for (i = 0; i < length; i++)
+			{
+				trait = variables[i];
+				
+				item = metadataSTR(trait.metadatas, abc);
+				
+				if (item) item += "\n\t";
+				result.push(item + trait.toString());
+			}
+			
+			return result.join("\n\t");
+		}
+		
+		// 把函数转换成字符串
+		private function methodSTR(method:uint, abc:DoABC, trait:TraitInfo = null):String
+		{
+			var metadata:String;
+			var result:String = "", kind:uint = 0;
 			var info:MethodInfo = abc.methods[method];
 			
-			var result:String = "";
+			if (trait)
+			{
+				kind = trait.kind >>> 4;
+				metadata = metadataSTR(trait.metadatas, abc);
+				if (metadata) result += metadata + "\n";
+			}
+			
+			var attribute:String;
 			if ((kind & TraitAttriType.FINAL) == TraitAttriType.FINAL)
 			{
-				result += "final";
+				attribute = "final";
 			}
 			
 			if ((kind & TraitAttriType.OVERRIDE) == TraitAttriType.OVERRIDE)
 			{
-				result += "override";
+				attribute = "override";
 			}
 			
-			if (result) result += " ";
-			result += info.toString();
+			if (attribute) result += attribute + " ";
+			
+			result += info;
 			if (info.body) result += "\n" + info.body;
 			return result;
+		}
+		
+		// 元数据字符串输出
+		private function metadataSTR(metadatas:Vector.<uint>, abc:DoABC):String
+		{
+			if (!metadatas || !metadatas.length) return "";
+			
+			var item:String;
+			
+			var result:Array = []
+			var length:uint = metadatas.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				item = abc.metadatas[metadatas[i]].toString();
+				if (item.indexOf("__go_to_") < 0) result.push(item);
+			}
+			
+			return result.join("\n");
 		}
 		
 		/**

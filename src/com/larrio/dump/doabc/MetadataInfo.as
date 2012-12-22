@@ -32,18 +32,23 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			var _length:uint;
+			var _length:uint, i:int;
 			
 			_name = decoder.readEU30();
 			assertTrue(_name >= 0 && _name < _constants.strings.length);
 			
 			_length = decoder.readEU30();
 			_items = new Vector.<MetadataItemInfo>(_length, true);
-			for (var i:int = 0; i < _length; i++)
+			for (i = 0; i < _length; i++)
 			{
-				_items[i] = new MetadataItemInfo(_constants);
-				_items[i].decode(decoder);
+				_items[i] = new MetadataItemInfo();
+				_items[i].key = decoder.readEU30();
 			}	
+			
+			for (i = 0; i < _length; i++)
+			{
+				_items[i].value = decoder.readEU30();
+			}
 			
 		}
 		
@@ -55,12 +60,19 @@ package com.larrio.dump.doabc
 		{
 			encoder.writeEU30(_name);
 			
-			var length:uint = _items.length;
+			var length:uint, i:int;
+			
+			length = _items.length;
 			encoder.writeEU30(length);
 			
-			for (var i:int = 0; i < length; i++)
+			for (i = 0; i < length; i++)
 			{
-				_items[i].encode(encoder);
+				encoder.writeEU30(_items[i].key);
+			}
+			
+			for (i = 0; i < length; i++)
+			{
+				encoder.writeEU30(_items[i].value);
 			}
 		}
 		
@@ -69,7 +81,15 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			return _constants.strings[_name] + ": " + _items.join(" ");
+			var list:Array = [];
+			var length:uint = _items.length;
+			
+			for (var i:int = 0; i < length; i++)
+			{
+				list.push(_constants.strings[_items[i].key] + '="' + _constants.strings[_items[i].value] + '"');
+			}
+			
+			return "[" + _constants.strings[_name] + "(" + list.join(", ") + ")]";
 		}
 		
 		/**

@@ -25,6 +25,7 @@ package
 		private static var v2:uint;
 		protected static var v3:String;
 		
+		[DATA(name="version")]
 		public var version:String = "v1.0";
 		protected var author:String = "larryhou";
 		
@@ -71,6 +72,7 @@ package
 		}
 		
 		// 比较两个字节数组是否相等
+		[META(order="2", key="unit")]
 		protected function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
 			if (b1.length != b2.length) return false;
