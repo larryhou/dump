@@ -76,7 +76,7 @@ package com.larrio.dump.doabc
 			var namespaces:Vector.<NamespaceInfo> = _constants.namespaces;
 			assertTrue(index >= 0 && index < namespaces.length);
 			
-			if (index == 0) return "*";
+			if (index == 0) return "";
 			return namespaces[index].toString();
 		}
 		
