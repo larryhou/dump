@@ -133,8 +133,13 @@ package com.larrio.dump.doabc
 			var result:String = _constants.strings[_name];
 			if (result && !result.match(/(private|protected)/)) result = "public " + result;
 			
+			var optionlen:int = _options? _options.length : -1;
+			
 			var item:String, list:Array = [];
-			for (var i:int = 0; i < _paramTypes.length; i++)
+			var length:uint = _paramTypes.length;
+			
+			var index:int = -1;
+			for (var i:int = 0; i < length; i++)
 			{
 				item = "";
 				if (_paramNames)
@@ -143,6 +148,10 @@ package com.larrio.dump.doabc
 				}
 				
 				item += _constants.multinames[_paramTypes[i]];
+				if ((length - i) <= optionlen)
+				{
+					item += " = " + _options[++index];
+				}
 				
 				list.push(item);
 			}

@@ -74,7 +74,7 @@ package com.larrio.dump.doabc
 					
 				case OptionKindType.UTF8:
 				{
-					result += _constants.strings[_index];
+					result += '"' + _constants.strings[_index] + '"';
 					break;
 				}
 					

@@ -48,7 +48,7 @@ package
 			swf = new SWFile(bytes);
 			swf.decode();
 			
-			var callback:Function = function(date:Date):String
+			var callback:Function = function(date:Object = "FUCK YOU!"):String
 			{
 				return String(this);
 			}
