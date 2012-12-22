@@ -63,7 +63,7 @@ package com.larrio.dump.doabc
 			assertTrue(index >= 0 && index < strings.length);
 			
 			if (index == 0) return '""';
-			return '"' + strings[index].replace("\n", "\\n").replace("\t", "\\t") + '"';
+			return '"' + strings[index].replace(/\n/g, "\\n").replace(/\t/g, "\\t") + '"';
 		}
 		
 		/**
