@@ -238,7 +238,6 @@ package com.larrio.dump.codec
 		{
 			var bytes:ByteArray = new ByteArray();
 			bytes.writeMultiByte(content, "utf-8");
-			bytes.position = 0;
 			
 			writeBytes(bytes);
 			writeByte(0);
