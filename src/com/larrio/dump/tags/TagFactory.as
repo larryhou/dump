@@ -41,6 +41,11 @@ package com.larrio.dump.tags
 				{
 					return new FileAttributesTag();
 				}
+					
+				case TagType.FRAME_LABEL:
+				{
+					return new FrameLabelTag();
+				}
 			}
 			
 			return new SWFTag();
