@@ -42,13 +42,11 @@ package
 			
 			bytes = loaderInfo.bytes;
 			swf = new SWFile(bytes);
-			swf.decode();
 			
 			bytes = swf.encode();
 			assertTrue(equals(bytes, loaderInfo.bytes));
 			
 			swf = new SWFile(bytes);
-			swf.decode();
 			
 			var callback:* = function(date:* = "FUCK YOU!"):String
 			{

@@ -36,6 +36,8 @@ package com.larrio.dump
 			_decoder = new FileDecoder();
 			_decoder.writeBytes(bytes);
 			_decoder.position = 0;
+			
+			decode();
 		}
 		
 		/**
@@ -80,7 +82,7 @@ package com.larrio.dump
 		/**
 		 * 二进制解码 
 		 */		
-		public function decode():void
+		private function decode():void
 		{
 			_decoder.position = 0;
 			
