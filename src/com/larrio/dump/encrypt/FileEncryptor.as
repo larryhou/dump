@@ -1,5 +1,6 @@
 package com.larrio.dump.encrypt
 {
+	import com.larrio.dump.SWFile;
 	
 	/**
 	 * SWF代码加密器
@@ -13,6 +14,15 @@ package com.larrio.dump.encrypt
 		 * create a [FileEncryptor] object
 		 */
 		public function FileEncryptor()
+		{
+			
+		}
+		
+		/**
+		 * 加密文件
+		 * @param file	SWFile对象
+		 */		
+		public function encrypt(file:SWFile):void
 		{
 			
 		}
