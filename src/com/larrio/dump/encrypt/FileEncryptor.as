@@ -9,6 +9,7 @@ package com.larrio.dump.encrypt
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
+	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.Dictionary;
 	
@@ -41,25 +42,82 @@ package com.larrio.dump.encrypt
 		 */		
 		public function encrypt():void
 		{
+			var item:EncryptItem;
 			var length:uint, i:int;
 			
-			var value:String;
-			for each(var item:EncryptItem in _queue)
+			var key:String;
+			var value:String, index:uint;
+			
+			for each(item in _queue)
 			{
 				length = item.classes.length;
 				for (i = 0; i < length; i++)
 				{
-					value = item.strings[item.classes[i]];
-					if (_reverse[value]) continue;
+					index = item.classes[i];
+					value = item.strings[index];
 					
+					if (_reverse[value]) continue;
+					if (_map[value])
+					{
+						item.strings[index] = _map[value];
+						continue;
+					}
+					
+					while(true)
+					{
+						key = createEncryptSTR(value);
+						if (!_reverse[key]) break;
+					}
+					
+					_map[value] = key;
+					_reverse[key] = value;
+					
+					item.strings[index] = key;
+				}
+			}
+			
+			var name:String;
+			for each(item in _queue)
+			{
+				length = item.strings.length;
+				for(i = 1; i < length; i++)
+				{
+					value = item.strings[i];
+					for(name in _map)
+					{
+						if (value.indexOf(name) >= 0)
+						{
+							value = value.replace(new RegExp(name, "g"), _map[name]);
+							item.strings[i] = value;
+							break;
+						}
+					}
+				}
+				
+				for (name in _map)
+				{
+					value = item.tag.name;
+					if (value.indexOf(name) >= 0)
+					{
+						value = value.replace(new RegExp(name, "g"), _map[name]);
+						item.tag.name = value;
+						break;
+					}
 				}
 			}
 		}
 		
 		// 获取加密字符串
-		private function get _encryptSTR():String
+		private function createEncryptSTR(source:String):String
 		{
-			return "";
+			var result:String = "";
+			while (result.length < source.length)
+			{
+				result += String.fromCharCode(97 + Math.random() * (122 - 97) >> 0);
+				//result += String.fromCharCode(33 + Math.random() * (126 - 33) >> 0);
+			}
+			
+			return result;
 		}
 		
 		/**
@@ -88,7 +146,7 @@ package com.larrio.dump.encrypt
 			
 			for each(tag in list)
 			{
-				_queue.push(item = new EncryptItem(tag.abc.constants.strings));
+				_queue.push(item = new EncryptItem(tag));
 				
 				for each(var script:ScriptInfo in tag.abc.scripts)
 				{

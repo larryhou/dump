@@ -1,5 +1,6 @@
 package com.larrio.dump.encrypt
 {
+	import com.larrio.dump.tags.DoABCTag;
 	
 	/**
 	 * 
@@ -24,12 +25,18 @@ package com.larrio.dump.encrypt
 		public var strings:Vector.<String>;
 		
 		/**
+		 * DoABCTag引用
+		 */		
+		public var tag:DoABCTag;
+		
+		/**
 		 * 构造函数
 		 * create a [EncryptItem] object
 		 */
-		public function EncryptItem(strings:Vector.<String>)
+		public function EncryptItem(tag:DoABCTag)
 		{
-			this.strings = strings;
+			this.tag = tag;
+			this.strings = tag.abc.constants.strings;
 			
 			this.classes = new Vector.<uint>;
 			this.packages = new Vector.<uint>;

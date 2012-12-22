@@ -9,6 +9,7 @@ package
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
 	[SWF(frameRate="60", width="600", height="400")]
@@ -45,6 +46,7 @@ package
 			
 			bytes = swf.encode();
 			assertTrue(equals(bytes, loaderInfo.bytes));
+			//new FileReference().save(bytes, "encode.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -53,17 +55,18 @@ package
 				return String(this);
 			}
 			
+			var tag:DoABCTag;
 			for (var i:int = 0; i < swf.tags.length; i++)
 			{
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
+					tag = swf.tags[i] as DoABCTag;
+					trace("\n\n-----------------------------------------\n");
+					trace(tag.abc.constants.strings.join("\n"));
+					trace(tag.abc.files.join("\n"));
 					break;
 				}
 			}
-			
-			var abcTag:DoABCTag = swf.tags[i] as DoABCTag;
-//			trace(abcTag.abc.constants.strings.join("\n"));
-			trace(abcTag.abc.files.join("\n"));
 						
 			var size:SWFRect = swf.header.size;
 			assertTrue(size.width == stage.stageWidth);
