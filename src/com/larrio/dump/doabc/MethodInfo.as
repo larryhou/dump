@@ -147,7 +147,7 @@ package com.larrio.dump.doabc
 					item += _constants.strings[_paramNames[i]] + ":";
 				}
 				
-				item += _constants.multinames[_paramTypes[i]];
+				item += _constants.multinames[_paramTypes[i]] || "*";
 				if ((length - i) <= optionlen)
 				{
 					item += " = " + _options[++index];

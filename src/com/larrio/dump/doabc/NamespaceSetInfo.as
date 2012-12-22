@@ -70,7 +70,7 @@ package com.larrio.dump.doabc
 			var length:int = _namespaces.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				result[i] = _constants.namespaces[_namespaces[i]] ;
+				result[i] = _constants.namespaces[_namespaces[i]];
 			}
 			
 			return result.join(",");

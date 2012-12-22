@@ -30,7 +30,7 @@ package
 		protected var author:String = "larryhou";
 		
 		private var data:Class;
-		internal var key:String;
+		internal var key:*;
 		
 		/**
 		 * 构造函数
@@ -50,7 +50,7 @@ package
 			swf = new SWFile(bytes);
 			swf.decode();
 			
-			var callback:Function = function(date:Object = "FUCK YOU!"):String
+			var callback:* = function(date:* = "FUCK YOU!"):String
 			{
 				return String(this);
 			}
@@ -64,6 +64,7 @@ package
 			}
 			
 			var abcTag:DoABCTag = swf.tags[i] as DoABCTag;
+//			trace(abcTag.abc.constants.strings.join("\n"));
 			trace(abcTag.abc.files.join("\n"));
 						
 			var size:SWFRect = swf.header.size;

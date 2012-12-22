@@ -150,13 +150,13 @@ package com.larrio.dump.doabc
 			{
 				case TraitType.SLOT:
 				{
-					result += _abc.constants.multinames[_data.type];
+					result += _abc.constants.multinames[_data.type] || "*";
 					break;
 				}
 					
 				case TraitType.CONST:
 				{
-					result += _abc.constants.multinames[_data.type];
+					result += _abc.constants.multinames[_data.type] || "*";
 					result = "const " + result;
 					break;
 				}
