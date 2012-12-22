@@ -1,8 +1,8 @@
 package com.larrio.dump.doabc
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	
 	/**
 	 * 可选传参详细信息
@@ -43,6 +43,73 @@ package com.larrio.dump.doabc
 		{
 			encoder.writeEU30(_index);
 			encoder.writeUI8(_kind);
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:String = "";
+			
+			switch (_kind)
+			{
+				case OptionKindType.INT:
+				{
+					result += _constants.ints[_index];
+					break;
+				}
+					
+				case OptionKindType.UINT:
+				{
+					result += _constants.uints[_index];
+					break;
+				}
+					
+				case OptionKindType.DOUBLE:
+				{
+					result += _constants.doubles[_index];
+					break;
+				}
+					
+				case OptionKindType.UTF8:
+				{
+					result += _constants.strings[_index];
+					break;
+				}
+					
+				case OptionKindType.TRUE:
+				{
+					result += "true";
+					break;
+				}
+					
+				case OptionKindType.FALSE:
+				{
+					result += "false";
+					break;
+				}
+					
+				case OptionKindType.NULL:
+				{
+					result += "null";
+					break;
+				}
+					
+				case OptionKindType.UNDEFINED:
+				{
+					result += "undefined";
+					break;
+				}
+					
+				default:
+				{
+					result += _constants.namespaces[_index];
+					break;
+				}
+			}
+			
+			return result;
 		}
 		
 		/**
