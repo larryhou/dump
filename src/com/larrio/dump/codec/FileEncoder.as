@@ -240,11 +240,7 @@ package com.larrio.dump.codec
 			bytes.writeMultiByte(content, "utf-8");
 			bytes.position = 0;
 			
-			while (bytes.bytesAvailable)
-			{
-				writeByte(bytes.readByte());
-			}
-			
+			writeBytes(bytes);
 			writeByte(0);
 		}
 		
