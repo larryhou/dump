@@ -145,7 +145,6 @@ package com.larrio.dump.doabc
 				trait = variables[i];
 				
 				item = metadataSTR(trait.metadatas, abc);
-				
 				if (item) item += "\n\t";
 				
 				name = trait.toString().replace(/(private|protected|internal)\s*(\w+:\w+)/, "$1 var $2");
