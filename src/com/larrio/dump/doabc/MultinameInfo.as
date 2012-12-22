@@ -183,6 +183,7 @@ package com.larrio.dump.doabc
 		{
 			var length:uint, i:int;
 			var result:String = "";
+			
 			switch(_kind)
 			{
 				case MultiKindType.QNAME:
@@ -190,7 +191,7 @@ package com.larrio.dump.doabc
 				{
 					result += _constants.namespaces[_ns];
 					
-					if (result) result += ":";
+					if (result) result += " ";
 					result += _constants.strings[_name];
 					break;
 				}
@@ -198,7 +199,7 @@ package com.larrio.dump.doabc
 				case MultiKindType.RT_QNAME:
 				case MultiKindType.RT_QNAME_A:
 				{
-					result += _constants.strings[_name];
+					result +=  _constants.strings[_name];
 					break;
 				}
 					
@@ -221,7 +222,7 @@ package com.larrio.dump.doabc
 				{
 					result += _constants.nssets[_nsset];
 					
-					if (result) result += ":";
+					if (result) result += " ";
 					result += _constants.strings[_name];
 					break;
 				}

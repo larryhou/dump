@@ -143,7 +143,7 @@ package com.larrio.dump.doabc
 		public function toString():String
 		{
 			var result:String = "";
-			result = _abc.constants.multinames[_name].toString();
+			result += _abc.constants.multinames[_name];
 			if (result) result += ":";
 			
 			switch (_kind & 0xF)
@@ -160,7 +160,7 @@ package com.larrio.dump.doabc
 					result = "const " + result;
 					break;
 				}
-					
+				
 				case TraitType.CLASS:
 				{
 					result += "Class";

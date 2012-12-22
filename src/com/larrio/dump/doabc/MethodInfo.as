@@ -130,15 +130,15 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
+			var index:int;
 			var result:String = _constants.strings[_name];
-			if (result && !result.match(/(private|protected)/)) result = "public " + result;
 			
 			var optionlen:int = _options? _options.length : -1;
 			
 			var item:String, list:Array = [];
 			var length:uint = _paramTypes.length;
 			
-			var index:int = -1;
+			index = -1;
 			for (var i:int = 0; i < length; i++)
 			{
 				item = "";

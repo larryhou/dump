@@ -57,7 +57,7 @@ package com.larrio.dump.doabc
 			var result:String = "";
 			result += _constants.strings[_name];
 			
-			var key:String;
+			var key:String = "";
 			switch (_kind)
 			{
 				case NSKindType.PRIVATE_NS:
@@ -68,7 +68,7 @@ package com.larrio.dump.doabc
 					
 				case NSKindType.PACKAGE_INTERNAL_NS:
 				{
-					//key = "internal";
+					key = "internal";
 					break;
 				}
 					
@@ -91,7 +91,7 @@ package com.larrio.dump.doabc
 				result += key;
 			}
 			
-			return result;
+			return key;
 		}
 
 		/**

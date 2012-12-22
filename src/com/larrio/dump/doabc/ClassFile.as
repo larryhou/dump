@@ -136,6 +136,7 @@ package com.larrio.dump.doabc
 			var length:uint, i:int;
 			
 			var item:String;
+			var name:String;
 			var result:Array = [];
 			
 			length = variables.length;
@@ -146,7 +147,13 @@ package com.larrio.dump.doabc
 				item = metadataSTR(trait.metadatas, abc);
 				
 				if (item) item += "\n\t";
-				result.push(item + trait.toString());
+				
+				name = trait.toString().replace(/(private|protected)\s*(\w+:\w+)/, "$1 var $2");
+				if (!name.match(/(private|protected|const)/)) name = "public var " + name;
+				if (name.indexOf("const") == 0) name = "public " + name;
+				
+				item += name;
+				result.push(item);
 			}
 			
 			return result.join("\n\t");
