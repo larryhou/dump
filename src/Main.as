@@ -19,7 +19,7 @@ package
 	 * @author larryhou
 	 * @createTime Dec 15, 2012 2:31:50 PM
 	 */
-	public class Main extends Sprite
+	dynamic public class Main extends Sprite
 	{
 		public static const v1:uint = 1;
 		private static var v2:uint;
