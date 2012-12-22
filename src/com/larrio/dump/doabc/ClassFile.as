@@ -126,14 +126,14 @@ package com.larrio.dump.doabc
 
 			// instance class info
 			if (instance.variables) _content += "\n\t" + variableSTR(instance.variables, abc);
+			if (!instance.protocol)
+			{
+				_content += "\n";
+				_content += "\n" + methodSTR(instance.initializer, abc);
+			}
+			
 			if (instance.methods)
 			{
-				if (!instance.protocol)
-				{
-					_content += "\n";
-					_content += "\n" + methodSTR(instance.initializer, abc);
-				}
-				
 				length = instance.methods.length;
 				for (i = 0; i < length; i++)
 				{
