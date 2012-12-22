@@ -30,6 +30,7 @@ package
 		protected var author:String = "larryhou";
 		
 		private var data:Class;
+		internal var key:String;
 		
 		/**
 		 * 构造函数

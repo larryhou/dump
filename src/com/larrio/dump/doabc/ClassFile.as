@@ -148,9 +148,15 @@ package com.larrio.dump.doabc
 				
 				if (item) item += "\n\t";
 				
-				name = trait.toString().replace(/(private|protected)\s*(\w+:\w+)/, "$1 var $2");
-				if (!name.match(/(private|protected|const)/)) name = "public var " + name;
-				if (name.indexOf("const") == 0) name = "public " + name;
+				name = trait.toString().replace(/(private|protected|internal)\s*(\w+:\w+)/, "$1 var $2");
+				if (name.indexOf("const") == 0)
+				{
+					name = "public " + name;
+				}
+				else
+				{
+					if (!name.match(/(private|protected|internal)/)) name = "public var " + name;
+				}
 				
 				item += name;
 				result.push(item);
