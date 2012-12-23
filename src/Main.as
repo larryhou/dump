@@ -73,6 +73,11 @@ package
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+			
+			var shape:Sprite = new Sprite();
+			shape.graphics.beginFill(0xFF0000);
+			shape.graphics.drawRect(0, 0, 300, 200);
+			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
 		}
 		
 		// 比较两个字节数组是否相等

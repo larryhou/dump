@@ -103,5 +103,11 @@ package com.larrio.dump.tags
 		 * TAG字节数组
 		 */		
 		public function get bytes():ByteArray { return _bytes; }
+
+		/**
+		 * 特征ID
+		 */		
+		public function get character():uint { return _character; }
+
 	}
 }

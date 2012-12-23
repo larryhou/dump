@@ -61,6 +61,11 @@ package com.larrio.dump.tags
 				{
 					return new MetadataTag();
 				}
+					
+				case TagType.DEFINE_SCALING_GRID:
+				{
+					return new DefineScalingGridTag();
+				}
 			}
 			
 			return new SWFTag();

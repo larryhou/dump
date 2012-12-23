@@ -42,8 +42,6 @@ package com.larrio.dump.tags
 			_recursion = decoder.readUI16();
 			_timeout = decoder.readUI16();
 			
-			trace(this);
-			
 		}
 		
 		/**

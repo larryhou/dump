@@ -1,8 +1,8 @@
 package com.larrio.dump.model
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -67,6 +67,21 @@ package com.larrio.dump.model
 			
 			_width = (_maxX - _minX) / 20;
 			_height = (_maxY - _minY) / 20;
+			
+			trace(this);
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<Rect/>");
+			result.@minX = _minX;
+			result.@minY = _minY;
+			result.@maxX = _maxX;
+			result.@maxY = _maxY;
+			return result.toXMLString();
 		}
 
 		/**
