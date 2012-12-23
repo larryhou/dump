@@ -50,7 +50,6 @@ package com.larrio.dump.tags
 				_ids[i] = decoder.readUI16();
 				_symbols[i] = decoder.readSTR();
 			}
-			
 		}
 		
 		/**
@@ -72,6 +71,24 @@ package com.larrio.dump.tags
 				encoder.writeSTR(_symbols[i]);
 			}
 			
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var item:XML;
+			var result:XML = new XML("<symbols/>");
+			for (var i:int = 0; i < _ids.length; i++)
+			{
+				item = new XML("<symbol/>");
+				item.@id = _ids[i];
+				item.@name = _symbols[i];
+				result.appendChild(item);
+			}
+			
+			return result.toString();
 		}
 		
 		/**
