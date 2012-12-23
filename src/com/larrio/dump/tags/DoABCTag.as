@@ -96,5 +96,15 @@ package com.larrio.dump.tags
 		 */		
 		public function get abc():DoABC { return _abc; }
 
+		/**
+		 * DoABCTag名
+		 */		
+		public function get name():String { return _name; }
+		public function set name(value:String):void
+		{
+			_name = value;
+		}
+
+
 	}
 }

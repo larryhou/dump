@@ -91,7 +91,7 @@ package com.larrio.dump.doabc
 				result += key;
 			}
 			
-			return key;
+			return result;
 		}
 
 		/**
