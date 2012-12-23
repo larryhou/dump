@@ -4,22 +4,26 @@ package com.larrio.dump.tags
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.net.Responder;
+	
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 23, 2012 5:27:23 PM
+	 * @createTime Dec 23, 2012 5:31:43 PM
 	 */
-	public class EnableDebuggerTag extends SWFTag
+	public class EnableDebugger2Tag extends SWFTag
 	{
-		public static const TYPE:uint = TagType.ENABLE_DEBUGGER;
+		public static const TYPE:uint = TagType.ENABLE_DEBUGGER2;
 		
 		private var _password:String;
 		
+		private var _reserved:uint;
+		
 		/**
 		 * 构造函数
-		 * create a [EnableDebuggerTag] object
+		 * create a [EnableDebugger2Tag] object
 		 */
-		public function EnableDebuggerTag()
+		public function EnableDebugger2Tag()
 		{
 			
 		}
@@ -32,12 +36,13 @@ package com.larrio.dump.tags
 		{
 			super.decode(decoder);
 			
-			assertTrue(_type == EnableDebuggerTag.TYPE);
+			assertTrue(_type == EnableDebugger2Tag.TYPE);
 			
 			decoder = new FileDecoder();
 			decoder.writeBytes(_bytes);
 			decoder.position = 0;
 			
+			_reserved = decoder.readUI16();
 			_password = decoder.readSTR();
 		}
 		
@@ -49,6 +54,7 @@ package com.larrio.dump.tags
 		{
 			writeTagHeader(encoder);
 			
+			encoder.writeUI16(_reserved);
 			encoder.writeSTR(_password);
 		}
 		
@@ -57,7 +63,9 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<EnableDebugger2Tag/>");
+			result.@password = _password;
+			return result.toXMLString();	
 		}
 
 		/**

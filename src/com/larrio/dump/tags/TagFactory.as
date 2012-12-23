@@ -81,6 +81,11 @@ package com.larrio.dump.tags
 				{
 					return new EnableDebuggerTag();
 				}
+					
+				case TagType.ENABLE_DEBUGGER2:
+				{
+					return new EnableDebugger2Tag();
+				}
 			}
 			
 			return new SWFTag();
