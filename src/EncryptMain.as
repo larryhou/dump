@@ -35,7 +35,7 @@ package
 			// 导出加密后的SWF
 			bytes = swf.repack();
 			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			//new FileReference().save(bytes, "encrypt.swf");
+			new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -46,9 +46,8 @@ package
 				{
 					tag = swf.tags[i] as DoABCTag;
 					trace("\n\n-----------------------------------------\n");
-					//trace(tag.abc.constants.strings.join("\n"));
-					trace(tag.abc.files.join("\n"));
-					break;
+					trace(tag.abc.constants.strings.join("\n"));
+					//trace(tag.abc.files.join("\n"));
 				}
 			}
 			

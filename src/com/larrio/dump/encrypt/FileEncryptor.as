@@ -66,12 +66,6 @@ package com.larrio.dump.encrypt
 					value = item.strings[index];
 					
 					if (_reverse[value]) continue; // 已加密跳过
-					if (_map[value])
-					{
-						// 同名使用缓存
-						item.strings[index] = _map[value];
-						continue;
-					}
 					
 					while(true)
 					{
@@ -83,8 +77,6 @@ package com.larrio.dump.encrypt
 					_reverse[key] = value;
 					
 					_names.push(value);
-					
-					item.strings[index] = key;
 				}
 			}
 			
@@ -115,7 +107,25 @@ package com.larrio.dump.encrypt
 		// 导入配置
 		private function importConfig(settings:XML):void
 		{
+			if (!settings) return;
 			
+			var key:String, value:String;
+			var config:XMLList = settings.children();
+			
+			// 导入配置前清空配置
+			_map = new Dictionary(true);
+			_reverse = new Dictionary(true);
+			
+			// 导入全新配置
+			for each (var item:XML in config)
+			{
+				key = String(item.@key);
+				value = String(item.@value);
+				if (!key || !value) continue;
+				
+				_map[key] = value;
+				_reverse[value] = key;
+			}
 		}
 		
 		// 导出配置
@@ -155,7 +165,6 @@ package com.larrio.dump.encrypt
 						}
 						
 						strings[i] = value;
-						break;
 					}
 				}
 			}
