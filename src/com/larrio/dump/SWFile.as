@@ -45,7 +45,7 @@ package com.larrio.dump
 		}
 		
 		/**
-		 * 二进制编码 
+		 * 重新打包SWF二进制文件 
 		 */		
 		public function repack():ByteArray
 		{
@@ -84,7 +84,7 @@ package com.larrio.dump
 		}
 		
 		/**
-		 * 二进制解码 
+		 * SWF二进制解包
 		 */		
 		private function unpack():void
 		{
