@@ -35,8 +35,8 @@ package
 			
 			// 导出加密后的SWF
 			bytes = swf.encode();
-			assertTrue(bytes.length == loaderInfo.bytes.length);
-			//new FileReference().save(bytes, "encrypt.swf");
+			//assertTrue(bytes.length == loaderInfo.bytes.length);
+			new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -60,7 +60,7 @@ package
 			var code:uint = 0;
 			while (code <= 0xFF)
 			{
-				//trace(code + "\t" + String.fromCharCode(code));
+				trace(code + "\t" + String.fromCharCode(code));
 				code++;
 			}
 			

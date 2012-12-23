@@ -7,7 +7,6 @@ package com.larrio.dump.encrypt
 	import com.larrio.dump.doabc.ScriptInfo;
 	import com.larrio.dump.doabc.TraitInfo;
 	import com.larrio.dump.tags.DoABCTag;
-	import com.larrio.dump.tags.FrameLabelTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.SymbolClassTag;
 	import com.larrio.dump.tags.TagType;
@@ -123,7 +122,11 @@ package com.larrio.dump.encrypt
 					key = _names[k];
 					if (value.indexOf(key) >= 0)
 					{
-						value = value.replace(new RegExp(key, "g"), _map[key]);
+						while (value.indexOf(key) >= 0)
+						{
+							value = value.replace(key, _map[key]);
+						}
+						
 						strings[i] = value;
 						break;
 					}
@@ -136,13 +139,12 @@ package com.larrio.dump.encrypt
 		{
 			var result:String = "";
 			
-			var code:int;
+			var min:uint, max:uint;
+			min = 33; max = 126;
+			
 			while (result.length < source.length)
 			{
-				code = 33 + Math.random() * (126 - 33) >> 0;
-				//code = 97 + Math.random() * (122 - 97) >> 0;
-				result += String.fromCharCode(code);
-				
+				result += String.fromCharCode(min + (max - min) * Math.random() >> 0);
 			}
 			
 			assertTrue(result.length == source.length);
