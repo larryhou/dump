@@ -86,6 +86,11 @@ package com.larrio.dump.tags
 				{
 					return new EnableDebugger2Tag();
 				}
+					
+				case TagType.SET_BACKGROUND_COLOR:
+				{
+					return new SetBackgroundColorTag();
+				}
 			}
 			
 			return new SWFTag();
