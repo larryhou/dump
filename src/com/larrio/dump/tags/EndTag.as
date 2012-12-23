@@ -43,5 +43,13 @@ package com.larrio.dump.tags
 			
 		}
 		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			return "<EndTag/>";
+		}
+		
 	}
 }

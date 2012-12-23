@@ -92,7 +92,7 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var item:XML;
-			var result:XML = new XML("<Attributes/>");
+			var result:XML = new XML("<FileAttributesTag/>");
 			
 			result.@blit = _blit;
 			result.@gpu = _gpu;

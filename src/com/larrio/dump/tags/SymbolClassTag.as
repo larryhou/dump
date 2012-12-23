@@ -79,7 +79,7 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var item:XML;
-			var result:XML = new XML("<symbols/>");
+			var result:XML = new XML("<SymbolClassTag/>");
 			for (var i:int = 0; i < _ids.length; i++)
 			{
 				item = new XML("<symbol/>");
