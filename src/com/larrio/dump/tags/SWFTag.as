@@ -49,7 +49,7 @@ package com.larrio.dump.tags
 			const NAME:String = "TYPE";
 			if (NAME in Object(this).constructor)
 			{
-				assertTrue(_type = Object(this).constructor[NAME]);
+				assertTrue(_type == Object(this).constructor[NAME]);
 			}
 		}
 		
