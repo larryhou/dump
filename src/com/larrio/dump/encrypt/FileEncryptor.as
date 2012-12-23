@@ -47,42 +47,17 @@ package com.larrio.dump.encrypt
 		/**
 		 * 文件添加完成后调用此方法进行加密处理 
 		 */		
-		public function encrypt():void
+		public function encrypt(settings:XML = null):XML
 		{
+			importConfig(settings);
+			
 			var item:EncryptItem;
 			var length:uint, i:int;
 			
-			var key:String;
-			var value:String, index:uint;
-			
 			for each(item in _queue)
 			{
-				length = item.classes.length;
-				for (i = 0; i < length; i++)
-				{
-					index = item.classes[i];
-					value = item.strings[index];
-					
-					if (_reverse[value]) continue;
-					if (_map[value])
-					{
-						item.strings[index] = _map[value];
-						continue;
-					}
-					
-					while(true)
-					{
-						key = createEncryptSTR(value);
-						if (!_reverse[key]) break;
-					}
-					
-					_map[value] = key;
-					_reverse[key] = value;
-					
-					_names.push(value);
-					
-					item.strings[index] = key;
-				}
+				setup(item.classes, item.strings);
+				setup(item.packages, item.strings);
 			}
 			
 			// 按照字符串从长到短排列
@@ -90,7 +65,6 @@ package com.larrio.dump.encrypt
 			{
 				return s1.length > s2.length? -1 : 1;
 			});
-			
 			
 			var name:String;
 			for each(item in _queue)
@@ -107,6 +81,77 @@ package com.larrio.dump.encrypt
 				replace(symbol.symbols);
 			}
 			
+			return exportConfig();
+		}
+		
+		// 初始化加密key
+		private function setup(refers:Vector.<uint>, strings:Vector.<String>):void
+		{
+			var index:int;
+			var key:String, value:String;
+			
+			var length:uint = refers.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				index = refers[i];
+				value = strings[index];
+				
+				if (!value) continue;
+				if (_reverse[value]) continue; // 已加密跳过
+				
+				while(true)
+				{
+					key = createEncryptSTR(value);
+					if (!_reverse[key]) break;
+				}
+				
+				_map[value] = key;
+				_reverse[key] = value;
+				
+				_names.push(value);
+			}
+		}
+		
+		// 导入配置
+		private function importConfig(settings:XML):void
+		{
+			if (!settings) return;
+			
+			var key:String, value:String;
+			var config:XMLList = settings.children();
+			
+			// 导入配置前清空配置
+			_map = new Dictionary(true);
+			_reverse = new Dictionary(true);
+			
+			// 导入全新配置
+			for each (var item:XML in config)
+			{
+				key = String(item.@key);
+				value = String(item.@value);
+				if (!key || !value) continue;
+				
+				_map[key] = value;
+				_reverse[value] = key;
+			}
+		}
+		
+		// 导出配置
+		private function exportConfig():XML
+		{
+			var item:XML;
+			var settings:XML = new XML("<encrypt/>");
+			for (var key:String in _map)
+			{
+				item = new XML("<item/>");
+				
+				item.@key = key;
+				item.@value = _map[key];
+				
+				settings.appendChild(item);
+			}
+			
+			return settings;
 		}
 		
 		// 替换加密串
@@ -128,7 +173,6 @@ package com.larrio.dump.encrypt
 						}
 						
 						strings[i] = value;
-						break;
 					}
 				}
 			}
@@ -160,7 +204,6 @@ package com.larrio.dump.encrypt
 		{
 			_files.push(swf);
 			
-			var symbol:SymbolClassTag;
 			var list:Vector.<DoABCTag> = new Vector.<DoABCTag>();
 			for each(var tag:SWFTag in swf.tags)
 			{
@@ -168,28 +211,23 @@ package com.larrio.dump.encrypt
 				{
 					list.push(tag as DoABCTag);
 				}
-				else
-				if (tag.type == TagType.SYMBOL_CLASS)
-				{
-					symbol = tag as SymbolClassTag;
-				}
 			}
 			
-			processABCTags(list, symbol);
+			processABCTags(list);
 		}
 		
 		/**
 		 * 批量处理ABC 
 		 * @param list	DoABCTag对象数组
 		 */		
-		private function processABCTags(list:Vector.<DoABCTag>, symbol:SymbolClassTag):void
+		private function processABCTags(list:Vector.<DoABCTag>):void
 		{
 			var tag:DoABCTag;
 			var item:EncryptItem;
 			
 			for each(tag in list)
 			{
-				_queue.push(item = new EncryptItem(tag, symbol));
+				_queue.push(item = new EncryptItem(tag));
 				
 				for each(var script:ScriptInfo in tag.abc.scripts)
 				{
