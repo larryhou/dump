@@ -78,6 +78,7 @@ package
 			shape.graphics.beginFill(0xFF0000);
 			shape.graphics.drawRect(0, 0, 300, 200);
 			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
+			
 		}
 		
 		// 比较两个字节数组是否相等

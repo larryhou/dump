@@ -111,6 +111,11 @@ package com.larrio.dump.tags
 				{
 					return new DefineSceneAndFrameLabelDataTag();
 				}
+					
+				case TagType.DEFINE_BINARY_DATA:
+				{
+					return new DefineBinaryDataTag();
+				}
 			}
 			
 			return new SWFTag();
