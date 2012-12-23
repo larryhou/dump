@@ -30,20 +30,14 @@ package com.larrio.dump.encrypt
 		 * DoABCTag引用
 		 */		
 		public var tag:DoABCTag;
-		
-		/**
-		 * 链接名 
-		 */		
-		public var symbol:SymbolClassTag;
-		
+				
 		/**
 		 * 构造函数
 		 * create a [EncryptItem] object
 		 */
-		public function EncryptItem(tag:DoABCTag, symbol:SymbolClassTag)
+		public function EncryptItem(tag:DoABCTag)
 		{
 			this.tag = tag;
-			this.symbol = symbol;
 			
 			this.strings = tag.abc.constants.strings;
 			

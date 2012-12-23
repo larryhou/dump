@@ -160,7 +160,6 @@ package com.larrio.dump.encrypt
 		{
 			_files.push(swf);
 			
-			var symbol:SymbolClassTag;
 			var list:Vector.<DoABCTag> = new Vector.<DoABCTag>();
 			for each(var tag:SWFTag in swf.tags)
 			{
@@ -168,28 +167,23 @@ package com.larrio.dump.encrypt
 				{
 					list.push(tag as DoABCTag);
 				}
-				else
-				if (tag.type == TagType.SYMBOL_CLASS)
-				{
-					symbol = tag as SymbolClassTag;
-				}
 			}
 			
-			processABCTags(list, symbol);
+			processABCTags(list);
 		}
 		
 		/**
 		 * 批量处理ABC 
 		 * @param list	DoABCTag对象数组
 		 */		
-		private function processABCTags(list:Vector.<DoABCTag>, symbol:SymbolClassTag):void
+		private function processABCTags(list:Vector.<DoABCTag>):void
 		{
 			var tag:DoABCTag;
 			var item:EncryptItem;
 			
 			for each(tag in list)
 			{
-				_queue.push(item = new EncryptItem(tag, symbol));
+				_queue.push(item = new EncryptItem(tag));
 				
 				for each(var script:ScriptInfo in tag.abc.scripts)
 				{
