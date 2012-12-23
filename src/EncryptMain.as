@@ -2,9 +2,7 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.encrypt.FileEncryptor;
-	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.tags.DoABCTag;
-	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.display.Sprite;
 	import flash.net.FileReference;
