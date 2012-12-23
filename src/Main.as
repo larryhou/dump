@@ -45,6 +45,7 @@ package
 			swf = new SWFile(bytes);
 			
 			bytes = swf.repack();
+			assertTrue(bytes.length == loaderInfo.bytes.length);
 			assertTrue(equals(bytes, loaderInfo.bytes));
 			//new FileReference().save(bytes, "encode.swf");
 			
@@ -61,9 +62,9 @@ package
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;
-					trace("\n\n-----------------------------------------\n");
-					trace(tag.abc.constants.strings.join("\n"));
-					trace(tag.abc.files.join("\n"));
+					//trace("\n\n-----------------------------------------\n");
+					//trace(tag.abc.constants.strings.join("\n"));
+					//trace(tag.abc.files.join("\n"));
 					break;
 				}
 			}
@@ -78,11 +79,18 @@ package
 		[META(order="2", key="unit")]
 		protected function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
+			var v1:int, v2:int;
 			if (b1.length != b2.length) return false;
 			b1.position = b2.position = 0;
 			while (b1.bytesAvailable)
 			{
-				if (b1.readByte() != b2.readByte()) return false;
+				v1 = b1.readByte();
+				v2 = b2.readByte();
+				if (v1 != v2)
+				{
+					trace("byte:" + v1, v2);
+					return false;
+				}
 			}
 			
 			return true;
