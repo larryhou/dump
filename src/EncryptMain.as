@@ -29,12 +29,13 @@ package
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
 			encryptor.addFile(swf);
-			encryptor.encrypt();
+			
+			trace(encryptor.encrypt());
 			
 			// 导出加密后的SWF
 			bytes = swf.repack();
 			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			new FileReference().save(bytes, "encrypt.swf");
+			//new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -47,6 +48,7 @@ package
 					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
+					break;
 				}
 			}
 			
@@ -58,7 +60,7 @@ package
 			var code:uint = 0;
 			while (code <= 0xFF)
 			{
-				trace(code + "\t" + String.fromCharCode(code));
+				//trace(code + "\t" + String.fromCharCode(code));
 				code++;
 			}
 			

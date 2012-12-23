@@ -47,8 +47,10 @@ package com.larrio.dump.encrypt
 		/**
 		 * 文件添加完成后调用此方法进行加密处理 
 		 */		
-		public function encrypt():void
+		public function encrypt(settings:XML = null):XML
 		{
+			importConfig(settings);
+			
 			var item:EncryptItem;
 			var length:uint, i:int;
 			
@@ -63,9 +65,10 @@ package com.larrio.dump.encrypt
 					index = item.classes[i];
 					value = item.strings[index];
 					
-					if (_reverse[value]) continue;
+					if (_reverse[value]) continue; // 已加密跳过
 					if (_map[value])
 					{
+						// 同名使用缓存
 						item.strings[index] = _map[value];
 						continue;
 					}
@@ -91,7 +94,6 @@ package com.larrio.dump.encrypt
 				return s1.length > s2.length? -1 : 1;
 			});
 			
-			
 			var name:String;
 			for each(item in _queue)
 			{
@@ -107,6 +109,31 @@ package com.larrio.dump.encrypt
 				replace(symbol.symbols);
 			}
 			
+			return exportConfig();
+		}
+		
+		// 导入配置
+		private function importConfig(settings:XML):void
+		{
+			
+		}
+		
+		// 导出配置
+		private function exportConfig():XML
+		{
+			var item:XML;
+			var settings:XML = new XML("<encrypt/>");
+			for (var key:String in _map)
+			{
+				item = new XML("<item/>");
+				
+				item.@key = key;
+				item.@value = _map[key];
+				
+				settings.appendChild(item);
+			}
+			
+			return settings;
 		}
 		
 		// 替换加密串
