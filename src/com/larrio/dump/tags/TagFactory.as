@@ -106,6 +106,11 @@ package com.larrio.dump.tags
 				{
 					return new ImportAssets2Tag();
 				}
+					
+				case TagType.DEFINE_SCENE_AND_FRAME_LABEL_DATA:
+				{
+					return new DefineSceneAndFrameLabelDataTag();
+				}
 			}
 			
 			return new SWFTag();
