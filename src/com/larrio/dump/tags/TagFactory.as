@@ -56,6 +56,11 @@ package com.larrio.dump.tags
 				{
 					return new ScriptLimitsTag();
 				}
+					
+				case TagType.META_DATA:
+				{
+					return new MetadataTag();
+				}
 			}
 			
 			return new SWFTag();
