@@ -182,7 +182,7 @@ package com.larrio.dump.codec
 		public function writeS8(value:int):void
 		{
 			assertInt(value, 8);			
-			writeUI8(value);
+			writeUI8(unsign(value, 8));
 		}
 		
 		/**
@@ -191,7 +191,7 @@ package com.larrio.dump.codec
 		public function writeS16(value:int):void
 		{
 			assertInt(value, 16);			
-			writeUI16(value);
+			writeUI16(unsign(value, 16));
 		}
 		
 		/**
@@ -200,7 +200,7 @@ package com.larrio.dump.codec
 		public function writeS24(value:int):void
 		{
 			assertInt(value, 24);
-			writeUI24(value);
+			writeUI24(unsign(value, 24));
 		}
 		
 		/**
@@ -209,7 +209,7 @@ package com.larrio.dump.codec
 		public function writeS32(value:int):void
 		{
 			assertInt(value, 32);			
-			writeUI32(value);
+			writeUI32(unsign(value, 32));
 		}
 		
 		/**
@@ -218,7 +218,7 @@ package com.larrio.dump.codec
 		public function writeES30(value:int):void
 		{
 			assertInt(value, 30);			
-			writeEU30(value);
+			writeEU30(unsign(value, 30));
 		}
 		
 		/**
@@ -227,7 +227,7 @@ package com.larrio.dump.codec
 		public function writeES32(value:int):void
 		{
 			assertInt(value, 32);			
-			writeEU32(value);
+			writeEU32(unsign(value, 32));
 		}
 		
 		/**
