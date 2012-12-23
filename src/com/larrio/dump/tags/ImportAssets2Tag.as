@@ -2,24 +2,27 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 23, 2012 11:07:08 PM
+	 * @createTime Dec 23, 2012 11:24:27 PM
 	 */
-	public class ExportAssetsTag extends SWFTag
+	public class ImportAssets2Tag extends SWFTag
 	{
-		public static const TYPE:uint = TagType.EXPORT_ASSETS;
+		public static const TYPE:uint = TagType.IMPORT_ASSETS2;
 		
-		protected var _ids:Vector.<uint>;
-		protected var _names:Vector.<String>;
+		private var _url:String;
+		
+		private var _ids:Vector.<uint>;
+		private var _names:Vector.<String>;
 		
 		/**
 		 * 构造函数
-		 * create a [ExportAssetsTag] object
+		 * create a [ImportAssets2Tag] object
 		 */
-		public function ExportAssetsTag()
+		public function ImportAssets2Tag()
 		{
 			
 		}
@@ -36,8 +39,12 @@ package com.larrio.dump.tags
 			decoder.writeBytes(_bytes);
 			decoder.position = 0;
 			
-			var length:uint, i:int;
+			_url = decoder.readSTR();
 			
+			assertTrue(decoder.readUI8() == 1);
+			assertTrue(decoder.readUI8() == 0);
+			
+			var length:uint, i:int;
 			length = decoder.readUI16();
 			
 			_ids = new Vector.<uint>(length, true);
@@ -60,6 +67,11 @@ package com.larrio.dump.tags
 		{
 			writeTagHeader(encoder);
 			
+			encoder.writeSTR(_url);
+			
+			encoder.writeUI8(1);
+			encoder.writeUI8(0);
+			
 			var length:uint, i:int;
 			
 			length = _ids.length;
@@ -70,6 +82,8 @@ package com.larrio.dump.tags
 				encoder.writeUI16(_ids[i]);
 				encoder.writeSTR(_names[i]);
 			}
+			
+			trace(this);
 		}
 		
 		/**
@@ -77,7 +91,8 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<ExportAssetsTag/>");
+			var result:XML = new XML("<ImportAssets2Tag/>");
+			result.@url = _url;
 			
 			var item:XML;
 			var length:uint = _ids.length;
@@ -93,12 +108,17 @@ package com.larrio.dump.tags
 		}
 
 		/**
+		 * URL where the source SWF file can be found
+		 */		
+		public function get url():String { return _url; }
+
+		/**
 		 * charactor id
 		 */		
 		public function get ids():Vector.<uint> { return _ids; }
 
 		/**
-		 * identifiers
+		 * identifier
 		 */		
 		public function get names():Vector.<String> { return _names; }
 

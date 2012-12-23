@@ -96,6 +96,16 @@ package com.larrio.dump.tags
 				{
 					return new ExportAssetsTag();
 				}
+					
+				case TagType.IMPORT_ASSETS:
+				{
+					return new ImportAssetsTag();
+				}
+					
+				case TagType.IMPORT_ASSETS2:
+				{
+					return new ImportAssets2Tag();
+				}
 			}
 			
 			return new SWFTag();
