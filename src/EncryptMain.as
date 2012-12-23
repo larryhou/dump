@@ -32,7 +32,7 @@ package
 			encryptor.encrypt();
 			
 			// 导出加密后的SWF
-			bytes = swf.encode();
+			bytes = swf.repack();
 			//assertTrue(bytes.length == loaderInfo.bytes.length);
 			new FileReference().save(bytes, "encrypt.swf");
 			

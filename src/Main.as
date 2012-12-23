@@ -44,7 +44,7 @@ package
 			bytes = loaderInfo.bytes;
 			swf = new SWFile(bytes);
 			
-			bytes = swf.encode();
+			bytes = swf.repack();
 			assertTrue(equals(bytes, loaderInfo.bytes));
 			//new FileReference().save(bytes, "encode.swf");
 			

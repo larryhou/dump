@@ -19,8 +19,6 @@ package com.larrio.dump.tags
 		protected var _length:int;
 		protected var _bytes:ByteArray;
 		
-		protected var _size:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object

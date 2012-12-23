@@ -41,13 +41,13 @@ package com.larrio.dump
 			_decoder.writeBytes(bytes);
 			_decoder.position = 0;
 			
-			decode();
+			unpack();
 		}
 		
 		/**
 		 * 二进制编码 
 		 */		
-		public function encode():ByteArray
+		public function repack():ByteArray
 		{
 			var length:int;
 			var content:FileEncoder;
@@ -86,7 +86,7 @@ package com.larrio.dump
 		/**
 		 * 二进制解码 
 		 */		
-		private function decode():void
+		private function unpack():void
 		{
 			_decoder.position = 0;
 			
