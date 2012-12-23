@@ -76,6 +76,11 @@ package com.larrio.dump.tags
 				{
 					return new SetTabIndexTag();
 				}
+					
+				case TagType.ENABLE_DEBUGGER:
+				{
+					return new EnableDebuggerTag();
+				}
 			}
 			
 			return new SWFTag();
