@@ -66,6 +66,11 @@ package com.larrio.dump.tags
 				{
 					return new DefineScalingGridTag();
 				}
+					
+				case TagType.PROTECT:
+				{
+					return new ProtectTag();
+				}
 			}
 			
 			return new SWFTag();
