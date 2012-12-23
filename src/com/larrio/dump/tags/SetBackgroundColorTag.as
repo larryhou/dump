@@ -38,8 +38,6 @@ package com.larrio.dump.tags
 			
 			_color = new RGBColor();
 			_color.decode(decoder);
-			
-			trace(this);
 		}
 		
 		/**
