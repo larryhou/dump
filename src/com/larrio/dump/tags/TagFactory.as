@@ -116,6 +116,11 @@ package com.larrio.dump.tags
 				{
 					return new DefineBinaryDataTag();
 				}
+					
+				case TagType.SHOW_FRAME:
+				{
+					return new ShowFrameTag();
+				}
 			}
 			
 			return new SWFTag();
