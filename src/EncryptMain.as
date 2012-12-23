@@ -48,7 +48,7 @@ package
 					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					break;
+					//break;
 				}
 			}
 			
