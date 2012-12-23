@@ -145,7 +145,6 @@ package com.larrio.dump.tags
 		 * frame label
 		 */		
 		public function get labels():Vector.<String> { return _labels; }
-
-
+		
 	}
 }
