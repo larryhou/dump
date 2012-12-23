@@ -91,6 +91,11 @@ package com.larrio.dump.tags
 				{
 					return new SetBackgroundColorTag();
 				}
+					
+				case TagType.EXPORT_ASSETS:
+				{
+					return new ExportAssetsTag();
+				}
 			}
 			
 			return new SWFTag();
