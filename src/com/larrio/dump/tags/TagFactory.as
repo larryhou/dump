@@ -51,6 +51,11 @@ package com.larrio.dump.tags
 				{
 					return new EndTag();
 				}
+					
+				case TagType.SCRIPT_LIMITS:
+				{
+					return new ScriptLimitsTag();
+				}
 			}
 			
 			return new SWFTag();
