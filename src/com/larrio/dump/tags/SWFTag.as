@@ -2,6 +2,7 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.utils.assertInt;
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
@@ -44,6 +45,12 @@ package com.larrio.dump.tags
 			decoder.readBytes(_bytes, 0, _length);
 			
 			assertTrue(_bytes.length == _length);
+			
+			const NAME:String = "TYPE";
+			if (NAME in Object(this).constructor)
+			{
+				assertTrue(_type = Object(this).constructor[NAME]);
+			}
 		}
 		
 		/**
