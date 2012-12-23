@@ -71,6 +71,11 @@ package com.larrio.dump.tags
 				{
 					return new ProtectTag();
 				}
+				
+				case TagType.SET_TABLE_INDEX:
+				{
+					return new SetTabIndexTag();
+				}
 			}
 			
 			return new SWFTag();
