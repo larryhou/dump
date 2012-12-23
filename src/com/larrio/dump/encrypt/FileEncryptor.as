@@ -54,30 +54,10 @@ package com.larrio.dump.encrypt
 			var item:EncryptItem;
 			var length:uint, i:int;
 			
-			var key:String;
-			var value:String, index:uint;
-			
 			for each(item in _queue)
 			{
-				length = item.classes.length;
-				for (i = 0; i < length; i++)
-				{
-					index = item.classes[i];
-					value = item.strings[index];
-					
-					if (_reverse[value]) continue; // 已加密跳过
-					
-					while(true)
-					{
-						key = createEncryptSTR(value);
-						if (!_reverse[key]) break;
-					}
-					
-					_map[value] = key;
-					_reverse[key] = value;
-					
-					_names.push(value);
-				}
+				setup(item.classes, item.strings);
+				setup(item.packages, item.strings);
 			}
 			
 			// 按照字符串从长到短排列
@@ -102,6 +82,34 @@ package com.larrio.dump.encrypt
 			}
 			
 			return exportConfig();
+		}
+		
+		// 初始化加密key
+		private function setup(refers:Vector.<uint>, strings:Vector.<String>):void
+		{
+			var index:int;
+			var key:String, value:String;
+			
+			var length:uint = refers.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				index = refers[i];
+				value = strings[index];
+				
+				if (!value) continue;
+				if (_reverse[value]) continue; // 已加密跳过
+				
+				while(true)
+				{
+					key = createEncryptSTR(value);
+					if (!_reverse[key]) break;
+				}
+				
+				_map[value] = key;
+				_reverse[key] = value;
+				
+				_names.push(value);
+			}
 		}
 		
 		// 导入配置
