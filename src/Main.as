@@ -82,10 +82,13 @@ package
 			shape.graphics.drawRect(0, 0, 300, 200);
 			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
 			
-			var result:Number = fixed(0x30000, 3, 16);
-			trace(result);
+			var result:Number = 2.125;
+			//fixed(0x7FFFFFFF, 24, 8);
+			//trace(result);
 			
-			trace(unfixed(result, 3, 16).toString(16).toUpperCase());
+			var num:uint = unfixed(result, 4, 28);
+			trace(num.toString(16).toUpperCase());
+			trace(fixed(num, 4, 28));
 		}
 		
 		// 比较两个字节数组是否相等

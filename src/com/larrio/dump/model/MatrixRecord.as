@@ -87,6 +87,7 @@ package com.larrio.dump.model
 			encoder.writeUB(_tbits, 5);
 			encoder.writeSB(_translateX, _tbits);
 			encoder.writeSB(_translateY, _tbits);
+			encoder.flush();
 		}
 		
 		/**
