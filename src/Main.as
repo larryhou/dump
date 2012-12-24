@@ -1,10 +1,12 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.actions.ActionType;
 	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.utils.formatTypes;
 	import com.larrio.math.fixed;
 	import com.larrio.math.sign;
 	import com.larrio.math.unfixed;
@@ -92,6 +94,8 @@ package
 			var num:uint = unfixed(result, 4, 28);
 			trace(num.toString(16).toUpperCase());
 			trace(fixed(num, 4, 28));
+			
+			formatTypes(ActionType, 38, true);
 		}
 		
 		// 比较两个字节数组是否相等
