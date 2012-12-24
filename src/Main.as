@@ -25,8 +25,8 @@ package
 	 */
 	final dynamic public class Main extends Sprite
 	{
-		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
-		private const _cls : Class;
+		//[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
+		//private const _cls : Class;
 		
 		public static const v1:uint = 1;
 		private static var v2:uint;
@@ -51,7 +51,7 @@ package
 			swf = new SWFile(bytes);
 			
 			bytes = swf.repack();
-			assertTrue(bytes.length == loaderInfo.bytes.length);
+			//assertTrue(bytes.length == loaderInfo.bytes.length);
 			assertTrue(equals(bytes, loaderInfo.bytes));
 			//new FileReference().save(bytes, "encode.swf");
 			
@@ -99,7 +99,6 @@ package
 		protected function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
 			var v1:int, v2:int;
-			if (b1.length != b2.length) return false;
 			b1.position = b2.position = 0;
 			while (b1.bytesAvailable)
 			{
@@ -107,7 +106,7 @@ package
 				v2 = b2.readByte();
 				if (v1 != v2)
 				{
-					trace("byte:" + v1, v2);
+					trace("byte:" + v1 + " " + v2 + ", offset:" + b1.position);
 					return false;
 				}
 			}

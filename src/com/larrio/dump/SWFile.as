@@ -113,6 +113,8 @@ package com.larrio.dump
 				
 				_tags.push(tag);
 			}
+			
+			trace(_decoder.bytesAvailable);
 		}
 
 		/**

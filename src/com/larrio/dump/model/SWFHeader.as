@@ -112,8 +112,8 @@ package com.larrio.dump.model
 			result.@signature = _signature;
 			result.@compressed = _compressed;
 			result.@version = _version;
-			result.@width = _size.width / 20;
-			result.@height = _size.height / 20;
+			result.@width = _size.width;
+			result.@height = _size.height;
 			result.@frameRate = fixed(_frameRate, 8, 8);
 			result.@frameCount = _frameCount;
 			
