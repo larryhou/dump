@@ -11,6 +11,7 @@ package com.larrio.dump.model
 	 */
 	public class ColorTransformRecord implements ICodec
 	{
+		private var _alpha:Boolean;
 		private var _offset:Boolean;
 		private var _nbits:uint;
 		
@@ -19,18 +20,20 @@ package com.larrio.dump.model
 		private var _redOffset:uint;
 		private var _greenOffset:uint;
 		private var _blueOffset:uint;
+		private var _alphaOffset:uint;
 		
 		private var _redMultiplier:uint;
 		private var _greenMultiplier:uint;
 		private var _blueMultiplier:uint;
+		private var _alphaMultiplier:uint;
 		
 		/**
 		 * 构造函数
 		 * create a [ColorTransformRecord] object
 		 */
-		public function ColorTransformRecord()
+		public function ColorTransformRecord(alpha:Boolean = false)
 		{
-			
+			_alpha = alpha;
 		}
 		
 		/**
@@ -44,19 +47,30 @@ package com.larrio.dump.model
 			
 			_nbits = decoder.readUB(4);
 			
-			if (_offset)
-			{
-				_redOffset = decoder.readUB(_nbits);
-				_greenOffset = decoder.readUB(_nbits);
-				_blueOffset = decoder.readUB(_nbits);
-			}
-			
 			if (_multiplier)
 			{
-				_redMultiplier = decoder.readUB(_nbits);
-				_greenMultiplier = decoder.readUB(_nbits);
-				_blueMultiplier = decoder.readUB(_nbits);
+				_redMultiplier = decoder.readSB(_nbits);
+				_greenMultiplier = decoder.readSB(_nbits);
+				_blueMultiplier = decoder.readSB(_nbits);
+				
+				if (_alpha)
+				{
+					_alphaMultiplier = decoder.readSB(_nbits);
+				}
 			}
+			
+			if (_offset)
+			{
+				_redOffset = decoder.readSB(_nbits);
+				_greenOffset = decoder.readSB(_nbits);
+				_blueOffset = decoder.readSB(_nbits);
+				
+				if (_alpha)
+				{
+					_alphaOffset = decoder.readSB(_nbits);
+				}
+			}
+
 		}
 		
 		/**
@@ -69,18 +83,28 @@ package com.larrio.dump.model
 			encoder.writeUB(int(_multiplier), 1);
 			encoder.writeUB(_nbits, 4);
 			
-			if (_offset)
-			{
-				encoder.writeUB(_redOffset, _nbits);
-				encoder.writeUB(_greenOffset, _nbits);
-				encoder.writeUB(_blueOffset, _nbits);
-			}
-			
 			if (_multiplier)
 			{
-				encoder.writeUB(_redMultiplier, _nbits);
-				encoder.writeUB(_greenMultiplier, _nbits);
-				encoder.writeUB(_blueMultiplier, _nbits);
+				encoder.writeSB(_redMultiplier, _nbits);
+				encoder.writeSB(_greenMultiplier, _nbits);
+				encoder.writeSB(_blueMultiplier, _nbits);
+				
+				if (_alpha)
+				{
+					encoder.writeSB(_alphaMultiplier, _nbits);
+				}
+			}
+			
+			if (_offset)
+			{
+				encoder.writeSB(_redOffset, _nbits);
+				encoder.writeSB(_greenOffset, _nbits);
+				encoder.writeSB(_blueOffset, _nbits);
+				
+				if (_alpha)
+				{
+					encoder.writeSB(_alphaOffset, _nbits);
+				}
 			}
 		}
 		
@@ -90,13 +114,24 @@ package com.larrio.dump.model
 		public function toString():String
 		{
 			var result:XML = new XML("<ColorTransform/>");
+			result.@redMultiplier = _redMultiplier;
+			result.@greenMultiplier = _greenMultiplier;
+			result.@blueMultiplier = _blueMultiplier;
+			
+			if (_alpha)
+			{
+				result.@alphaMultiplier = _alphaMultiplier;
+			}
+			
 			result.@redOffset = _redOffset;
 			result.@greenOffset = _greenOffset;
 			result.@blueOffset = _blueOffset;
 			
-			result.@redMultiplier = _redMultiplier;
-			result.@greenMultiplier = _greenMultiplier;
-			result.@blueMultiplier = _blueMultiplier;
+			if (_alpha)
+			{
+				result.@alphaOffset = _alphaOffset;
+			}
+
 			return result.toXMLString();	
 		}
 
