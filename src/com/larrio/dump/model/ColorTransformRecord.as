@@ -165,5 +165,15 @@ package com.larrio.dump.model
 		 */		
 		public function get blueMultiplier():uint { return _blueMultiplier; }
 
+		/**
+		 * alpha offset
+		 */		
+		public function get alphaOffset():uint { return _alphaOffset; }
+
+		/**
+		 * alpha multiplier
+		 */		
+		public function get alphaMultiplier():uint { return _alphaMultiplier; }
+
 	}
 }
