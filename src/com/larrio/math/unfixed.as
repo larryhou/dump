@@ -16,6 +16,6 @@ package com.larrio.math
 		var integer:int = value >> 0;
 		var decimal:Number = Math.abs(value - integer);
 		
-		return (unsign(integer, high) << low) | (decimal * (1 << low) >> 0);
+		return (unsign(integer, high) << low) | (decimal * (1 << low) >> 0/* 可能会导致精度丢失 */);
 	}
 }
