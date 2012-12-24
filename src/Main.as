@@ -5,6 +5,9 @@ package
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.math.fixed;
+	import com.larrio.math.sign;
+	import com.larrio.math.unfixed;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -79,6 +82,10 @@ package
 			shape.graphics.drawRect(0, 0, 300, 200);
 			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
 			
+			var result:Number = fixed(0x30000, 3, 16);
+			trace(result);
+			
+			trace(unfixed(result, 3, 16).toString(16).toUpperCase());
 		}
 		
 		// 比较两个字节数组是否相等

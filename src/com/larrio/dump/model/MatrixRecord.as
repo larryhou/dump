@@ -3,6 +3,7 @@ package com.larrio.dump.model
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.math.fixed;
 	
 	/**
 	 * 
@@ -93,7 +94,14 @@ package com.larrio.dump.model
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<Matrix/>");
+			result.@scaleX = fixed(_scaleX, 16, 16);
+			result.@scaleY = fixed(_scaleY, 16, 16);
+			result.@skew0 = fixed(_skew0, 16, 16);
+			result.@skew1 = fixed(_skew1, 16, 16);
+			result.@translateX = _translateX / 20;
+			result.@translateY = _translateY / 20;
+			return result.toXMLString();	
 		}
 
 		/**
