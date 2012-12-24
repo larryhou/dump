@@ -106,6 +106,8 @@ package com.larrio.dump.model
 					encoder.writeSB(_alphaOffset, _nbits);
 				}
 			}
+			
+			encoder.flush();
 		}
 		
 		/**
