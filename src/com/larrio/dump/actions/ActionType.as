@@ -42,8 +42,8 @@ package com.larrio.dump.actions
 		public static const GET_MEMBER        :uint = 0x4E; // 78
 		public static const GET_PROPERTY      :uint = 0x22; // 34
 		public static const GET_TIME          :uint = 0x34; // 52
-		public static const GET_UR_L          :uint = 0x83; // 131
-		public static const GET_UR_L2         :uint = 0x9A; // 154
+		public static const GET_URL           :uint = 0x83; // 131
+		public static const GET_URL2          :uint = 0x9A; // 154
 		public static const GET_VARIABLE      :uint = 0x1C; // 28
 		public static const GOTO_FRAME        :uint = 0x81; // 129
 		public static const GOTO_FRAME2       :uint = 0x9F; // 159
