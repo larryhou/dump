@@ -229,7 +229,7 @@ package com.larrio.dump.doabc
 				if (item.indexOf("__go_to_") < 0) result.push(item);
 			}
 			
-			return result.join("\n");
+			return result.join("\n\t");
 		}
 		
 		/**

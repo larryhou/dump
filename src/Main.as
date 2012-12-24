@@ -25,8 +25,8 @@ package
 	 */
 	final dynamic public class Main extends Sprite
 	{
-		//[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
-		//private const _cls : Class;
+		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
+		private const _cls : Class;
 		
 		public static const v1:uint = 1;
 		private static var v2:uint;

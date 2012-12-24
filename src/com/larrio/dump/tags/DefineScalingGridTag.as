@@ -41,7 +41,6 @@ package com.larrio.dump.tags
 			_splitter = new SWFRect();
 			_splitter.decode(decoder);
 			
-			trace(this);
 		}
 		
 		/**
