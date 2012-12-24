@@ -16,7 +16,7 @@ package com.larrio.dump.actions
 		public static const BIT_LSHIFT        :uint = 0x63; // 99
 		public static const BIT_OR            :uint = 0x61; // 97
 		public static const BIT_RSHIFT        :uint = 0x64; // 100
-		public static const BIT_UR_SHIFT      :uint = 0x65; // 101
+		public static const BIT_URSHIFT       :uint = 0x65; // 101
 		public static const BIT_XOR           :uint = 0x62; // 98
 		public static const CALL              :uint = 0x9E; // 158
 		public static const CALL_FUNCTION     :uint = 0x3D; // 61
@@ -80,7 +80,7 @@ package com.larrio.dump.actions
 		public static const PUSH_DUPLICATE    :uint = 0x4C; // 76
 		public static const RANDOM_NUMBER     :uint = 0x30; // 48
 		public static const REMOVE_SPRITE     :uint = 0x25; // 37
-		public static const RETURN            :uint = 0x3E; // 62
+		public static const RETURN$           :uint = 0x3E; // 62
 		public static const SET_MEMBER        :uint = 0x4F; // 79
 		public static const SET_PROPERTY      :uint = 0x23; // 35
 		public static const SET_TARGET        :uint = 0x8B; // 139
@@ -101,7 +101,7 @@ package com.larrio.dump.actions
 		public static const STRING_LESS       :uint = 0x29; // 41
 		public static const SUBTRACT          :uint = 0x0B; // 11
 		public static const TARGET_PATH       :uint = 0x45; // 69
-		public static const THROW             :uint = 0x2A; // 42
+		public static const THROW$            :uint = 0x2A; // 42
 		public static const TO_INTEGER        :uint = 0x18; // 24
 		public static const TO_NUMBER         :uint = 0x4A; // 74
 		public static const TO_STRING         :uint = 0x4B; // 75
