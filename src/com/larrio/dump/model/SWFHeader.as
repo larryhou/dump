@@ -96,6 +96,9 @@ package com.larrio.dump.model
 			_size = new SWFRect();
 			_size.decode(decoder);
 			
+			assertTrue(_size.minX == 0);
+			assertTrue(_size.minY == 0);
+			
 			_frameRate = decoder.readUI16();
 			_frameCount = decoder.readUI16();
 		}

@@ -56,13 +56,9 @@ package com.larrio.dump.model
 			_nbits = decoder.readUB(5);
 			
 			_minX = decoder.readSB(_nbits);
-			assertTrue(_minX == 0);
-			
 			_maxX = decoder.readSB(_nbits);
 			
 			_minY = decoder.readSB(_nbits);
-			assertTrue(_minY == 0);
-			
 			_maxY = decoder.readSB(_nbits);
 			
 			_width = (_maxX - _minX) / 20;
