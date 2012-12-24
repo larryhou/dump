@@ -20,7 +20,7 @@ package com.larrio.dump.tags
 		protected var _length:int;
 		protected var _bytes:ByteArray;
 		
-		protected var _codeAndLength:uint;
+		private var _codeAndLength:uint;
 		
 		/**
 		 * 构造函数
