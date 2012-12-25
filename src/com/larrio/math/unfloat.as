@@ -14,10 +14,12 @@ package com.larrio.math
 	public function unfloat(value:Number, size:uint, high:uint, bias:uint = 0):uint
 	{
 		var low:uint = size - high - 1;
+		
 		var sign:uint = value > 0? 0 : 1;
+		value = Math.abs(value);
 		
 		var integer:uint = value >> 0;
-		var decimal:Number = Math.abs(value - integer);
+		var decimal:Number = value - integer;
 		
 		var exponent:uint, mantissa:uint;
 		if (bias == 0) bias = (1 << (high - 1)) - 1;
