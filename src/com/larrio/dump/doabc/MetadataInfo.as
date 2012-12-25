@@ -49,7 +49,6 @@ package com.larrio.dump.doabc
 			{
 				_items[i].value = decoder.readEU30();
 			}
-			
 		}
 		
 		/**

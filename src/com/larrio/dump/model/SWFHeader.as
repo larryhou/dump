@@ -1,9 +1,10 @@
 package com.larrio.dump.model
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.math.fixed;
 	
 	import flash.utils.ByteArray;
 	
@@ -56,6 +57,8 @@ package com.larrio.dump.model
 			encoder.writeUI8(("S").charCodeAt(0));
 			
 			encoder.writeUI8(_version);
+			
+			trace(this);
 		}
 		
 		/**
@@ -93,8 +96,28 @@ package com.larrio.dump.model
 			_size = new SWFRect();
 			_size.decode(decoder);
 			
+			assertTrue(_size.minX == 0);
+			assertTrue(_size.minY == 0);
+			
 			_frameRate = decoder.readUI16();
 			_frameCount = decoder.readUI16();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<Header/>");
+			result.@signature = _signature;
+			result.@compressed = _compressed;
+			result.@version = _version;
+			result.@width = _size.width;
+			result.@height = _size.height;
+			result.@frameRate = fixed(_frameRate, 8, 8);
+			result.@frameCount = _frameCount;
+			
+			return result.toXMLString();
 		}
 
 		/**

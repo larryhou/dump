@@ -46,6 +46,81 @@ package com.larrio.dump.tags
 				{
 					return new FrameLabelTag();
 				}
+					
+				case TagType.END:
+				{
+					return new EndTag();
+				}
+					
+				case TagType.SCRIPT_LIMITS:
+				{
+					return new ScriptLimitsTag();
+				}
+					
+				case TagType.META_DATA:
+				{
+					return new MetadataTag();
+				}
+					
+				case TagType.DEFINE_SCALING_GRID:
+				{
+					return new DefineScalingGridTag();
+				}
+					
+				case TagType.PROTECT:
+				{
+					return new ProtectTag();
+				}
+				
+				case TagType.SET_TABLE_INDEX:
+				{
+					return new SetTabIndexTag();
+				}
+					
+				case TagType.ENABLE_DEBUGGER:
+				{
+					return new EnableDebuggerTag();
+				}
+					
+				case TagType.ENABLE_DEBUGGER2:
+				{
+					return new EnableDebugger2Tag();
+				}
+					
+				case TagType.SET_BACKGROUND_COLOR:
+				{
+					return new SetBackgroundColorTag();
+				}
+					
+				case TagType.EXPORT_ASSETS:
+				{
+					return new ExportAssetsTag();
+				}
+					
+				case TagType.IMPORT_ASSETS:
+				{
+					return new ImportAssetsTag();
+				}
+					
+				case TagType.IMPORT_ASSETS2:
+				{
+					return new ImportAssets2Tag();
+				}
+					
+				case TagType.DEFINE_SCENE_AND_FRAME_LABEL_DATA:
+				{
+					return new DefineSceneAndFrameLabelDataTag();
+				}
+					
+				case TagType.DEFINE_BINARY_DATA:
+				{
+					return new DefineBinaryDataTag();
+				}
+					
+				case TagType.SHOW_FRAME:
+				{
+					return new ShowFrameTag();
+				}
 			}
 			
 			return new SWFTag();

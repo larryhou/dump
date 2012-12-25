@@ -1,10 +1,17 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.actions.ActionType;
 	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.utils.formatTypes;
+	import com.larrio.math.fixed;
+	import com.larrio.math.float;
+	import com.larrio.math.sign;
+	import com.larrio.math.unfixed;
+	import com.larrio.math.unfloat;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -22,6 +29,9 @@ package
 	 */
 	final dynamic public class Main extends Sprite
 	{
+		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
+		private const _cls : Class;
+		
 		public static const v1:uint = 1;
 		private static var v2:uint;
 		protected static var v3:String;
@@ -45,6 +55,7 @@ package
 			swf = new SWFile(bytes);
 			
 			bytes = swf.repack();
+			//assertTrue(bytes.length == loaderInfo.bytes.length);
 			assertTrue(equals(bytes, loaderInfo.bytes));
 			//new FileReference().save(bytes, "encode.swf");
 			
@@ -61,9 +72,9 @@ package
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;
-					trace("\n\n-----------------------------------------\n");
-					trace(tag.abc.constants.strings.join("\n"));
-					trace(tag.abc.files.join("\n"));
+					//trace("\n\n-----------------------------------------\n");
+					//trace(tag.abc.constants.strings.join("\n"));
+					//trace(tag.abc.files.join("\n"));
 					break;
 				}
 			}
@@ -72,17 +83,28 @@ package
 			assertTrue(size.width == stage.stageWidth);
 			assertTrue(size.height == stage.stageHeight);
 			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+			
+			var shape:Sprite = new Sprite();
+			shape.graphics.beginFill(0xFF0000);
+			shape.graphics.drawRect(0, 0, 300, 200);
+			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
 		}
 		
 		// 比较两个字节数组是否相等
 		[META(order="2", key="unit")]
 		protected function equals(b1:ByteArray, b2:ByteArray):Boolean
 		{
-			if (b1.length != b2.length) return false;
+			var v1:int, v2:int;
 			b1.position = b2.position = 0;
 			while (b1.bytesAvailable)
 			{
-				if (b1.readByte() != b2.readByte()) return false;
+				v1 = b1.readByte();
+				v2 = b2.readByte();
+				if (v1 != v2)
+				{
+					trace("byte:" + v1 + " " + v2 + ", offset:" + b1.position);
+					return false;
+				}
 			}
 			
 			return true;

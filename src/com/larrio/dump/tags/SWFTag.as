@@ -19,6 +19,8 @@ package com.larrio.dump.tags
 		protected var _length:int;
 		protected var _bytes:ByteArray;
 		
+		private var _codeAndLength:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object
@@ -44,6 +46,12 @@ package com.larrio.dump.tags
 			decoder.readBytes(_bytes, 0, _length);
 			
 			assertTrue(_bytes.length == _length);
+			
+			const NAME:String = "TYPE";
+			if (NAME in Object(this).constructor)
+			{
+				assertTrue(_type == Object(this).constructor[NAME]);
+			}
 		}
 		
 		/**
@@ -54,10 +62,7 @@ package com.larrio.dump.tags
 		{
 			writeTagHeader(encoder);
 			
-			if (_length > 0)
-			{
-				encoder.writeBytes(_bytes);
-			}
+			encoder.writeBytes(_bytes);
 		}
 		
 		/**
@@ -66,7 +71,7 @@ package com.larrio.dump.tags
 		 */		
 		protected final function writeTagHeader(encoder:FileEncoder):void
 		{
-			if (_length < 0x3F)
+			if ((_codeAndLength & 0x3F) < 0x3F)
 			{
 				encoder.writeUI16( _type << 6 | _length);
 			}
@@ -83,12 +88,12 @@ package com.larrio.dump.tags
 		 */		
 		protected final function readTagHeader(decoder:FileDecoder):void
 		{
-			var codeAndLength:uint = decoder.readUI16();
+			_codeAndLength = decoder.readUI16();
 			
-			_type = codeAndLength >>> 6;
-			_length = codeAndLength & 0x3F;
+			_type = _codeAndLength >>> 6;
+			_length = _codeAndLength & 0x3F;
 			
-			if (_length == 0x3F)
+			if (_length >= 0x3F)
 			{
 				_length = decoder.readS32();
 			}
@@ -103,5 +108,11 @@ package com.larrio.dump.tags
 		 * TAG字节数组
 		 */		
 		public function get bytes():ByteArray { return _bytes; }
+
+		/**
+		 * 特征ID
+		 */		
+		public function get character():uint { return _character; }
+
 	}
 }

@@ -1,9 +1,8 @@
 package com.larrio.dump.model
 {
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.interfaces.ICodec;
 	
 	/**
 	 * SWF矩形
@@ -56,17 +55,26 @@ package com.larrio.dump.model
 			_nbits = decoder.readUB(5);
 			
 			_minX = decoder.readSB(_nbits);
-			assertTrue(_minX == 0);
-			
 			_maxX = decoder.readSB(_nbits);
 			
 			_minY = decoder.readSB(_nbits);
-			assertTrue(_minY == 0);
-			
 			_maxY = decoder.readSB(_nbits);
 			
 			_width = (_maxX - _minX) / 20;
 			_height = (_maxY - _minY) / 20;
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<Rect/>");
+			result.@minX = _minX;
+			result.@minY = _minY;
+			result.@maxX = _maxX;
+			result.@maxY = _maxY;
+			return result.toXMLString();
 		}
 
 		/**
