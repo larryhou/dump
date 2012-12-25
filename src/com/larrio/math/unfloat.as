@@ -25,7 +25,7 @@ package com.larrio.math
 		if (bias == 0) bias = (1 << (high - 1)) - 1;
 		
 		exponent = 0;
-		if (value > 1)
+		if (value >= 1)
 		{
 			while (integer > 1)
 			{
