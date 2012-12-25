@@ -8,8 +8,10 @@ package
 	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.dump.utils.formatTypes;
 	import com.larrio.math.fixed;
+	import com.larrio.math.float;
 	import com.larrio.math.sign;
 	import com.larrio.math.unfixed;
+	import com.larrio.math.unfloat;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -86,16 +88,6 @@ package
 			shape.graphics.beginFill(0xFF0000);
 			shape.graphics.drawRect(0, 0, 300, 200);
 			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
-			
-			var result:Number = 2.125;
-			//fixed(0x7FFFFFFF, 24, 8);
-			//trace(result);
-			
-			var num:uint = unfixed(result, 4, 28);
-			trace(num.toString(16).toUpperCase());
-			trace(fixed(num, 4, 28));
-			
-			formatTypes(ActionType, 38, true);
 		}
 		
 		// 比较两个字节数组是否相等

@@ -1,9 +1,10 @@
 package
 {
+	import com.larrio.dump.codec.FileDecoder;
+	import com.larrio.math.float;
+	import com.larrio.math.unfloat;
+	
 	import flash.display.Sprite;
-	import flash.xml.XMLDocument;
-	import flash.xml.XMLNode;
-	import flash.xml.XMLNodeType;
 	
 	/**
 	 * 
@@ -18,23 +19,21 @@ package
 		 */
 		public function TestMain()
 		{
-			var doc:XMLDocument = new XMLDocument();
-			var node:XMLNode = new XMLNode(XMLNodeType.ELEMENT_NODE, "data");
-			doc.appendChild(node);
+			var value:Number = -0.13998;
+			var bytes:FileDecoder = new FileDecoder();
+			bytes.writeFloat(value);
+			bytes.position = 0;
 			
+			trace(bytes.readFloat());
 			
-			var config:XML = new XML("<encrypt/>");
-			var item:XML;
-			for (var i:int = 0; i < 10; i++)
-			{
-				item = new XML("<item/>");
-				item.@id = i + 1;
-				config.appendChild(item);
-			}
+			bytes.position = 0;
+			trace(bytes.readUnsignedInt().toString(2));
 			
-			trace(config.toXMLString());
-		}
-		
-		
+			var num:uint = unfloat(value, 32, 8);
+			trace(num.toString(2));
+			
+			var result:Number = float(num, 32, 8);
+			trace(result);
+		}		
 	}
 }
