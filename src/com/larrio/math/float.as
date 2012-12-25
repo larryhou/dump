@@ -25,9 +25,11 @@ package com.larrio.math
 		
 		if (!bias) bias = (1 << (hight - 1)) - 1;
 		
+		exponent -= bias;
+		if (!mantissa && !exponent) return 0;
+		
 		var integer:int, decimal:Number;
 		
-		exponent -= bias;
 		if (exponent >= 0)
 		{
 			var shift:uint = low - exponent;

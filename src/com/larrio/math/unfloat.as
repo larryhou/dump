@@ -15,7 +15,7 @@ package com.larrio.math
 	{
 		var low:uint = size - high - 1;
 		
-		var sign:uint = value > 0? 0 : 1;
+		var sign:uint = value >= 0? 0 : 1;
 		value = Math.abs(value);
 		
 		var integer:uint = value >> 0;
@@ -44,7 +44,7 @@ package com.larrio.math
 			mantissa = decimal * (1 << low) + 0.5 >> 0;
 			var mask:uint = 1 << (low - 1);
 			
-			while(mask)
+			while(mask && mantissa)
 			{
 				exponent--;
 				if ((mantissa & mask) == 0)
