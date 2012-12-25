@@ -92,6 +92,7 @@ package com.larrio.dump.actions
 			encoder.writeUB(_catchInRegisterFlag, 1);
 			encoder.writeUB(_finallyBlockFlag, 1);
 			encoder.writeUB(_catchBlockFlag, 1);
+			encoder.flush();
 			
 			encoder.writeUI16(_trySize);
 			encoder.writeUI16(_catchSize);
