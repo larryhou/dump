@@ -51,7 +51,7 @@ package com.larrio.dump.actions
 			const NAME:String = "TYPE";
 			if (NAME in Object(this).constructor)
 			{
-				assertTrue(_type == Object(this).constructor);
+				assertTrue(_type == Object(this).constructor[NAME]);
 			}
 		}
 		
