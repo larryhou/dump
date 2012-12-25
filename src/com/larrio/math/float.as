@@ -15,12 +15,11 @@ package com.larrio.math
 	 */	
 	public function float(value:uint, size:uint, hight:uint, bias:uint = 0):Number
 	{
-		if (!value) return 0;
-		
 		var low:uint = size - hight - 1;
 		
 		var sign:uint = (1 << (size - 1)) & value;
 		value = (value << 1) >>> 1;
+		if (!value) return 0;
 		
 		var mantissa:uint = value & ((1 << low) - 1);
 		var exponent:int = value >> low & ((1 << hight) - 1);

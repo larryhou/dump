@@ -46,7 +46,7 @@ package com.larrio.math
 			mantissa = decimal * (1 << low) + 0.5 >> 0;
 			var mask:uint = 1 << (low - 1);
 			
-			while(mask && mantissa)
+			while(mask)
 			{
 				exponent--;
 				if ((mantissa & mask) == 0)
