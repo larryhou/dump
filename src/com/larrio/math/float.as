@@ -15,6 +15,8 @@ package com.larrio.math
 	 */	
 	public function float(value:uint, size:uint, hight:uint, bias:uint = 0):Number
 	{
+		if (!value) return 0;
+		
 		var low:uint = size - hight - 1;
 		
 		var sign:uint = (1 << (size - 1)) & value;
@@ -24,9 +26,7 @@ package com.larrio.math
 		var exponent:int = value >> low & ((1 << hight) - 1);
 		
 		if (!bias) bias = (1 << (hight - 1)) - 1;
-		
 		exponent -= bias;
-		if (!mantissa && !exponent) return 0;
 		
 		var integer:int, decimal:Number;
 		

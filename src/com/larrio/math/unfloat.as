@@ -13,6 +13,8 @@ package com.larrio.math
 	 */		
 	public function unfloat(value:Number, size:uint, high:uint, bias:uint = 0):uint
 	{
+		if (!value) return 0;
+		
 		var low:uint = size - high - 1;
 		
 		var sign:uint = value >= 0? 0 : 1;
