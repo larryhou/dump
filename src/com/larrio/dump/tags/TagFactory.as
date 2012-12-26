@@ -124,12 +124,12 @@ package com.larrio.dump.tags
 					
 				case TagType.PLACE_OBJECT:
 				{
-					return new PlaceObject();
+					return new PlaceObjectTag();
 				}
 					
 				case TagType.PLACE_OBJECT2:
 				{
-					return new PlaceObject2();
+					return new PlaceObject2Tag();
 				}
 			}
 			

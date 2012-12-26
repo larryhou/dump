@@ -1,23 +1,11 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.actions.ActionType;
-	import com.larrio.dump.doabc.DoABC;
-	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
-	import com.larrio.dump.utils.assertTrue;
-	import com.larrio.dump.utils.formatTypes;
-	import com.larrio.math.fixed;
-	import com.larrio.math.float;
-	import com.larrio.math.sign;
-	import com.larrio.math.unfixed;
-	import com.larrio.math.unfloat;
 	
 	import flash.display.DisplayObject;
-	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
 	[SWF(frameRate="60", width="600", height="400")]
@@ -64,7 +52,7 @@ package
 			//trace(swf.symbol);
 			
 			bytes = swf.repack();
-			trace(bytes.length);
+			//trace(bytes.length);
 			//assertTrue(equals(bytes, rawFile));
 			//new FileReference().save(bytes, "encode.swf");
 			
