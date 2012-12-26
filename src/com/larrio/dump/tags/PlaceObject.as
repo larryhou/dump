@@ -14,9 +14,9 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.PLACE_OBJECT;
 		
-		private var _depth:uint;
-		private var _matrix:MatrixRecord;
-		private var _colorTransform:ColorTransformRecord;
+		protected var _depth:uint;
+		protected var _matrix:MatrixRecord;
+		protected var _colorTransform:ColorTransformRecord;
 		
 		/**
 		 * 构造函数
