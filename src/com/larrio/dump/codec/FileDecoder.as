@@ -27,7 +27,7 @@ package com.larrio.dump.codec
 		/**
 		 * 字节对齐处理
 		 */		
-		private function byteAlign():void
+		public function byteAlign():void
 		{
 			_bitpos = 0; _bitbuf = 0;
 		}
