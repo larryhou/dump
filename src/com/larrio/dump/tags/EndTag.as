@@ -23,27 +23,6 @@ package com.larrio.dump.tags
 		}
 		
 		/**
-		 * 二进制解码 
-		 * @param decoder	解码器
-		 */		
-		override public function decode(decoder:FileDecoder):void
-		{
-			super.decode(decoder);
-			
-			assertTrue(_type == EndTag.TYPE);
-		}
-		
-		/**
-		 * 二进制编码 
-		 * @param encoder	编码器
-		 */		
-		override public function encode(encoder:FileEncoder):void
-		{
-			super.encode(encoder);
-			
-		}
-		
-		/**
 		 * 字符串输出
 		 */		
 		public function toString():String
