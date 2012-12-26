@@ -1,7 +1,10 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.model.types.BlendModeType;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.tags.DoABCTag;
+	import com.larrio.dump.utils.formatTypes;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -85,10 +88,7 @@ package
 //			assertTrue(size.height == stage.stageHeight);
 //			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			var shape:Sprite = new Sprite();
-			shape.graphics.beginFill(0xFF0000);
-			shape.graphics.drawRect(0, 0, 300, 200);
-			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
+			formatTypes(BlendModeType, 30, true)
 		}
 		
 		// 比较两个字节数组是否相等
