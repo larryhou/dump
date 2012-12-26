@@ -20,7 +20,6 @@ package com.larrio.dump.tags
 		protected var _bytes:ByteArray;
 		
 		private var _codeAndLength:uint;
-		
 		private var _offset:uint;
 		
 		/**
@@ -43,18 +42,24 @@ package com.larrio.dump.tags
 			assertTrue(_length >= 0, "TAG[0x" + _type.toString(16).toUpperCase() + "]长度不合法：" + _length);
 			
 			_bytes = new ByteArray();
-			if (_length == 0) return;
+			if (_length > 0) 
+			{
+				decoder.readBytes(_bytes, 0, _length);
+			}
 			
-			decoder.readBytes(_bytes, 0, _length);
+			assertTrue(_bytes.length == _length);
 			
 			decoder = new FileDecoder();
 			decoder.writeBytes(_bytes);
 			decoder.position = 0;
 			
 			decodeTag(decoder);
-			_offset = decoder.position;
+			if (decoder.position > 0)
+			{
+				assertTrue(decoder.bytesAvailable == 0);
+			}
 			
-			assertTrue(_bytes.length == _length);
+			_offset = decoder.position;
 			
 			const NAME:String = "TYPE";
 			if (NAME in Object(this).constructor)
@@ -71,13 +76,13 @@ package com.larrio.dump.tags
 		{
 			writeTagHeader(encoder);
 			
-			var offset:uint = encoder.position;
+			var offset:uint;
+			offset = encoder.position;
+			
 			encodeTag(encoder);
+			
 			offset = encoder.position - offset;
-			if (_offset > 0)
-			{
-				assertTrue(offset == _offset);
-			}
+			assertTrue(offset == _length);
 		}
 		
 		/**

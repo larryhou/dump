@@ -29,6 +29,9 @@ package com.larrio.dump.doabc
 		
 		private var _files:Vector.<ClassFile>;
 		
+		private var _enOffset:OffsetMgr;
+		private var _deOffset:OffsetMgr;
+		
 		/**
 		 * 构造函数
 		 * create a [DoABC] object
@@ -44,14 +47,20 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_deOffset = new OffsetMgr(decoder.position);
+			
 			_minorVersion = decoder.readUI16();
 			assertTrue(_minorVersion == 16);
 				
 			_majorVersion = decoder.readUI16();
 			assertTrue(_majorVersion == 46);
 			
+			_deOffset.set(this, decoder.position);
+			
 			_constants = new ConstantPool();
 			_constants.decode(decoder);
+			
+			_deOffset.set(_constants, decoder.position);
 			
 			var _length:uint, i:int;
 			
@@ -63,6 +72,8 @@ package com.larrio.dump.doabc
 				_methods[i].decode(decoder);
 			}
 			
+			_deOffset.set(_methods, decoder.position);
+			
 			_length = decoder.readEU30();
 			_metadatas = new Vector.<MetadataInfo>(_length, true);
 			for (i = 0; i < _length; i++)
@@ -70,6 +81,8 @@ package com.larrio.dump.doabc
 				_metadatas[i] = new MetadataInfo(_constants);
 				_metadatas[i].decode(decoder);
 			}
+			
+			_deOffset.set(_metadatas, decoder.position);
 			
 			_length = decoder.readEU30();
 			_instances = new Vector.<InstanceInfo>(_length, true);
@@ -79,6 +92,8 @@ package com.larrio.dump.doabc
 				_instances[i].decode(decoder);
 			}
 			
+			_deOffset.set(_instances, decoder.position);
+			
 			_classes = new Vector.<ClassInfo>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
@@ -86,6 +101,8 @@ package com.larrio.dump.doabc
 				_classes[i].instance = _instances[i];
 				_classes[i].decode(decoder);
 			}
+			
+			_deOffset.set(_classes, decoder.position);
 			
 			_length = decoder.readEU30();
 			_scripts = new Vector.<ScriptInfo>(_length, true);
@@ -95,6 +112,8 @@ package com.larrio.dump.doabc
 				_scripts[i].decode(decoder);
 			}
 			
+			_deOffset.set(_scripts, decoder.position);
+			
 			_length = decoder.readEU30();
 			_methodBodies = new Vector.<MethodBodyInfo>(_length, true);
 			for (i = 0; i < _length; i++)
@@ -103,12 +122,16 @@ package com.larrio.dump.doabc
 				_methodBodies[i].decode(decoder);
 			}
 			
+			_deOffset.set(_methodBodies, decoder.position);
+			
 			_length = _scripts.length;
 			_files = new Vector.<ClassFile>(_length, true);
 			for (i = 0; i < _length; i++)
 			{
 				_files[i] = new ClassFile(_scripts[i], this);
 			}
+			
+			assertTrue(decoder.bytesAvailable == 0);
 		}
 		
 		/**
@@ -119,10 +142,16 @@ package com.larrio.dump.doabc
 		{
 			var length:uint, i:int;
 			
+			_enOffset = new OffsetMgr(encoder.position);
+			
 			encoder.writeUI16(_minorVersion);
 			encoder.writeUI16(_majorVersion);
 			
+			_enOffset.set(this, encoder.position);
+			
 			_constants.encode(encoder);
+			
+			_enOffset.set(_constants, encoder.position);
 			
 			length = _methods.length;
 			encoder.writeEU30(length);
@@ -131,12 +160,16 @@ package com.larrio.dump.doabc
 				_methods[i].encode(encoder);
 			}
 			
+			_enOffset.set(_methods, encoder.position);
+			
 			length = _metadatas.length;
 			encoder.writeEU30(length);
 			for (i = 0; i < length; i++)
 			{
 				_metadatas[i].encode(encoder);
 			}
+			
+			_enOffset.set(_metadatas, encoder.position);
 			
 			length = _instances.length;
 			encoder.writeEU30(length);
@@ -145,10 +178,14 @@ package com.larrio.dump.doabc
 				_instances[i].encode(encoder);
 			}
 			
+			_enOffset.set(_instances, encoder.position);
+			
 			for (i = 0; i < length; i++)
 			{
 				_classes[i].encode(encoder);
 			}
+			
+			_enOffset.set(_classes, encoder.position);
 			
 			length = _scripts.length;
 			encoder.writeEU30(length);
@@ -157,12 +194,18 @@ package com.larrio.dump.doabc
 				_scripts[i].encode(encoder);
 			}
 			
+			_enOffset.set(_scripts, encoder.position);
+			
 			length = _methodBodies.length;
 			encoder.writeEU30(length);
 			for (i = 0; i < length; i++)
 			{
 				_methodBodies[i].encode(encoder);
 			}
+			
+			_enOffset.set(_methodBodies, encoder.position);
+			
+			//assertTrue(_enOffset.equals(_deOffset));
 		}
 
 		/**
@@ -215,5 +258,40 @@ package com.larrio.dump.doabc
 		 */		
 		public function get files():Vector.<ClassFile> { return _files; }
 
+	}
+}
+import flash.utils.Dictionary;
+
+class OffsetMgr
+{
+	private var _manager:Dictionary;
+	private var _offset:uint;
+	
+	public function OffsetMgr(offset:uint)
+	{
+		_offset = offset;
+		_manager = new Dictionary(false);
+	}
+	
+	public function equals(offset:OffsetMgr):Boolean
+	{
+		for (var key:Object in offset)
+		{
+			//if (!_manager[key]) continue;
+			
+			if (get(key) != offset.get(key)) return false;
+		}
+		
+		return true;
+	}
+	
+	public function set(target:Object, position:uint):void
+	{
+		_manager[target] = position - _offset;
+	}
+	
+	public function get(target:Object):uint
+	{
+		return parseInt(_manager[target]);
 	}
 }

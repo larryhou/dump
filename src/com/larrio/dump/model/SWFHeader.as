@@ -114,6 +114,7 @@ package com.larrio.dump.model
 			result.@height = _size.height;
 			result.@frameRate = fixed(_frameRate, 8, 8);
 			result.@frameCount = _frameCount;
+			result.@size = _length;
 			
 			return result.toXMLString();
 		}

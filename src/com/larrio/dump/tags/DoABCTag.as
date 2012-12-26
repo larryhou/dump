@@ -3,7 +3,6 @@ package com.larrio.dump.tags
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.doabc.DoABC;
-	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	
@@ -35,14 +34,14 @@ package com.larrio.dump.tags
 		 * @param decoder	解码器
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
-		{
+		{			
 			_flags = decoder.readUI32();	
 			_name = decoder.readSTR();
 			
 			var codes:ByteArray = new ByteArray();
 			decoder.readBytes(codes);
 			
-			decoder.length = 0;
+			decoder = new FileDecoder();
 			decoder.writeBytes(codes);
 			decoder.position = 0;
 			
