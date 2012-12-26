@@ -83,9 +83,9 @@ package com.larrio.dump.tags
 		
 		public static const META_DATA                          :uint = 0x4D; // 77
 		
-		public static const PALCE_OBJECT                       :uint = 0x4;  // 4
-		public static const PALCE_OBJECT2                      :uint = 0x1A; // 26
-		public static const PALCE_OBJECT3                      :uint = 0x46; // 70
+		public static const PLACE_OBJECT                       :uint = 0x4;  // 4
+		public static const PLACE_OBJECT2                      :uint = 0x1A; // 26
+		public static const PLACE_OBJECT3                      :uint = 0x46; // 70
 		
 		public static const PROTECT                            :uint = 0x18; // 24
 		

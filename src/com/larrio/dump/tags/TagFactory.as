@@ -121,6 +121,11 @@ package com.larrio.dump.tags
 				{
 					return new ShowFrameTag();
 				}
+					
+				case TagType.PLACE_OBJECT:
+				{
+					return new PlaceObject();
+				}
 			}
 			
 			return new SWFTag();

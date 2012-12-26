@@ -12,10 +12,10 @@ package com.larrio.dump.model
 	public class ColorTransformRecord implements ICodec
 	{
 		private var _alpha:Boolean;
-		private var _offset:Boolean;
+		private var _offset:uint;
 		private var _nbits:uint;
 		
-		private var _multiplier:Boolean;
+		private var _multiplier:uint;
 		
 		private var _redOffset:uint;
 		private var _greenOffset:uint;
@@ -42,8 +42,8 @@ package com.larrio.dump.model
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_offset = Boolean(decoder.readUB(1));
-			_multiplier = Boolean(decoder.readUB(1);
+			_offset = decoder.readUB(1);
+			_multiplier = decoder.readUB(1);
 			
 			_nbits = decoder.readUB(4);
 			
@@ -79,8 +79,8 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeUB(int(_offset), 1);
-			encoder.writeUB(int(_multiplier), 1);
+			encoder.writeUB(_offset, 1);
+			encoder.writeUB(_multiplier, 1);
 			encoder.writeUB(_nbits, 4);
 			
 			if (_multiplier)
