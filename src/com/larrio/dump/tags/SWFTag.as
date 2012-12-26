@@ -45,6 +45,12 @@ package com.larrio.dump.tags
 			
 			decoder.readBytes(_bytes, 0, _length);
 			
+			decoder = new FileDecoder();
+			decoder.writeBytes(_bytes);
+			decoder.position = 0;
+			
+			decodeTag(decoder);
+			
 			assertTrue(_bytes.length == _length);
 			
 			const NAME:String = "TYPE";
@@ -62,7 +68,7 @@ package com.larrio.dump.tags
 		{
 			writeTagHeader(encoder);
 			
-			encoder.writeBytes(_bytes);
+			encodeTag(encoder);
 		}
 		
 		/**
@@ -80,6 +86,24 @@ package com.larrio.dump.tags
 				encoder.writeUI16( _type << 6 | 0x3F);
 				encoder.writeS32(_length);
 			}
+		}
+		
+		/**
+		 * 对TAG内容进行二进制编码
+		 * @param encoder	编码器
+		 */		
+		protected function encodeTag(encoder:FileEncoder):void
+		{
+			encoder.writeBytes(_bytes);
+		}
+		
+		/**
+		 * 对TAG二进制内容进行解码 
+		 * @param decoder	解码器
+		 */		
+		protected function decodeTag(decoder:FileDecoder):void
+		{
+			
 		}
 		
 		/**
