@@ -53,6 +53,7 @@ package com.larrio.dump.model
 				
 				_actionRecords.push(action);
 			}
+			trace("ClipActions");
 		}
 		
 		/**

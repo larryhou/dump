@@ -70,7 +70,8 @@ package com.larrio.dump.model
 					_alphaOffset = decoder.readSB(_nbits);
 				}
 			}
-
+			
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -116,13 +117,13 @@ package com.larrio.dump.model
 		public function toString():String
 		{
 			var result:XML = new XML("<ColorTransform/>");
-			result.@redMultiplier = _redMultiplier;
-			result.@greenMultiplier = _greenMultiplier;
-			result.@blueMultiplier = _blueMultiplier;
+			result.@redMultiplier = _redMultiplier / 256;
+			result.@greenMultiplier = _greenMultiplier / 256;
+			result.@blueMultiplier = _blueMultiplier / 256;
 			
 			if (_alpha)
 			{
-				result.@alphaMultiplier = _alphaMultiplier;
+				result.@alphaMultiplier = _alphaMultiplier / 256;
 			}
 			
 			result.@redOffset = _redOffset;

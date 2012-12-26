@@ -60,6 +60,8 @@ package com.larrio.dump.model
 			_tbits = decoder.readUB(5);
 			_translateX = decoder.readSB(_tbits);
 			_translateY = decoder.readSB(_tbits);
+			
+			decoder.byteAlign();
 		}
 		
 		/**
