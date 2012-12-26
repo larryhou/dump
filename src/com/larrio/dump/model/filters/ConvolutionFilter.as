@@ -61,6 +61,8 @@ package com.larrio.dump.model.filters
 			
 			_clamp = decoder.readUB(1);
 			_preserveAlpha = decoder.readUB(1);
+			
+			decoder.byteAlign();
 		}
 		
 		/**

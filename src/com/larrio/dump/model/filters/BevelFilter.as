@@ -66,6 +66,8 @@ package com.larrio.dump.model.filters
 			
 			_onTop = decoder.readUB(1);
 			_passes = decoder.readUB(4);
+			
+			decoder.byteAlign();
 		}
 		
 		/**

@@ -54,6 +54,8 @@ package com.larrio.dump.model.filters
 			assertTrue(_compositeSource == 1);
 			
 			_passes = decoder.readUB(5);
+			
+			decoder.byteAlign();
 		}
 		
 		/**

@@ -50,6 +50,8 @@ package com.larrio.dump.model.filters
 			
 			_compositeSource = decoder.readUB(1);
 			_passes = decoder.readUB(5);
+			
+			decoder.byteAlign();
 		}
 		
 		/**

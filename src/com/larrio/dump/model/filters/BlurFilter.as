@@ -37,6 +37,8 @@ package com.larrio.dump.model.filters
 			_passes = decoder.readUB(5);
 			
 			assertTrue(decoder.readUB(3) == 0);
+			
+			decoder.byteAlign();
 		}
 		
 		/**
