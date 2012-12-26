@@ -48,7 +48,7 @@ package
 			bytes = rawFile;
 			swf = new SWFile(bytes);
 			
-			trace("before:" + swf.header);
+			trace(swf.header);
 			//trace(swf.symbol);
 			
 			bytes = swf.repack();
@@ -57,7 +57,7 @@ package
 			//new FileReference().save(bytes, "encode.swf");
 			
 			swf = new SWFile(bytes);
-			trace("after:" + swf.header);
+			trace(swf.header);
 			
 			var callback:* = function(date:* = "FUCK YOU!"):String
 			{

@@ -96,7 +96,6 @@ package com.larrio.dump.tags
 				_clipActions.decode(decoder);
 			}
 			
-			trace(this);
 		}
 		
 		/**

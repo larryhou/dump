@@ -78,6 +78,8 @@ package com.larrio.dump.model
 			}
 			
 			assertTrue(byteAvailable == 0);
+			
+			trace(this);
 		}
 		
 		/**
@@ -110,7 +112,8 @@ package com.larrio.dump.model
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<ClipActionRecord/>");
+			return result.toXMLString();	
 		}
 
 		/**

@@ -57,7 +57,6 @@ package com.larrio.dump.tags
 				_labels[i] = decoder.readSTR();
 			}
 			
-			trace(this);
 		}
 		
 		/**
