@@ -21,6 +21,8 @@ package com.larrio.dump.tags
 		
 		private var _codeAndLength:uint;
 		
+		private var _offset:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object
@@ -50,6 +52,7 @@ package com.larrio.dump.tags
 			decoder.position = 0;
 			
 			decodeTag(decoder);
+			_offset = decoder.position;
 			
 			assertTrue(_bytes.length == _length);
 			
@@ -68,7 +71,13 @@ package com.larrio.dump.tags
 		{
 			writeTagHeader(encoder);
 			
+			var offset:uint = encoder.position;
 			encodeTag(encoder);
+			offset = encoder.position - offset;
+			if (_offset > 0)
+			{
+				assertTrue(offset == _offset);
+			}
 		}
 		
 		/**

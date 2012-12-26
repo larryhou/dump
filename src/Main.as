@@ -14,6 +14,7 @@ package
 	import com.larrio.math.unfloat;
 	
 	import flash.display.DisplayObject;
+	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.net.FileReference;
@@ -31,6 +32,9 @@ package
 	{
 		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
 		private const _cls : Class;
+		
+		[Embed(source="../libs/library.swf", mimeType="application/octet-stream")]
+		private var RawFile:Class;
 		
 		public static const v1:uint = 1;
 		private static var v2:uint;
@@ -50,16 +54,21 @@ package
 		public function Main()
 		{		
 			var bytes:ByteArray, swf:SWFile;
+			var rawFile:ByteArray = loaderInfo.bytes;
+			rawFile = new RawFile();
 			
-			bytes = loaderInfo.bytes;
+			bytes = rawFile;
 			swf = new SWFile(bytes);
 			
+			trace("before:" + swf.header);
+			//trace(swf.symbol);
+			
 			bytes = swf.repack();
-			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			assertTrue(equals(bytes, loaderInfo.bytes));
+			assertTrue(equals(bytes, rawFile));
 			//new FileReference().save(bytes, "encode.swf");
 			
 			swf = new SWFile(bytes);
+			trace("after:" + swf.header);
 			
 			var callback:* = function(date:* = "FUCK YOU!"):String
 			{
@@ -78,11 +87,14 @@ package
 					break;
 				}
 			}
+			
+			
+			//addChild(new _cls() as DisplayObject);
 						
-			var size:SWFRect = swf.header.size;
-			assertTrue(size.width == stage.stageWidth);
-			assertTrue(size.height == stage.stageHeight);
-			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+//			var size:SWFRect = swf.header.size;
+//			assertTrue(size.width == stage.stageWidth);
+//			assertTrue(size.height == stage.stageHeight);
+//			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
 			var shape:Sprite = new Sprite();
 			shape.graphics.beginFill(0xFF0000);

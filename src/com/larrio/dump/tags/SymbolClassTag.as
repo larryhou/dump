@@ -29,16 +29,8 @@ package com.larrio.dump.tags
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		override public function decode(decoder:FileDecoder):void
-		{
-			super.decode(decoder);
-			
-			assertTrue(_type == SymbolClassTag.TYPE);
-			
-			decoder = new FileDecoder();
-			decoder.writeBytes(_bytes);
-			decoder.position = 0;
-			
+		override protected function decodeTag(decoder:FileDecoder):void
+		{			
 			var length:uint, i:int;
 			length = decoder.readUI16();
 			
@@ -56,10 +48,8 @@ package com.larrio.dump.tags
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		override public function encode(encoder:FileEncoder):void
+		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			writeTagHeader(encoder);
-			
 			var length:uint, i:int;
 			
 			length = _ids.length;
@@ -70,7 +60,6 @@ package com.larrio.dump.tags
 				encoder.writeUI16(_ids[i]);
 				encoder.writeSTR(_symbols[i]);
 			}
-			
 		}
 		
 		/**

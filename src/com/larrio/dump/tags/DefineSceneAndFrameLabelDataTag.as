@@ -32,16 +32,8 @@ package com.larrio.dump.tags
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		override public function decode(decoder:FileDecoder):void
+		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			super.decode(decoder);
-			
-			assertTrue(_type == DefineSceneAndFrameLabelDataTag.TYPE);
-			
-			decoder = new FileDecoder();
-			decoder.writeBytes(_bytes);
-			decoder.position = 0;
-			
 			var length:uint, i:int;
 			
 			length = decoder.readEU32();
@@ -72,10 +64,8 @@ package com.larrio.dump.tags
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		override public function encode(encoder:FileEncoder):void
+		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			writeTagHeader(encoder);
-			
 			var length:uint, i:int;
 			
 			length = _offsets.length;

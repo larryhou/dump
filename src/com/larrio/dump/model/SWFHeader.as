@@ -57,8 +57,6 @@ package com.larrio.dump.model
 			encoder.writeUI8(("S").charCodeAt(0));
 			
 			encoder.writeUI8(_version);
-			
-			trace(this);
 		}
 		
 		/**

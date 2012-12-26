@@ -95,6 +95,8 @@ package com.larrio.dump.tags
 				_clipActions = new ClipActions();
 				_clipActions.decode(decoder);
 			}
+			
+			trace(this);
 		}
 		
 		/**
@@ -156,7 +158,9 @@ package com.larrio.dump.tags
 		 */		
 		override public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<PlaceObject2/>");
+			
+			return result.toXMLString();	
 		}
 		
 		/**

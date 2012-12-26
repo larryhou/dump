@@ -5,6 +5,7 @@ package
 	import com.larrio.math.unfloat;
 	
 	import flash.display.Sprite;
+	import flash.utils.ByteArray;
 	
 	/**
 	 * 
@@ -13,27 +14,17 @@ package
 	 */
 	public class TestMain extends Sprite
 	{
+		[Embed(source="../libs/library.swf", mimeType="application/octet-stream")]
+		private var _data:Class;
+		
 		/**
 		 * 构造函数
 		 * create a [TestMain] object
 		 */
 		public function TestMain()
 		{
-			var value:Number = -0.13998;
-			var bytes:FileDecoder = new FileDecoder();
-			bytes.writeFloat(value);
-			bytes.position = 0;
-			
-			trace(bytes.readFloat());
-			
-			bytes.position = 0;
-			trace(bytes.readUnsignedInt().toString(2));
-			
-			var num:uint = unfloat(value, 32, 8);
-			trace(num.toString(2));
-			
-			var result:Number = float(num, 32, 8);
-			trace(result);
+			var bytes:ByteArray = new _data();
+			trace(bytes.length);
 		}		
 	}
 }

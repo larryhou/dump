@@ -34,16 +34,8 @@ package com.larrio.dump.tags
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		override public function decode(decoder:FileDecoder):void
+		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			super.decode(decoder);
-			
-			assertTrue(_type == DoABCTag.TYPE);
-			
-			decoder = new FileDecoder();
-			decoder.writeBytes(_bytes);
-			decoder.position = 0;
-			
 			_flags = decoder.readUI32();	
 			_name = decoder.readSTR();
 			
@@ -65,10 +57,8 @@ package com.larrio.dump.tags
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		override public function encode(encoder:FileEncoder):void
+		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			writeTagHeader(encoder);
-						
 			encoder.writeUI32(_flags);
 			encoder.writeSTR(_name);
 			

@@ -23,17 +23,6 @@ package com.larrio.dump.tags
 		}
 		
 		/**
-		 * 二进制解码 
-		 * @param decoder	解码器
-		 */		
-		override public function decode(decoder:FileDecoder):void
-		{
-			super.decode(decoder);
-			
-			assertTrue(_type == ImportAssetsTag.TYPE);
-		}
-		
-		/**
 		 * 字符串输出
 		 */		
 		override public function toString():String
