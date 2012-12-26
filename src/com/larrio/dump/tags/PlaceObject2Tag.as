@@ -15,21 +15,21 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.PLACE_OBJECT2;
 		
-		private var _hasClipActions:uint;
-		private var _hasClipDepth:uint;
+		protected var _hasClipActions:uint;
+		protected var _hasClipDepth:uint;
 		
-		private var _hasName:uint;
-		private var _hasRatio:uint;
-		private var _hasColorTransform:uint;
-		private var _hasMatrix:uint;
-		private var _hasCharacter:uint;
-		private var _move:uint;
+		protected var _hasName:uint;
+		protected var _hasRatio:uint;
+		protected var _hasColorTransform:uint;
+		protected var _hasMatrix:uint;
+		protected var _hasCharacter:uint;
+		protected var _move:uint;
 		
-		private var _ratio:uint;
-		private var _name:String;
-		private var _clipDepth:uint;
+		protected var _ratio:uint;
+		protected var _name:String;
+		protected var _clipDepth:uint;
 		
-		private var _clipActions:ClipActions;
+		protected var _clipActions:ClipActions;
 		
 		
 		/**

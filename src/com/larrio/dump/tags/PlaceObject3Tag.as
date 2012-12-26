@@ -2,6 +2,7 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.model.FilterList;
 	
 	/**
 	 * 
@@ -11,6 +12,17 @@ package com.larrio.dump.tags
 	public class PlaceObject3Tag extends PlaceObject2Tag
 	{
 		public static const TYPE:uint = TagType.PLACE_OBJECT3;
+		
+		private var _hasImage:uint;
+		private var _hasClassName:uint;
+		private var _hasCacheAsBitmap:uint;
+		private var _hasBlendMode:uint;
+		private var _hasFilterList:uint;
+		
+		private var _className:String;
+		private var _filterList:FilterList;
+		private var _blendMode:uint;
+		private var _bitmapCache:uint;
 		
 		/**
 		 * 构造函数
@@ -46,7 +58,29 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "";	
+			return "";
 		}
+
+		/**
+		 * Name of the class to place
+		 */		
+		public function get className():String { return _className; }
+
+		/**
+		 * List of filters on this object
+		 */		
+		public function get filterList():FilterList { return _filterList; }
+
+		/**
+		 * layer blend mode
+		 */		
+		public function get blendMode():uint { return _blendMode; }
+
+		/**
+		 * 0 = Bitmap cache disabled
+		 * 1-255 = Bitmap cache enabled
+		 */		
+		public function get bitmapCache():uint { return _bitmapCache; }
+
 	}
 }
