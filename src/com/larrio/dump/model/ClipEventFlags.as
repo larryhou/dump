@@ -6,7 +6,7 @@ package com.larrio.dump.model
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
-	 * 
+	 * 32位标记位
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 1:17:12 PM
 	 */
