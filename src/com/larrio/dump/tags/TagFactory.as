@@ -146,6 +146,26 @@ package com.larrio.dump.tags
 				{
 					return new RemoveObject2Tag();
 				}
+					
+				case TagType.JPEG_TABLES:
+				{
+					return new JPEGTablesTag();
+				}
+					
+				case TagType.DEFINE_BITS:
+				{
+					return new DefineBitsTag();
+				}
+					
+				case TagType.DEFINE_BITSJPEG2:
+				{
+					return new DefineBitsJPEG2Tag();
+				}
+					
+				case TagType.DEFINE_BITSJPEG3:
+				{
+					return new DefineBitsJPEG3Tag();
+				}
 			}
 			
 			return new SWFTag();
