@@ -120,8 +120,6 @@ package com.larrio.dump.tags
 				_clipActions = new ClipActions();
 				_clipActions.decode(decoder);
 			}
-			
-			trace(this);
 		}
 		
 		/**
