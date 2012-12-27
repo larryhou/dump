@@ -2,7 +2,6 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
 	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
@@ -12,7 +11,7 @@ package com.larrio.dump.model.filters
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 11:04:56 PM
 	 */
-	public class GlowFilter implements ICodec
+	public class GlowFilter implements IFilter
 	{
 		private var _color:RGBAColor;
 		

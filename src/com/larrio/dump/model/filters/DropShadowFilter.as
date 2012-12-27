@@ -2,7 +2,6 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.types.FilterType;
 	
 	/**
@@ -10,7 +9,7 @@ package com.larrio.dump.model.filters
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 10:55:33 PM
 	 */
-	public class DropShadowFilter implements ICodec
+	public class DropShadowFilter implements IFilter
 	{
 		private var _blurX:uint;
 		private var _blurY:uint;

@@ -2,7 +2,6 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	
@@ -11,7 +10,7 @@ package com.larrio.dump.model.filters
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 10:48:18 PM
 	 */
-	public class BlurFilter implements ICodec
+	public class BlurFilter implements IFilter
 	{
 		private var _blurX:uint;
 		private var _blurY:uint;
