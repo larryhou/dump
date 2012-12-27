@@ -4,6 +4,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -150,6 +151,10 @@ package com.larrio.dump.model.filters
 		 */		
 		public function get ratios():Vector.<uint> { return _ratios; }
 
-
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.GRADIENT_GLOW_FILTER; }
+		
 	}
 }

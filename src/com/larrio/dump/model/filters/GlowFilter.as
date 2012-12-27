@@ -4,6 +4,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -119,6 +120,9 @@ package com.larrio.dump.model.filters
 		 */		
 		public function get color():RGBAColor { return _color; }
 
-
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.GLOW_FILTER; }
 	}
 }

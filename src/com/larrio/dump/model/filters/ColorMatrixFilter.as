@@ -3,6 +3,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.types.FilterType;
 	
 	/**
 	 * 
@@ -51,6 +52,11 @@ package com.larrio.dump.model.filters
 		 * Color matrix values
 		 */		
 		public function get matrix():Vector.<Number> { return _matrix; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.COLOR_MATRIX_FILTER; }
 
 	}
 }

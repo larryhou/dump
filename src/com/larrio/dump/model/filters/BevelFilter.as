@@ -4,6 +4,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -11,7 +12,7 @@ package com.larrio.dump.model.filters
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 11:13:54 PM
 	 */
-	public class BevelFilter implements ICodec
+	public class BevelFilter implements IFilter
 	{
 		private var _shadowColor:RGBAColor;
 		private var _highlightColor:RGBAColor;
@@ -156,6 +157,11 @@ package com.larrio.dump.model.filters
 		 * Number of blur passes
 		 */		
 		public function get passes():uint { return _passes; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.BEVEL_FILTER; }
 
 	}
 }

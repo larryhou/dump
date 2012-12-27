@@ -3,6 +3,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.types.FilterType;
 	
 	/**
 	 * 
@@ -119,6 +120,11 @@ package com.larrio.dump.model.filters
 		 * Number of blur passes
 		 */		
 		public function get passes():uint { return _passes; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.DROP_SHADOW_FILTER; }
 
 	}
 }

@@ -1,5 +1,6 @@
 package com.larrio.dump.model.filters
 {
+	import com.larrio.dump.model.types.FilterType;
 	
 	/**
 	 * 
@@ -16,5 +17,10 @@ package com.larrio.dump.model.filters
 		{
 			
 		}
+		
+		/**
+		 * 滤镜类型
+		 */		
+		override public function get type():uint { return FilterType.GRADIENT_BEVEL_FILTER; }
 	}
 }

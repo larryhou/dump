@@ -4,6 +4,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -130,6 +131,11 @@ package com.larrio.dump.model.filters
 		 * Preserve the alpha
 		 */		
 		public function get preserveAlpha():uint { return _preserveAlpha; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.CONVOLUTION_FILTER; }
 
 	}
 }
