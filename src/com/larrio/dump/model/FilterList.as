@@ -135,7 +135,16 @@ package com.larrio.dump.model
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<FilterList/>");
+			result.@length = _filters.length;
+			
+			var length:uint = _filters.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				result.appendChild(new XML(_filters[i] + ""));
+			}
+			
+			return result.toXMLString();	
 		}
 
 		/**

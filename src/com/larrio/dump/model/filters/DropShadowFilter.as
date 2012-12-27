@@ -2,7 +2,9 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.model.RGBAColor;
 	import com.larrio.dump.model.types.FilterType;
+	import com.larrio.math.fixed;
 	
 	/**
 	 * 
@@ -11,13 +13,15 @@ package com.larrio.dump.model.filters
 	 */
 	public class DropShadowFilter implements IFilter
 	{
+		private var _color:RGBAColor;
+		
 		private var _blurX:uint;
 		private var _blurY:uint;
 		private var _angle:uint;
 		private var _distance:uint;
 		private var _strength:uint;
 		
-		private var _innerShadow:uint;
+		private var _inner:uint;
 		private var _knockOut:uint;
 		
 		private var _compositeSource:uint;
@@ -38,6 +42,9 @@ package com.larrio.dump.model.filters
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_color = new RGBAColor();
+			_color.decode(decoder);
+			
 			_blurX = decoder.readUI32();
 			_blurY = decoder.readUI32();
 			
@@ -45,7 +52,7 @@ package com.larrio.dump.model.filters
 			_distance = decoder.readUI32();
 			_strength = decoder.readUI16();
 			
-			_innerShadow = decoder.readUB(1);
+			_inner = decoder.readUB(1);
 			_knockOut = decoder.readUB(1);
 			
 			_compositeSource = decoder.readUB(1);
@@ -60,6 +67,8 @@ package com.larrio.dump.model.filters
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			_color.encode(encoder);
+			
 			encoder.writeUI32(_blurX);
 			encoder.writeUI32(_blurY);
 			
@@ -67,12 +76,31 @@ package com.larrio.dump.model.filters
 			encoder.writeUI32(_distance);
 			encoder.writeUI16(_strength);
 			
-			encoder.writeUB(_innerShadow, 1);
+			encoder.writeUB(_inner, 1);
 			encoder.writeUB(_knockOut, 1);
 			
 			encoder.writeUB(_compositeSource, 1);
 			encoder.writeUB(_passes, 5);
 			encoder.flush();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<DropShadowFilter/>");
+			result.@blurX = fixed(_blurX, 16, 16);
+			result.@blurY = fixed(_blurY, 16, 16);
+			result.@angle = (180 * fixed(_angle, 16, 16) / Math.PI).toFixed(0);
+			result.@distance = fixed(_distance, 16, 16);
+			result.@strength = fixed(_strength, 8, 8);
+			result.@inner = Boolean(_inner);
+			result.@knockOut = Boolean(_knockOut);
+			result.@passes = _passes;
+			result.appendChild(new XML(_color.toString()));
+			
+			return result.toXMLString();
 		}
 
 		/**
@@ -103,7 +131,7 @@ package com.larrio.dump.model.filters
 		/**
 		 * Inner shadow mode
 		 */		
-		public function get innerShadow():uint { return _innerShadow; }
+		public function get inner():uint { return _inner; }
 
 		/**
 		 * Knockout mode

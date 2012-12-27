@@ -4,6 +4,7 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.math.fixed;
 	
 	/**
 	 * 
@@ -53,6 +54,18 @@ package com.larrio.dump.model.filters
 			encoder.writeUB(_passes, 5);
 			encoder.writeUB(0, 3);
 			encoder.flush();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<BlurFilter/>");
+			result.@blurX = fixed(_blurX, 16, 16);
+			result.@blurY = fixed(_blurY, 16, 16);
+			result.@passes = _passes;
+			return result.toXMLString()
 		}
 
 		/**

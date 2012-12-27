@@ -46,6 +46,28 @@ package com.larrio.dump.model.filters
 				encoder.writeFloat(_matrix[i]);
 			}
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<ColorMatrixFilter/>");
+			
+			var item:Array, length:uint = _matrix.length;
+			for (var i:int = 0; i < _matrix.length; i++)
+			{
+				if (!item) item = [];
+				item.push(_matrix[i].toFixed(2));
+				
+				if ((i + 1) % 5 == 0)
+				{
+					result.appendChild(new XML("<Row>" + item.join("\t") + "</Row>"));
+					item = null;
+				}
+			}
+			return result.toXMLString();
+		}
 
 		/**
 		 * Color matrix values
