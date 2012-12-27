@@ -39,10 +39,16 @@ package com.larrio.dump.tags
 			_width = decoder.readUI16();
 			_height = decoder.readUI16();
 			
+			var zlib:FileDecoder;
 			var length:uint, i:int;
 			var size:uint = _width * _height;
 			
-			var zlib:FileDecoder = new FileDecoder();
+			if (_format == 3)
+			{
+				_colorTableSize = decoder.readUI8();
+			}
+			
+			zlib = new FileDecoder();
 			decoder.readBytes(zlib);
 			zlib.uncompress();
 			zlib.position = 0;
@@ -50,8 +56,6 @@ package com.larrio.dump.tags
 			
 			if (_format == 3)
 			{
-				_colorTableSize = decoder.readUI8();
-				
 				length = _colorTableSize + 1;
 				_colorTableRGBs = new Vector.<RGBColor>(length, true);
 				for (i = 0; i < length; i++)
