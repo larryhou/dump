@@ -5,6 +5,7 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.colors.Pix15Color;
 	import com.larrio.dump.model.colors.Pix24Color;
 	import com.larrio.dump.model.colors.RGBColor;
+	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	
@@ -93,6 +94,8 @@ package com.larrio.dump.tags
 					_bitmapData[i].decode(decoder);
 				}
 			}
+			
+			assertTrue(decoder.bytesAvailable == 0);
 		}
 		
 		/**
