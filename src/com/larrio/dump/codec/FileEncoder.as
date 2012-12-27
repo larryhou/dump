@@ -89,6 +89,7 @@ package com.larrio.dump.codec
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFF);
 			
+			flush();
 			writeByte(value);
 		}
 		
@@ -100,6 +101,7 @@ package com.larrio.dump.codec
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFF);
 			
+			flush();
 			writeByte(value);
 			writeByte(value >>> 8);
 		}
@@ -112,6 +114,7 @@ package com.larrio.dump.codec
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFF);
 			
+			flush();
 			writeByte(value);
 			writeByte(value >>> 8);
 			writeByte(value >>> 16);
@@ -125,6 +128,7 @@ package com.larrio.dump.codec
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFFFF);
 			
+			flush();
 			writeByte(value);
 			writeByte(value >>> 8);
 			writeByte(value >>> 16);
@@ -139,6 +143,7 @@ package com.larrio.dump.codec
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= (0xFFFFFFFF >>> 2));
 			
+			flush();
 			writeEU32(value);
 		}
 		
@@ -149,6 +154,8 @@ package com.larrio.dump.codec
 		{
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFFFF);
+			
+			flush();
 			
 			var byte:uint;
 			if (value > 0)
@@ -239,6 +246,7 @@ package com.larrio.dump.codec
 			var bytes:ByteArray = new ByteArray();
 			bytes.writeMultiByte(content, "utf-8");
 			
+			flush();
 			writeBytes(bytes);
 			writeByte(0);
 		}
