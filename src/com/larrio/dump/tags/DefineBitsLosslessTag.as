@@ -87,7 +87,7 @@ package com.larrio.dump.tags
 			else
 			if (format == 5)
 			{
-				_bitmapData = new Vector.<Pix15Color>(size, true);
+				_bitmapData = new Vector.<RGBColor>(size, true);
 				for (i = 0; i < size; i++)
 				{
 					_bitmapData[i] = new Pix24Color();
