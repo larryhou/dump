@@ -42,9 +42,9 @@ package com.larrio.dump.model
 			var length:uint, i:int;
 			
 			length = decoder.readUI8();
-			_filters = new  Vector.<ICodec>(length, true);
+			_filters = new  Vector.<IFilter>(length, true);
 			
-			var filter:ICodec;
+			var filter:IFilter;
 			for (i = 0; i < length; i++)
 			{
 				type = decoder.readUI8();
