@@ -3,7 +3,6 @@ package com.larrio.dump.model.filters
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.RGBAColor;
-	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.math.fixed;
 	
