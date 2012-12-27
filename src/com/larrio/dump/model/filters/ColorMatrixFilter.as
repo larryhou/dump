@@ -62,7 +62,7 @@ package com.larrio.dump.model.filters
 				
 				if ((i + 1) % 5 == 0)
 				{
-					result.appendChild(new XML("<Row>" + item.join("\t") + "</Row>"));
+					result.appendChild(new XML("<row>" + item.join("\t") + "</row>"));
 					item = null;
 				}
 			}
