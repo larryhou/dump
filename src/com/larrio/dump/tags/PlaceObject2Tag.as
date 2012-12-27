@@ -54,7 +54,6 @@ package com.larrio.dump.tags
 			_hasColorTransform = decoder.readUB(1);
 			_hasMatrix = decoder.readUB(1);
 			_hasCharacter = decoder.readUB(1);
-			
 			_move = decoder.readUB(1);
 			
 			_depth = decoder.readUI16();
@@ -96,6 +95,7 @@ package com.larrio.dump.tags
 				_clipActions.decode(decoder);
 			}
 			
+			trace(this);
 		}
 		
 		/**
@@ -157,7 +157,7 @@ package com.larrio.dump.tags
 		 */		
 		override public function toString():String
 		{
-			var result:XML = new XML("<PlaceObject2/>");
+			var result:XML = new XML("<PlaceObject2Tag/>");
 			result.@depth = _depth;
 			if (_hasName)
 			{

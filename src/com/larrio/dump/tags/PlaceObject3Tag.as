@@ -2,7 +2,10 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.model.ColorTransformRecord;
 	import com.larrio.dump.model.FilterList;
+	import com.larrio.dump.model.MatrixRecord;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
@@ -39,8 +42,61 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			super.decodeTag(decoder);
+			_hasClipActions = decoder.readUB(1);
+			_hasClipDepth = decoder.readUB(1);
+			_hasName = decoder.readUB(1);
+			_hasRatio = decoder.readUB(1);
+			_hasColorTransform = decoder.readUB(1);
+			_hasMatrix = decoder.readUB(1);
+			_hasCharacter = decoder.readUB(1);
+			_move = decoder.readUB(1);
 			
+			assertTrue(decoder.readUB(3) == 0);
+			
+			_hasImage = decoder.readUB(1);
+			_hasClassName = decoder.readUB(1);
+			_hasCacheAsBitmap = decoder.readUB(1);
+			_hasBlendMode = decoder.readUB(1);
+			_hasFilterList = decoder.readUB(1);
+			
+			_depth = decoder.readUI16();
+			
+			if (_hasClassName || (_hasImage && _hasCharacter))
+			{
+				_className = decoder.readSTR();
+			}
+			
+			if (_hasCharacter)
+			{
+				_character = decoder.readUI16();
+			}
+			
+			if (_hasMatrix)
+			{
+				_matrix = new MatrixRecord();
+				_matrix.decode(decoder);
+			}
+			
+			if (_hasColorTransform)
+			{
+				_colorTransform = new ColorTransformRecord(true);
+				_colorTransform.decode(decoder);
+			}
+			
+			if (_hasRatio)
+			{
+				_ratio = decoder.readUI16();
+			}
+			
+			if (_hasName)
+			{
+				_name = decoder.readSTR();
+			}
+			
+			if (_hasClipDepth)
+			{
+				_clipDepth = decoder.readUI16();
+			}
 		}
 		
 		/**
@@ -56,8 +112,9 @@ package com.larrio.dump.tags
 		/**
 		 * 字符串输出
 		 */		
-		public function toString():String
+		override public function toString():String
 		{
+			var result:XML = new XML(super.toString().replace(/PlaceObject(\d+)?Tag/gs, "PlaceObject3Tag"));
 			return "";
 		}
 

@@ -70,7 +70,7 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<PlaceObject/>");
+			var result:XML = new XML("<PlaceObjectTag/>");
 			result.@character = _character;
 			result.appendChild(new XML(_matrix.toString()));
 			if (_colorTransform)
