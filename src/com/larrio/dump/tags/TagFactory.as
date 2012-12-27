@@ -181,6 +181,106 @@ package com.larrio.dump.tags
 				{
 					return new DefineBitsLossless2Tag();
 				}
+					
+				case TagType.DEFINE_SHAPE:
+				{
+					return new DefineShapeTag();
+				}
+				
+				case TagType.DEFINE_SHAPE2:
+				{
+					return new DefineShape2Tag();
+				}
+					
+				case TagType.DEFINE_SHAPE3:
+				{
+					return new DefineShape3Tag();
+				}
+					
+				case TagType.DEFINE_SHAPE4:
+				{
+					return new DefineShape4Tag();
+				}
+					
+				case TagType.DEFINE_MORPH_SHAPE:
+				{
+					return new DefineMorphShapeTag();
+				}
+					
+				case TagType.DEFINE_MORPH_SHAPE2:
+				{
+					return new DefineMorphShape2Tag();
+				}
+					
+				case TagType.DEFINE_FONT:
+				{
+					return new DefineFontTag();
+				}
+					
+				case TagType.DEFINE_FONT2:
+				{
+					return new DefineFont2Tag();
+				}
+					
+				case TagType.DEFINE_FONT3:
+				{
+					return new DefineFont3Tag();
+				}
+					
+				case TagType.DEFINE_FONT4:
+				{
+					return new DefineFont4Tag();
+				}
+					
+				case TagType.DEFINE_EDIT_TEXT:
+				{
+					return new DefineEditTextTag();
+				}
+					
+				case TagType.CSM_TEXT_SETTINGS:
+				{
+					return new CSMTextSettingsTag();
+				}
+					
+				case TagType.DEFINE_BUTTON:
+				{
+					return new DefineButtonTag();
+				}
+					
+				case TagType.DEFINE_BUTTON2:
+				{
+					return new DefineButton2Tag();
+				}
+					
+				case TagType.DEFINE_BUTTON_CXFORM:
+				{
+					return new DefineButtonCxformTag();
+				}
+					
+				case TagType.DEFINE_BUTTON_SOUND:
+				{
+					return new DefineButtonSoundTag();
+				}
+					
+				case TagType.DEFINE_SPRITE:
+				{
+					return new DefineSpriteTag();
+				}
+					
+				case TagType.DEFINE_TEXT:
+				{
+					return new DefineTextTag();
+				}
+					
+				case TagType.DEFINE_TEXT2:
+				{
+					return new DefineText2Tag();
+				}
+					
+				case TagType.DEFINE_FONT_ALIGN_ZONES:
+				{
+					return new DefineFontAlignZonesTag();
+				}
 			}
 			
 			return new SWFTag();

@@ -34,8 +34,8 @@ package com.larrio.dump.tags
 		public static const DEFINE_FONT3                       :uint = 0x4B; // 75
 		public static const DEFINE_FONT4                       :uint = 0x5B; // 91
 		
-		public static const DEFINE_FONTInfo                    :uint = 0xD;  // 13
-		public static const DEFINE_FONTInfo2                   :uint = 0x3E; // 62
+		public static const DEFINE_FONT_INFO                   :uint = 0xD;  // 13
+		public static const DEFINE_FONT_INFO2                  :uint = 0x3E; // 62
 		
 		public static const DEFINE_FONT_ALIGN_ZONES            :uint = 0x49; // 73
 		
@@ -51,6 +51,7 @@ package com.larrio.dump.tags
 		public static const DEFINE_SHAPE                       :uint = 0x2;  // 2
 		public static const DEFINE_SHAPE2                      :uint = 0x16; // 22
 		public static const DEFINE_SHAPE3                      :uint = 0x20; // 32
+		public static const DEFINE_SHAPE4                      :uint = 0x53; // 83
 		
 		public static const DEFINE_SOUND                       :uint = 0xE;  // 14
 		
