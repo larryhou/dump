@@ -1,22 +1,14 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.actions.ActionType;
-	import com.larrio.dump.doabc.DoABC;
-	import com.larrio.dump.model.SWFRect;
+	import com.larrio.dump.model.types.BlendModeType;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.tags.DoABCTag;
-	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.dump.utils.formatTypes;
-	import com.larrio.math.fixed;
-	import com.larrio.math.float;
-	import com.larrio.math.sign;
-	import com.larrio.math.unfixed;
-	import com.larrio.math.unfloat;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
 	[SWF(frameRate="60", width="600", height="400")]
@@ -31,6 +23,9 @@ package
 	{
 		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
 		private const _cls : Class;
+		
+		[Embed(source="../libs/library.swf", mimeType="application/octet-stream")]
+		private var RawFile:Class;
 		
 		public static const v1:uint = 1;
 		private static var v2:uint;
@@ -50,16 +45,22 @@ package
 		public function Main()
 		{		
 			var bytes:ByteArray, swf:SWFile;
+			var rawFile:ByteArray = loaderInfo.bytes;
+			rawFile = new RawFile();
 			
-			bytes = loaderInfo.bytes;
+			bytes = rawFile;
 			swf = new SWFile(bytes);
 			
+			trace(swf.header);
+			//trace(swf.symbol);
+			
 			bytes = swf.repack();
-			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			assertTrue(equals(bytes, loaderInfo.bytes));
+			//trace(bytes.length);
+			//assertTrue(equals(bytes, rawFile));
 			//new FileReference().save(bytes, "encode.swf");
 			
 			swf = new SWFile(bytes);
+			trace(swf.header);
 			
 			var callback:* = function(date:* = "FUCK YOU!"):String
 			{
@@ -78,16 +79,16 @@ package
 					break;
 				}
 			}
-						
-			var size:SWFRect = swf.header.size;
-			assertTrue(size.width == stage.stageWidth);
-			assertTrue(size.height == stage.stageHeight);
-			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			var shape:Sprite = new Sprite();
-			shape.graphics.beginFill(0xFF0000);
-			shape.graphics.drawRect(0, 0, 300, 200);
-			shape.scale9Grid = new Rectangle(10, 10, 280, 180);
+			
+			//addChild(new _cls() as DisplayObject);
+						
+//			var size:SWFRect = swf.header.size;
+//			assertTrue(size.width == stage.stageWidth);
+//			assertTrue(size.height == stage.stageHeight);
+//			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
+			
+			//formatTypes(BlendModeType, 30, true)
 		}
 		
 		// 比较两个字节数组是否相等

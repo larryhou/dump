@@ -2,16 +2,17 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.math.fixed;
 	
 	/**
 	 * 
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 11:13:54 PM
 	 */
-	public class BevelFilter implements ICodec
+	public class BevelFilter implements IFilter
 	{
 		private var _shadowColor:RGBAColor;
 		private var _highlightColor:RGBAColor;
@@ -22,7 +23,7 @@ package com.larrio.dump.model.filters
 		private var _distance:uint;
 		private var _strength:uint;
 		
-		private var _innerShadow:uint;
+		private var _inner:uint;
 		private var _knockOut:uint;
 		
 		private var _compositeSource:uint;
@@ -58,7 +59,7 @@ package com.larrio.dump.model.filters
 			
 			_strength = decoder.readUI16();
 			
-			_innerShadow = decoder.readUB(1);
+			_inner = decoder.readUB(1);
 			_knockOut = decoder.readUB(1);
 			
 			_compositeSource = decoder.readUB(1);
@@ -66,6 +67,8 @@ package com.larrio.dump.model.filters
 			
 			_onTop = decoder.readUB(1);
 			_passes = decoder.readUB(4);
+			
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -85,7 +88,7 @@ package com.larrio.dump.model.filters
 			
 			encoder.writeUI16(_strength);
 			
-			encoder.writeUB(_innerShadow, 1);
+			encoder.writeUB(_inner, 1);
 			encoder.writeUB(_knockOut, 1);
 			
 			encoder.writeUB(_compositeSource, 1);
@@ -93,6 +96,26 @@ package com.larrio.dump.model.filters
 			
 			encoder.writeUB(_passes, 4);
 			encoder.flush();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<BevelFilter/>");
+			result.@blurX = fixed(_blurX, 16, 16);
+			result.@blurY = fixed(_blurY, 16, 16);
+			result.@angle = (180 * fixed(_angle, 16, 16) / Math.PI).toFixed(0);
+			result.@distance = fixed(_distance, 16, 16);
+			result.@strength = fixed(_strength, 8, 8);
+			result.@inner = Boolean(_inner);
+			result.@knockOut = Boolean(_knockOut);
+			result.@passes = _passes;
+			result.appendChild(new XML("<DropShadowColor>" + _shadowColor + "</DropShadowColor>"));
+			result.appendChild(new XML("<HighlightColor>" + _highlightColor + "</HighlightColor>"));
+			
+			return result.toXMLString();
 		}
 
 		/**
@@ -133,7 +156,7 @@ package com.larrio.dump.model.filters
 		/**
 		 * inner shadow mode
 		 */		
-		public function get innerShadow():uint { return _innerShadow; }
+		public function get inner():uint { return _inner; }
 
 		/**
 		 * Knockout mode
@@ -154,6 +177,11 @@ package com.larrio.dump.model.filters
 		 * Number of blur passes
 		 */		
 		public function get passes():uint { return _passes; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.BEVEL_FILTER; }
 
 	}
 }

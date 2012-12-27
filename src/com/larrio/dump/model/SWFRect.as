@@ -62,6 +62,8 @@ package com.larrio.dump.model
 			
 			_width = (_maxX - _minX) / 20;
 			_height = (_maxY - _minY) / 20;
+			
+			decoder.byteAlign();
 		}
 		
 		/**

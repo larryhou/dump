@@ -2,8 +2,8 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -11,7 +11,7 @@ package com.larrio.dump.model.filters
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 10:37:02 PM
 	 */
-	public class ConvolutionFilter implements ICodec
+	public class ConvolutionFilter implements IFilter
 	{
 		private var _matrixX:uint;
 		private var _matrixY:uint;
@@ -61,6 +61,8 @@ package com.larrio.dump.model.filters
 			
 			_clamp = decoder.readUB(1);
 			_preserveAlpha = decoder.readUB(1);
+			
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -83,10 +85,43 @@ package com.larrio.dump.model.filters
 			
 			_color.encode(encoder);
 			
-			encoder.writeUB(6);
+			encoder.writeUB(0, 6);
 			encoder.writeUB(_clamp, 1);
 			encoder.writeUB(_preserveAlpha, 1);
 			encoder.flush();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<ConvolutionFilter/>");
+			result.@matrixX = _matrixX;
+			result.@matrixY = _matrixY;
+			result.@divisor = _divisor;
+			result.@bias = _bias;
+			result.@clamp = Boolean(_clamp);
+			result.@preserveAlpha = Boolean(_preserveAlpha);
+			
+			result.appendChild(new XML("<Matrix/>"));
+			
+			var item:Array;
+			var length:uint = _matrix.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				if (!item) item = [];
+				item.push(_matrix[i].toFixed(2));
+				if ((i + 1) % _matrixX == 0)
+				{
+					result.matrix.appendChild(new XML("<row>" + item.join("\t") + "</row>"));
+					item = null;
+				}
+			}
+			
+			result.appendChild(new XML(_color.toString()));
+			
+			return result.toXMLString();
 		}
 
 		/**
@@ -128,6 +163,11 @@ package com.larrio.dump.model.filters
 		 * Preserve the alpha
 		 */		
 		public function get preserveAlpha():uint { return _preserveAlpha; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.CONVOLUTION_FILTER; }
 
 	}
 }

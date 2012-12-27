@@ -2,47 +2,47 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 23, 2012 5:22:12 PM
+	 * @createTime Dec 27, 2012 2:59:03 PM
 	 */
-	public class SetTabIndexTag extends SWFTag
+	public class RemoveObjectTag extends SWFTag
 	{
-		public static const TYPE:uint = TagType.SET_TABLE_INDEX;
+		public static const TYPE:uint = TagType.REMOVE_OBJECT;
 		
-		private var _depth:uint;
-		private var _index:uint;
+		protected var _depth:uint;
 		
 		/**
 		 * 构造函数
-		 * create a [SetTabIndexTag] object
+		 * create a [RemoveObjectTag] object
 		 */
-		public function SetTabIndexTag()
+		public function RemoveObjectTag()
 		{
 			
 		}
 		
 		/**
-		 * 二进制解码 
+		 * 对TAG二进制内容进行解码 
 		 * @param decoder	解码器
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
+			_character = decoder.readUI16();
 			_depth = decoder.readUI16();
-			_index = decoder.readUI16();
+			
+			trace(this);
 		}
 		
 		/**
-		 * 二进制编码 
+		 * 对TAG内容进行二进制编码 
 		 * @param encoder	编码器
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
+			encoder.writeUI16(_character);
 			encoder.writeUI16(_depth);
-			encoder.writeUI16(_index);
 		}
 		
 		/**
@@ -50,22 +50,16 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<SetTabIndexTag/>");
+			var result:XML = new XML("<PlaceObjectTag/>");
+			result.@character = _character;
 			result.@depth = _depth;
-			result.@index = _index;
 			return result.toXMLString();	
 		}
 
 		/**
-		 * 特征深度
+		 * Depth of character
 		 */		
 		public function get depth():uint { return _depth; }
 
-		/**
-		 * TAB顺序索引
-		 */		
-		public function get index():uint { return _index; }
-
-		
 	}
 }

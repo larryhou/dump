@@ -2,14 +2,14 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.types.FilterType;
 	
 	/**
 	 * 
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 10:33:04 PM
 	 */
-	public class ColorMatrixFilter implements ICodec
+	public class ColorMatrixFilter implements IFilter
 	{
 		private var _matrix:Vector.<Number>;
 		
@@ -46,11 +46,38 @@ package com.larrio.dump.model.filters
 				encoder.writeFloat(_matrix[i]);
 			}
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<ColorMatrixFilter/>");
+			
+			var item:Array, length:uint = _matrix.length;
+			for (var i:int = 0; i < _matrix.length; i++)
+			{
+				if (!item) item = [];
+				item.push(_matrix[i].toFixed(2));
+				
+				if ((i + 1) % 5 == 0)
+				{
+					result.appendChild(new XML("<row>" + item.join("\t") + "</row>"));
+					item = null;
+				}
+			}
+			return result.toXMLString();
+		}
 
 		/**
 		 * Color matrix values
 		 */		
 		public function get matrix():Vector.<Number> { return _matrix; }
+		
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.COLOR_MATRIX_FILTER; }
 
 	}
 }

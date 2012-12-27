@@ -2,16 +2,17 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.math.fixed;
 	
 	/**
 	 * 
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 11:04:56 PM
 	 */
-	public class GlowFilter implements ICodec
+	public class GlowFilter implements IFilter
 	{
 		private var _color:RGBAColor;
 		
@@ -19,7 +20,7 @@ package com.larrio.dump.model.filters
 		private var _blurY:uint;
 		
 		private var _strength:uint;
-		private var _innerGlow:uint;
+		private var _inner:uint;
 		private var _knockOut:uint;
 		private var _compositeSource:uint;
 		private var _passes:uint;
@@ -47,13 +48,15 @@ package com.larrio.dump.model.filters
 			
 			_strength = decoder.readUI16();
 			
-			_innerGlow = decoder.readUB(1);
+			_inner = decoder.readUB(1);
 			_knockOut = decoder.readUB(1);
 			
 			_compositeSource = decoder.readUB(1);
 			assertTrue(_compositeSource == 1);
 			
 			_passes = decoder.readUB(5);
+			
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -69,12 +72,28 @@ package com.larrio.dump.model.filters
 			
 			encoder.writeUI16(_strength);
 			
-			encoder.writeUB(_innerGlow, 1);
+			encoder.writeUB(_inner, 1);
 			encoder.writeUB(_knockOut, 1);
 			
 			encoder.writeUB(_compositeSource, 1);
 			encoder.writeUB(_passes, 5);
 			encoder.flush();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<GlowFilter/>");
+			result.@blurX = fixed(_blurX, 16, 16);
+			result.@blurY = fixed(_blurY, 16, 16);
+			result.@strength = fixed(_strength, 8, 8);
+			result.@inner = Boolean(_inner);
+			result.@knockOut = Boolean(_knockOut);
+			result.@passes = _passes;
+			
+			return result.toXMLString();
 		}
 
 		/**
@@ -95,7 +114,7 @@ package com.larrio.dump.model.filters
 		/**
 		 * Inner glow mode
 		 */		
-		public function get innerGlow():uint { return _innerGlow; }
+		public function get inner():uint { return _inner; }
 
 		/**
 		 * Knockout mode
@@ -117,6 +136,9 @@ package com.larrio.dump.model.filters
 		 */		
 		public function get color():RGBAColor { return _color; }
 
-
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.GLOW_FILTER; }
 	}
 }

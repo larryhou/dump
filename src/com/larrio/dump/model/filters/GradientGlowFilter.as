@@ -2,16 +2,17 @@ package com.larrio.dump.model.filters
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.RGBAColor;
+	import com.larrio.dump.model.types.FilterType;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.math.fixed;
 	
 	/**
 	 * 
 	 * @author larryhou
 	 * @createTime Dec 25, 2012 11:26:41 PM
 	 */
-	public class GradientGlowFilter implements ICodec
+	public class GradientGlowFilter implements IFilter
 	{
 		protected var _colors:Vector.<RGBAColor>;
 		protected var _ratios:Vector.<uint>;
@@ -19,10 +20,13 @@ package com.larrio.dump.model.filters
 		protected var _blurX:uint;
 		protected var _blurY:uint;
 		
+		protected var _angle:uint;
+		protected var _distance:uint;
 		protected var _strength:uint;
-		protected var _innerGlow:uint;
+		protected var _inner:uint;
 		protected var _knockOut:uint;
 		protected var _compositeSource:uint;
+		protected var _onTop:uint;
 		protected var _passes:uint;
 		
 		/**
@@ -58,16 +62,20 @@ package com.larrio.dump.model.filters
 			_blurX = decoder.readUI32();
 			_blurY = decoder.readUI32();
 			
+			_angle = decoder.readUI32();
+			_distance = decoder.readUI32();
 			_strength = decoder.readUI16();
 			
-			_innerGlow = decoder.readUB(1);
+			_inner = decoder.readUB(1);
 			_knockOut = decoder.readUB(1);
 			
 			_compositeSource = decoder.readUB(1);
 			assertTrue(_compositeSource == 1);
 			
-			_passes = decoder.readUB(5);
+			_onTop = decoder.readUB(1);
+			_passes = decoder.readUB(4);
 
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -94,14 +102,46 @@ package com.larrio.dump.model.filters
 			encoder.writeUI32(_blurX);
 			encoder.writeUI32(_blurY);
 			
+			encoder.writeUI32(_angle);
+			encoder.writeUI32(_distance);
 			encoder.writeUI16(_strength);
 			
-			encoder.writeUB(_innerGlow, 1);
+			encoder.writeUB(_inner, 1);
 			encoder.writeUB(_knockOut, 1);
 			
 			encoder.writeUB(_compositeSource, 1);
-			encoder.writeUB(_passes, 5);
+			encoder.writeUB(_onTop, 1);
+			encoder.writeUB(_passes, 4);
 			encoder.flush();
+		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<GradientGlowFilter/>");
+			result.@blurX = fixed(_blurX, 16, 16);
+			result.@blurY = fixed(_blurY, 16, 16);
+			result.@angle = (180 * fixed(_angle, 16, 16) / Math.PI).toFixed(0);
+			result.@distance = fixed(_distance, 16, 16);
+			result.@strength = fixed(_strength, 8, 8);
+			result.@inner = Boolean(_inner);
+			result.@knockOut = Boolean(_knockOut);
+			result.@onTop = Boolean(_onTop);
+			result.@passes = _passes;
+			
+			var item:XML;
+			var length:uint = _colors.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				item = new XML("<Color/>");
+				item.@ratio = _ratios[i] / 256;
+				item.appendChild(new XML(_colors[i].toString()));
+				result.appendChild(item);
+			}
+
+			return result.toXMLString();
 		}
 		
 		/**
@@ -122,7 +162,7 @@ package com.larrio.dump.model.filters
 		/**
 		 * Inner glow mode
 		 */		
-		public function get innerGlow():uint { return _innerGlow; }
+		public function get inner():uint { return _inner; }
 		
 		/**
 		 * Knockout mode
@@ -149,6 +189,26 @@ package com.larrio.dump.model.filters
 		 */		
 		public function get ratios():Vector.<uint> { return _ratios; }
 
+		/**
+		 * 滤镜类型
+		 */		
+		public function get type():uint { return FilterType.GRADIENT_GLOW_FILTER; }
 
+		/**
+		 * Radian angle of the gradient glow
+		 */		
+		public function get angle():uint { return _angle; }
+
+		/**
+		 * Distance of the gradient glow
+		 */		
+		public function get distance():uint { return _distance; }
+
+		/**
+		 * OnTop mode
+		 */		
+		public function get onTop():uint { return _onTop; }
+
+		
 	}
 }
