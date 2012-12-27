@@ -166,6 +166,11 @@ package com.larrio.dump.tags
 				{
 					return new DefineBitsJPEG3Tag();
 				}
+					
+				case TagType.DEFINE_BITS_LOSSLESS:
+				{
+					return new DefineBitsLosslessTag();
+				}
 			}
 			
 			return new SWFTag();
