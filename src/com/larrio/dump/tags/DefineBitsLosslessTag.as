@@ -5,7 +5,6 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.colors.Pix15Color;
 	import com.larrio.dump.model.colors.Pix24Color;
 	import com.larrio.dump.model.colors.RGBColor;
-	import com.larrio.dump.model.types.BitmapType;
 	
 	import flash.utils.ByteArray;
 	
@@ -53,7 +52,13 @@ package com.larrio.dump.tags
 			var length:uint, i:int;
 			var size:uint = _width * _height;
 			
-			if (_format == BitmapType.COLORMAP_8_BITS)
+			var zlib:FileDecoder = new FileDecoder();
+			decoder.readBytes(zlib);
+			zlib.uncompress();
+			zlib.position = 0;
+			decoder = zlib;
+			
+			if (_format == 3)
 			{
 				_colorTableSize = decoder.readUI8();
 				
@@ -69,7 +74,7 @@ package com.larrio.dump.tags
 				decoder.readBytes(_colormapData, size);
 			}
 			else
-			if (format == BitmapType.RGB_15_BITS)
+			if (format == 4)
 			{
 				_bitmapData = new Vector.<RGBColor>(size, true);
 				for (i = 0; i < size; i++)
@@ -79,7 +84,7 @@ package com.larrio.dump.tags
 				}
 			}
 			else
-			if (format == BitmapType.RGB_24_BITS)
+			if (format == 5)
 			{
 				_bitmapData = new Vector.<Pix15Color>(size, true);
 				for (i = 0; i < size; i++)
@@ -104,28 +109,32 @@ package com.larrio.dump.tags
 			
 			var length:uint, i:int;
 			var size:uint = _width * _height;
+			var zlib:FileEncoder = new FileEncoder();
 			
-			if (format == BitmapType.COLORMAP_8_BITS)
+			if (format == 3)
 			{
-				encoder.writeUI8(_colorTableSize);
+				zlib.writeUI8(_colorTableSize);
 				
 				length = _colorTableSize + 1;
 				for (i = 0; i < length; i++)
 				{
-					_colorTableRGBs[i].encode(encoder);
+					_colorTableRGBs[i].encode(zlib);
 				}
 				
-				encoder.writeBytes(_colormapData);
+				zlib.writeBytes(_colormapData);
 			}
 			else
-			if (format == BitmapType.RGB_15_BITS || format == BitmapType.RGB_24_BITS)
+			if (format == 4 || format == 5)
 			{
 				length = size;
 				for (i = 0; i < length; i++)
 				{
-					_bitmapData[i].encode(encoder);
+					_bitmapData[i].encode(zlib);
 				}
 			}
+			
+			zlib.compress();
+			encoder.writeBytes(zlib);
 		}
 		
 		/**

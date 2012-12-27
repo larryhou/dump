@@ -171,6 +171,11 @@ package com.larrio.dump.tags
 				{
 					return new DefineBitsLosslessTag();
 				}
+					
+				case TagType.DEFINE_BITS_LOSSLESS2:
+				{
+					return new DefineBitsLossless2Tag();
+				}
 			}
 			
 			return new SWFTag();
