@@ -281,6 +281,11 @@ package com.larrio.dump.tags
 				{
 					return new DefineFontAlignZonesTag();
 				}
+					
+				case TagType.DEFINE_FONT_NAME:
+				{
+					return new DefineFontNameTag();
+				}
 			}
 			
 			return new SWFTag();
