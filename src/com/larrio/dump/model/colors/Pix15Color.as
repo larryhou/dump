@@ -1,4 +1,4 @@
-package com.larrio.dump.model.bitmap
+package com.larrio.dump.model.colors
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
@@ -7,15 +7,15 @@ package com.larrio.dump.model.bitmap
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 27, 2012 8:25:44 PM
+	 * @createTime Dec 27, 2012 8:21:18 PM
 	 */
-	public class Pix24Color extends Pix15Color
+	public class Pix15Color extends RGBColor
 	{
 		/**
 		 * 构造函数
-		 * create a [Pix24Color] object
+		 * create a [Pix15Color] object
 		 */
-		public function Pix24Color()
+		public function Pix15Color()
 		{
 			
 		}
@@ -26,11 +26,13 @@ package com.larrio.dump.model.bitmap
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
-			assertTrue(decoder.readUI8() == 0);
+			assertTrue(decoder.readUB(1) == 0);
 			
-			_red = decoder.readUI8();
-			_green = decoder.readUI8();
-			_blue = decoder.readUI8();
+			_red = decoder.readUB(5);
+			_green = decoder.readUB(5);
+			_blue = decoder.readUB(5);
+			
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -39,10 +41,11 @@ package com.larrio.dump.model.bitmap
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeUI8(0);
-			encoder.writeUI8(_red);
-			encoder.writeUI8(_green);
-			encoder.writeUI8(_blue);
+			encoder.writeUB(0, 1);
+			encoder.writeUB(_red, 5);
+			encoder.writeUB(_green, 5);
+			encoder.writeUB(_blue, 5);
+			encoder.flush();
 		}
 		
 		/**
@@ -50,7 +53,7 @@ package com.larrio.dump.model.bitmap
 		 */		
 		override public function toString():String
 		{
-			return super.toString().replace(/Pix15Color/g, "Pix24Color");	
+			return super.toString().replace(/RGBColor/g, "Pix15Color");	
 		}
 		
 	}

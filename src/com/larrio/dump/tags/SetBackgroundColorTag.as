@@ -2,7 +2,7 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.model.RGBColor;
+	import com.larrio.dump.model.colors.RGBColor;
 	
 	/**
 	 * 

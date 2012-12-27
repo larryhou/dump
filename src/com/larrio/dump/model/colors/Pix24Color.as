@@ -1,23 +1,21 @@
-package com.larrio.dump.model
+package com.larrio.dump.model.colors
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 23, 2012 5:44:59 PM
+	 * @createTime Dec 27, 2012 8:25:44 PM
 	 */
-	public class ARGBColor extends RGBColor
+	public class Pix24Color extends RGBColor
 	{
-		private var _alpha:uint;
-		
 		/**
 		 * 构造函数
-		 * create a [ARGBColor] object
+		 * create a [Pix24Color] object
 		 */
-		public function ARGBColor()
+		public function Pix24Color()
 		{
 			
 		}
@@ -28,9 +26,11 @@ package com.larrio.dump.model
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
-			_alpha = decoder.readUI8();
+			assertTrue(decoder.readUI8() == 0);
 			
-			super.decode(decoder);
+			_red = decoder.readUI8();
+			_green = decoder.readUI8();
+			_blue = decoder.readUI8();
 		}
 		
 		/**
@@ -39,9 +39,10 @@ package com.larrio.dump.model
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeUI8(_alpha);
-			
-			super.encode(encoder);
+			encoder.writeUI8(0);
+			encoder.writeUI8(_red);
+			encoder.writeUI8(_green);
+			encoder.writeUI8(_blue);
 		}
 		
 		/**
@@ -49,12 +50,8 @@ package com.larrio.dump.model
 		 */		
 		override public function toString():String
 		{
-			var result:XML = new XML("<ARGBColor/>");
-			result.@alpha = _alpha;
-			result.@red = _red;
-			result.@green = _green;
-			result.@blue = _blue;
-			return result.toXMLString();	
+			return super.toString().replace(/RGBColor/g, "Pix24Color");	
 		}
+		
 	}
 }

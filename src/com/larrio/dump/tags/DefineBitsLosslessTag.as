@@ -2,9 +2,9 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.model.RGBColor;
-	import com.larrio.dump.model.bitmap.Pix15Color;
-	import com.larrio.dump.model.bitmap.Pix24Color;
+	import com.larrio.dump.model.colors.Pix15Color;
+	import com.larrio.dump.model.colors.Pix24Color;
+	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.model.types.BitmapType;
 	
 	import flash.utils.ByteArray;
@@ -27,7 +27,7 @@ package com.larrio.dump.tags
 		protected var _colorTableRGBs:Vector.<RGBColor>;
 		protected var _colormapData:ByteArray;
 		
-		protected var _bitmapData:Vector.<Pix15Color>;
+		protected var _bitmapData:Vector.<RGBColor>;
 		
 		/**
 		 * 构造函数
@@ -71,7 +71,7 @@ package com.larrio.dump.tags
 			else
 			if (format == BitmapType.RGB_15_BITS)
 			{
-				_bitmapData = new Vector.<Pix15Color>(size, true);
+				_bitmapData = new Vector.<RGBColor>(size, true);
 				for (i = 0; i < size; i++)
 				{
 					_bitmapData[i] = new Pix15Color();
@@ -81,10 +81,8 @@ package com.larrio.dump.tags
 			else
 			if (format == BitmapType.RGB_24_BITS)
 			{
-				length = size;
-				
-				_bitmapData = new Vector.<Pix15Color>(length, true);
-				for (i = 0; i < length; i++)
+				_bitmapData = new Vector.<Pix15Color>(size, true);
+				for (i = 0; i < size; i++)
 				{
 					_bitmapData[i] = new Pix24Color();
 					_bitmapData[i].decode(decoder);
@@ -177,6 +175,6 @@ package com.larrio.dump.tags
 		 * Array of pixel colors. 
 		 * Number of entries is BitmapWidth * BitmapHeight, subject to padding (see note above).
 		 */		
-		public function get bitmapData():Vector.<Pix15Color> { return _bitmapData; }
+		public function get bitmapData():Vector.<RGBColor> { return _bitmapData; }
 	}
 }
