@@ -8,7 +8,7 @@ package com.larrio.dump.tags
 	 */
 	public class DefineBitsJPEG2Tag extends DefineBitsTag
 	{
-		public static const TYPE:uint = TagType.DEFINE_BITSJPEG2;
+		public static const TYPE:uint = TagType.DEFINE_BITS_JPEG2;
 		
 		/**
 		 * 构造函数

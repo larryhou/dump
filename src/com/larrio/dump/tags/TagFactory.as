@@ -157,14 +157,19 @@ package com.larrio.dump.tags
 					return new DefineBitsTag();
 				}
 					
-				case TagType.DEFINE_BITSJPEG2:
+				case TagType.DEFINE_BITS_JPEG2:
 				{
 					return new DefineBitsJPEG2Tag();
 				}
 					
-				case TagType.DEFINE_BITSJPEG3:
+				case TagType.DEFINE_BITS_JPEG3:
 				{
 					return new DefineBitsJPEG3Tag();
+				}
+					
+				case TagType.DEFINE_BITS_JPEG4:
+				{
+					return new DefineBitsJPEG4Tag();
 				}
 					
 				case TagType.DEFINE_BITS_LOSSLESS:

@@ -13,9 +13,9 @@ package com.larrio.dump.tags
 		public static const DEFINE_BINARY_DATA                 :uint = 0x57; // 87
 		
 		public static const DEFINE_BITS                        :uint = 0x6;  // 6
-		public static const DEFINE_BITSJPEG2                   :uint = 0x15; // 21
-		public static const DEFINE_BITSJPEG3                   :uint = 0x23; // 35
-		public static const DEFINE_BITSJPEG4                   :uint = 0x5A; // 90
+		public static const DEFINE_BITS_JPEG2                  :uint = 0x15; // 21
+		public static const DEFINE_BITS_JPEG3                  :uint = 0x23; // 35
+		public static const DEFINE_BITS_JPEG4                  :uint = 0x5A; // 90
 		
 		public static const DEFINE_BITS_LOSSLESS               :uint = 0x14; // 20
 		public static const DEFINE_BITS_LOSSLESS2              :uint = 0x24; // 36

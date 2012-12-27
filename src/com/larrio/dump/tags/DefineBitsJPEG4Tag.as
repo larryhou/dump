@@ -8,20 +8,19 @@ package com.larrio.dump.tags
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 27, 2012 8:10:46 PM
+	 * @createTime Dec 27, 2012 10:07:34 PM
 	 */
-	public class DefineBitsJPEG3Tag extends DefineBitsJPEG2Tag
+	public class DefineBitsJPEG4Tag extends DefineBitsJPEG3Tag
 	{
-		public static const TYPE:uint = TagType.DEFINE_BITS_JPEG3;
+		public static const TYPE:uint = TagType.DEFINE_BITS_JPEG4;
 		
-		protected var _size:uint;
-		protected var _bitmapAlphaData:ByteArray;
+		private var _deblockParam:uint;
 		
 		/**
 		 * 构造函数
-		 * create a [DefineBitsJPEG3Tag] object
+		 * create a [DefineBitsJPEG4Tag] object
 		 */
-		public function DefineBitsJPEG3Tag()
+		public function DefineBitsJPEG4Tag()
 		{
 			
 		}
@@ -35,6 +34,7 @@ package com.larrio.dump.tags
 			_character = decoder.readUI16();
 			
 			_size = decoder.readUI32();
+			_deblockParam = decoder.readUI16();
 			
 			_data = new ByteArray();
 			decoder.readBytes(_data, 0, _size);
@@ -51,6 +51,7 @@ package com.larrio.dump.tags
 		{
 			encoder.writeUI16(_character);
 			encoder.writeUI32(_size);
+			encoder.writeUI16(_deblockParam);
 			encoder.writeBytes(_data);
 			encoder.writeBytes(_bitmapAlphaData);
 		}
@@ -64,10 +65,10 @@ package com.larrio.dump.tags
 		}
 
 		/**
-		 * ZLIB compressed array of alpha data. Only supported when tag contains JPEG data. 
-		 * One byte per pixel. Total size after decompression must equal (width * height) of JPEG image.
+		 * Parameter to be fed into the deblocking filter. 
+		 * The parameter describes a relative strength of the deblocking filter from 0- 100% expressed in a normalized 8.8 fixed point format.
 		 */		
-		public function get bitmapAlphaData():ByteArray { return _bitmapAlphaData; }
+		public function get deblockParam():uint { return _deblockParam; }
 
 	}
 }
