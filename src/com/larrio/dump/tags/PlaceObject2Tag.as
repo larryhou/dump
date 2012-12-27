@@ -95,7 +95,6 @@ package com.larrio.dump.tags
 				_clipActions.decode(decoder);
 			}
 			
-			trace(this);
 		}
 		
 		/**
@@ -112,7 +111,6 @@ package com.larrio.dump.tags
 			encoder.writeUB(_hasMatrix, 1);
 			encoder.writeUB(_hasCharacter, 1);
 			encoder.writeUB(_move, 1);
-			encoder.flush();
 			
 			encoder.writeUI16(_depth);
 			

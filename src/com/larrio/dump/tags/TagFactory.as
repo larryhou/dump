@@ -131,6 +131,11 @@ package com.larrio.dump.tags
 				{
 					return new PlaceObject2Tag();
 				}
+					
+				case TagType.PLACE_OBJECT3:
+				{
+					return new PlaceObject3Tag();
+				}
 			}
 			
 			return new SWFTag();

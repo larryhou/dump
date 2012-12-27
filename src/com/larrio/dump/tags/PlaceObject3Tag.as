@@ -2,6 +2,7 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.model.ClipActions;
 	import com.larrio.dump.model.ColorTransformRecord;
 	import com.larrio.dump.model.FilterList;
 	import com.larrio.dump.model.MatrixRecord;
@@ -97,6 +98,30 @@ package com.larrio.dump.tags
 			{
 				_clipDepth = decoder.readUI16();
 			}
+			
+			if (_hasFilterList)
+			{
+				_filterList = new FilterList();
+				_filterList.decode(decoder);
+			}
+			
+			if (_hasBlendMode)
+			{
+				_blendMode = decoder.readUI8();
+			}
+			
+			if (_hasCacheAsBitmap)
+			{
+				_bitmapCache = decoder.readUI8();
+			}
+			
+			if (_hasClipActions)
+			{
+				_clipActions = new ClipActions();
+				_clipActions.decode(decoder);
+			}
+			
+			trace(this);
 		}
 		
 		/**
@@ -105,8 +130,79 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			super.encodeTag(encoder);
+			encoder.writeUB(_hasClipActions, 1);
+			encoder.writeUB(_hasClipDepth, 1);
+			encoder.writeUB(_hasName, 1);
+			encoder.writeUB(_hasRatio, 1);
+			encoder.writeUB(_hasColorTransform, 1);
+			encoder.writeUB(_hasMatrix, 1);
+			encoder.writeUB(_hasCharacter, 1);
+			encoder.writeUB(_move, 1);
 			
+			encoder.writeUB(0, 3);
+			
+			encoder.writeUB(_hasImage, 1);
+			encoder.writeUB(_hasClassName, 1);
+			encoder.writeUB(_hasCacheAsBitmap, 1);
+			encoder.writeUB(_hasBlendMode, 1);
+			encoder.writeUB(_hasFilterList, 1);
+			
+			encoder.writeUI16(_depth);
+			
+			if (_hasClassName)
+			{
+				encoder.writeSTR(_className);
+			}
+			
+			if (_hasCharacter)
+			{
+				encoder.writeUI16(_character);
+			}
+			
+			if (_hasMatrix)
+			{
+				_matrix.encode(encoder);
+			}
+			
+			if (_hasColorTransform)
+			{
+				_colorTransform.encode(encoder);
+			}
+			
+			if (_hasRatio)
+			{
+				encoder.writeUI16(_ratio);
+			}
+			
+			if (_hasName)
+			{
+				encoder.writeSTR(_name);
+			}
+			
+			if (_hasClipDepth)
+			{
+				encoder.writeUI16(_clipDepth);
+			}
+			
+			if (_hasFilterList)
+			{
+				_filterList.encode(encoder);
+			}
+			
+			if (_hasBlendMode)
+			{
+				encoder.writeUI8(_blendMode);
+			}
+			
+			if (_hasCacheAsBitmap)
+			{
+				encoder.writeUI8(_bitmapCache);
+			}
+			
+			if (_hasClipActions)
+			{
+				_clipActions.encode(encoder);
+			}
 		}
 		
 		/**
@@ -115,7 +211,27 @@ package com.larrio.dump.tags
 		override public function toString():String
 		{
 			var result:XML = new XML(super.toString().replace(/PlaceObject(\d+)?Tag/gs, "PlaceObject3Tag"));
-			return "";
+			if (_hasClassName)
+			{
+				result.@className = _className;
+			}
+			
+			if (_hasFilterList)
+			{
+				result.appendChild(new XML(_filterList.toString()));
+			}
+			
+			if (_hasBlendMode)
+			{
+				result.@blendMode = _blendMode;
+			}
+			
+			if (_hasCacheAsBitmap)
+			{
+				result.@bitmapCache = _bitmapCache;
+			}
+			
+			return result.toXMLString();
 		}
 
 		/**
