@@ -88,7 +88,7 @@ package
 //			assertTrue(size.height == stage.stageHeight);
 //			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
 			
-			formatTypes(BlendModeType, 30, true)
+			//formatTypes(BlendModeType, 30, true)
 		}
 		
 		// 比较两个字节数组是否相等
