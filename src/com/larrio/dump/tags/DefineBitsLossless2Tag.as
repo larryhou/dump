@@ -65,7 +65,7 @@ package com.larrio.dump.tags
 				}
 				
 				_colormapData = new ByteArray();
-				decoder.readBytes(_colormapData, size);
+				decoder.readBytes(_colormapData);
 			}
 			else
 			if (format == 4 || format == 5)

@@ -29,6 +29,8 @@ package com.larrio.dump.tags
 		
 		protected var _bitmapData:Vector.<RGBColor>;
 		
+		private var _lenR:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [DefineBitsLosslessTag] object
@@ -54,7 +56,7 @@ package com.larrio.dump.tags
 			var length:uint, i:int;
 			var size:uint = _width * _height;
 			
-			if (format == 3)
+			if (_format == 3)
 			{
 				_colorTableSize = decoder.readUI8();
 			}
@@ -64,6 +66,8 @@ package com.larrio.dump.tags
 			zlib.uncompress();
 			zlib.position = 0;
 			decoder = zlib;
+			
+			_lenR = zlib.length;
 			
 			if (_format == 3)
 			{
@@ -76,7 +80,7 @@ package com.larrio.dump.tags
 				}
 				
 				_colormapData = new ByteArray();
-				decoder.readBytes(_colormapData, size);
+				decoder.readBytes(_colormapData);
 			}
 			else
 			if (format == 4)
@@ -114,14 +118,17 @@ package com.larrio.dump.tags
 			encoder.writeUI16(_width);
 			encoder.writeUI16(_height);
 			
+			if (_format == 3)
+			{
+				encoder.writeUI8(_colorTableSize);
+			}
+			
 			var length:uint, i:int;
 			var size:uint = _width * _height;
 			var zlib:FileEncoder = new FileEncoder();
 			
 			if (format == 3)
 			{
-				zlib.writeUI8(_colorTableSize);
-				
 				length = _colorTableSize + 1;
 				for (i = 0; i < length; i++)
 				{
@@ -139,6 +146,8 @@ package com.larrio.dump.tags
 					_bitmapData[i].encode(zlib);
 				}
 			}
+			
+			assertTrue(_lenR == zlib.length);
 			
 			zlib.compress();
 			encoder.writeBytes(zlib);
