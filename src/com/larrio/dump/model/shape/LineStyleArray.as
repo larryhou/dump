@@ -3,23 +3,24 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.tags.TagType;
 	
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Dec 28, 2012 1:35:22 PM
+	 * @createTime Dec 28, 2012 2:30:19 PM
 	 */
-	public class FillStyleArray implements ICodec
+	public class LineStyleArray implements ICodec
 	{
-		private var _count:uint;
-		private var _styles:Vector.<FillStyle>;
 		private var _shape:uint;
+		private var _count:uint;
+		private var _styles:Vector.<LineStyle>;
 		
 		/**
 		 * 构造函数
-		 * create a [FillStyleArray] object
+		 * create a [LineStyleArray] object
 		 */
-		public function FillStyleArray(shape:uint)
+		public function LineStyleArray(shape:uint)
 		{
 			_shape = shape;
 		}
@@ -31,16 +32,25 @@ package com.larrio.dump.model.shape
 		public function decode(decoder:FileDecoder):void
 		{
 			var length:uint, i:int;
+			
 			length = _count = decoder.readUI8();
 			if (_count == 0xFF)
 			{
 				length = decoder.readUI16();
 			}
 			
-			_styles = new Vector.<FillStyle>(length, true);
+			_styles = new Vector.<LineStyle>(length, true);
 			for (i = 0; i < length; i++)
 			{
-				_styles[i] = new FillStyle(_shape);
+				if (_shape == TagType.DEFINE_SHAPE4)
+				{
+					_styles[i] = new LineStyle2(_shape);
+				}
+				else
+				{
+					_styles[i] = new LineStyle(_shape);
+				}
+				
 				_styles[i].decode(decoder);
 			}
 		}
@@ -71,7 +81,7 @@ package com.larrio.dump.model.shape
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<FillStyleArray/>");
+			var result:XML = new XML("<LineStyleArray/>");
 			result.@length = _styles.length;
 			
 			var length:uint = _styles.length;
@@ -84,9 +94,9 @@ package com.larrio.dump.model.shape
 		}
 
 		/**
-		 * Array of fill styles.
+		 * Array of line styles.
 		 */		
-		public function get styles():Vector.<FillStyle> { return _styles; }
+		public function get styles():Vector.<LineStyle> { return _styles; }
 
 	}
 }

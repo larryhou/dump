@@ -2,25 +2,24 @@ package com.larrio.dump.model.shape
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
 	 * @author larryhou
 	 * @createTime Dec 28, 2012 12:41:41 PM
 	 */
-	public class EndShapeRecord implements ICodec
+	public class EndShapeRecord extends ShapeRecord
 	{
-		private var _type:uint;
 		private var _endOfShape:uint;
 		
 		/**
 		 * 构造函数
 		 * create a [EndShapeRecord] object
 		 */
-		public function EndShapeRecord()
+		public function EndShapeRecord(shape:uint)
 		{
-			
+			super(shape);
 		}
 		
 		/**
@@ -30,6 +29,8 @@ package com.larrio.dump.model.shape
 		public function decode(decoder:FileDecoder):void
 		{
 			_type = decoder.readUB(1);
+			assertTrue(_type == 0);
+			
 			_endOfShape = decoder.readUB(5);
 			
 			decoder.byteAlign();
@@ -49,15 +50,10 @@ package com.larrio.dump.model.shape
 		/**
 		 * 字符串输出
 		 */		
-		public function toString():String
+		override public function toString():String
 		{
 			return "";	
 		}
-
-		/**
-		 * Non-edge record flag. Always 0.
-		 */		
-		public function get type():uint { return _type; }
 
 		/**
 		 * End of shape flag. Always 0.

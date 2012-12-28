@@ -30,9 +30,9 @@ package com.larrio.dump.model.shape
 		 * 构造函数
 		 * create a [LineStyle2] object
 		 */
-		public function LineStyle2()
+		public function LineStyle2(shape:uint)
 		{
-			
+			super(shape);
 		}
 		
 		/**
