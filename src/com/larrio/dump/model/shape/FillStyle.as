@@ -103,7 +103,7 @@ package com.larrio.dump.model.shape
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeUI8(encoder);
+			encoder.writeUI8(_type);
 			
 			_color.encode(encoder);
 			
@@ -136,7 +136,34 @@ package com.larrio.dump.model.shape
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<FillStyle/>");
+			result.@type = _type.toString(16);
+			
+			result.appendChild(new XML(_color.toString()));
+			
+			switch(_type)
+			{
+				case 0x10:
+				case 0x12:
+				case 0x13:
+				{
+					result.appendChild(new XML(_gradientMatrix.toString()));
+					result.appendChild(new XML(_gradient.toString()));
+					break;
+				}
+					
+				case 0x40:
+				case 0x41:
+				case 0x42:
+				case 0x43:
+				{
+					result.@bitmapId = _bitmapId;
+					result.@appendChild(new XML(_bitmapMatrix.toString()));
+					break;
+				}
+			}
+
+			return result.toXMLString();	
 		}
 
 		/**
