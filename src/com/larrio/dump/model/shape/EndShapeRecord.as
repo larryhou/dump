@@ -52,7 +52,10 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<EndShapeRecord/>");
+			result.@type = _type;
+			result.@endOfShape = _endOfShape;
+			return result.toXMLString();	
 		}
 
 		/**

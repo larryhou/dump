@@ -72,7 +72,7 @@ package com.larrio.dump.model.shape
 		/**
 		 * 字符串输出
 		 */		
-		public function toString():String
+		override public function toString():String
 		{
 			var result:XML = new XML("<CurvedEdgeRecord/>");
 			result.@type = _type;
