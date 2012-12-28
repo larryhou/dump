@@ -3,6 +3,9 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.colors.RGBAColor;
+	import com.larrio.dump.model.colors.RGBColor;
+	import com.larrio.dump.tags.TagType;
 	
 	/**
 	 * 
@@ -11,13 +14,18 @@ package com.larrio.dump.model.shape
 	 */
 	public class GradRecord implements ICodec
 	{
+		private var _shape:uint;
+		
+		private var _ratio:uint;
+		private var _color:RGBColor;
+		
 		/**
 		 * 构造函数
 		 * create a [GradRecord] object
 		 */
-		public function GradRecord()
+		public function GradRecord(shape:uint)
 		{
-			
+			_shape = shape;
 		}
 		
 		/**
@@ -26,7 +34,25 @@ package com.larrio.dump.model.shape
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_ratio = decoder.readUI8();
+			switch(_shape)
+			{
+				case TagType.DEFINE_SHAPE:
+				case TagType.DEFINE_SHAPE2:
+				{
+					_color = new RGBColor();
+					break;
+				}
+					
+				case TagType.DEFINE_SHAPE3:
+				case TagType.DEFINE_SHAPE4:
+				{
+					_color = new RGBAColor();
+					break;
+				}
+			}
 			
+			_color.decode(decoder);
 		}
 		
 		/**
@@ -35,7 +61,8 @@ package com.larrio.dump.model.shape
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			
+			encoder.writeUI8(_ratio);
+			_color.encode(encoder);
 		}
 		
 		/**
@@ -43,7 +70,23 @@ package com.larrio.dump.model.shape
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<GradRecord/>");
+			result.@ratio = _ratio / 256;
+			result.appendChild(new XML(_color.toString()));
+			return result;	
 		}
+
+		/**
+		 * Ratio value
+		 */		
+		public function get ratio():uint { return _ratio; }
+
+		/**
+		 * Color of gradient
+		 * RGB (Shape1 or Shape2) 
+		 * RGBA (Shape3 or Shape4)
+		 */		
+		public function get color():RGBColor { return _color; }
+
 	}
 }
