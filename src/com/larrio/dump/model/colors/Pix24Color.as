@@ -43,15 +43,6 @@ package com.larrio.dump.model.colors
 			encoder.writeUI8(_red);
 			encoder.writeUI8(_green);
 			encoder.writeUI8(_blue);
-		}
-		
-		/**
-		 * 字符串输出
-		 */		
-		override public function toString():String
-		{
-			return super.toString().replace(/RGBColor/g, "Pix24Color");	
-		}
-		
+		}		
 	}
 }

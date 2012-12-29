@@ -11,14 +11,12 @@ package com.larrio.dump.model.shape
 	 */
 	public class StraightEdgeRecord extends ShapeRecord
 	{
-		private var _straightFlag:uint;
-		
 		private var _numbits:uint;
 		private var _lineFlag:uint;
 		private var _orientationFlag:uint;
 		
-		private var _deltaX:uint;
-		private var _deltaY:uint;
+		private var _deltaX:int;
+		private var _deltaY:int;
 		
 		/**
 		 * 构造函数
@@ -35,33 +33,28 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
-			super.decode(decoder);
-			
-			_type = decoder.readUB(1);
-			assertTrue(_type == 1);
-			
-			_straightFlag = decoder.readUB(1);
-			assertTrue(_straightFlag == 1);
+			_type = 1;
 			
 			_numbits = decoder.readUB(4) + 2;
-			
 			_lineFlag = decoder.readUB(1);
-			if (!_lineFlag)
-			{
-				_orientationFlag = decoder.readUB(1);
-			}
 			
-			if (_lineFlag || !_orientationFlag)
+			if (_lineFlag)
 			{
 				_deltaX = decoder.readSB(_numbits);
-			}
-			
-			if (_lineFlag || _orientationFlag)
-			{
 				_deltaY = decoder.readSB(_numbits);
 			}
-			
-			decoder.byteAlign();
+			else
+			{
+				_orientationFlag = decoder.readUB(1);
+				if (_orientationFlag)
+				{
+					_deltaY = decoder.readSB(_numbits);
+				}
+				else
+				{
+					_deltaX = decoder.readSB(_numbits);
+				}
+			}			
 		}
 		
 		/**
@@ -71,26 +64,30 @@ package com.larrio.dump.model.shape
 		override public function encode(encoder:FileEncoder):void
 		{
 			encoder.writeUB(_type, 1);
-			encoder.writeUB(_straightFlag, 1);
+			encoder.writeUB(1, 1);
+			
 			encoder.writeUB(_numbits - 2, 4);
 			encoder.writeUB(_lineFlag, 1);
 			
-			if (!_lineFlag)
-			{
-				encoder.writeUB(_orientationFlag, 1);
-			}
-			
-			if (_lineFlag || !_orientationFlag)
+			if (_lineFlag)
 			{
 				encoder.writeUB(_deltaX, _numbits);
-			}
-			
-			if (_lineFlag || _orientationFlag)
-			{
 				encoder.writeUB(_deltaY, _numbits);
 			}
+			else
+			{
+				encoder.writeUB(_orientationFlag, 1);
+				
+				if (_orientationFlag)
+				{
+					encoder.writeUB(_deltaY, _numbits);
+				}
+				else
+				{
+					encoder.writeUB(_deltaX, _numbits);
+				}
+			}
 			
-			encoder.flush();
 		}
 		
 		/**
@@ -98,8 +95,7 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function toString():String
 		{
-			var result:XML = new XML("<StraightEdgeFlag/>");
-			result.@type = _type;
+			var result:XML = new XML("<line/>");
 			result.@deltaX = _deltaX;
 			result.@deltaY = _deltaY;
 			

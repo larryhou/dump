@@ -48,12 +48,9 @@ package com.larrio.dump.model.colors
 		 */		
 		override public function toString():String
 		{
-			var result:XML = new XML("<RGBAColor/>");
-			result.@red = _red;
-			result.@green = _green;
-			result.@blue = _blue;
-			result.@alpha = _alpha;
-			return result.toXMLString();	
+			var result:XML = new XML(super.toString());
+			result.@alpha = _alpha.toString(16).toUpperCase();
+			return result.toXMLString();
 		}
 		
 	}

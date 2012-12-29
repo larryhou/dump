@@ -53,6 +53,8 @@ package com.larrio.dump.model.shape
 				
 				_styles[i].decode(decoder);
 			}
+			
+			decoder.byteAlign();
 		}
 		
 		/**
@@ -74,6 +76,8 @@ package com.larrio.dump.model.shape
 			{
 				_styles[i].encode(encoder);
 			}
+			
+			encoder.flush();
 		}
 		
 		/**

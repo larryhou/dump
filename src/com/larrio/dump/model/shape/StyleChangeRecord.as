@@ -18,31 +18,37 @@ package com.larrio.dump.model.shape
 		private var _stateFillStyle0:uint;
 		private var _stateMoveTo:uint;
 		
-		private var _moveBits:uint;
-		private var _moveDeltaX:int;
-		private var _moveDeltaY:int;
+		private var _movebits:uint;
+		private var _deltaX:int;
+		private var _deltaY:int;
 		
-		private var _fillBits:uint;
 		private var _fillStyle0:uint;
 		private var _fillStyle1:uint;
 		
-		private var _lineBits:uint;
 		private var _lineStyle:uint;
 		
 		private var _fillStyles:FillStyleArray;
 		private var _lineStyles:LineStyleArray;
 		
-		private var _numFillBits:uint;
-		private var _numLineBits:uint;
+		private var _numfbits:uint;
+		private var _numlbits:uint;
+		private var _inumfbits:uint;
+		private var _inumlbits:uint;
 		
 		/**
 		 * 构造函数
 		 * create a [StyleChangeRecord] object
 		 */
-		public function StyleChangeRecord(shape:uint, fillBits:uint, lineBits:uint)
+		public function StyleChangeRecord(shape:uint, numfbits:uint, numlbits:uint, flag:uint)
 		{
-			_fillBits = fillBits;
-			_lineBits = lineBits;
+			_numfbits = _inumfbits = numfbits;
+			_numlbits = _inumlbits = numlbits;
+			
+			_stateMoveTo = flag & 1;
+			_stateFillStyle0 = (flag >>= 1) & 1;
+			_stateFillStyle1 = (flag >>= 1) & 1;
+			_stateLineStyle = (flag >>= 1) & 1;
+			_stateNewStyles = (flag >> 1) & 1;
 			
 			super(shape);
 		}
@@ -53,37 +59,28 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
-			super.decode(decoder);
-			
-			_type = decoder.readUB(1);
-			assertTrue(_type == 0);
-			
-			_stateNewStyles = decoder.readUB(1);
-			_stateLineStyle = decoder.readUB(1);
-			_stateFillStyle1 = decoder.readUB(1);
-			_stateFillStyle1 = decoder.readUB(1);
-			_stateMoveTo = decoder.readUB(1);
+			_type = 0;
 			
 			if (_stateMoveTo)
 			{
-				_moveBits = decoder.readUB(5);
-				_moveDeltaX = decoder.readSB(_moveBits);
-				_moveDeltaY = decoder.readSB(_moveBits);
+				_movebits = decoder.readUB(5);
+				_deltaX = decoder.readSB(_movebits);
+				_deltaY = decoder.readSB(_movebits);
 			}
 			
 			if (_stateFillStyle0)
 			{
-				_fillStyle0 = decoder.readUB(_fillBits);
+				_fillStyle0 = decoder.readUB(_inumfbits);
 			}
 			
 			if (_stateFillStyle1)
 			{
-				_fillStyle1 = decoder.readUB(_fillBits);
+				_fillStyle1 = decoder.readUB(_inumfbits);
 			}
 			
 			if (_stateLineStyle)
 			{
-				_lineStyle = decoder.readUB(_lineBits);
+				_lineStyle = decoder.readUB(_inumlbits);
 			}
 			
 			if (_stateNewStyles)
@@ -93,12 +90,12 @@ package com.larrio.dump.model.shape
 				
 				_lineStyles = new LineStyleArray(_shape);
 				_lineStyles.decode(decoder);
+				decoder.byteAlign();
 				
-				_numFillBits = decoder.readUB(4);
-				_numLineBits = decoder.readUB(4);
+				_numfbits = decoder.readUB(4);
+				_numlbits = decoder.readUB(4);
 			}
 			
-			decoder.byteAlign();
 		}
 		
 		/**
@@ -116,36 +113,36 @@ package com.larrio.dump.model.shape
 			
 			if (_stateMoveTo)
 			{
-				encoder.writeUB(_moveBits, 5);
-				encoder.writeUB(_moveDeltaX, _moveBits);
-				encoder.writeUB(_moveDeltaY, _moveBits);
+				encoder.writeUB(_movebits, 5);
+				encoder.writeUB(_deltaX, _movebits);
+				encoder.writeUB(_deltaY, _movebits);
 			}
 			
 			if (_stateFillStyle0)
 			{
-				encoder.writeUB(_fillStyle0, _fillBits);
+				encoder.writeUB(_fillStyle0, _inumfbits);
 			}
 			
 			if (_stateFillStyle1)
 			{
-				encoder.writeUB(_fillStyle1, _fillBits);
+				encoder.writeUB(_fillStyle1, _inumfbits);
 			}
 			
 			if (_stateLineStyle)
 			{
-				encoder.writeUB(_lineStyle, _lineBits);
+				encoder.writeUB(_lineStyle, _inumlbits);
 			}
 			
 			if (_stateNewStyles)
 			{
 				_fillStyles.encode(encoder);
 				_lineStyles.encode(encoder);
+				encoder.flush();
 				
-				encoder.writeUB(_numFillBits, 4);
-				encoder.writeUB(_numLineBits, 4);
+				encoder.writeUB(_numfbits, 4);
+				encoder.writeUB(_numlbits, 4);
 			}
 			
-			encoder.flush();
 		}
 		
 		/**
@@ -153,12 +150,12 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function toString():String
 		{
-			var result:XML = new XML("<StyleChangeRecord/>");
-			result.@type = _type;
+			var result:XML = new XML("<styleChange/>");
+			
 			if (_stateMoveTo)
 			{
-				result.@moveDeltaX = _moveDeltaX;
-				result.@moveDeltaY = _moveDeltaY;
+				result.@deltaX = _deltaX;
+				result.@deltaY = _deltaY;
 			}
 			
 			if (_stateFillStyle0)
@@ -188,17 +185,17 @@ package com.larrio.dump.model.shape
 		/**
 		 * Move bit count.
 		 */		
-		public function get moveBits():uint { return _moveBits; }
+		public function get movebits():uint { return _movebits; }
 
 		/**
 		 * Delta X value.
 		 */		
-		public function get moveDeltaX():uint { return _moveDeltaX; }
+		public function get deltaX():uint { return _deltaX; }
 
 		/**
 		 * Delta Y value.
 		 */		
-		public function get moveDeltaY():uint { return _moveDeltaY; }
+		public function get deltaY():uint { return _deltaY; }
 
 		/**
 		 * Fill 0 Style.
@@ -228,12 +225,12 @@ package com.larrio.dump.model.shape
 		/**
 		 * Number of fill index bits for new styles.
 		 */		
-		public function get numFillBits():uint { return _numFillBits; }
+		public function get numfbits():uint { return _numfbits; }
 
 		/**
 		 * Number of line index bits for new styles.
 		 */		
-		public function get numLineBits():uint { return _numLineBits; }
+		public function get numlbits():uint { return _numlbits; }
 
 	}
 }

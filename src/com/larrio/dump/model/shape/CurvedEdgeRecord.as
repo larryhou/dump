@@ -12,12 +12,13 @@ package com.larrio.dump.model.shape
 	 */
 	public class CurvedEdgeRecord extends ShapeRecord
 	{
-		private var _straightFlag:uint;
 		private var _numbits:uint;
-		private var _controlDeltaX:int;
-		private var _controlDeltaY:int;
-		private var _anchorDeltaX:int;
-		private var _anchorDeltaY:int;
+		
+		private var _deltaControlX:int;
+		private var _deltaControlY:int;
+		
+		private var _deltaAnchorX:int;
+		private var _deltaAnchorY:int;
 		
 		/**
 		 * 构造函数
@@ -32,43 +33,35 @@ package com.larrio.dump.model.shape
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		public function decode(decoder:FileDecoder):void
+		override public function decode(decoder:FileDecoder):void
 		{
-			super.decode(decoder);
+			_type = 1;
 			
-			_type = decoder.readUB(1);
-			assertTrue(_type == 1);
+			_numbits = decoder.readUB(4) + 2;
 			
-			_straightFlag = decoder.readUB(1);
-			assertTrue(_straightFlag == 0);
+			_deltaControlX = decoder.readSB(_numbits);
+			_deltaControlY = decoder.readSB(_numbits);
 			
-			_numbits = decoder.readUB(4);
+			_deltaAnchorX = decoder.readSB(_numbits);
+			_deltaAnchorY = decoder.readSB(_numbits);
 			
-			_controlDeltaX = decoder.readSB(_numbits);
-			_controlDeltaY = decoder.readSB(_numbits);
-			
-			_anchorDeltaX = decoder.readSB(_numbits);
-			_anchorDeltaY = decoder.readSB(_numbits);
-			
-			decoder.byteAlign();
 		}
 		
 		/**
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		public function encode(encoder:FileEncoder):void
+		override public function encode(encoder:FileEncoder):void
 		{
 			encoder.writeUB(_type, 1);
-			encoder.writeUB(_straightFlag, 1);
+			encoder.writeUB(0, 1);
 			
-			encoder.writeUB(_numbits, 4);
-			encoder.writeUB(_controlDeltaX, _numbits);
-			encoder.writeUB(_controlDeltaY, _numbits);
+			encoder.writeUB(_numbits - 2, 4);
+			encoder.writeUB(_deltaControlX, _numbits);
+			encoder.writeUB(_deltaControlY, _numbits);
 			
-			encoder.writeUB(_anchorDeltaX, _numbits);
-			encoder.writeUB(_anchorDeltaY, _numbits);
-			encoder.flush();
+			encoder.writeUB(_deltaAnchorX, _numbits);
+			encoder.writeUB(_deltaAnchorY, _numbits);
 		}
 		
 		/**
@@ -76,34 +69,33 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function toString():String
 		{
-			var result:XML = new XML("<CurvedEdgeRecord/>");
-			result.@type = _type;
-			result.@controlDeltaX = _controlDeltaX;
-			result.@controlDeltaY = _controlDeltaY;
-			result.@anchorDeltaX = _anchorDeltaX;
-			result.@anchorDeltaY = _anchorDeltaY;
+			var result:XML = new XML("<curve/>");
+			result.@deltaControlX = _deltaControlX;
+			result.@deltaControlY = _deltaControlY;
+			result.@deltaAnchorX = _deltaAnchorX;
+			result.@deltaAnchorY = _deltaAnchorY;
 			return result.toXMLString();	
 		}
 
 		/**
 		 * X control point change.
 		 */		
-		public function get controlDeltaX():int { return _controlDeltaX; }
+		public function get deltaControlX():int { return _deltaControlX; }
 
 		/**
 		 * Y control point change.
 		 */		
-		public function get controlDeltaY():int { return _controlDeltaY; }
+		public function get deltaControlY():int { return _deltaControlY; }
 
 		/**
 		 * X anchor point change.
 		 */		
-		public function get anchorDeltaX():int { return _anchorDeltaX; }
+		public function get deltaAnchorX():int { return _deltaAnchorX; }
 
 		/**
 		 * Y anchor point change.
 		 */		
-		public function get anchorDeltaY():int { return _anchorDeltaY; }
+		public function get deltaAnchorY():int { return _deltaAnchorY; }
 
 	}
 }

@@ -43,6 +43,7 @@ package com.larrio.dump.model.shape
 				_styles[i] = new FillStyle(_shape);
 				_styles[i].decode(decoder);
 			}
+			
 		}
 		
 		/**
@@ -64,6 +65,7 @@ package com.larrio.dump.model.shape
 			{
 				_styles[i].encode(encoder);
 			}
+			
 		}
 		
 		/**

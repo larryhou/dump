@@ -2,6 +2,7 @@ package com.larrio.dump.model.shape
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
@@ -28,6 +29,8 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
+			decoder.byteAlign();
+			
 			_fillStyles = new FillStyleArray(_shape);
 			_fillStyles.decode(decoder);
 			
@@ -35,6 +38,9 @@ package com.larrio.dump.model.shape
 			_lineStyles.decode(decoder);
 			
 			super.decode(decoder);
+			
+			trace(this);
+			assertTrue(decoder.bytesAvailable == 0);
 		}
 		
 		/**
@@ -43,6 +49,8 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function encode(encoder:FileEncoder):void
 		{
+			encoder.flush();
+			
 			_fillStyles.encode(encoder);
 			_lineStyles.encode(encoder);
 			

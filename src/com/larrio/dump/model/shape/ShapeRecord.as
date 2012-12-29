@@ -54,6 +54,6 @@ package com.larrio.dump.model.shape
 		 * If 0, the shape record is a non- edge record,
 		 */		
 		public function get type():uint { return _type; }
-
+		
 	}
 }

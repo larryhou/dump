@@ -46,15 +46,6 @@ package com.larrio.dump.model.colors
 			encoder.writeUB(_green, 5);
 			encoder.writeUB(_blue, 5);
 			encoder.flush();
-		}
-		
-		/**
-		 * 字符串输出
-		 */		
-		override public function toString():String
-		{
-			return super.toString().replace(/RGBColor/g, "Pix15Color");	
-		}
-		
+		}		
 	}
 }

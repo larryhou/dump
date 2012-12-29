@@ -12,8 +12,10 @@ package com.larrio.dump.model.shape
 	public class Shape implements ICodec
 	{
 		protected var _shape:uint;
-		protected var _numFillBits:uint;
-		protected var _numLineBits:uint;
+		
+		protected var _numfbits:uint;
+		protected var _numlbits:uint;
+		
 		protected var _records:Vector.<ShapeRecord>;
 		
 		/**
@@ -31,20 +33,25 @@ package com.larrio.dump.model.shape
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_numFillBits = decoder.readUB(4);
-			_numLineBits = decoder.readUB(4);
+			decoder.byteAlign();
+			
+			_numfbits = decoder.readUB(4);
+			_numlbits = decoder.readUB(4);
 			
 			_records = new Vector.<ShapeRecord>();
 			
-			var record:ShapeRecord, flag:Boolean = false;
+			var numfbits:uint = _numfbits;
+			var numlbits:uint = _numlbits;
 			
-			while (!flag)
+			var record:ShapeRecord, flag:uint;
+			
+			while (true)
 			{
 				if (decoder.readUB(1))
 				{
 					if (decoder.readUB(1))
 					{
-						// straight
+						// line
 						record = new StraightEdgeRecord(_shape);
 					}
 					else
@@ -55,20 +62,26 @@ package com.larrio.dump.model.shape
 				}
 				else
 				{
-					if (decoder.readUB(5))
+					flag = decoder.readUB(5);
+					if (flag)
 					{
 						// style change
-						record = new StyleChangeRecord(_shape, _numFillBits, _numLineBits);
+						record = new StyleChangeRecord(_shape, numfbits, numlbits, flag);
 					}
 					else
 					{
 						// end
-						record = new EndShapeRecord(_shape);
-						flag = true;
+						return;
 					}
 				}
 				
 				record.decode(decoder);
+				if (record is StyleChangeRecord)
+				{
+					numfbits = (record as StyleChangeRecord).numfbits;
+					numlbits = (record as StyleChangeRecord).numlbits;
+				}
+				
 				_records.push(record);
 			}			
 		}
@@ -79,14 +92,20 @@ package com.larrio.dump.model.shape
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeUB(_numFillBits, 4);
-			encoder.writeUB(_numLineBits, 4);
+			encoder.flush();
+			
+			encoder.writeUB(_numfbits, 4);
+			encoder.writeUB(_numlbits, 4);
 			
 			var length:int = _records.length;
 			for (var i:int = 0; i < length; i++)
 			{
 				_records[i].encode(encoder);
 			}
+			
+			// end shape
+			encoder.writeUB(0, 1);
+			encoder.writeUB(0, 5);
 		}
 		
 		/**

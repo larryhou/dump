@@ -4,6 +4,8 @@ package com.larrio.dump.model.colors
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	
+	import flash.utils.getQualifiedClassName;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -51,10 +53,12 @@ package com.larrio.dump.model.colors
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<RGBColor/>");
-			result.@red = _red;
-			result.@green = _green;
-			result.@blue = _blue;
+			var name:String = getQualifiedClassName(this).split("::")[1];
+			
+			var result:XML = new XML("<" + name + "/>");
+			result.@red = _red.toString(16).toUpperCase();
+			result.@green = _green.toString(16).toUpperCase();
+			result.@blue = _blue.toString(16).toUpperCase();
 			return result.toXMLString();	
 		}
 

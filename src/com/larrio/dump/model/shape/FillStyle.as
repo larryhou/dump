@@ -8,6 +8,8 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.tags.TagType;
 	
+	import flash.utils.flash_proxy;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -30,7 +32,7 @@ package com.larrio.dump.model.shape
 		 */
 		public function FillStyle(shape:uint)
 		{
-			
+			_shape = shape;
 		}
 		
 		/**
@@ -41,29 +43,30 @@ package com.larrio.dump.model.shape
 		{
 			_type = decoder.readUI8();
 			
-			if (_type == 0x00)
-			{
-				switch(_shape)
-				{
-					case TagType.DEFINE_SHAPE:
-					case TagType.DEFINE_SHAPE2:
-					{
-						_color = new RGBColor();
-						break;
-					}
-						
-					default:
-					{
-						_color = new RGBAColor();
-						break;
-					}
-				}
-				
-				_color.decode(decoder);
-			}
-			
 			switch(_type)
 			{
+				case 0x00:
+				{
+					switch(_shape)
+					{
+						case TagType.DEFINE_SHAPE:
+						case TagType.DEFINE_SHAPE2:
+						{
+							_color = new RGBColor();
+							break;
+						}
+							
+						default:
+						{
+							_color = new RGBAColor();
+							break;
+						}
+					}
+					
+					_color.decode(decoder);
+					break;
+				}
+					
 				case 0x10:
 				case 0x12:
 				case 0x13:
@@ -105,10 +108,14 @@ package com.larrio.dump.model.shape
 		{
 			encoder.writeUI8(_type);
 			
-			_color.encode(encoder);
-			
 			switch(_type)
 			{
+				case 0x00:
+				{
+					_color.encode(encoder);
+					break;
+				}
+				
 				case 0x10:
 				case 0x12:
 				case 0x13:
@@ -139,7 +146,10 @@ package com.larrio.dump.model.shape
 			var result:XML = new XML("<FillStyle/>");
 			result.@type = _type.toString(16);
 			
-			result.appendChild(new XML(_color.toString()));
+			if (_color)
+			{
+				result.appendChild(new XML(_color.toString()));
+			}
 			
 			switch(_type)
 			{
@@ -158,7 +168,7 @@ package com.larrio.dump.model.shape
 				case 0x43:
 				{
 					result.@bitmapId = _bitmapId;
-					result.@appendChild(new XML(_bitmapMatrix.toString()));
+					result.appendChild(new XML(_bitmapMatrix.toString()));
 					break;
 				}
 			}
