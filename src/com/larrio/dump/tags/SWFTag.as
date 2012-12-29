@@ -80,6 +80,7 @@ package com.larrio.dump.tags
 			offset = encoder.position;
 			
 			encodeTag(encoder);
+			encoder.flush();
 			
 			offset = encoder.position - offset;
 			assertTrue(offset == _length);

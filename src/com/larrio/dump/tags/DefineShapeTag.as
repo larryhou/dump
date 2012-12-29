@@ -60,7 +60,11 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<DefineShapeTag/>");
+			result.@character = _character;
+			result.appendChild(new XML(_bounds.toString()));
+			result.appendChild(new XML(_shape.toString()));
+			return result.toXMLString();	
 		}
 
 		/**

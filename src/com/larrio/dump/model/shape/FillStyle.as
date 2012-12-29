@@ -83,6 +83,7 @@ package com.larrio.dump.model.shape
 						_gradient = new FocalGradient(_shape);
 					}
 					
+					decoder.byteAlign();
 					_gradient.decode(decoder);
 					break;
 				}
@@ -121,6 +122,8 @@ package com.larrio.dump.model.shape
 				case 0x13:
 				{
 					_gradientMatrix.encode(encoder);
+					
+					encoder.flush();
 					_gradient.encode(encoder);
 					break;
 				}

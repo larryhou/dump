@@ -38,12 +38,12 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			encoder.flush();
 			encoder.writeUB(_nbits, 5);
 			encoder.writeSB(_minX, _nbits);
 			encoder.writeSB(_maxX, _nbits);
 			encoder.writeSB(_minY, _nbits);
 			encoder.writeSB(_maxY, _nbits);
-			encoder.flush();
 		}
 		
 		/**
@@ -52,6 +52,7 @@ package com.larrio.dump.model
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			decoder.byteAlign();
 			_nbits = decoder.readUB(5);
 			
 			_minX = decoder.readSB(_nbits);
@@ -62,8 +63,6 @@ package com.larrio.dump.model
 			
 			_width = (_maxX - _minX) / 20;
 			_height = (_maxY - _minY) / 20;
-			
-			decoder.byteAlign();
 		}
 		
 		/**
