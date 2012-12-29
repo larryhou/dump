@@ -35,6 +35,8 @@ package com.larrio.dump.model.shape
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
+			super.decode(decoder);
+			
 			_type = decoder.readUB(1);
 			assertTrue(_type == 1);
 			

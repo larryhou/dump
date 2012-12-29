@@ -29,7 +29,8 @@ package com.larrio.dump.model.shape
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			
+			decoder.position--;
+			decoder.byteAlign();
 		}
 		
 		/**
