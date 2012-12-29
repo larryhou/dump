@@ -199,7 +199,6 @@ package com.larrio.dump.tags
 					
 				case TagType.DEFINE_SHAPE4:
 				{
-					break;
 					return new DefineShape4Tag();
 				}
 					

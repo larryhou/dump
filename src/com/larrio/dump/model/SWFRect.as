@@ -71,10 +71,12 @@ package com.larrio.dump.model
 		public function toString():String
 		{
 			var result:XML = new XML("<Rect/>");
-			result.@minX = _minX;
-			result.@minY = _minY;
-			result.@maxX = _maxX;
-			result.@maxY = _maxY;
+			result.@minX = _minX / 20;
+			result.@minY = _minY / 20;
+			result.@maxX = _maxX / 20;
+			result.@maxY = _maxY / 20;
+			result.@width = _width;
+			result.@height = _height;
 			return result.toXMLString();
 		}
 
