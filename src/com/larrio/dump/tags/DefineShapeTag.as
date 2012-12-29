@@ -5,6 +5,8 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.model.shape.ShapeWithStyle;
 	
+	import flash.utils.getQualifiedClassName;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -39,8 +41,6 @@ package com.larrio.dump.tags
 			
 			_shape = new ShapeWithStyle(_type);
 			_shape.decode(decoder);
-			
-			trace(this);
 		}
 		
 		/**
@@ -60,7 +60,9 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<DefineShapeTag/>");
+			var name:String = getQualifiedClassName(this).split("::")[1];
+			
+			var result:XML = new XML("<" + name + "/>");
 			result.@character = _character;
 			result.appendChild(new XML(_bounds.toString()));
 			result.appendChild(new XML(_shape.toString()));

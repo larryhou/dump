@@ -189,13 +189,11 @@ package com.larrio.dump.tags
 				
 				case TagType.DEFINE_SHAPE2:
 				{
-					break;
 					return new DefineShape2Tag();
 				}
 					
 				case TagType.DEFINE_SHAPE3:
 				{
-					break;
 					return new DefineShape3Tag();
 				}
 					
