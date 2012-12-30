@@ -212,6 +212,16 @@ package com.larrio.dump.tags
 					return new DefineMorphShape2Tag();
 				}
 					
+				case TagType.DEFINE_FONT_INFO:
+				{
+					return new DefineFontInfoTag();
+				}
+					
+				case TagType.DEFINE_FONT_INFO2:
+				{
+					return new DefineFontInfo2Tag();
+				}
+					
 				case TagType.DEFINE_FONT:
 				{
 					return new DefineFontTag();
@@ -233,6 +243,26 @@ package com.larrio.dump.tags
 				{
 					break;
 					return new DefineFont4Tag();
+				}
+					
+				case TagType.DEFINE_TEXT:
+				{
+					return new DefineTextTag();
+				}
+					
+				case TagType.DEFINE_TEXT2:
+				{
+					return new DefineText2Tag();
+				}
+					
+				case TagType.DEFINE_FONT_ALIGN_ZONES:
+				{
+					return new DefineFontAlignZonesTag();
+				}
+					
+				case TagType.DEFINE_FONT_NAME:
+				{
+					return new DefineFontNameTag();
 				}
 					
 				case TagType.DEFINE_EDIT_TEXT:
@@ -270,25 +300,6 @@ package com.larrio.dump.tags
 					return new DefineSpriteTag();
 				}
 					
-				case TagType.DEFINE_TEXT:
-				{
-					return new DefineTextTag();
-				}
-					
-				case TagType.DEFINE_TEXT2:
-				{
-					return new DefineText2Tag();
-				}
-					
-				case TagType.DEFINE_FONT_ALIGN_ZONES:
-				{
-					return new DefineFontAlignZonesTag();
-				}
-					
-				case TagType.DEFINE_FONT_NAME:
-				{
-					return new DefineFontNameTag();
-				}
 			}
 			
 			return new SWFTag();
