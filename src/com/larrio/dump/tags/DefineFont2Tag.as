@@ -148,8 +148,6 @@ package com.larrio.dump.tags
 					_kerningRecords[i].decode(decoder);
 				}
 			}
-			
-			trace(this);
 		}
 		
 		/**
