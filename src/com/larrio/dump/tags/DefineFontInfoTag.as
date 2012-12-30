@@ -15,6 +15,7 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.DEFINE_FONT_INFO;
 		
+		protected var _font:uint;
 		protected var _name:String;
 		protected var _smallText:uint;
 		protected var _shiftJIS:uint;
@@ -39,9 +40,9 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_character = decoder.readUI16();
+			_font = decoder.readUI16();
 			
-			var fontTag:DefineFontTag = _map[_character] as DefineFontTag;
+			var fontTag:DefineFontTag = _map[_font] as DefineFontTag;
 			fontTag.fontInfo = this;
 				
 			_name = decoder.readMultiByte(decoder.readUI8(), "UTF8");
@@ -80,7 +81,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeUI16(_character);
+			encoder.writeUI16(_font);
 			
 			var bytes:ByteArray;
 			bytes = new ByteArray();
@@ -116,7 +117,7 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var result:XML = new XML("<DefineFontInfoTag/>");
-			result.@character = _character;
+			result.@font = _font;
 			result.@name = _name;
 			result.@smallText = Boolean(_smallText);
 			result.@shiftJIS = Boolean(_shiftJIS);
