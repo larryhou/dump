@@ -219,16 +219,19 @@ package com.larrio.dump.tags
 					
 				case TagType.DEFINE_FONT2:
 				{
+					break;
 					return new DefineFont2Tag();
 				}
 					
 				case TagType.DEFINE_FONT3:
 				{
+					break;
 					return new DefineFont3Tag();
 				}
 					
 				case TagType.DEFINE_FONT4:
 				{
+					break;
 					return new DefineFont4Tag();
 				}
 					
