@@ -3,6 +3,7 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
@@ -18,13 +19,15 @@ package com.larrio.dump.model.shape
 		
 		protected var _records:Vector.<ShapeRecord>;
 		
+		private var _size:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [Shape] object
 		 */
-		public function Shape(shape:uint)
+		public function Shape(shape:uint, size:uint = 0)
 		{
-			_shape = shape;
+			_shape = shape;	_size = size;
 		}
 		
 		/**
@@ -34,6 +37,8 @@ package com.larrio.dump.model.shape
 		public function decode(decoder:FileDecoder):void
 		{
 			decoder.byteAlign();
+			
+			var offset:uint = decoder.position;
 			
 			_numfbits = decoder.readUB(4);
 			_numlbits = decoder.readUB(4);
@@ -71,7 +76,7 @@ package com.larrio.dump.model.shape
 					else
 					{
 						// end
-						return;
+						break;
 					}
 				}
 				
@@ -83,7 +88,13 @@ package com.larrio.dump.model.shape
 				}
 				
 				_records.push(record);
-			}			
+			}	
+			
+			if (_size)
+			{
+				offset = decoder.position - offset;
+				assertTrue(offset == _size);
+			}
 		}
 		
 		/**

@@ -3,9 +3,11 @@ package com.larrio.dump.tags
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.utils.hexSTR;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
 	
 	/**
 	 * TAG抽象类
@@ -23,7 +25,7 @@ package com.larrio.dump.tags
 		protected var _bytes:ByteArray;
 		
 		private var _codeAndLength:uint;
-		private var _offset:uint;
+		private var _remain:int;
 		
 		/**
 		 * 构造函数
@@ -57,12 +59,18 @@ package com.larrio.dump.tags
 			decoder.position = 0;
 			
 			decodeTag(decoder);
+			
 			if (decoder.position > 0)
 			{
-				assertTrue(decoder.bytesAvailable == 0);
+				_remain = decoder.bytesAvailable;
 			}
 			
-			_offset = decoder.position;
+			if (_remain > 0)
+			{
+				var warning:String = getQualifiedClassName(this).split("::")[1];
+				trace("#" + warning + "# " + _remain + " UNRESOLVED BYTES:");
+				trace(hexSTR(decoder, 4, decoder.position, _remain));
+			}
 			
 			const NAME:String = "TYPE";
 			if (NAME in Object(this).constructor)
@@ -86,7 +94,7 @@ package com.larrio.dump.tags
 			encoder.flush();
 			
 			offset = encoder.position - offset;
-			assertTrue(offset == _length);
+			assertTrue(offset == _length - _remain);
 		}
 		
 		/**
@@ -95,14 +103,30 @@ package com.larrio.dump.tags
 		 */		
 		protected final function writeTagHeader(encoder:FileEncoder):void
 		{
-			if ((_codeAndLength & 0x3F) < 0x3F)
+			var rlength:uint = _length - _remain;
+			if (_remain == 0)
 			{
-				encoder.writeUI16( _type << 6 | _length);
+				if ((_codeAndLength & 0x3F) < 0x3F)
+				{
+					encoder.writeUI16( _type << 6 | _length);
+				}
+				else
+				{
+					encoder.writeUI16( _type << 6 | 0x3F);
+					encoder.writeS32(_length);
+				}
 			}
 			else
 			{
-				encoder.writeUI16( _type << 6 | 0x3F);
-				encoder.writeS32(_length);
+				if (rlength < 0x3F)
+				{
+					encoder.writeUI16(_type << 6 | rlength);
+				}
+				else
+				{
+					encoder.writeUI16(_type << 6 | 0x3F);
+					encoder.writeS32(rlength);
+				}
 			}
 		}
 		

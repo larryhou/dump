@@ -5,6 +5,8 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.model.fonts.KerningRecord;
 	import com.larrio.dump.model.shape.Shape;
+	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.utils.hexSTR;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
@@ -66,6 +68,7 @@ package com.larrio.dump.tags
 			_wideCodes = decoder.readUB(1);
 			_italic = decoder.readUB(1);
 			_bold = decoder.readUB(1);
+			decoder.byteAlign();
 			
 			_langcode = decoder.readUI8();
 			
@@ -75,31 +78,35 @@ package com.larrio.dump.tags
 			length = decoder.readUI16();
 			
 			_offsetTable = new Vector.<uint>(length, true);
-			for (i = 0; i < length; i++)
-			{
-				if (_wideOffsets)
-				{
-					_offsetTable[i] = decoder.readUI32();
-				}
-				else
-				{
-					_offsetTable[i] = decoder.readUI16();
-				}
-			}
-			
 			if (_wideOffsets)
 			{
-				_codeTableOffset = decoder.readUI32();
+				for (i = 0; i < length; i++) _offsetTable[i] = decoder.readUI32();
 			}
 			else
 			{
-				_codeTableOffset = decoder.readUI16();
+				for (i = 0; i < length; i++) _offsetTable[i] = decoder.readUI16();
 			}
+			
+			if (length > 0)
+			{
+				if (_wideOffsets)
+				{
+					_codeTableOffset = decoder.readUI32();
+				}
+				else
+				{
+					_codeTableOffset = decoder.readUI16();
+				}
+			}
+			
+			var size:uint;
 			
 			_glyphs = new Vector.<Shape>(length, true);
 			for (i = 0; i < length; i++)
 			{
-				_glyphs[i] = new Shape(TagType.DEFINE_SHAPE3);
+				size = (i < length - 1)? (_offsetTable[i + 1] - _offsetTable[i]) : (_codeTableOffset - _offsetTable[i]);
+				
+				_glyphs[i] = new Shape(TagType.DEFINE_SHAPE3, size);
 				_glyphs[i].decode(decoder);
 			}
 			
@@ -161,12 +168,15 @@ package com.larrio.dump.tags
 			encoder.writeUB(_wideCodes, 1);
 			encoder.writeUB(_italic, 1);
 			encoder.writeUB(_bold, 1);
+			encoder.flush();
 			
 			encoder.writeUI8(_langcode);
 			
 			var bytes:ByteArray;
 			bytes = new ByteArray();
 			bytes.writeMultiByte(_name, "UTF8");
+			bytes.writeByte(0);
+			
 			encoder.writeUI8(bytes.length);
 			encoder.writeBytes(bytes);
 			
@@ -174,25 +184,25 @@ package com.larrio.dump.tags
 			length = _offsetTable.length;
 			
 			encoder.writeUI16(length);
-			for (i = 0; i < length; i++)
-			{
-				if (_wideOffsets)
-				{
-					encoder.writeUI32(_offsetTable[i]);
-				}
-				else
-				{
-					encoder.writeUI16(_offsetTable[i]);
-				}
-			}
-			
 			if (_wideOffsets)
 			{
-				encoder.writeUI32(_codeTableOffset);
+				for (i = 0; i < length; i++) encoder.writeUI32(_offsetTable[i]);
 			}
 			else
 			{
-				encoder.writeUI16(_codeTableOffset);
+				for (i = 0; i < length; i++) encoder.writeUI16(_offsetTable[i]);
+			}
+			
+			if (length > 0)
+			{
+				if (_wideOffsets)
+				{
+					encoder.writeUI32(_codeTableOffset);
+				}
+				else
+				{
+					encoder.writeUI16(_codeTableOffset);
+				}
 			}
 			
 			for (i = 0; i < length; i++)
@@ -200,16 +210,13 @@ package com.larrio.dump.tags
 				_glyphs[i].encode(encoder);
 			}
 			
-			for (i = 0; i < length; i++)
+			if (_wideCodes)
 			{
-				if (_wideCodes)
-				{
-					encoder.writeUI16(_codeTable[i]);
-				}
-				else
-				{
-					encoder.writeUI8(_codeTable[i]);
-				}
+				for (i = 0; i < length; i++) encoder.writeUI16(_codeTable[i]);
+			}
+			else
+			{
+				for (i = 0; i < length; i++) encoder.writeUI8(_codeTable[i]);
 			}
 			
 			if (_layout)
@@ -248,6 +255,9 @@ package com.larrio.dump.tags
 			
 			var result:XML = new XML("<" + localName + "/>");
 			result.@character = _character;
+			result.@name = _name;
+			
+			result.@numGlyphs = _glyphs.length;
 			result.@shiftJIS = Boolean(_shiftJIS);
 			result.@smallText = Boolean(_smallText);
 			result.@ANSI = Boolean(_ansi);
@@ -255,7 +265,6 @@ package com.larrio.dump.tags
 			result.@bold = Boolean(_bold);
 			result.@langcode = _langcode;
 			
-			result.@name = _name;
 			
 			var item:XML;
 			var length:uint, i:int;
@@ -272,9 +281,9 @@ package com.larrio.dump.tags
 			
 			if (_layout)
 			{
-				result.@ascent = Boolean(_ascent);
-				result.@descent = Boolean(_descent);
-				result.@leading = Boolean(_leading);
+				result.@ascent = _ascent;
+				result.@descent = _descent;
+				result.@leading = _leading;
 				
 				length = _kerningRecords.length;
 				for (i = 0; i < length; i++)
