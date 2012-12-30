@@ -3,6 +3,7 @@ package com.larrio.dump.tags
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.fonts.ZoneRecord;
+	import com.larrio.dump.utils.assertTrue;
 	
 	/**
 	 * 
@@ -13,6 +14,7 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.DEFINE_FONT_ALIGN_ZONES;
 		
+		private var _font:uint;
 		private var _csmTableHint:uint;
 		private var _zoneTable:Vector.<ZoneRecord>;
 		
@@ -31,7 +33,20 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			super.decodeTag(decoder);
+			_font = decoder.readUI16();
+			
+			_csmTableHint = decoder.readUB(2);
+			assertTrue(decoder.readUB(6) == 0);
+			
+			var fontTag:DefineFont3Tag = _map[_font] as DefineFont3Tag;
+			var length:uint = fontTag.glyphs.length;
+			
+			_zoneTable = new Vector.<ZoneRecord>(length, true);
+			for (var i:int = 0; i < length; i++)
+			{
+				_zoneTable[i] = new ZoneRecord();
+				_zoneTable[i].decode(decoder);
+			}
 			
 		}
 		
@@ -41,8 +56,15 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			super.encodeTag(encoder);
+			encoder.writeUI16(_font);
+			encoder.writeUB(_csmTableHint, 2);
+			encoder.writeUB(0, 6);
 			
+			var length:uint = _zoneTable.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				_zoneTable[i].encode(encoder);
+			}
 		}
 		
 		/**
@@ -50,7 +72,17 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<DefineFontAlignZone/>");
+			result.@font = _font;
+			result.@CSMTableHint = _csmTableHint;
+			
+			var length:uint = _zoneTable.length;
+			for (var i:int = 0; i < length; i++)
+			{
+				result.appendChild(new XML(_zoneTable[i].toString()));
+			}
+			
+			return result.toXMLString();	
 		}
 
 		/**
@@ -67,6 +99,11 @@ package com.larrio.dump.tags
 		 * Alignment zone information for each glyph.
 		 */		
 		public function get zoneTable():Vector.<ZoneRecord> { return _zoneTable; }
+
+		/**
+		 * ID of font to use, specified by DefineFont3.
+		 */		
+		public function get font():uint { return _font; }
 
 	}
 }
