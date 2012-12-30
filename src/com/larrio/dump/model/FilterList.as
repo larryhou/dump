@@ -12,7 +12,7 @@ package com.larrio.dump.model
 	import com.larrio.dump.model.filters.GradientBevelFilter;
 	import com.larrio.dump.model.filters.GradientGlowFilter;
 	import com.larrio.dump.model.filters.IFilter;
-	import com.larrio.dump.model.types.FilterType;
+	import com.larrio.dump.model.filters.FilterType;
 	
 	/**
 	 * 

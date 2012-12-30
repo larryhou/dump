@@ -41,6 +41,8 @@ package com.larrio.dump.model
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			decoder.byteAlign();
+			
 			_scale = Boolean(decoder.readUB(1));
 			if (_scale)
 			{
@@ -61,7 +63,6 @@ package com.larrio.dump.model
 			_translateX = decoder.readSB(_tbits);
 			_translateY = decoder.readSB(_tbits);
 			
-			decoder.byteAlign();
 		}
 		
 		/**
@@ -70,6 +71,8 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			encoder.flush();
+			
 			encoder.writeUB(int(_scale), 1);
 			if (_scale)
 			{
@@ -89,7 +92,6 @@ package com.larrio.dump.model
 			encoder.writeUB(_tbits, 5);
 			encoder.writeSB(_translateX, _tbits);
 			encoder.writeSB(_translateY, _tbits);
-			encoder.flush();
 		}
 		
 		/**

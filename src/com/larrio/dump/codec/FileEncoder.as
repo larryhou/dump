@@ -86,10 +86,10 @@ package com.larrio.dump.codec
 		 */		
 		public function writeUI8(value:uint):void
 		{
+			flush();
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFF);
 			
-			flush();
 			writeByte(value);
 		}
 		
@@ -98,10 +98,10 @@ package com.larrio.dump.codec
 		 */		
 		public function writeUI16(value:uint):void
 		{
+			flush();
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFF);
 			
-			flush();
 			writeByte(value);
 			writeByte(value >>> 8);
 		}
@@ -111,10 +111,10 @@ package com.larrio.dump.codec
 		 */		
 		public function writeUI24(value:uint):void
 		{
+			flush();
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFF);
 			
-			flush();
 			writeByte(value);
 			writeByte(value >>> 8);
 			writeByte(value >>> 16);
@@ -125,10 +125,10 @@ package com.larrio.dump.codec
 		 */		
 		public function writeUI32(value:uint):void
 		{
+			flush();
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFFFF);
 			
-			flush();
 			writeByte(value);
 			writeByte(value >>> 8);
 			writeByte(value >>> 16);
@@ -140,10 +140,10 @@ package com.larrio.dump.codec
 		 */		
 		public function writeEU30(value:uint):void
 		{
+			flush();
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= (0xFFFFFFFF >>> 2));
 			
-			flush();
 			writeEU32(value);
 		}
 		
@@ -152,10 +152,10 @@ package com.larrio.dump.codec
 		 */		
 		public function writeEU32(value:uint):void
 		{
+			flush();
 			assertTrue(_bitpos == 8);
 			assertTrue(value <= 0xFFFFFFFF);
 			
-			flush();
 			
 			var byte:uint;
 			if (value > 0)

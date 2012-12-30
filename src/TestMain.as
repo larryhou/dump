@@ -1,9 +1,5 @@
 package
 {
-	import com.larrio.dump.codec.FileDecoder;
-	import com.larrio.math.float;
-	import com.larrio.math.unfloat;
-	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
 	
@@ -14,8 +10,6 @@ package
 	 */
 	public class TestMain extends Sprite
 	{
-		[Embed(source="../libs/library.swf", mimeType="application/octet-stream")]
-		private var _data:Class;
 		
 		/**
 		 * 构造函数
@@ -23,7 +17,13 @@ package
 		 */
 		public function TestMain()
 		{
-			var bytes:ByteArray = new _data();
+			var bytes:ByteArray = new ByteArray();
+			bytes.writeMultiByte("j", "utf-8");
+			
+			trace(bytes.length);
+			
+			bytes.length = 0;
+			bytes.writeMultiByte("j", "utf8");
 			trace(bytes.length);
 		}		
 	}

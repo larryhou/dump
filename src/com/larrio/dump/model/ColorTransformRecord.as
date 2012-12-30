@@ -42,6 +42,8 @@ package com.larrio.dump.model
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			decoder.byteAlign();
+			
 			_offset = decoder.readUB(1);
 			_multiplier = decoder.readUB(1);
 			
@@ -71,7 +73,6 @@ package com.larrio.dump.model
 				}
 			}
 			
-			decoder.byteAlign();
 		}
 		
 		/**
@@ -80,6 +81,8 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			encoder.flush();
+			
 			encoder.writeUB(_offset, 1);
 			encoder.writeUB(_multiplier, 1);
 			encoder.writeUB(_nbits, 4);
@@ -108,7 +111,6 @@ package com.larrio.dump.model
 				}
 			}
 			
-			encoder.flush();
 		}
 		
 		/**

@@ -1,6 +1,5 @@
 package com.larrio.dump.model.filters
 {
-	import com.larrio.dump.model.types.FilterType;
 	
 	/**
 	 * 

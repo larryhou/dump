@@ -9,6 +9,7 @@ package com.larrio.dump
 	import com.larrio.dump.tags.TagType;
 	
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	/**
 	 * SWF文件
@@ -30,12 +31,16 @@ package com.larrio.dump
 		
 		private var _symbol:SymbolClassTag;
 		
+		private var _map:Dictionary;
+		
 		/**
 		 * 构造函数
 		 * create a [SWFile] object
 		 */
 		public function SWFile(bytes:ByteArray)
 		{
+			_map = new Dictionary(true);
+			
 			// 写入文件二进制已编码字节
 			_decoder = new FileDecoder();
 			_decoder.writeBytes(bytes);
@@ -104,6 +109,8 @@ package com.larrio.dump
 				_decoder.position = position;
 				
 				tag = TagFactory.create(type);
+				tag.map = _map;
+				
 				tag.decode(_decoder);
 				
 				if (tag.type == TagType.SYMBOL_CLASS)
