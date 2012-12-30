@@ -49,7 +49,6 @@ package com.larrio.dump.tags
 			_data = new ByteArray();
 			decoder.readBytes(_data);
 			
-			trace(this);
 		}
 		
 		/**
