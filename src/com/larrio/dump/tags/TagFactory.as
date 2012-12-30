@@ -222,6 +222,16 @@ package com.larrio.dump.tags
 					return new DefineFontInfo2Tag();
 				}
 					
+				case TagType.DEFINE_FONT_ALIGN_ZONES:
+				{
+					return new DefineFontAlignZonesTag();
+				}
+					
+				case TagType.DEFINE_FONT_NAME:
+				{
+					return new DefineFontNameTag();
+				}
+					
 				case TagType.DEFINE_FONT:
 				{
 					return new DefineFontTag();
@@ -239,7 +249,6 @@ package com.larrio.dump.tags
 					
 				case TagType.DEFINE_FONT4:
 				{
-					break;
 					return new DefineFont4Tag();
 				}
 					
@@ -251,16 +260,6 @@ package com.larrio.dump.tags
 				case TagType.DEFINE_TEXT2:
 				{
 					return new DefineText2Tag();
-				}
-					
-				case TagType.DEFINE_FONT_ALIGN_ZONES:
-				{
-					return new DefineFontAlignZonesTag();
-				}
-					
-				case TagType.DEFINE_FONT_NAME:
-				{
-					return new DefineFontNameTag();
 				}
 					
 				case TagType.DEFINE_EDIT_TEXT:
