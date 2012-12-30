@@ -14,8 +14,10 @@ package com.larrio.dump.tags
 		public static const TYPE:uint = TagType.DEFINE_FONT;
 		
 		protected var _offset:uint;
-		protected var _tables:Vector.<uint>;
+		protected var _offsetTable:Vector.<uint>;
 		protected var _glyphs:Vector.<Shape>;
+		
+		protected var _fontInfo:DefineFontInfoTag;
 		
 		/**
 		 * 构造函数
@@ -33,16 +35,17 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
+			_map[_character] = this;
 			
 			_offset = decoder.readUI16();
 			
 			var length:uint, i:int;
 			length = _offset / 2;
 			
-			_tables = new Vector.<uint>(length, true);
+			_offsetTable = new Vector.<uint>(length, true);
 			for (i = 0; i < length; i++)
 			{
-				_tables[i] = decoder.readUI16();
+				_offsetTable[i] = decoder.readUI16();
 			}
 			
 			_glyphs = new Vector.<Shape>(length, true);
@@ -69,7 +72,7 @@ package com.larrio.dump.tags
 			
 			for (i = 0; i < length; i++)
 			{
-				encoder.writeUI16(_tables[i]);
+				encoder.writeUI16(_offsetTable[i]);
 			}
 			
 			for (i = 0; i < length; i++)
@@ -99,6 +102,16 @@ package com.larrio.dump.tags
 		 * Array of shapes
 		 */		
 		public function get glyphs():Vector.<Shape> { return _glyphs; }
+
+		/**
+		 * font info
+		 */		
+		public function get fontInfo():DefineFontInfoTag { return _fontInfo; }
+		public function set fontInfo(value:DefineFontInfoTag):void
+		{
+			_fontInfo = value;
+		}
+
 
 	}
 }

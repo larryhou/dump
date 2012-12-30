@@ -5,6 +5,7 @@ package com.larrio.dump.tags
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	/**
 	 * TAG抽象类
@@ -13,6 +14,8 @@ package com.larrio.dump.tags
 	 */
 	public class SWFTag
 	{
+		protected static const _map:Dictionary = new Dictionary(true);
+		
 		protected var _type:uint;
 		protected var _character:uint;
 		

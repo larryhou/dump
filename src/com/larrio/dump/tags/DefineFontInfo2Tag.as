@@ -33,6 +33,10 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
+			
+			var fontTag:DefineFontTag = _map[_character] as DefineFontTag;
+			fontTag.fontInfo = this;
+			
 			_name = decoder.readMultiByte(decoder.readUI8(), "UTF8");
 			
 			assertTrue(decoder.readUB(2) == 0);
