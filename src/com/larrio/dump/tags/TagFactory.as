@@ -259,6 +259,7 @@ package com.larrio.dump.tags
 					
 				case TagType.DEFINE_TEXT2:
 				{
+					break;
 					return new DefineText2Tag();
 				}
 					

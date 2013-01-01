@@ -70,6 +70,8 @@ package com.larrio.dump.tags
 			if (_remain > 0)
 			{
 				var warning:String = getQualifiedClassName(this).split("::")[1];
+				if (_character) warning += "@" + _character;
+				
 				trace("#" + warning + "# " + _remain + " UNRESOLVED BYTES:");
 				trace(hexSTR(decoder, 4, decoder.position, _remain));
 			}
