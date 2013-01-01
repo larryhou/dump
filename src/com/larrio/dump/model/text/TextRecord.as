@@ -3,8 +3,10 @@ package com.larrio.dump.model.text
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.colors.RGBAColor;
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.tags.DefineFontTag;
+	import com.larrio.dump.tags.TagType;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -34,14 +36,18 @@ package com.larrio.dump.model.text
 		
 		private var _entries:Vector.<GlyphEntry>;
 		
+		private var _text:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [TextRecord] object
 		 */
-		public function TextRecord(numgbits:uint, numabits:uint)
+		public function TextRecord(numgbits:uint, numabits:uint, text:uint)
 		{
 			_numgbits = numgbits;
 			_numabits = numabits;
+			
+			_text = text;
 		}
 		
 		/**
@@ -65,7 +71,15 @@ package com.larrio.dump.model.text
 			
 			if (_hasColor)
 			{
-				_color = new RGBColor();
+				if (_text == TagType.DEFINE_TEXT)
+				{
+					_color = new RGBColor();
+				}
+				else
+				{
+					_color = new RGBAColor();
+				}
+				
 				_color.decode(decoder);
 			}
 			

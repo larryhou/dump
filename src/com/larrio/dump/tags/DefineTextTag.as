@@ -7,6 +7,8 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.text.TextRecord;
 	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.utils.getQualifiedClassName;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -16,13 +18,13 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.DEFINE_TEXT;
 		
-		private var _bounds:SWFRect;
-		private var _matrix:MatrixRecord;
+		protected var _bounds:SWFRect;
+		protected var _matrix:MatrixRecord;
 		
-		private var _numgbits:uint;
-		private var _numabits:uint;
+		protected var _numgbits:uint;
+		protected var _numabits:uint;
 		
-		private var _records:Vector.<TextRecord>;
+		protected var _records:Vector.<TextRecord>;
 		
 		/**
 		 * 构造函数
@@ -56,13 +58,11 @@ package com.larrio.dump.tags
 			while(decoder.readUI8())
 			{
 				decoder.position--;
-				record = new TextRecord(_numgbits, _numabits);
+				record = new TextRecord(_numgbits, _numabits, _type);
 				record.decode(decoder);
 				
 				_records.push(record);
 			}
-			
-			trace(this);
 			
 			assertTrue(decoder.bytesAvailable == 0);
 		}
@@ -96,7 +96,8 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<DefineTextTag/>");
+			var localName:String = getQualifiedClassName(this).split("::")[1];
+			var result:XML = new XML("<" + localName + "/>");
 			result.@character = _character;
 			
 			result.appendChild(new XML(_bounds.toString()));
