@@ -295,8 +295,7 @@ package com.larrio.dump.tags
 				case TagType.DEFINE_SPRITE:
 				{
 					return new DefineSpriteTag();
-				}
-					
+				}					
 			}
 			
 			return new SWFTag();

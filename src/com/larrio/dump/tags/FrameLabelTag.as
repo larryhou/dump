@@ -54,6 +54,17 @@ package com.larrio.dump.tags
 				encoder.writeUI8(_anchor);
 			}
 		}
+		
+		/**
+		 * 字符串输出
+		 */		
+		public function toString():String
+		{
+			var result:XML = new XML("<FrameLabelTag/>");
+			result.@name = _name;
+			
+			return result.toXMLString();
+		}
 
 		/**
 		 * 帧标签名字
