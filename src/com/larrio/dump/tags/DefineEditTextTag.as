@@ -129,7 +129,6 @@ package com.larrio.dump.tags
 				_text = decoder.readSTR();
 			}
 			
-			trace(this);
 		}
 		
 		/**
