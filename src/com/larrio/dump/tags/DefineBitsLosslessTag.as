@@ -37,7 +37,7 @@ package com.larrio.dump.tags
 		 */
 		public function DefineBitsLosslessTag()
 		{
-			_skipAssert = true;
+			
 		}
 		
 		/**
@@ -149,6 +149,8 @@ package com.larrio.dump.tags
 			{
 				assertTrue(zlib.length == _unzliblen);
 			}
+			
+			_compressed = true;
 			
 			zlib.compress();
 			encoder.writeBytes(zlib);

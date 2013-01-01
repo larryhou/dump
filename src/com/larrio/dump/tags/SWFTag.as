@@ -27,7 +27,7 @@ package com.larrio.dump.tags
 		private var _codeAndLength:uint;
 		private var _remain:int;
 		
-		protected var _skipAssert:Boolean;
+		protected var _compressed:Boolean;
 		
 		/**
 		 * 构造函数
@@ -93,15 +93,15 @@ package com.larrio.dump.tags
 			encodeTag(data);
 			data.flush();
 			
-			if (_skipAssert)
+			if (_compressed)
 			{
 				_length = data.length;
 			}
 			
+			assertTrue(data.length == _length - _remain);
+			
 			writeTagHeader(encoder);
 			encoder.writeBytes(data);
-			
-			if (!_skipAssert) assertTrue(data.length == _length - _remain);
 		}
 		
 		/**
