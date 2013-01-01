@@ -31,7 +31,6 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			var length:uint, i:int;
-			
 			length = decoder.readUI16();
 			
 			_ids = new Vector.<uint>(length, true);
@@ -51,8 +50,6 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			writeTagHeader(encoder);
-			
 			var length:uint, i:int;
 			
 			length = _ids.length;

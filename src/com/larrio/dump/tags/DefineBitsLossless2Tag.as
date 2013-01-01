@@ -24,7 +24,7 @@ package com.larrio.dump.tags
 		 */
 		public function DefineBitsLossless2Tag()
 		{
-			
+			_skipAssert = true;
 		}
 		
 		/**
@@ -54,6 +54,8 @@ package com.larrio.dump.tags
 			zlib.position = 0;
 			decoder = zlib;
 			
+			_unzliblen = decoder.length;
+			
 			if (_format == 3)
 			{
 				length = _colorTableSize + 1;
@@ -79,6 +81,8 @@ package com.larrio.dump.tags
 			}
 			
 			assertTrue(decoder.bytesAvailable == 0);
+			
+			trace("decode {DefineBitsLossless2Tag}");
 		}
 		
 		/**
@@ -88,6 +92,8 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			super.encodeTag(encoder);
+			
+			trace("encode {DefineBitsLossless2Tag}");
 		}
 		
 		/**
