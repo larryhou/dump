@@ -93,6 +93,7 @@ package com.larrio.dump.tags
 			encodeTag(data);
 			data.flush();
 			
+			// AS3的zlib压缩后大小会小一点
 			if (_compressed)
 			{
 				_length = data.length;
