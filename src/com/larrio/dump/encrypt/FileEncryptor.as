@@ -32,6 +32,8 @@ package com.larrio.dump.encrypt
 		private var _include:Dictionary;
 		private var _exclude:Dictionary;
 		
+		private var _decrypting:Boolean;
+		
 		/**
 		 * 构造函数
 		 * create a [FileEncryptor] object
@@ -197,9 +199,16 @@ package com.larrio.dump.encrypt
 			var result:String = "";
 			
 			var min:uint, max:uint;
-			min = 33; max = 126;
+			if (!_decrypting)
+			{
+				min = 33; max = 126;
+			}
+			else
+			{
+				min = 97; max = 122;
+			}
 			
-			var length:uint = 3 + Math.round(7 * Math.random());
+			var length:uint = 3 + Math.round(5 * Math.random());
 			
 			var char:String;
 			while (result.length < length)
@@ -330,6 +339,15 @@ package com.larrio.dump.encrypt
 					}
 				}
 			}
+		}
+
+		/**
+		 * 逆向加密，提高已混淆代码的反编译可读性
+		 */		
+		public function get decrypting():Boolean { return _decrypting; }
+		public function set decrypting(value:Boolean):void
+		{
+			_decrypting = value;
 		}
 	}
 }
