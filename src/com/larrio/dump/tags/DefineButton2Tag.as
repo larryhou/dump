@@ -19,8 +19,6 @@ package com.larrio.dump.tags
 		private var _trackAsMenu:uint;
 		private var _actionOffset:uint;
 		
-		private var _lenR:uint;
-		
 		/**
 		 * 构造函数
 		 * create a [DefineButton2Tag] object
@@ -72,7 +70,6 @@ package com.larrio.dump.tags
 				}
 			}
 			
-			trace(this);
 		}
 		
 		/**
