@@ -29,6 +29,8 @@ package com.larrio.dump.tags
 		
 		protected var _bitmapData:Vector.<RGBColor>;
 		
+		protected var _unzliblen:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [DefineBitsLosslessTag] object
@@ -142,6 +144,13 @@ package com.larrio.dump.tags
 					_bitmapData[i].encode(zlib);
 				}
 			}
+			
+			if (_unzliblen > 0)
+			{
+				assertTrue(zlib.length == _unzliblen);
+			}
+			
+			_compressed = true;
 			
 			zlib.compress();
 			encoder.writeBytes(zlib);

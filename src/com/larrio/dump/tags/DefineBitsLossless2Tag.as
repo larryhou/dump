@@ -54,6 +54,8 @@ package com.larrio.dump.tags
 			zlib.position = 0;
 			decoder = zlib;
 			
+			_unzliblen = decoder.length;
+			
 			if (_format == 3)
 			{
 				length = _colorTableSize + 1;

@@ -27,6 +27,8 @@ package com.larrio.dump.tags
 		private var _codeAndLength:uint;
 		private var _remain:int;
 		
+		protected var _compressed:Boolean;
+		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object
@@ -68,6 +70,8 @@ package com.larrio.dump.tags
 			if (_remain > 0)
 			{
 				var warning:String = getQualifiedClassName(this).split("::")[1];
+				if (_character) warning += "@" + _character;
+				
 				trace("#" + warning + "# " + _remain + " UNRESOLVED BYTES:");
 				trace(hexSTR(decoder, 4, decoder.position, _remain));
 			}
@@ -85,16 +89,22 @@ package com.larrio.dump.tags
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
+			var data:FileEncoder;
+			
+			data = new FileEncoder();
+			encodeTag(data);
+			data.flush();
+			
+			// AS3的zlib压缩后大小会小一点
+			if (_compressed)
+			{
+				_length = data.length;
+			}
+			
+			assertTrue(data.length == _length - _remain);
+			
 			writeTagHeader(encoder);
-			
-			var offset:uint;
-			offset = encoder.position;
-			
-			encodeTag(encoder);
-			encoder.flush();
-			
-			offset = encoder.position - offset;
-			assertTrue(offset == _length - _remain);
+			encoder.writeBytes(data);
 		}
 		
 		/**
@@ -131,6 +141,24 @@ package com.larrio.dump.tags
 		}
 		
 		/**
+		 * 读取TAG头信息 
+		 * @param decoder	解码器
+		 */		
+		protected final function readTagHeader(decoder:FileDecoder):void
+		{
+			_codeAndLength = decoder.readUI16();
+			
+			_type = _codeAndLength >>> 6;
+			_length = _codeAndLength & 0x3F;
+			
+			if (_length >= 0x3F)
+			{
+				_length = decoder.readS32();
+			}
+		}
+
+		
+		/**
 		 * 对TAG内容进行二进制编码
 		 * @param encoder	编码器
 		 */		
@@ -148,23 +176,6 @@ package com.larrio.dump.tags
 			
 		}
 		
-		/**
-		 * 读取TAG头信息 
-		 * @param decoder	解码器
-		 */		
-		protected final function readTagHeader(decoder:FileDecoder):void
-		{
-			_codeAndLength = decoder.readUI16();
-			
-			_type = _codeAndLength >>> 6;
-			_length = _codeAndLength & 0x3F;
-			
-			if (_length >= 0x3F)
-			{
-				_length = decoder.readS32();
-			}
-		}
-
 		/**
 		 * TAG类型
 		 */		

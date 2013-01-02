@@ -44,8 +44,6 @@ package com.larrio.dump.tags
 				_colorTransform = new ColorTransformRecord();
 				_colorTransform.decode(decoder);
 			}
-			
-			trace(this);
 		}
 		
 		/**

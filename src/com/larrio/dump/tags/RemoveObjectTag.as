@@ -31,8 +31,6 @@ package com.larrio.dump.tags
 		{
 			_character = decoder.readUI16();
 			_depth = decoder.readUI16();
-			
-			trace(this);
 		}
 		
 		/**
