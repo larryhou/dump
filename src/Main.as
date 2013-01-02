@@ -24,7 +24,7 @@ package
 		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
 		private const _cls : Class;
 		
-		[Embed(source="../libs/res.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/library.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		public static const v1:uint = 1;
@@ -46,7 +46,7 @@ package
 		{		
 			var bytes:ByteArray, swf:SWFile;
 			var rawFile:ByteArray = loaderInfo.bytes;
-			rawFile = new RawFile();
+			//rawFile = new RawFile();
 			
 			bytes = rawFile;
 			swf = new SWFile(bytes);
@@ -73,10 +73,10 @@ package
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;
-					//trace("\n\n-----------------------------------------\n");
+					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
-					//trace(tag.abc.files.join("\n"));
-					break;
+					trace(tag.abc.files.join("\n"));
+					//break;
 				}
 			}
 			

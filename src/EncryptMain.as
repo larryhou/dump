@@ -52,7 +52,7 @@ package
 					//trace(tag.abc.constants.namespaces.join("\n"));
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					break;
+					//break;
 				}
 			}
 			
