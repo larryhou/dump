@@ -1,6 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.MultinameInfo;
 	import com.larrio.dump.encrypt.FileEncryptor;
 	import com.larrio.dump.tags.DoABCTag;
 	
@@ -46,9 +47,12 @@ package
 				{
 					tag = swf.tags[i] as DoABCTag;
 					trace("\n\n-----------------------------------------\n");
+					
+					//trace(tag.abc.constants.multinames.join("\n"));
+					//trace(tag.abc.constants.namespaces.join("\n"));
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					//break;
+					break;
 				}
 			}
 			

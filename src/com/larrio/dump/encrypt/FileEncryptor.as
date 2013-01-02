@@ -29,6 +29,9 @@ package com.larrio.dump.encrypt
 		private var _map:Dictionary;
 		private var _reverse:Dictionary;
 		
+		private var _include:Dictionary;
+		private var _exclude:Dictionary;
+		
 		/**
 		 * 构造函数
 		 * create a [FileEncryptor] object
@@ -42,6 +45,9 @@ package com.larrio.dump.encrypt
 			
 			_map = new Dictionary(true);
 			_reverse = new Dictionary(true);
+			
+			_include = new Dictionary(true);
+			_exclude = new Dictionary(true);
 		}
 		
 		/**
@@ -50,6 +56,8 @@ package com.larrio.dump.encrypt
 		public function encrypt(settings:XML = null):XML
 		{
 			importConfig(settings);
+			
+			optimize();
 			
 			var item:EncryptItem;
 			var length:uint, i:int;
@@ -69,6 +77,7 @@ package com.larrio.dump.encrypt
 			var name:String;
 			for each(item in _queue)
 			{
+				item.tag.modified = true;
 				replace(item.strings, 1);
 			}
 			
@@ -78,6 +87,7 @@ package com.larrio.dump.encrypt
 				symbol = _files[i].symbol;
 				if (!symbol) continue;
 				
+				symbol.modified = true;
 				replace(symbol.symbols);
 			}
 			
@@ -95,6 +105,9 @@ package com.larrio.dump.encrypt
 			{
 				index = refers[i];
 				value = strings[index];
+				
+				// 不在映射表里面的包名、类名不加密
+				if (!_include[value]) continue;
 				
 				if (!value) continue;
 				if (_reverse[value]) continue; // 已加密跳过
@@ -186,12 +199,17 @@ package com.larrio.dump.encrypt
 			var min:uint, max:uint;
 			min = 33; max = 126;
 			
-			while (result.length < source.length)
+			var length:uint = 3 + Math.round(7 * Math.random());
+			
+			var char:String;
+			while (result.length < length)
 			{
-				result += String.fromCharCode(min + (max - min) * Math.random() >> 0);
+				char = String.fromCharCode(min + (max - min) * Math.random() >> 0);
+				if (char == ".") continue;
+				result += char;
 			}
 			
-			assertTrue(result.length == source.length);
+			assertTrue(result.length == length);
 			
 			return result;
 		}
@@ -214,6 +232,63 @@ package com.larrio.dump.encrypt
 			}
 			
 			processABCTags(list);
+			
+		}
+		
+		// 加密防错优化处理
+		private function optimize():void
+		{
+			var definition:String;
+			for each (var swf:SWFile in _files)
+			{
+				// 链接名不做加密处理
+				for each (definition in swf.symbol.symbols) _exclude[definition] = definition;
+			}
+			
+			// 制作导入类映射表
+			for each(var item:EncryptItem in _queue)
+			{
+				var multinames:Vector.<MultinameInfo> = item.tag.abc.constants.multinames;
+				for each (var info:MultinameInfo in multinames)
+				{
+					if (info && info.definition)
+					{
+						definition = info.toString();
+						if (_include[definition]) continue;
+						
+						_exclude[definition] = definition;
+					}
+				}
+			}
+			
+			_exclude = def2map(_exclude);
+			
+			// 制作项目类映射表，并剔除导入类
+			_include = def2map(_include, _exclude);
+
+		}
+		
+		// definition split map
+		private function def2map(dict:Dictionary, exclude:Dictionary = null):Dictionary
+		{
+			exclude ||= new Dictionary(true);
+			
+			var list:Array = [];
+			for each (var key:String in dict)
+			{
+				list.push.apply(null, key.split(":"));
+			}
+			
+			var result:Dictionary = new Dictionary(true);
+			for each (key in list)
+			{
+				if (!exclude[key]) 
+				{
+					result[key] = true;
+				}
+			}
+			
+			return result;
 		}
 		
 		/**
@@ -224,6 +299,7 @@ package com.larrio.dump.encrypt
 		{
 			var tag:DoABCTag;
 			var item:EncryptItem;
+			var definition:String;
 			
 			for each(tag in list)
 			{
@@ -240,8 +316,14 @@ package com.larrio.dump.encrypt
 							case MultiKindType.QNAME:
 							case MultiKindType.QNAME_A:
 							{
-								item.packages.push(tag.abc.constants.namespaces[multiname.ns].name);
-								item.classes.push(multiname.name);
+								definition = multiname.toString();
+								if (!_include[definition])
+								{
+									_include[definition] = definition;
+									item.packages.push(tag.abc.constants.namespaces[multiname.ns].name);
+									item.classes.push(multiname.name);
+								}
+								
 								break;
 							}
 						}
