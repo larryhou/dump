@@ -72,7 +72,6 @@ package com.larrio.dump.tags
 				}
 			}
 			
-			trace(this);
 		}
 		
 		/**

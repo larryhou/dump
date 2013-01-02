@@ -62,7 +62,6 @@ package com.larrio.dump.tags
 				_actions.push(action);
 			}
 			
-			trace(this);
 		}
 		
 		/**
