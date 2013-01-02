@@ -203,6 +203,7 @@ package com.larrio.dump.encrypt
 			while (result.length < length)
 			{
 				char = String.fromCharCode(min + (max - min) * Math.random() >> 0);
+				if (char == ".") continue;
 				result += char;
 			}
 			

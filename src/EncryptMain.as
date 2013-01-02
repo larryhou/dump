@@ -36,7 +36,7 @@ package
 			// 导出加密后的SWF
 			bytes = swf.repack();
 			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			//new FileReference().save(bytes, "encrypt.swf");
+			new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
