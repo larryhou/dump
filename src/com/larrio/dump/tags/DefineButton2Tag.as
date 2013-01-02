@@ -36,9 +36,8 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_lenR = decoder.position;
-			
 			_character = decoder.readUI16();
+			_dict[_character] = this;
 			
 			assertTrue(decoder.readUB(7) == 0);
 			_trackAsMenu = decoder.readUB(1);
@@ -57,8 +56,6 @@ package com.larrio.dump.tags
 				
 				_records.push(record);
 			}
-			
-			_lenR = decoder.position - _lenR;
 			
 			var action:ButtonAction;
 			if (_actionOffset > 0)
@@ -84,8 +81,6 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			var lenR:uint = encoder.position;
-			
 			encoder.writeUI16(_character);
 			
 			encoder.writeUB(0, 7);
@@ -101,9 +96,6 @@ package com.larrio.dump.tags
 			}
 			
 			encoder.writeUI8(0);
-			
-			lenR = encoder.position - lenR;
-			assertTrue(lenR == _lenR);
 			
 			if (_actionOffset > 0)
 			{
