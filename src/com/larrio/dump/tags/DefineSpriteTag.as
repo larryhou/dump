@@ -31,6 +31,8 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
+			_dict[_character] = this;
+			
 			_frameCount = decoder.readUI16();
 			
 			_tags = new Vector.<SWFTag>();

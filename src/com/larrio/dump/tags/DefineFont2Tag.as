@@ -58,7 +58,7 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
-			_map[_character] = this;
+			_dict[_character] = this;
 			
 			_layout = decoder.readUB(1);
 			_shiftJIS = decoder.readUB(1);

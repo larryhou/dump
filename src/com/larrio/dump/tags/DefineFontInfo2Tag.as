@@ -34,7 +34,7 @@ package com.larrio.dump.tags
 		{
 			_font = decoder.readUI16();
 			
-			var fontTag:DefineFontTag = _map[_font] as DefineFontTag;
+			var fontTag:DefineFontTag = _dict[_font] as DefineFontTag;
 			fontTag.fontInfo = this;
 			
 			_name = decoder.readMultiByte(decoder.readUI8(), "UTF8");

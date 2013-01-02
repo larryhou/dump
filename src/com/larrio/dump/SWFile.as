@@ -31,7 +31,7 @@ package com.larrio.dump
 		
 		private var _symbol:SymbolClassTag;
 		
-		private var _map:Dictionary;
+		private var _dict:Dictionary;
 		
 		/**
 		 * 构造函数
@@ -39,7 +39,7 @@ package com.larrio.dump
 		 */
 		public function SWFile(bytes:ByteArray)
 		{
-			_map = new Dictionary(true);
+			_dict = new Dictionary(true);
 			
 			// 写入文件二进制已编码字节
 			_decoder = new FileDecoder();
@@ -109,7 +109,7 @@ package com.larrio.dump
 				_decoder.position = position;
 				
 				tag = TagFactory.create(type);
-				tag.map = _map;
+				tag.dict = _dict;
 				
 				tag.decode(_decoder);
 				
