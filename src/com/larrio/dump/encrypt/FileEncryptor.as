@@ -342,7 +342,7 @@ package com.larrio.dump.encrypt
 		}
 
 		/**
-		 * 逆向加密，提高已混淆代码的反编译可读性
+		 * 逆向加密，提高已混淆代码反编译的可读性
 		 */		
 		public function get decrypting():Boolean { return _decrypting; }
 		public function set decrypting(value:Boolean):void

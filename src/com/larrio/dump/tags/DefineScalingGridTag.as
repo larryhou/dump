@@ -31,6 +31,7 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
+			_dict[_character] = this;
 			
 			_splitter = new SWFRect();
 			_splitter.decode(decoder);

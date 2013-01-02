@@ -53,7 +53,7 @@ package
 					//trace(tag.abc.constants.namespaces.join("\n"));
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					break;
+					//break;
 				}
 			}
 			
@@ -65,7 +65,7 @@ package
 			var code:uint = 0;
 			while (code <= 0xFF)
 			{
-				trace(code + "\t" + String.fromCharCode(code));
+				//trace(code + "\t" + String.fromCharCode(code));
 				code++;
 			}
 			

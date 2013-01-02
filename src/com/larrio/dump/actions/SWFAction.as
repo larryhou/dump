@@ -80,6 +80,14 @@ package com.larrio.dump.actions
 		{
 			
 		}
+		
+		public function toString():String
+		{
+			var result:XML = new XML("<Action/>");
+			result.@type = "0x" + _type.toString(16).toUpperCase();
+			result.@length = _length;
+			return result.toXMLString();
+		}
 
 		/**
 		 * 类型

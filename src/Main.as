@@ -2,7 +2,6 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.model.types.BlendModeType;
-	import com.larrio.dump.model.filters.FilterType;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.utils.formatTypes;
 	

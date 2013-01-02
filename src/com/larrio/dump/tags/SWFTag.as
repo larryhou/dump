@@ -16,7 +16,7 @@ package com.larrio.dump.tags
 	 */
 	public class SWFTag
 	{
-		protected var _map:Dictionary;
+		protected var _dict:Dictionary;
 		
 		protected var _type:uint;
 		protected var _character:uint;
@@ -195,10 +195,10 @@ package com.larrio.dump.tags
 		/**
 		 * 映射表
 		 */		
-		public function get map():Dictionary { return _map; }
-		public function set map(value:Dictionary):void
+		public function get dict():Dictionary { return _dict; }
+		public function set dict(value:Dictionary):void
 		{
-			_map = value;
+			_dict = value;
 		}
 
 		/**

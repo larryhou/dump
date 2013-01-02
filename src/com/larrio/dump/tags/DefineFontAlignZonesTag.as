@@ -38,7 +38,7 @@ package com.larrio.dump.tags
 			_csmTableHint = decoder.readUB(2);
 			assertTrue(decoder.readUB(6) == 0);
 			
-			var fontTag:DefineFont3Tag = _map[_font] as DefineFont3Tag;
+			var fontTag:DefineFont3Tag = _dict[_font] as DefineFont3Tag;
 			var length:uint = fontTag.glyphs.length;
 			
 			_zoneTable = new Vector.<ZoneRecord>(length, true);
