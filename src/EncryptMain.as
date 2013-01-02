@@ -31,7 +31,7 @@ package
 			var encryptor:FileEncryptor = new FileEncryptor();
 			encryptor.addFile(swf);
 			
-			//trace(encryptor.encrypt());
+			trace(encryptor.encrypt());
 			
 			// 导出加密后的SWF
 			bytes = swf.repack();
@@ -46,12 +46,12 @@ package
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;
-					trace("\n\n-----------------------------------------\n");
-					var multinames:Vector.<MultinameInfo> = tag.abc.constants.multinames;
-					for each(var info:MultinameInfo in multinames)
-					{
-						if (info && info.definition) trace(info);
-					}
+//					trace("\n\n-----------------------------------------\n");
+//					var multinames:Vector.<MultinameInfo> = tag.abc.constants.multinames;
+//					for each(var info:MultinameInfo in multinames)
+//					{
+//						if (info && info.definition) trace(info);
+//					}
 					
 					//trace(tag.abc.constants.multinames.join("\n"));
 					//trace(tag.abc.constants.namespaces.join("\n"));
