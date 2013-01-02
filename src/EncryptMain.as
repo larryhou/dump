@@ -1,6 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.MultinameInfo;
 	import com.larrio.dump.encrypt.FileEncryptor;
 	import com.larrio.dump.tags.DoABCTag;
 	
@@ -30,12 +31,12 @@ package
 			var encryptor:FileEncryptor = new FileEncryptor();
 			encryptor.addFile(swf);
 			
-			trace(encryptor.encrypt());
+			//trace(encryptor.encrypt());
 			
 			// 导出加密后的SWF
 			bytes = swf.repack();
 			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			new FileReference().save(bytes, "encrypt.swf");
+			//new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -46,8 +47,16 @@ package
 				{
 					tag = swf.tags[i] as DoABCTag;
 					trace("\n\n-----------------------------------------\n");
+					var multinames:Vector.<MultinameInfo> = tag.abc.constants.multinames;
+					for each(var info:MultinameInfo in multinames)
+					{
+						if (info && info.definition) trace(info);
+					}
+					
+					//trace(tag.abc.constants.multinames.join("\n"));
+					//trace(tag.abc.constants.namespaces.join("\n"));
 					//trace(tag.abc.constants.strings.join("\n"));
-					trace(tag.abc.files.join("\n"));
+					//trace(tag.abc.files.join("\n"));
 					//break;
 				}
 			}

@@ -25,6 +25,7 @@ package com.larrio.dump.tags
 		protected var _bytes:ByteArray;
 		
 		private var _codeAndLength:uint;
+		private var _modified:Boolean;
 		private var _remain:int;
 		
 		protected var _compressed:Boolean;
@@ -96,7 +97,7 @@ package com.larrio.dump.tags
 			data.flush();
 			
 			// AS3的zlib压缩后大小会小一点
-			if (_compressed)
+			if (_compressed || _modified)
 			{
 				_length = data.length;
 			}
@@ -200,6 +201,14 @@ package com.larrio.dump.tags
 			_map = value;
 		}
 
+		/**
+		 * tag内容被修改后设置该标记位
+		 */		
+		public function get modified():Boolean { return _modified; }
+		public function set modified(value:Boolean):void
+		{
+			_modified = value;
+		}
 
 	}
 }

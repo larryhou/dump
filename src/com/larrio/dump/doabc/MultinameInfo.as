@@ -23,6 +23,8 @@ package com.larrio.dump.doabc
 		
 		private var _constants:ConstantPool;
 		
+		private var _definition:Boolean;
+		
 		/**
 		 * 构造函数
 		 * create a [MultinameInfo] object
@@ -40,6 +42,8 @@ package com.larrio.dump.doabc
 		{
 			_kind = decoder.readUI8();
 			
+			var prefix:String;
+			
 			switch(_kind)
 			{
 				case MultiKindType.QNAME:
@@ -47,6 +51,9 @@ package com.larrio.dump.doabc
 				{
 					_ns = decoder.readEU30();
 					assertTrue(_ns >= 0 && _ns < _constants.namespaces.length);
+					
+					prefix = _constants.namespaces[_ns].toString();
+					if (prefix && prefix.indexOf(":") < 0) _definition = true;
 					
 					_name = decoder.readEU30();
 					assertTrue(_name >= 0 && _name < _constants.strings.length);
@@ -184,6 +191,8 @@ package com.larrio.dump.doabc
 			var length:uint, i:int;
 			var result:String = "";
 			
+			var flag:Boolean;
+			
 			switch(_kind)
 			{
 				case MultiKindType.QNAME:
@@ -284,6 +293,11 @@ package com.larrio.dump.doabc
 		 * 指向nssets常量数组的索引
 		 */		
 		public function get nsset():uint { return _nsset; }
+
+		/**
+		 * 是否为类名
+		 */		
+		public function get definition():Boolean { return _definition; }
 		
 	}
 }

@@ -56,7 +56,7 @@ package com.larrio.dump.encrypt
 			
 			for each(item in _queue)
 			{
-				setup(item.classes, item.strings);
+				//setup(item.classes, item.strings);
 				setup(item.packages, item.strings);
 			}
 			
@@ -69,6 +69,7 @@ package com.larrio.dump.encrypt
 			var name:String;
 			for each(item in _queue)
 			{
+				item.tag.modified = true;
 				replace(item.strings, 1);
 			}
 			
@@ -78,6 +79,7 @@ package com.larrio.dump.encrypt
 				symbol = _files[i].symbol;
 				if (!symbol) continue;
 				
+				symbol.modified = true;
 				replace(symbol.symbols);
 			}
 			
@@ -186,12 +188,16 @@ package com.larrio.dump.encrypt
 			var min:uint, max:uint;
 			min = 33; max = 126;
 			
-			while (result.length < source.length)
+			var length:uint = 3 + Math.round(7 * Math.random());
+			
+			var char:String;
+			while (result.length < length)
 			{
-				result += String.fromCharCode(min + (max - min) * Math.random() >> 0);
+				char = String.fromCharCode(min + (max - min) * Math.random() >> 0);
+				result += char;
 			}
 			
-			assertTrue(result.length == source.length);
+			assertTrue(result.length == length);
 			
 			return result;
 		}
@@ -242,6 +248,7 @@ package com.larrio.dump.encrypt
 							{
 								item.packages.push(tag.abc.constants.namespaces[multiname.ns].name);
 								item.classes.push(multiname.name);
+								//trace(multiname);
 								break;
 							}
 						}
