@@ -57,6 +57,8 @@ package com.larrio.dump.encrypt
 		{
 			importConfig(settings);
 			
+			optimize();
+			
 			var item:EncryptItem;
 			var length:uint, i:int;
 			
@@ -231,8 +233,19 @@ package com.larrio.dump.encrypt
 			
 			processABCTags(list);
 			
-			// 制作导入类映射表
+		}
+		
+		// 加密防错优化处理
+		private function optimize():void
+		{
 			var definition:String;
+			for each (var swf:SWFile in _files)
+			{
+				// 链接名不做加密处理
+				for each (definition in swf.symbol.symbols) _exclude[definition] = definition;
+			}
+			
+			// 制作导入类映射表
 			for each(var item:EncryptItem in _queue)
 			{
 				var multinames:Vector.<MultinameInfo> = item.tag.abc.constants.multinames;
@@ -252,6 +265,7 @@ package com.larrio.dump.encrypt
 			
 			// 制作项目类映射表，并剔除导入类
 			_include = def2map(_include, _exclude);
+
 		}
 		
 		// definition split map
