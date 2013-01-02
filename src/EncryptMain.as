@@ -65,7 +65,7 @@ package
 			var code:uint = 0;
 			while (code <= 0xFF)
 			{
-				trace(code + "\t" + String.fromCharCode(code));
+				//trace(code + "\t" + String.fromCharCode(code));
 				code++;
 			}
 			
