@@ -29,6 +29,7 @@ package
 			var swf:SWFile = new SWFile(bytes = loaderInfo.bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
+			encryptor.decrypting = false;
 			encryptor.addFile(swf);
 			
 			trace(encryptor.encrypt());
@@ -64,7 +65,7 @@ package
 			var code:uint = 0;
 			while (code <= 0xFF)
 			{
-				//trace(code + "\t" + String.fromCharCode(code));
+				trace(code + "\t" + String.fromCharCode(code));
 				code++;
 			}
 			
