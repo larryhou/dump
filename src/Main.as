@@ -1,9 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.model.types.BlendModeType;
 	import com.larrio.dump.tags.DoABCTag;
-	import com.larrio.dump.utils.formatTypes;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;

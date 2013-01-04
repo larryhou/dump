@@ -4,6 +4,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.utils.hexSTR;
 	import com.larrio.dump.utils.padding;
 	
 	import flash.utils.ByteArray;
@@ -148,7 +149,6 @@ package com.larrio.dump.doabc
 				
 				item = "";
 				opcode = decoder.readUI8();
-				if (!_map[opcode]) continue;
 				
 				if (opcode == OpcodeType.LABEL_OP || labels.has(decoder.position - 1))
 				{
@@ -156,7 +156,10 @@ package com.larrio.dump.doabc
 				}
 				
 				item = padding(item, 4, " ", false);
-				item += padding(_map[opcode], 16);
+				if (_map[opcode])
+				{
+					item += padding(_map[opcode], 16);
+				}
 				
 				switch(opcode)
 				{
@@ -271,7 +274,7 @@ package com.larrio.dump.doabc
 					case OpcodeType.IFGT_OP:		case OpcodeType.IFNGT_OP:
 					case OpcodeType.IFLE_OP:		case OpcodeType.IFNLE_OP:
 					case OpcodeType.IFLT_OP:		case OpcodeType.IFNLT_OP:
-					case OpcodeType.STRICTEQUALS_OP:case OpcodeType.IFSTRICTNE_OP:
+					case OpcodeType.IFSTRICTEQ_OP:case OpcodeType.IFSTRICTNE_OP:
 					{
 						var offset:int = decoder.readS24();
 						target = decoder.position + offset;
