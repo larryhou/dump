@@ -95,6 +95,7 @@ package com.larrio.dump.doabc
 			
 			_opcode = new OpcodeInfo(_abc);
 			_opcode.method = _method;
+			
 			_opcode.decode(decoder);
 		}
 		
