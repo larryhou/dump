@@ -258,6 +258,7 @@ package com.larrio.dump.encrypt
 			if (!_decrypting)
 			{
 				min = 33; max = 126;
+				min = 161; max = 255;
 			}
 			else
 			{
