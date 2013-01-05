@@ -28,9 +28,9 @@ package com.larrio.dump.encrypt
 		
 		private var _map:Dictionary;
 		private var _reverse:Dictionary;
-		
 		private var _include:Dictionary;
-		private var _exclude:Dictionary;
+		
+		private var _interfaces:Dictionary;
 		
 		private var _decrypting:Boolean;
 		
@@ -41,15 +41,13 @@ package com.larrio.dump.encrypt
 		public function FileEncryptor()
 		{
 			_files = new Vector.<SWFile>;
-			
-			_names = new Vector.<String>;
 			_queue = new Vector.<EncryptItem>;
 			
 			_map = new Dictionary(true);
 			_reverse = new Dictionary(true);
-			
 			_include = new Dictionary(true);
-			_exclude = new Dictionary(true);
+			
+			_interfaces = new Dictionary(true);
 		}
 		
 		/**
@@ -59,22 +57,23 @@ package com.larrio.dump.encrypt
 		{
 			importConfig(settings);
 			
-			optimize();
+			_names = new Vector.<String>();
 			
 			var item:EncryptItem;
 			var length:uint, i:int;
 			
 			for each(item in _queue)
 			{
-				setup(item.classes, item.strings);
-				setup(item.packages, item.strings);
+				setup(item.definitions);
 			}
 			
-			// 按照字符串从长到短排列
-			_names.sort(function(s1:String, s2:String):int
+			// 按照长度降序排列
+			_names.sort(function (s1:String, s2:String):int
 			{
 				return s1.length > s2.length? -1 : 1;
 			});
+			
+			optimize();
 			
 			var name:String;
 			for each(item in _queue)
@@ -97,33 +96,70 @@ package com.larrio.dump.encrypt
 		}
 		
 		// 初始化加密key
-		private function setup(refers:Vector.<uint>, strings:Vector.<String>):void
+		private function setup(definitions:Vector.<DefinitionItem>):void
 		{
-			var index:int;
+			var list:Array;
 			var key:String, value:String;
 			
-			var length:uint = refers.length;
+			var item:DefinitionItem;
+			var length:uint = definitions.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				index = refers[i];
-				value = strings[index];
+				item = definitions[i];
+				list = [item.ns, item.name];
 				
-				// 不在映射表里面的包名、类名不加密
-				if (!_include[value]) continue;
-				
-				if (!value) continue;
-				if (_reverse[value]) continue; // 已加密跳过
-				
-				while(true)
+				for each (value in list)
 				{
-					key = createEncryptSTR(value);
-					if (!_reverse[key]) break;
+					if (!value) continue;
+					if (_map[value] || _reverse[value])
+					{
+						continue; // 已加密跳过
+					}
+					
+					if (item.protocol)
+					{
+						key = value;
+						
+						_interfaces[value] = value;
+					}
+					else
+					{
+						while(true)
+						{
+							key = createEncryptSTR(value);
+							if (!_reverse[key]) break;
+						}
+					}
+					
+					_map[value] = key;
+					_reverse[key] = value;
+					
+					_names.push(value);
 				}
 				
-				_map[value] = key;
-				_reverse[key] = value;
+				if (item.ns)
+				{
+					value = item.ns + ":" + item.name;
+					if (!_map[value])					
+					{
+						key = _map[item.ns] + ":" + _map[item.name];
+						
+						_map[value] = key;
+						_reverse[key] = value;
+						_names.push(value);
+					}
+				}
 				
-				_names.push(value);
+				value = item.name + ".as";
+				if (!_map[value])
+				{
+					key = _map[item.name] + ".as";
+					
+					_map[value] = key;
+					_reverse[key] = value;
+					
+					_names.push(value);
+				}
 			}
 		}
 		
@@ -173,23 +209,27 @@ package com.larrio.dump.encrypt
 		private function replace(strings:Vector.<String>, offset:uint = 0):void
 		{
 			var value:String, key:String;
+			
 			var length:int = strings.length;
 			for(var i:int = offset; i < length; i++)
 			{
 				value = strings[i];
-				for (var k:int = 0; k < _names.length; k++)
+				if (value.indexOf(":") > 0 || value.indexOf("$") > 0)
 				{
-					key = _names[k];
-					if (value.indexOf(key) >= 0)
+					for (var j:int = 0; j < _names.length; j++)
 					{
-						while (value.indexOf(key) >= 0)
+						key = _names[j];
+						if (value.indexOf(value) >= 0)
 						{
 							value = value.replace(key, _map[key]);
+							strings[i] = value;
 						}
-						
-						strings[i] = value;
 					}
 				}
+				else
+				{
+					if (_map[value]) strings[i] = _map[value];
+				}				
 			}
 		}
 		
@@ -214,7 +254,7 @@ package com.larrio.dump.encrypt
 			while (result.length < length)
 			{
 				char = String.fromCharCode(min + (max - min) * Math.random() >> 0);
-				if (char == ".") continue;
+				if (char == "." || char == ":") continue;
 				result += char;
 			}
 			
@@ -247,11 +287,13 @@ package com.larrio.dump.encrypt
 		// 加密防错优化处理
 		private function optimize():void
 		{
+			var exclude:Dictionary = new Dictionary(true);
+			
 			var definition:String;
 			for each (var swf:SWFile in _files)
 			{
 				// 链接名不做加密处理
-				for each (definition in swf.symbol.symbols) _exclude[definition] = definition;
+				for each (definition in swf.symbol.symbols) exclude[definition] = definition.replace(/(\.)(\w+)$/, ":$2");
 			}
 			
 			// 制作导入类映射表
@@ -265,16 +307,16 @@ package com.larrio.dump.encrypt
 						definition = info.toString();
 						if (_include[definition]) continue;
 						
-						_exclude[definition] = definition;
+						exclude[definition] = definition;
 					}
 				}
 			}
 			
-			_exclude = def2map(_exclude);
-			
-			// 制作项目类映射表，并剔除导入类
-			_include = def2map(_include, _exclude);
-
+			exclude = def2map(exclude);
+			for (var key:String in exclude)
+			{
+				if (_map[key]) delete _map[key];
+			}
 		}
 		
 		// definition split map
@@ -308,7 +350,9 @@ package com.larrio.dump.encrypt
 		{
 			var tag:DoABCTag;
 			var item:EncryptItem;
-			var definition:String;
+			
+			var key:String;
+			var definition:DefinitionItem;
 			
 			for each(tag in list)
 			{
@@ -320,17 +364,23 @@ package com.larrio.dump.encrypt
 					{
 						var cls:ClassInfo = tag.abc.classes[trait.data.classi];
 						var multiname:MultinameInfo = tag.abc.constants.multinames[cls.instance.name];
+						
 						switch (multiname.kind)
 						{
 							case MultiKindType.QNAME:
 							case MultiKindType.QNAME_A:
 							{
-								definition = multiname.toString();
-								if (!_include[definition])
+								key = multiname.toString();
+								if (!_include[key])
 								{
-									_include[definition] = definition;
-									item.packages.push(tag.abc.constants.namespaces[multiname.ns].name);
-									item.classes.push(multiname.name);
+									_include[key] = key;
+									
+									definition = new DefinitionItem();
+									definition.protocol = cls.instance.protocol;
+									definition.name = item.strings[multiname.name];
+									definition.ns = item.strings[tag.abc.constants.namespaces[multiname.ns].name];
+									
+									item.definitions.push(definition);
 								}
 								
 								break;
