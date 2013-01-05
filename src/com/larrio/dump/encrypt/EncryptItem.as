@@ -12,14 +12,9 @@ package com.larrio.dump.encrypt
 	public class EncryptItem
 	{
 		/**
-		 * 包名字符串索引 
+		 * DoABC包含定义列表
 		 */		
-		public var packages:Vector.<uint>;
-		
-		/**
-		 * 类名字符串索引 
-		 */		
-		public var classes:Vector.<uint>;
+		public var definitions:Vector.<DefinitionItem>;
 		
 		/**
 		 * 字符串常量池
@@ -40,9 +35,7 @@ package com.larrio.dump.encrypt
 			this.tag = tag;
 			
 			this.strings = tag.abc.constants.strings;
-			
-			this.classes = new Vector.<uint>;
-			this.packages = new Vector.<uint>;
+			this.definitions = new Vector.<DefinitionItem>();
 		}
 	}
 }

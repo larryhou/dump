@@ -29,7 +29,7 @@ package
 			var swf:SWFile = new SWFile(bytes = loaderInfo.bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
-			encryptor.decrypting = false;
+			encryptor.decrypting = true;
 			encryptor.addFile(swf);
 			
 			trace(encryptor.encrypt());
@@ -51,8 +51,8 @@ package
 					
 					//trace(tag.abc.constants.multinames.join("\n"));
 					//trace(tag.abc.constants.namespaces.join("\n"));
-					//trace(tag.abc.constants.strings.join("\n"));
-					trace(tag.abc.files.join("\n"));
+					trace(tag.abc.constants.strings.join("\n"));
+					//trace(tag.abc.files.join("\n"));
 					//break;
 				}
 			}
