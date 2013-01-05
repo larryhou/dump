@@ -25,6 +25,13 @@ package
 			bytes.length = 0;
 			bytes.writeMultiByte("j", "utf8");
 			trace(bytes.length);
+			
+			var index:int;
+			while (index <= 0xFF)
+			{
+				trace(index + ": " + String.fromCharCode(index));
+				index++;
+			}
 		}		
 	}
 }

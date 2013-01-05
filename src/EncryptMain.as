@@ -29,7 +29,7 @@ package
 			var swf:SWFile = new SWFile(bytes = loaderInfo.bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
-			encryptor.decrypting = true;
+			encryptor.decrypting = false;
 			encryptor.addFile(swf);
 			
 			trace(encryptor.encrypt());

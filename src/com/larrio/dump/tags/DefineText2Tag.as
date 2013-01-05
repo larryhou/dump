@@ -28,8 +28,6 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			super.decodeTag(decoder);
-			
-			trace(this);
 		}
 		
 		/**
