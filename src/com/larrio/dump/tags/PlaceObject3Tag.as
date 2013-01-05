@@ -62,7 +62,7 @@ package com.larrio.dump.tags
 			
 			_depth = decoder.readUI16();
 			
-			if (_hasClassName || (_hasImage && _hasCharacter))
+			if (_hasClassName)
 			{
 				_className = decoder.readSTR();
 			}
