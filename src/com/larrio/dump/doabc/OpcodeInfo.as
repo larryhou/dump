@@ -105,7 +105,7 @@ package com.larrio.dump.doabc
 			
 			return methods[index].toString();
 		}
-		
+				
 		/**
 		 * 获取实例对象名称 
 		 * @param index	指向instances数组的索引
@@ -231,7 +231,12 @@ package com.larrio.dump.doabc
 						item += methodSTR(target);
 						
 						if (!_closures) _closures = new Vector.<uint>;
-						_closures.push(target);
+						if (_closures.indexOf(target) < 0)
+						{
+							// 只保存没有名称的闭包函数
+							if (_abc.constants.strings[_abc.methods[target].name]) _closures.push(target);
+						}
+						
 						break;
 					}
 						
