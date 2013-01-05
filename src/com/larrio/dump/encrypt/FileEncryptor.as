@@ -99,6 +99,8 @@ package com.larrio.dump.encrypt
 		private function setup(definitions:Vector.<DefinitionItem>):void
 		{
 			var list:Array;
+			
+			var prefix:String;
 			var key:String, value:String;
 			
 			var item:DefinitionItem;
@@ -133,23 +135,37 @@ package com.larrio.dump.encrypt
 					
 					_map[value] = key;
 					_reverse[key] = value;
-					
 					_names.push(value);
 				}
 				
-				if (item.ns)
+				prefix = item.ns? (item.ns + ":") : "";
+				prefix += item.name;
+				
+				// 类定义
+				value = prefix;
+				if (!_map[value])					
 				{
-					value = item.ns + ":" + item.name;
-					if (!_map[value])					
-					{
-						key = _map[item.ns] + ":" + _map[item.name];
-						
-						_map[value] = key;
-						_reverse[key] = value;
-						_names.push(value);
-					}
+					key = item.ns? (_map[item.ns] + ":") : "";
+					key += _map[item.name];
+					
+					_map[value] = key;
+					_reverse[key] = value;
+					_names.push(value);
 				}
 				
+				// 构造函数
+				value = prefix + "/" + item.name;
+				if (!_map[value])
+				{
+					key = item.ns? (_map[item.ns] + ":") : "";
+					key += _map[item.name] + "/" + _map[item.name];
+					
+					_map[value] = key;
+					_reverse[key] = value;
+					_names.push(value);
+				}
+				
+				// 类文件
 				value = item.name + ".as";
 				if (!_map[value])
 				{
@@ -157,7 +173,6 @@ package com.larrio.dump.encrypt
 					
 					_map[value] = key;
 					_reverse[key] = value;
-					
 					_names.push(value);
 				}
 			}
@@ -219,16 +234,17 @@ package com.larrio.dump.encrypt
 					for (var j:int = 0; j < _names.length; j++)
 					{
 						key = _names[j];
-						if (value.indexOf(value) >= 0)
+						if (value.indexOf(key) >= 0)
 						{
 							value = value.replace(key, _map[key]);
 							strings[i] = value;
+							break;
 						}
 					}
 				}
 				else
 				{
-					if (_map[value]) strings[i] = _map[value];
+					if (_map[value] is String) strings[i] = _map[value];
 				}				
 			}
 		}
