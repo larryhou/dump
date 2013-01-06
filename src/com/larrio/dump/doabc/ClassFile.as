@@ -59,6 +59,9 @@ package com.larrio.dump.doabc
 			{
 				_content += "\nPACKAGE MEMBERS:" + appending;
 			}
+			
+			trace("---------------");
+			trace(_content);
 		}
 		
 		// 处理类文件
@@ -208,6 +211,12 @@ package com.larrio.dump.doabc
 			}
 			
 			if (attribute) result += attribute + " ";
+			
+			if (trait && !abc.constants.strings[info.name]) 
+			{
+				result += _name + "/";
+				result += abc.constants.multinames[trait.name];
+			}
 			
 			result += info;
 			if (info.body) result += "\n" + info.body;

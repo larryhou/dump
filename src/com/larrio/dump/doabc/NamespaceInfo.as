@@ -55,7 +55,7 @@ package com.larrio.dump.doabc
 		public function toString():String
 		{
 			var result:String = "";
-			result += _constants.strings[_name];
+			result += _constants.strings[_name] || "";
 			
 			var key:String = "";
 			switch (_kind)

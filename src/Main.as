@@ -21,7 +21,7 @@ package
 		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
 		private const _cls : Class;
 		
-		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res04.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		public static const v1:uint = 1;
@@ -70,9 +70,9 @@ package
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;
-					//trace("\n\n-----------------------------------------\n");
+					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
-					//trace(tag.abc.files.join("\n"));
+					trace(tag.abc.files.join("\n"));
 					break;
 				}
 			}
