@@ -131,7 +131,7 @@ package com.larrio.dump.doabc
 		public function toString():String
 		{
 			var index:int;
-			var result:String = _constants.strings[_name];
+			var result:String = _constants.strings[_name] || "";
 			
 			var optionlen:int = _options? _options.length : -1;
 			
@@ -144,10 +144,14 @@ package com.larrio.dump.doabc
 				item = "";
 				if (_paramNames)
 				{
-					item += _constants.strings[_paramNames[i]] + ":";
+					item += _constants.strings[_paramNames[i]];
+				}
+				else
+				{
+					item += "param" + (i + 1);
 				}
 				
-				item += _constants.multinames[_paramTypes[i]] || "*";
+				item += ":" + _constants.multinames[_paramTypes[i]] || "*";
 				if ((length - i) <= optionlen)
 				{
 					item += " = " + _options[++index];

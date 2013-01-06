@@ -6,6 +6,7 @@ package com.larrio.dump.doabc
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 	
 	/**
 	 * DoABC之函数体
@@ -32,6 +33,8 @@ package com.larrio.dump.doabc
 		private var _abc:DoABC;
 		
 		private var _slots:Dictionary;
+		
+		private var _timestamp:uint;
 		
 		/**
 		 * 构造函数
@@ -134,7 +137,6 @@ package com.larrio.dump.doabc
 			{
 				_traits[i].encode(encoder);
 			}
-			
 		}
 		
 		/**
@@ -149,8 +151,10 @@ package com.larrio.dump.doabc
 		/**
 		 * 字符串输出
 		 */		
-		public function toString():String
+		public function toString(time:uint = 0):String
 		{
+			_timestamp = time || getTimer();
+			
 			var i:int;
 			var result:String = "";
 			result += "    maxStack:" + _maxStack + " localCount:" + _localCount + " initScopeDepth:" + _initScopeDepth + " maxScopeDepth:" + _maxScopeDepth;
@@ -158,10 +162,15 @@ package com.larrio.dump.doabc
 			
 			if (_opcode.closures)
 			{
+				var body:MethodBodyInfo;
 				for (i = 0; i < _opcode.closures.length; i++)
 				{
-					result += "\n" + _abc.methods[_opcode.closures[i]];
-					result += "\n" + _abc.methodBodies[_opcode.closures[i]];
+					body = _abc.methodBodies[_opcode.closures[i]];
+					if (body._timestamp != _timestamp)
+					{
+						result += "\n" + _abc.methods[_opcode.closures[i]];
+						result += "\n" + body.toString(_timestamp);
+					}
 				}
 			}
 			

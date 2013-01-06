@@ -1,6 +1,7 @@
 package com.larrio.dump.doabc
 {
 	
+	
 	/**
 	 * 类文件信息
 	 * @author larryhou
@@ -58,7 +59,6 @@ package com.larrio.dump.doabc
 			{
 				_content += "\nPACKAGE MEMBERS:" + appending;
 			}
-			
 		}
 		
 		// 处理类文件

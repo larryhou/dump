@@ -231,12 +231,9 @@ package com.larrio.dump.doabc
 						item += methodSTR(target);
 						
 						if (!_closures) _closures = new Vector.<uint>;
-						if (_closures.indexOf(target) < 0)
-						{
-							// 只保存没有名称的闭包函数
-							if (!_abc.constants.strings[_abc.methods[target].name]) _closures.push(target);
-						}
 						
+						// 只保存没有名称的闭包函数
+						if (_closures.indexOf(target) < 0) _closures.push(target);
 						break;
 					}
 						
