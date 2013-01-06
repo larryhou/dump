@@ -212,10 +212,17 @@ package com.larrio.dump.doabc
 			
 			if (attribute) result += attribute + " ";
 			
-			if (trait && !abc.constants.strings[info.name]) 
+			if (!abc.constants.strings[info.name]) 
 			{
 				result += _name + "/";
-				result += abc.constants.multinames[trait.name];
+				if (trait)
+				{
+					result += abc.constants.multinames[trait.name];
+				}
+				else
+				{
+					result += _name.match(/\w+$/);
+				}
 			}
 			
 			result += info;
