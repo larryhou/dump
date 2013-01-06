@@ -33,6 +33,7 @@ package com.larrio.dump.encrypt
 		private var _include:Dictionary;
 		
 		private var _undup:Dictionary;
+		private var _symbols:Dictionary;
 		private var _interfaces:Dictionary;
 		
 		private var _decrypting:Boolean;
@@ -51,6 +52,7 @@ package com.larrio.dump.encrypt
 			_include = new Dictionary(true);
 			
 			_undup = new Dictionary(true);
+			_symbols = new Dictionary(true);
 			_interfaces = new Dictionary(true);
 		}
 		
@@ -61,8 +63,6 @@ package com.larrio.dump.encrypt
 		{
 			importConfig(settings);
 			
-			_names = new Vector.<String>();
-			
 			var item:EncryptItem;
 			var length:uint, i:int;
 			
@@ -70,12 +70,6 @@ package com.larrio.dump.encrypt
 			{
 				setup(item.definitions);
 			}
-			
-			// 按照长度降序排列
-			_names.sort(function (s1:String, s2:String):int
-			{
-				return s1.length > s2.length? -1 : 1;
-			});
 			
 			optimize();
 			
@@ -139,7 +133,6 @@ package com.larrio.dump.encrypt
 					
 					_map[value] = key;
 					_reverse[key] = value;
-					_names.push(value);
 				}
 				
 				prefix = item.ns? (item.ns + ":") : "";
@@ -154,7 +147,6 @@ package com.larrio.dump.encrypt
 					
 					_map[value] = key;
 					_reverse[key] = value;
-					_names.push(value);
 				}
 				
 				// 构造函数
@@ -166,7 +158,6 @@ package com.larrio.dump.encrypt
 					
 					_map[value] = key;
 					_reverse[key] = value;
-					_names.push(value);
 				}
 				
 				// 类文件
@@ -177,7 +168,6 @@ package com.larrio.dump.encrypt
 					
 					_map[value] = key;
 					_reverse[key] = value;
-					_names.push(value);
 				}
 			}
 		}
@@ -292,6 +282,12 @@ package com.larrio.dump.encrypt
 		{
 			_files.push(swf);
 			
+			for each(var def:String in swf.symbol.symbols)
+			{
+				def = def.replace(/(\.)(\w+)$/, ":$2");
+				_symbols[def] = def;
+			}
+			
 			var list:Vector.<DoABCTag> = new Vector.<DoABCTag>();
 			for each(var tag:SWFTag in swf.tags)
 			{
@@ -334,10 +330,18 @@ package com.larrio.dump.encrypt
 			}
 			
 			exclude = def2map(exclude);
-			for (var key:String in exclude)
+			
+			_names = new Vector.<String>();
+			for (var key:String in _map)
 			{
-				if (_map[key]) delete _map[key];
+				if (key) _names.push(key);
 			}
+			
+			// 按照长度降序排列
+			_names.sort(function (s1:String, s2:String):int
+			{
+				return s1.length > s2.length? -1 : 1;
+			});
 		}
 		
 		// definition split map
@@ -391,6 +395,9 @@ package com.larrio.dump.encrypt
 							case MultiKindType.QNAME:
 							case MultiKindType.QNAME_A:
 							{
+								key = multiname.toString();
+								if (_symbols[key]) break;	// 链接名不加密
+								
 								definition = new DefinitionItem();
 								definition.name = item.strings[multiname.name];
 								
@@ -402,7 +409,6 @@ package com.larrio.dump.encrypt
 									break;
 								}
 								
-								key = multiname.toString();
 								if (!_include[key])
 								{
 									_undup[definition.name] = _include[key] = key;
