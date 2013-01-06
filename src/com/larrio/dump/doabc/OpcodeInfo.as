@@ -281,11 +281,6 @@ package com.larrio.dump.doabc
 						var offset:int = decoder.readS24();
 						target = decoder.position + offset;
 						item += labels.get(target);
-						
-						if (!labels.has(decoder.position))
-						{
-							item += "\n";
-						}
 						break;
 					}
 						
@@ -361,6 +356,9 @@ package com.larrio.dump.doabc
 					}
 						
 				}
+				
+				if (opcode == OpcodeType.LABEL_OP) item = "\n" + item;
+				if (labels.has(decoder.position)) item += "\n";
 				
 				_code += item + "\n";
 			}
