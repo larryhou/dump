@@ -59,7 +59,7 @@ package com.larrio.dump.doabc
 					if (prefix && prefix.indexOf(":") < 0) 
 					{
 						prefix = _constants.strings[_name];
-						if (prefix)
+						if (prefix && prefix.length >= 4)
 						{
 							prefix = prefix.charAt(0);
 							_definition = (prefix == prefix.toUpperCase());
