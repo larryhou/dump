@@ -253,7 +253,7 @@ package com.larrio.dump.encrypt
 				min = 97; max = 122;
 			}
 			
-			var length:uint = 3 + Math.round(5 * Math.random());
+			var length:uint = 1 + Math.round(7 * Math.random());
 			
 			var char:String;
 			while (result.length < length)
@@ -262,8 +262,6 @@ package com.larrio.dump.encrypt
 				if (char == "." || char == ":") continue;
 				result += char;
 			}
-			
-			assertTrue(result.length == length);
 			
 			return result;
 		}
