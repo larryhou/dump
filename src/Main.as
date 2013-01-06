@@ -21,7 +21,7 @@ package
 		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
 		private const _cls : Class;
 		
-		[Embed(source="../libs/res.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		public static const v1:uint = 1;
