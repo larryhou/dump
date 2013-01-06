@@ -18,6 +18,8 @@ package com.larrio.dump.encrypt
 	 * SWF代码加密器
 	 * @author larryhou
 	 * @createTime Dec 22, 2012 8:19:10 PM
+	 * 
+	 * @usage 该类只能使用一次，如需反复加密则必须重新构造实例
 	 */
 	public class FileEncryptor
 	{
@@ -30,6 +32,7 @@ package com.larrio.dump.encrypt
 		private var _reverse:Dictionary;
 		private var _include:Dictionary;
 		
+		private var _undup:Dictionary;
 		private var _interfaces:Dictionary;
 		
 		private var _decrypting:Boolean;
@@ -47,6 +50,7 @@ package com.larrio.dump.encrypt
 			_reverse = new Dictionary(true);
 			_include = new Dictionary(true);
 			
+			_undup = new Dictionary(true);
 			_interfaces = new Dictionary(true);
 		}
 		
@@ -387,14 +391,23 @@ package com.larrio.dump.encrypt
 							case MultiKindType.QNAME:
 							case MultiKindType.QNAME_A:
 							{
+								definition = new DefinitionItem();
+								definition.name = item.strings[multiname.name];
+								
+								// 删除同名类
+								if (_undup[definition.name])
+								{
+									// 保证同名类不加密
+									delete _include[_undup[definition.name]];
+									break;
+								}
+								
 								key = multiname.toString();
 								if (!_include[key])
 								{
-									_include[key] = key;
+									_undup[definition.name] = _include[key] = key;
 									
-									definition = new DefinitionItem();
 									definition.protocol = cls.instance.protocol;
-									definition.name = item.strings[multiname.name];
 									definition.ns = item.strings[tag.abc.constants.namespaces[multiname.ns].name];
 									
 									item.definitions.push(definition);
