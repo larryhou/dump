@@ -304,16 +304,20 @@ package com.larrio.dump.encrypt
 		// 加密防错优化处理
 		private function optimize():void
 		{
+			var key:String;
 			var exclude:Dictionary = new Dictionary(true);
 			
-			var definition:String;
-			for each (var swf:SWFile in _files)
-			{
-				// 链接名不做加密处理
-				for each (definition in swf.symbol.symbols) exclude[definition] = definition.replace(/(\.)(\w+)$/, ":$2");
-			}
+			// 剔除链接名类
+			for (key in _symbols) exclude[key] = key;
+			
+//			for each (var swf:SWFile in _files)
+//			{
+//				// 链接名不做加密处理
+//				for each (definition in swf.symbol.symbols) exclude[definition] = definition.replace(/(\.)(\w+)$/, ":$2");
+//			}
 			
 			// 制作导入类映射表
+			var definition:String;
 			for each(var item:EncryptItem in _queue)
 			{
 				var multinames:Vector.<MultinameInfo> = item.tag.abc.constants.multinames;
@@ -330,12 +334,10 @@ package com.larrio.dump.encrypt
 			}
 			
 			exclude = def2map(exclude);
+			for (key in _map) if (exclude[key]) delete _map[key];
 			
 			_names = new Vector.<String>();
-			for (var key:String in _map)
-			{
-				if (key) _names.push(key);
-			}
+			for (key in _map) if (key) _names.push(key);
 			
 			// 按照长度降序排列
 			_names.sort(function (s1:String, s2:String):int
