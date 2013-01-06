@@ -51,19 +51,21 @@ package com.larrio.dump.doabc
 				{
 					_ns = decoder.readEU30();
 					assertTrue(_ns >= 0 && _ns < _constants.namespaces.length);
+					
 					_name = decoder.readEU30();
+					assertTrue(_name >= 0 && _name < _constants.strings.length);
 					
 					prefix = _constants.namespaces[_ns].toString();
-					if (prefix && prefix.indexOf(":") < 0) _definition = true;
-					
-					prefix = _constants.strings[_name];
-					if (prefix)
+					if (prefix && prefix.indexOf(":") < 0) 
 					{
-						prefix = prefix.charAt(0);
-						_definition &&= (prefix == prefix.toUpperCase());
+						prefix = _constants.strings[_name];
+						if (prefix)
+						{
+							prefix = prefix.charAt(0);
+							_definition = (prefix == prefix.toUpperCase());
+						}
 					}
 					
-					assertTrue(_name >= 0 && _name < _constants.strings.length);
 					break;
 				}
 						
