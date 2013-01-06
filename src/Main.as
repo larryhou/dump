@@ -43,7 +43,7 @@ package
 		{		
 			var bytes:ByteArray, swf:SWFile;
 			var rawFile:ByteArray = loaderInfo.bytes;
-			rawFile = new RawFile();
+//			rawFile = new RawFile();
 			
 			bytes = rawFile;
 			swf = new SWFile(bytes);
@@ -71,9 +71,9 @@ package
 				{
 					tag = swf.tags[i] as DoABCTag;
 					trace("\n\n-----------------------------------------\n");
-					//trace(tag.abc.constants.strings.join("\n"));
-					trace(tag.abc.files.join("\n"));
-					break;
+					trace(tag.abc.constants.strings.join("\n"));
+					//trace(tag.abc.files.join("\n"));
+					//break;
 				}
 			}
 			

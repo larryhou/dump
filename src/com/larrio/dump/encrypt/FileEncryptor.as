@@ -212,12 +212,14 @@ package com.larrio.dump.encrypt
 			for(var i:int = offset; i < length; i++)
 			{
 				value = strings[i];
-				if (value.indexOf(":") > 0 || value.indexOf("$") > 0)
+				if (value.indexOf(":") > 0 || value.indexOf(".as$") > 0)
 				{
+					if (value.indexOf("http:") >= 0) continue;
+					
 					for (var j:int = 0; j < _names.length; j++)
 					{
 						key = _names[j];
-						if (value.indexOf(key) >= 0)
+						if (value.indexOf(key) == 0)
 						{
 							value = value.replace(key, _map[key]);
 							strings[i] = value;
@@ -227,7 +229,10 @@ package com.larrio.dump.encrypt
 				}
 				else
 				{
-					if (_map[value] is String) strings[i] = _map[value];
+					if (_map[value] is String)
+					{
+						strings[i] = _map[value];
+					}
 				}				
 			}
 		}
@@ -294,10 +299,8 @@ package com.larrio.dump.encrypt
 		private function optimize():void
 		{
 			var key:String;
-			var dict:Dictionary = new Dictionary(true);
 			
-			// 剔除链接名类
-			for (key in _exclude) dict[key] = key;
+			_include = def2map(_include);
 						
 			// 制作导入类映射表
 			var definition:String;
@@ -311,13 +314,13 @@ package com.larrio.dump.encrypt
 						definition = info.toString();
 						if (_include[definition]) continue;
 						
-						dict[definition] = definition;
+						_exclude[definition] = definition;
 					}
 				}
 			}
 			
-			dict = def2map(dict);
-			for (key in _map) if (dict[key]) delete _map[key];
+			_exclude = def2map(_exclude);
+			for (key in _map) if (_exclude[key]) delete _map[key];
 			
 			_names = new Vector.<String>();
 			for (key in _map) if (key) _names.push(key);
@@ -330,26 +333,19 @@ package com.larrio.dump.encrypt
 		}
 		
 		// definition split map
-		private function def2map(dict:Dictionary, exclude:Dictionary = null):Dictionary
+		private function def2map(dict:Dictionary):Dictionary
 		{
-			exclude ||= new Dictionary(true);
-			
-			var list:Array = [];
+			var list:Array;
 			for each (var key:String in dict)
 			{
-				list.push.apply(null, key.split(":"));
-			}
-			
-			var result:Dictionary = new Dictionary(true);
-			for each (key in list)
-			{
-				if (!exclude[key]) 
+				list = key.split(":");
+				for each (var item:String in list)
 				{
-					result[key] = true;
+					if (item) dict[item] = item;
 				}
 			}
 			
-			return result;
+			return dict;
 		}
 		
 		/**
@@ -381,6 +377,7 @@ package com.larrio.dump.encrypt
 							case MultiKindType.QNAME_A:
 							{
 								key = multiname.toString();
+								
 								if (_exclude[key]) break;	// 链接名不加密
 								
 								definition = new DefinitionItem();

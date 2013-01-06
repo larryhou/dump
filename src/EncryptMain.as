@@ -19,7 +19,7 @@ package
 	 */
 	public class EncryptMain extends Sprite
 	{
-		[Embed(source="../libs/res02.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res03.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		/**
@@ -29,7 +29,10 @@ package
 		public function EncryptMain()
 		{
 			var bytes:ByteArray;
-			var swf:SWFile = new SWFile(bytes = new RawFile());
+			
+			bytes = loaderInfo.bytes;
+//			bytes = new RawFile()
+			var swf:SWFile = new SWFile(bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
 			encryptor.decrypting = false;
@@ -40,7 +43,7 @@ package
 			// 导出加密后的SWF
 			bytes = swf.repack();
 			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			new FileReference().save(bytes, "encrypt.swf");
+			//new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -55,8 +58,8 @@ package
 					//trace(tag.abc.constants.multinames.join("\n"));
 					//trace(tag.abc.constants.namespaces.join("\n"));
 					//trace(tag.abc.constants.strings.join("\n"));
-					//trace(tag.abc.files.join("\n"));
-					break;
+					trace(tag.abc.files.join("\n"));
+					//break;
 				}
 			}
 			
