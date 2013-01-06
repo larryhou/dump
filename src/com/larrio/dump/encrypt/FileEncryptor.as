@@ -31,10 +31,9 @@ package com.larrio.dump.encrypt
 		private var _map:Dictionary;
 		private var _reverse:Dictionary;
 		private var _include:Dictionary;
+		private var _exclude:Dictionary;
 		
 		private var _undup:Dictionary;
-		private var _symbols:Dictionary;
-		private var _interfaces:Dictionary;
 		
 		private var _decrypting:Boolean;
 		
@@ -50,10 +49,9 @@ package com.larrio.dump.encrypt
 			_map = new Dictionary(true);
 			_reverse = new Dictionary(true);
 			_include = new Dictionary(true);
+			_exclude = new Dictionary(true);
 			
 			_undup = new Dictionary(true);
-			_symbols = new Dictionary(true);
-			_interfaces = new Dictionary(true);
 		}
 		
 		/**
@@ -115,20 +113,11 @@ package com.larrio.dump.encrypt
 					{
 						continue; // 已加密跳过
 					}
-					
-					if (item.protocol)
+
+					while(true)
 					{
-						key = value;
-						
-						_interfaces[value] = value;
-					}
-					else
-					{
-						while(true)
-						{
-							key = createEncryptSTR(value);
-							if (!_reverse[key]) break;
-						}
+						key = createEncryptSTR(value);
+						if (!_reverse[key]) break;
 					}
 					
 					_map[value] = key;
@@ -285,7 +274,7 @@ package com.larrio.dump.encrypt
 			for each(var def:String in swf.symbol.symbols)
 			{
 				def = def.replace(/(\.)(\w+)$/, ":$2");
-				_symbols[def] = def;
+				_exclude[def] = def;
 			}
 			
 			var list:Vector.<DoABCTag> = new Vector.<DoABCTag>();
@@ -305,17 +294,11 @@ package com.larrio.dump.encrypt
 		private function optimize():void
 		{
 			var key:String;
-			var exclude:Dictionary = new Dictionary(true);
+			var dict:Dictionary = new Dictionary(true);
 			
 			// 剔除链接名类
-			for (key in _symbols) exclude[key] = key;
-			
-//			for each (var swf:SWFile in _files)
-//			{
-//				// 链接名不做加密处理
-//				for each (definition in swf.symbol.symbols) exclude[definition] = definition.replace(/(\.)(\w+)$/, ":$2");
-//			}
-			
+			for (key in _exclude) dict[key] = key;
+						
 			// 制作导入类映射表
 			var definition:String;
 			for each(var item:EncryptItem in _queue)
@@ -328,13 +311,13 @@ package com.larrio.dump.encrypt
 						definition = info.toString();
 						if (_include[definition]) continue;
 						
-						exclude[definition] = definition;
+						dict[definition] = definition;
 					}
 				}
 			}
 			
-			exclude = def2map(exclude);
-			for (key in _map) if (exclude[key]) delete _map[key];
+			dict = def2map(dict);
+			for (key in _map) if (dict[key]) delete _map[key];
 			
 			_names = new Vector.<String>();
 			for (key in _map) if (key) _names.push(key);
@@ -398,25 +381,27 @@ package com.larrio.dump.encrypt
 							case MultiKindType.QNAME_A:
 							{
 								key = multiname.toString();
-								if (_symbols[key]) break;	// 链接名不加密
+								if (_exclude[key]) break;	// 链接名不加密
 								
 								definition = new DefinitionItem();
 								definition.name = item.strings[multiname.name];
 								
-								// 删除同名类
-								if (_undup[definition.name])
-								{
-									// 保证同名类不加密
-									delete _include[_undup[definition.name]];
-									break;
-								}
-								
 								if (!_include[key])
 								{
+									// 删除同名类
+									if (_undup[definition.name])
+									{
+										// 保证同名类不加密
+										delete _include[_undup[definition.name]];
+										break;
+									}
+									
 									_undup[definition.name] = _include[key] = key;
 									
 									definition.protocol = cls.instance.protocol;
 									definition.ns = item.strings[tag.abc.constants.namespaces[multiname.ns].name];
+									
+									if (cls.instance.protocol) _exclude[key] = key;
 									
 									item.definitions.push(definition);
 								}
