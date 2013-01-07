@@ -162,11 +162,14 @@ package com.larrio.dump.doabc
 			
 			if (_opcode.closures)
 			{
-				var body:MethodBodyInfo;
+				var body:MethodBodyInfo, index:uint;
 				for (i = 0; i < _opcode.closures.length; i++)
 				{
-					body = _abc.methodBodies[_opcode.closures[i]];
-					if (body._timestamp != _timestamp)
+					index = _opcode.closures[i];
+					if (index >= _abc.methodBodies.length) continue;
+					
+					body = _abc.methodBodies[index];
+					if (body && body._timestamp != _timestamp)
 					{
 						result += "\n" + _abc.methods[_opcode.closures[i]];
 						result += "\n" + body.toString(_timestamp);
