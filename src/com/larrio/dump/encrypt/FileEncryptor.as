@@ -396,7 +396,11 @@ package com.larrio.dump.encrypt
 									definition.protocol = cls.instance.protocol;
 									definition.ns = item.strings[tag.abc.constants.namespaces[multiname.ns].name];
 									
-									if (cls.instance.protocol) _exclude[key] = key;
+									if (cls.instance.protocol) 
+									{
+										_exclude[key] = key;
+										break;
+									}
 									
 									item.definitions.push(definition);
 								}
