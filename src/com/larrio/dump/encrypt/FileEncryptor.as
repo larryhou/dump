@@ -391,17 +391,16 @@ package com.larrio.dump.encrypt
 										break;
 									}
 									
-									_undup[definition.name] = _include[key] = key;
-									
-									definition.protocol = cls.instance.protocol;
-									definition.ns = item.strings[tag.abc.constants.namespaces[multiname.ns].name];
-									
 									if (cls.instance.protocol) 
 									{
 										_exclude[key] = key;
 										break;
 									}
 									
+									_undup[definition.name] = _include[key] = key;
+									
+									definition.protocol = cls.instance.protocol;
+									definition.ns = item.strings[tag.abc.constants.namespaces[multiname.ns].name];
 									item.definitions.push(definition);
 								}
 								
