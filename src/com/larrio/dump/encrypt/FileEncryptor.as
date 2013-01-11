@@ -78,6 +78,40 @@ package com.larrio.dump.encrypt
 				replace(item.strings, 1);
 			}
 			
+			var def:String, key:String, list:Array;
+			
+			//  同步加密文档类对应symbol
+			for each(var swf:SWFile in _files)
+			{
+				for each(var tag:SymbolClassTag in swf.symbolTags)
+				{
+					def = "";
+					length = tag.symbols.length;
+					for (i = 0; i < length; i++)
+					{
+						if (tag.ids[i] == 0)
+						{
+							tag.modified = true;
+							def = tag.symbols[i];
+							def = def.replace(/(\.)(\w+)$/, ":$2");
+							
+							list = def.split(":");
+							for (var j:int = 0; j < list.length; j++)
+							{
+								key = list[j];
+								if (_map[key] is String) list[j] = _map[key];
+							}
+							
+							tag.symbols[i] = list.join(".");
+							break;
+						}
+						
+					}
+					
+					if (def) break;
+				}
+			}
+			
 			return exportConfig();
 		}
 		
