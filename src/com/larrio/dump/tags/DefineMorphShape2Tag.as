@@ -75,7 +75,6 @@ package com.larrio.dump.tags
 				_endEdges.decode(decoder);
 			}
 			
-			trace(this);
 		}
 		
 		/**

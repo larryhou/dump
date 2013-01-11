@@ -264,10 +264,16 @@ package com.larrio.dump.encrypt
 		{
 			_files.push(swf);
 			
+			var def:String;
 			for each (var symbolTag:SymbolClassTag in swf.symbolTags)
 			{
-				for each(var def:String in symbolTag.symbols)
+				var length:uint = symbolTag.symbols.length;
+				for(var i:int = 0; i < length; i++)
 				{
+					// 文档类
+					if (symbolTag.ids[i] == 0) continue;
+					
+					def = symbolTag.symbols[i];
 					def = def.replace(/(\.)(\w+)$/, ":$2");
 					_exclude[def] = def;
 				}
