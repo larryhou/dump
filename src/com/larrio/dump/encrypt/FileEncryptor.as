@@ -78,16 +78,6 @@ package com.larrio.dump.encrypt
 				replace(item.strings, 1);
 			}
 			
-			var symbol:SymbolClassTag;
-			for (i = 0; i < _files.length; i++)
-			{
-				symbol = _files[i].symbol;
-				if (!symbol) continue;
-				
-				symbol.modified = true;
-				replace(symbol.symbols);
-			}
-			
 			return exportConfig();
 		}
 		
@@ -274,10 +264,13 @@ package com.larrio.dump.encrypt
 		{
 			_files.push(swf);
 			
-			for each(var def:String in swf.symbol.symbols)
+			for each (var symbolTag:SymbolClassTag in swf.symbolTags)
 			{
-				def = def.replace(/(\.)(\w+)$/, ":$2");
-				_exclude[def] = def;
+				for each(var def:String in symbolTag.symbols)
+				{
+					def = def.replace(/(\.)(\w+)$/, ":$2");
+					_exclude[def] = def;
+				}
 			}
 			
 			var list:Vector.<DoABCTag> = new Vector.<DoABCTag>();

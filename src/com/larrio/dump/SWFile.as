@@ -29,7 +29,7 @@ package com.larrio.dump
 		
 		private var _tags:Vector.<SWFTag>;
 		
-		private var _symbol:SymbolClassTag;
+		private var _symbolTags:Vector.<SymbolClassTag>;
 		
 		private var _dict:Dictionary;
 		
@@ -99,6 +99,7 @@ package com.larrio.dump
 			_header.decode(_decoder);
 			
 			_tags = new Vector.<SWFTag>;
+			_symbolTags = new Vector.<SymbolClassTag>();
 			
 			var position:uint;
 			var tag:SWFTag, type:uint;
@@ -115,7 +116,7 @@ package com.larrio.dump
 				
 				if (tag.type == TagType.SYMBOL_CLASS)
 				{
-					_symbol = tag as SymbolClassTag;
+					_symbolTags.push(tag as SymbolClassTag);
 				}
 				
 				_tags.push(tag);
@@ -135,7 +136,7 @@ package com.larrio.dump
 		/**
 		 * SWF链接名TAG
 		 */		
-		public function get symbol():SymbolClassTag { return _symbol; }
+		public function get symbolTags():Vector.<SymbolClassTag> { return _symbolTags; }
 
 	}
 }
