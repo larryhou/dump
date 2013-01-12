@@ -42,6 +42,8 @@ package com.larrio.dump.tags
 			
 			_bitmapAlphaData = new ByteArray();
 			decoder.readBytes(_bitmapAlphaData);
+			
+			_bitmapAlphaData.uncompress();
 		}
 		
 		/**
@@ -54,6 +56,10 @@ package com.larrio.dump.tags
 			encoder.writeUI32(_size);
 			encoder.writeUI16(_deblockParam);
 			encoder.writeBytes(_data);
+			
+			_bitmapAlphaData.compress();
+			_compressed = true;
+			
 			encoder.writeBytes(_bitmapAlphaData);
 		}
 		
@@ -62,7 +68,7 @@ package com.larrio.dump.tags
 		 */		
 		override public function toString():String
 		{
-			return "";	
+			return "<DefineBitsJPEG4Tag/>";	
 		}
 
 		/**

@@ -2,6 +2,7 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	
@@ -42,6 +43,8 @@ package com.larrio.dump.tags
 			
 			_bitmapAlphaData = new ByteArray();
 			decoder.readBytes(_bitmapAlphaData);
+			
+			_bitmapAlphaData.uncompress();
 		}
 		
 		/**
@@ -53,15 +56,19 @@ package com.larrio.dump.tags
 			encoder.writeUI16(_character);
 			encoder.writeUI32(_size);
 			encoder.writeBytes(_data);
+			
+			_bitmapAlphaData.compress();
+			_compressed = true;
+			
 			encoder.writeBytes(_bitmapAlphaData);
 		}
 		
 		/**
 		 * 字符串输出
-		 */		
+		 */		 
 		override public function toString():String
 		{
-			return "";	
+			return "<DefineBitsJPEG3Tag/>";	
 		}
 
 		/**

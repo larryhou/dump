@@ -1,5 +1,7 @@
 package
 {
+	import com.larrio.dump.utils.hexSTR;
+	
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
 	
@@ -17,21 +19,17 @@ package
 		 */
 		public function TestMain()
 		{
-			var bytes:ByteArray = new ByteArray();
-			bytes.writeMultiByte("j", "utf-8");
+			var src:ByteArray = new ByteArray();
 			
-			trace(bytes.length);
+			var index:uint;
+			while (index <= 0xFF) src.writeByte(index++);
 			
-			bytes.length = 0;
-			bytes.writeMultiByte("j", "utf8");
-			trace(bytes.length);
+			src.position = 0;
 			
-			var index:int;
-			while (index <= 0xFF)
-			{
-				trace(index + ": " + String.fromCharCode(index));
-				index++;
-			}
+			var dst:ByteArray = new ByteArray();
+			src.readBytes(dst, 0, 4);
+			
+			trace(dst.length, dst[0]);
 		}		
 	}
 }
