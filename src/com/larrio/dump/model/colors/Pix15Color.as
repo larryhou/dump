@@ -5,7 +5,7 @@ package com.larrio.dump.model.colors
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
-	 * 
+	 * 15位颜色值
 	 * @author larryhou
 	 * @createTime Dec 27, 2012 8:21:18 PM
 	 */
@@ -32,6 +32,10 @@ package com.larrio.dump.model.colors
 			_green = decoder.readUB(5);
 			_blue = decoder.readUB(5);
 			
+			_value = _red / ((1 << 5) - 1) * 0xFF << 16;
+			_value |= _green / ((1 << 5) - 1) * 0xFF << 8;
+			_value |= _blue / ((1 << 5) - 1) * 0xFF;
+			
 			decoder.byteAlign();
 		}
 		
@@ -46,6 +50,6 @@ package com.larrio.dump.model.colors
 			encoder.writeUB(_green, 5);
 			encoder.writeUB(_blue, 5);
 			encoder.flush();
-		}		
+		}	
 	}
 }

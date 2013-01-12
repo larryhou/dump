@@ -1,10 +1,12 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
+	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -35,7 +37,7 @@ package
 			bytes = rawFile;
 			swf = new SWFile(bytes);
 			
-			var loader:Loader;
+			var loader:Loader, bitmap:Bitmap;
 			var position:Point = new Point();
 			for each(var tag:SWFTag in swf.tags)
 			{
@@ -52,10 +54,28 @@ package
 						
 						position.x += 30;
 						position.y += 30;
+
+						break;
+					}
+						
+					case TagType.DEFINE_BITS_LOSSLESS:
+					case TagType.DEFINE_BITS_LOSSLESS2:
+					{
+						bitmap = new Bitmap();
+						bitmap.bitmapData = (tag as DefineBitsLosslessTag).data;
+						bitmap.x = position.x;
+						bitmap.y = position.y;
+						addChild(bitmap);
+						
+						position.x += 30;
+						position.y += 30;
+
 						break;
 					}
 				}
+				
 			}
+			
 		}
 	}
 }

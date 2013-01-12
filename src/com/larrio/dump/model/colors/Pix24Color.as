@@ -5,7 +5,7 @@ package com.larrio.dump.model.colors
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
-	 * 
+	 * 24为颜色值
 	 * @author larryhou
 	 * @createTime Dec 27, 2012 8:25:44 PM
 	 */
@@ -27,10 +27,7 @@ package com.larrio.dump.model.colors
 		override public function decode(decoder:FileDecoder):void
 		{
 			assertTrue(decoder.readUI8() == 0);
-			
-			_red = decoder.readUI8();
-			_green = decoder.readUI8();
-			_blue = decoder.readUI8();
+			super.decode(decoder);
 		}
 		
 		/**
@@ -40,9 +37,7 @@ package com.larrio.dump.model.colors
 		override public function encode(encoder:FileEncoder):void
 		{
 			encoder.writeUI8(0);
-			encoder.writeUI8(_red);
-			encoder.writeUI8(_green);
-			encoder.writeUI8(_blue);
+			super.encode(encoder);
 		}		
 	}
 }

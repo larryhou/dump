@@ -3,6 +3,7 @@ package com.larrio.dump.tags
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.colors.ARGBColor;
+	import com.larrio.dump.model.colors.Pix8Color;
 	import com.larrio.dump.model.colors.RGBAColor;
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.utils.assertTrue;
@@ -67,21 +68,32 @@ package com.larrio.dump.tags
 					_colorTableRGBs[i].decode(decoder);
 				}
 				
-				_colormapData = new ByteArray();
-				decoder.readBytes(_colormapData);
+				if (_width % 4 != 0)
+				{
+					size = Math.ceil(_width / 4) * 4 * _height;
+				}
+				
+				_pixels = new Vector.<RGBColor>(size);
+				for (i = 0; i < size; i++)
+				{
+					_pixels[i] = new Pix8Color();
+					_pixels[i].decode(decoder);
+				}
 			}
 			else
 			if (format == 4 || format == 5)
 			{
-				_bitmapData = new Vector.<RGBColor>(size, true);
+				_pixels = new Vector.<RGBColor>(size, true);
 				for (i = 0; i < size; i++)
 				{
-					_bitmapData[i] = new ARGBColor();
-					_bitmapData[i].decode(decoder);
+					_pixels[i] = new ARGBColor();
+					_pixels[i].decode(decoder);
 				}
 			}
 			
 			assertTrue(decoder.bytesAvailable == 0);
+			
+			decodeImage();
 		}
 		
 		/**
@@ -98,7 +110,7 @@ package com.larrio.dump.tags
 		 */		
 		override public function toString():String
 		{
-			return "";	
+			return "<DefineBitsLossless2Tag/>";	
 		}
 	}
 }

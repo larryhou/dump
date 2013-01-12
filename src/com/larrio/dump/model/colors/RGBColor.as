@@ -16,6 +16,7 @@ package com.larrio.dump.model.colors
 		protected var _red:uint;
 		protected var _green:uint;
 		protected var _blue:uint;
+		protected var _value:uint;
 		
 		/**
 		 * 构造函数
@@ -35,6 +36,8 @@ package com.larrio.dump.model.colors
 			_red = decoder.readUI8();
 			_green = decoder.readUI8();
 			_blue = decoder.readUI8();
+			
+			_value = _red << 16 | _green << 8 | _blue;
 		}
 		
 		/**
@@ -76,6 +79,11 @@ package com.larrio.dump.model.colors
 		 * 蓝色通道
 		 */		
 		public function get blue():uint { return _blue; }
+
+		/**
+		 * 颜色值
+		 */		
+		public function get value():uint { return _value; }
 
 	}
 }

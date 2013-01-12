@@ -31,6 +31,8 @@ package com.larrio.dump.model.colors
 			_alpha = decoder.readUI8();
 			
 			super.decode(decoder);
+			
+			_value = _alpha << 24 | _red << 16 | _green << 8 | _blue;
 		}
 		
 		/**

@@ -4,9 +4,11 @@ package com.larrio.dump.tags
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.colors.Pix15Color;
 	import com.larrio.dump.model.colors.Pix24Color;
+	import com.larrio.dump.model.colors.Pix8Color;
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 	
 	/**
@@ -25,11 +27,11 @@ package com.larrio.dump.tags
 		protected var _colorTableSize:uint;
 		
 		protected var _colorTableRGBs:Vector.<RGBColor>;
-		protected var _colormapData:ByteArray;
-		
-		protected var _bitmapData:Vector.<RGBColor>;
+		protected var _pixels:Vector.<RGBColor>;
 		
 		protected var _unzliblen:uint;
+		
+		protected var _data:BitmapData;
 		
 		/**
 		 * 构造函数
@@ -78,31 +80,82 @@ package com.larrio.dump.tags
 					_colorTableRGBs[i].decode(decoder);
 				}
 				
-				_colormapData = new ByteArray();
-				decoder.readBytes(_colormapData);
-			}
-			else
-			if (format == 4)
-			{
-				_bitmapData = new Vector.<RGBColor>(size, true);
+				if (_width % 4 != 0)
+				{
+					size = Math.ceil(_width / 4) * 4 * _height;
+				}
+				
+				_pixels = new Vector.<RGBColor>(size);
 				for (i = 0; i < size; i++)
 				{
-					_bitmapData[i] = new Pix15Color();
-					_bitmapData[i].decode(decoder);
+					_pixels[i] = new Pix8Color();
+					_pixels[i].decode(decoder);
 				}
 			}
 			else
-			if (format == 5)
+			if (_format == 4)
 			{
-				_bitmapData = new Vector.<RGBColor>(size, true);
+				_pixels = new Vector.<RGBColor>(size, true);
 				for (i = 0; i < size; i++)
 				{
-					_bitmapData[i] = new Pix24Color();
-					_bitmapData[i].decode(decoder);
+					_pixels[i] = new Pix15Color();
+					_pixels[i].decode(decoder);
+				}
+			}
+			else
+			if (_format == 5)
+			{
+				_pixels = new Vector.<RGBColor>(size, true);
+				for (i = 0; i < size; i++)
+				{
+					_pixels[i] = new Pix24Color();
+					_pixels[i].decode(decoder);
 				}
 			}
 			
 			assertTrue(decoder.bytesAvailable == 0);
+			
+			decodeImage();
+		}
+		
+		/**
+		 * 解析出位图数据
+		 */		
+		protected final function decodeImage():void
+		{
+			var row:uint = _height;
+			var column:uint = _width;
+			
+			if (_format == 3)
+			{
+				if (column % 4 != 0)
+				{
+					column = Math.ceil(column / 4) * 4;
+				}
+			}
+			
+			_data =  new BitmapData(column, row, true, 0);
+			_data.lock();
+			
+			var color:RGBColor;
+			var locX:uint, locY:uint;
+			
+			while (locY < row)
+			{
+				locX = 0;
+				while (locX < column)
+				{
+					color = _pixels[column * locY + locX];
+					
+					_data.setPixel32(locX, locY, color.value);
+					
+					locX++;
+				}
+				
+				locY++;
+			}
+			
+			_data.unlock();
 		}
 		
 		/**
@@ -126,24 +179,19 @@ package com.larrio.dump.tags
 			var size:uint = _width * _height;
 			var zlib:FileEncoder = new FileEncoder();
 			
-			if (format == 3)
+			if (_format == 3)
 			{
 				length = _colorTableSize + 1;
 				for (i = 0; i < length; i++)
 				{
 					_colorTableRGBs[i].encode(zlib);
 				}
-				
-				zlib.writeBytes(_colormapData);
 			}
-			else
-			if (format == 4 || format == 5)
+			
+			length = _pixels.length;
+			for (i = 0; i < length; i++)
 			{
-				length = size;
-				for (i = 0; i < length; i++)
-				{
-					_bitmapData[i].encode(zlib);
-				}
+				_pixels[i].encode(zlib);
 			}
 			
 			if (_unzliblen > 0)
@@ -162,7 +210,7 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "";	
+			return "<DefineBitsLosslessTag/>";	
 		}
 
 		/**
@@ -193,17 +241,17 @@ package com.larrio.dump.tags
 		 * Number of RGB values is BitmapColorTableSize + 1.
 		 */		
 		public function get colorTableRGBs():Vector.<RGBColor> { return _colorTableRGBs; }
-
-		/**
-		 * Array of color indices. 
-		 * Number of entries is BitmapWidth * BitmapHeight, subject to padding (see note preceding this table).
-		 */		
-		public function get colormapData():ByteArray { return _colormapData; }
-
+		
 		/**
 		 * Array of pixel colors. 
 		 * Number of entries is BitmapWidth * BitmapHeight, subject to padding (see note above).
 		 */		
-		public function get bitmapData():Vector.<RGBColor> { return _bitmapData; }
+		public function get pixels():Vector.<RGBColor> { return _pixels; }
+
+		/**
+		 * 无损图片位图数据
+		 */		
+		public function get data():BitmapData { return _data; }
+
 	}
 }
