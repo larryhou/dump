@@ -2,9 +2,9 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.utils.hexSTR;
 	
 	import flash.utils.ByteArray;
+	import flash.utils.getQualifiedClassName;
 	
 	/**
 	 * 
@@ -37,8 +37,6 @@ package com.larrio.dump.tags
 			
 			_data = new ByteArray();
 			decoder.readBytes(_data);
-			
-			trace(hexSTR(_data, 4, 0, 8));
 		}
 		
 		/**
@@ -56,7 +54,11 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "<DefineBitsTag/>";	
+			var localName:String = getQualifiedClassName(this).split("::")[1];
+			var result:XML = new XML("<" + localName + "/>");
+			result.@character = _character;
+			
+			return result.toXMLString();	
 		}
 
 		/**

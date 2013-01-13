@@ -61,6 +61,7 @@ package
 						
 						position.x += 30;
 						position.y += 30;
+						trace(tag);
 
 						break;
 					}

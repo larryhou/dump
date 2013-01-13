@@ -99,14 +99,6 @@ package com.larrio.dump.tags
 		}
 		
 		/**
-		 * 字符串输出
-		 */		 
-		override public function toString():String
-		{
-			return "<DefineBitsJPEG3Tag/>";	
-		}
-
-		/**
 		 * ZLIB compressed array of alpha data. Only supported when tag contains JPEG data. 
 		 * One byte per pixel. Total size after decompression must equal (width * height) of JPEG image.
 		 */		

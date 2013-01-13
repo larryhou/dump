@@ -23,12 +23,5 @@ package com.larrio.dump.tags
 			
 		}
 		
-		/**
-		 * 字符串输出
-		 */		
-		override public function toString():String
-		{
-			return "<DefineBitsJPEG2Tag/>";	
-		}
 	}
 }
