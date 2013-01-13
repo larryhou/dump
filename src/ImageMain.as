@@ -8,15 +8,13 @@ package
 	import com.larrio.dump.tags.TagType;
 	
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.BitmapDataChannel;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
-	[SWF(width="800", height="600")]
+	[SWF(width="1024", height="768")]
 	
 	/**
 	 * 
@@ -25,7 +23,7 @@ package
 	 */
 	public class ImageMain extends Sprite
 	{
-		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res04.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		/**
@@ -36,10 +34,18 @@ package
 		{
 			var bytes:ByteArray, swf:SWFile;
 			var rawFile:ByteArray = loaderInfo.bytes;
-			rawFile = new RawFile();
+			//rawFile = new RawFile();
 			
 			bytes = rawFile;
-			swf = new SWFile(bytes);
+			
+			var includes:Array = [];
+			includes.push(TagType.DEFINE_BITS);
+			includes.push(TagType.DEFINE_BITS_JPEG2);
+			includes.push(TagType.DEFINE_BITS_JPEG3);
+			includes.push(TagType.DEFINE_BITS_JPEG4);
+			includes.push(TagType.DEFINE_BITS_LOSSLESS);
+			includes.push(TagType.DEFINE_BITS_LOSSLESS2);
+			swf = new SWFile(bytes, includes);
 			
 			var alphas:ByteArray;
 			var loader:Image, bitmap:Bitmap;
@@ -59,8 +65,8 @@ package
 						loader.x = position.x;
 						loader.y = position.y;
 						
-						position.x += 30;
-						position.y += 30;
+						position.x += 10;
+						position.y += 10;
 						trace(tag);
 
 						break;
@@ -75,8 +81,8 @@ package
 						bitmap.y = position.y;
 						addChild(bitmap);
 						
-						position.x += 30;
-						position.y += 30;
+						position.x += 10;
+						position.y += 10;
 
 						break;
 					}
