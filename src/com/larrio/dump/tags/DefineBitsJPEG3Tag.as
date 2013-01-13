@@ -2,8 +2,8 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 	
 	/**
@@ -45,6 +45,41 @@ package com.larrio.dump.tags
 			decoder.readBytes(_bitmapAlphaData);
 			
 			_bitmapAlphaData.uncompress();
+		}
+		
+		/**
+		 * Alpha通道混合 
+		 * @param data	JPEG位图BitmapData数据
+		 * @param dispose	是否释放源BitmapData占用内存
+		 */		
+		public function blendAlpha(data:BitmapData, dispose:Boolean = true):BitmapData
+		{
+			data.lock();
+			
+			var result:BitmapData = new BitmapData(data.width, data.height, true, 0);
+			result.lock();
+			
+			_bitmapAlphaData.position = 0;
+			
+			var alpha:uint;
+			var locX:uint, locY:uint;
+			while (locY < result.height)
+			{
+				locX = 0;
+				while (locX < result.width)
+				{
+					alpha = _bitmapAlphaData.readUnsignedByte();
+					result.setPixel32(locX, locY, alpha << 24 | data.getPixel(locX, locY));
+					locX++;
+				}
+				
+				locY++;
+			}
+			
+			result.unlock();
+			dispose && data.dispose();
+			
+			return result;
 		}
 		
 		/**

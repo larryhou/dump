@@ -2,6 +2,7 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.utils.hexSTR;
 	
 	import flash.utils.ByteArray;
 	
@@ -36,6 +37,8 @@ package com.larrio.dump.tags
 			
 			_data = new ByteArray();
 			decoder.readBytes(_data);
+			
+			trace(hexSTR(_data, 4, 0, 8));
 		}
 		
 		/**

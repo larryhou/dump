@@ -30,6 +30,9 @@ package
 			src.readBytes(dst, 0, 4);
 			
 			trace(dst.length, dst[0]);
+			
+			src.position = 0;
+			trace(src.readUnsignedByte(), src.position);
 		}		
 	}
 }

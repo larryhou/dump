@@ -54,12 +54,8 @@ package
 					case TagType.DEFINE_BITS_JPEG3:
 					case TagType.DEFINE_BITS_JPEG4:
 					{
-						if (tag is DefineBitsJPEG3Tag)
-						{
-							alphas = (tag as DefineBitsJPEG3Tag).bitmapAlphaData;
-						}
+						addChild(loader = new Image(tag as DefineBitsTag));
 						
-						addChild(loader = new Image((tag as DefineBitsTag).data, alphas));
 						loader.x = position.x;
 						loader.y = position.y;
 						
@@ -90,58 +86,33 @@ package
 		}
 	}
 }
+import com.larrio.dump.tags.DefineBitsJPEG3Tag;
+import com.larrio.dump.tags.DefineBitsTag;
+
 import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.BitmapDataChannel;
 import flash.display.Loader;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.geom.Point;
-import flash.utils.ByteArray;
 
 class Image extends Sprite
 {
-	private var _alphas:ByteArray;
-	
-	public function Image(bytes:ByteArray, alphas:ByteArray)
+	public function Image(tag:DefineBitsTag)
 	{
-		_alphas = alphas;
+		var loader:Loader;
+		addChild(loader = new Loader());
 		
-		var loader:Loader = new Loader();
-		loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
-		loader.loadBytes(bytes);
-		addChild(loader);
-	}
-	
-	protected function completeHandler(e:Event):void
-	{
 		var bitmap:Bitmap;
-		
-		// TODO Auto-generated method stub
-		bitmap = e.currentTarget.content as Bitmap;
-		if (!_alphas) return;
-		_alphas.position = 0;
-		
-		var locX:uint, locY:uint;
-		var data:BitmapData = new BitmapData(bitmap.width, bitmap.height, true, 0x00FF0000);
-		var src:BitmapData = bitmap.bitmapData;
-		
-		data.lock();
-		src.lock();
-		
-		var color:uint;
-		while (locY < bitmap.height)
+		var jpeg:DefineBitsJPEG3Tag = tag as DefineBitsJPEG3Tag;
+		loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event):void
 		{
-			locX = 0;
-			while (locX < bitmap.width)
+			bitmap = e.currentTarget.content as Bitmap;
+			if (jpeg)
 			{
-				color = _alphas.readByte() & 0xFF;
-				data.setPixel32(locX, locY, color << 24 | src.getPixel(locX, locY));
-				locX++;
+				bitmap.bitmapData = jpeg.blendAlpha(bitmap.bitmapData);
 			}
-			
-			locY++;
-		}
+		});
 		
-		bitmap.bitmapData = data;
-	}}
+		loader.loadBytes(tag.data);
+
+	}
+}

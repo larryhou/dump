@@ -8,8 +8,6 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.utils.assertTrue;
 	
-	import flash.utils.ByteArray;
-	
 	/**
 	 * 
 	 * @author larryhou

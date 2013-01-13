@@ -84,7 +84,7 @@ package com.larrio.dump.codec
 		{
 			byteAlign();
 			
-			return readByte() & 0xFF;
+			return readUnsignedByte();
 		}
 		
 		/**
