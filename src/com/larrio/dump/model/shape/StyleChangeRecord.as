@@ -19,8 +19,8 @@ package com.larrio.dump.model.shape
 		private var _stateMoveTo:uint;
 		
 		private var _movebits:uint;
-		private var _deltaX:int;
-		private var _deltaY:int;
+		private var _moveToX:int;
+		private var _moveToY:int;
 		
 		private var _fillStyle0:uint;
 		private var _fillStyle1:uint;
@@ -64,8 +64,8 @@ package com.larrio.dump.model.shape
 			if (_stateMoveTo)
 			{
 				_movebits = decoder.readUB(5);
-				_deltaX = decoder.readSB(_movebits);
-				_deltaY = decoder.readSB(_movebits);
+				_moveToX = decoder.readSB(_movebits);
+				_moveToY = decoder.readSB(_movebits);
 			}
 			
 			if (_stateFillStyle0)
@@ -114,8 +114,8 @@ package com.larrio.dump.model.shape
 			if (_stateMoveTo)
 			{
 				encoder.writeUB(_movebits, 5);
-				encoder.writeUB(_deltaX, _movebits);
-				encoder.writeUB(_deltaY, _movebits);
+				encoder.writeUB(_moveToX, _movebits);
+				encoder.writeUB(_moveToY, _movebits);
 			}
 			
 			if (_stateFillStyle0)
@@ -154,8 +154,8 @@ package com.larrio.dump.model.shape
 			
 			if (_stateMoveTo)
 			{
-				result.@deltaX = _deltaX;
-				result.@deltaY = _deltaY;
+				result.@moveToX = _moveToX;
+				result.@moveToY = _moveToY;
 			}
 			
 			if (_stateFillStyle0)
@@ -190,12 +190,12 @@ package com.larrio.dump.model.shape
 		/**
 		 * Delta X value.
 		 */		
-		public function get deltaX():uint { return _deltaX; }
+		public function get moveToX():uint { return _moveToX; }
 
 		/**
 		 * Delta Y value.
 		 */		
-		public function get deltaY():uint { return _deltaY; }
+		public function get moveToY():uint { return _moveToY; }
 
 		/**
 		 * Fill 0 Style.
@@ -231,6 +231,31 @@ package com.larrio.dump.model.shape
 		 * Number of line index bits for new styles.
 		 */		
 		public function get numlbits():uint { return _numlbits; }
+
+		/**
+		 * 是否需要更换新样式
+		 */		
+		public function get stateNewStyles():uint { return _stateNewStyles; }
+
+		/**
+		 * 是否设置线型
+		 */		
+		public function get stateLineStyle():uint { return _stateLineStyle; }
+
+		/**
+		 * 是否这f1样式
+		 */		
+		public function get stateFillStyle1():uint { return _stateFillStyle1; }
+
+		/**
+		 * 是否设置f0样式
+		 */		
+		public function get stateFillStyle0():uint { return _stateFillStyle0; }
+
+		/**
+		 * 是否需要移动
+		 */		
+		public function get stateMoveTo():uint { return _stateMoveTo; }
 
 	}
 }

@@ -2,6 +2,7 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.tags.DoABCTag;
+	import com.larrio.dump.tags.TagType;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -74,6 +75,16 @@ package
 					//trace(tag.abc.constants.strings.join("\n"));
 					//trace(tag.abc.files.join("\n"));
 					//break;
+				}
+				 
+				switch (swf.tags[i].type)
+				{
+					case TagType.DEFINE_SHAPE3:
+					case TagType.DEFINE_FONT3:
+					{
+						trace(swf.tags[i]);
+						break;
+					}
 				}
 			}
 			

@@ -31,9 +31,11 @@ package com.larrio.dump.model.colors
 			
 			decoder.byteAlign();
 			
-			_value = _red / ((1 << 3) - 1) * 0xFF << 16;
-			_value |= _green / ((1 << 3) - 1) * 0xFF << 8;
-			_value |= _blue / ((1 << 2) - 1) * 0xFF;
+			_rgb = _red / ((1 << 3) - 1) * 0xFF << 16;
+			_rgb |= _green / ((1 << 3) - 1) * 0xFF << 8;
+			_rgb |= _blue / ((1 << 2) - 1) * 0xFF;
+			
+			_value = _rgb;
 		}
 		
 		/**

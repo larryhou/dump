@@ -32,7 +32,8 @@ package com.larrio.dump.model.colors
 			
 			super.decode(decoder);
 			
-			_value = _alpha << 24 | _red << 16 | _green << 8 | _blue;
+			_rgb = _red << 16 | _green << 8 | _blue;
+			_value = _alpha << 24 | _rgb;
 		}
 		
 		/**

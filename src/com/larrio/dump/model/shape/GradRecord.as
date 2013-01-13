@@ -71,7 +71,7 @@ package com.larrio.dump.model.shape
 		public function toString():String
 		{
 			var result:XML = new XML("<GradRecord/>");
-			result.@ratio = _ratio / 256;
+			result.@ratio = _ratio / 0xFF;
 			result.appendChild(new XML(_color.toString()));
 			return result;	
 		}

@@ -55,7 +55,7 @@ package com.larrio.dump.model.shape
 		}
 
 		/**
-		 * Focal point location
+		 * Focal point location：FIXED8.8
 		 */		
 		public function get focalPoint():uint { return _focalPoint; }
 		

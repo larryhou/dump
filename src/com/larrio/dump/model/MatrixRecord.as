@@ -5,6 +5,8 @@ package com.larrio.dump.model
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.math.fixed;
 	
+	import flash.geom.Matrix;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -107,6 +109,20 @@ package com.larrio.dump.model
 			result.@translateX = _translateX / 20;
 			result.@translateY = _translateY / 20;
 			return result.toXMLString();	
+		}
+		
+		/**
+		 * 转换成Matrix表示
+		 */
+		public function get matrix():Matrix
+		{
+			var a:Number = fixed(_scaleX, 16, 16);
+			var d:Number = fixed(_scaleY, 16, 16);
+			
+			var b:Number = fixed(_skew1, 16, 16);
+			var c:Number = fixed(_skew0, 16, 16);
+			
+			return new Matrix(a, b, c, d, _translateX / 20, _translateY / 20);
 		}
 
 		/**

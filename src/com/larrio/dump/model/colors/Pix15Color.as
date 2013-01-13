@@ -32,9 +32,10 @@ package com.larrio.dump.model.colors
 			_green = decoder.readUB(5);
 			_blue = decoder.readUB(5);
 			
-			_value = _red / ((1 << 5) - 1) * 0xFF << 16;
-			_value |= _green / ((1 << 5) - 1) * 0xFF << 8;
-			_value |= _blue / ((1 << 5) - 1) * 0xFF;
+			_rgb = _red / ((1 << 5) - 1) * 0xFF << 16;
+			_rgb |= _green / ((1 << 5) - 1) * 0xFF << 8;
+			_rgb |= _blue / ((1 << 5) - 1) * 0xFF;
+			_value = _rgb;
 			
 			decoder.byteAlign();
 		}

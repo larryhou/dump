@@ -1,9 +1,11 @@
 package
 {
-	import com.larrio.dump.utils.hexSTR;
 	
+	import flash.display.Graphics;
+	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.utils.ByteArray;
+	
+	[SWF(width="1024", height="768")]
 	
 	/**
 	 * 
@@ -12,6 +14,7 @@ package
 	 */
 	public class TestMain extends Sprite
 	{
+		private var _canvas:Graphics;
 		
 		/**
 		 * 构造函数
@@ -19,20 +22,19 @@ package
 		 */
 		public function TestMain()
 		{
-			var src:ByteArray = new ByteArray();
+			var shape:Shape = new Shape();
+			shape.x = 300; shape.y = 400;
+			shape.scaleX = shape.scaleY = 10;
+			addChild(shape);
 			
-			var index:uint;
-			while (index <= 0xFF) src.writeByte(index++);
+			_canvas = shape.graphics;
+			_canvas.lineStyle(1, 0xFF0000);
+			_canvas.lineTo(10, 0);
 			
-			src.position = 0;
+			_canvas.lineStyle(2);
+			_canvas.lineTo(10, 10);
 			
-			var dst:ByteArray = new ByteArray();
-			src.readBytes(dst, 0, 4);
-			
-			trace(dst.length, dst[0]);
-			
-			src.position = 0;
-			trace(src.readUnsignedByte(), src.position);
 		}		
+		
 	}
 }

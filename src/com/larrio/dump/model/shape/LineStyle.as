@@ -7,6 +7,8 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.tags.TagType;
 	
+	import flash.display.Graphics;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -61,6 +63,17 @@ package com.larrio.dump.model.shape
 		{
 			encoder.writeUI16(_width);
 			_color.encode(encoder);
+		}
+		
+		/**
+		 * 更新Graphics的线条样式
+		 */		
+		public function changeStyle(canvas:Graphics):void
+		{
+			var alpha:Number = 1;
+			if (_color is RGBAColor) alpha = (_color as RGBAColor).alpha / 0xFF;
+			
+			canvas.lineStyle(_width / 20, _color.rgb, alpha);
 		}
 		
 		/**
