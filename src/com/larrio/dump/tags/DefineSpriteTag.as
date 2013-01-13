@@ -46,6 +46,7 @@ package com.larrio.dump.tags
 				decoder.position = position;
 				
 				tag = TagFactory.create(type);
+				
 				tag.dict = _dict;
 				tag.decode(decoder);
 				
