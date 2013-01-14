@@ -5,8 +5,6 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	
-	import flash.display.Graphics;
-	
 	/**
 	 * 
 	 * @author larryhou
@@ -119,45 +117,6 @@ package com.larrio.dump.model.shape
 			// end shape
 			encoder.writeUB(0, 1);
 			encoder.writeUB(0, 5);
-		}
-		
-		/**
-		 * 把数据绘制成图形 
-		 * @param canvas	graphics对象
-		 */		
-		public function draw(canvas:Graphics):void
-		{
-			var curve:CurvedEdgeRecord;
-			var line:StraightEdgeRecord;
-			var style:StyleChangeRecord;
-			
-			var locX:int, locY:int;
-			
-			var length:uint = _records.length;
-			for (var i:int = 0; i < length; i++)
-			{
-				if (_records[i] is StyleChangeRecord)
-				{
-					style = _records[i] as StyleChangeRecord;
-					canvas.moveTo(locX = style.moveToX, locY = style.moveToY);
-				}
-				else
-				if (_records[i] is CurvedEdgeRecord)
-				{
-					curve = _records[i] as CurvedEdgeRecord;
-					var ctrlX:int = locX += curve.deltaControlX;
-					var ctrlY:int = locY += curve.deltaControlY;
-					
-					locX += curve.deltaAnchorX;
-					locY += curve.deltaAnchorY;
-					canvas.curveTo(ctrlX, ctrlY, locX, locY);
-				}
-				else
-				{
-					line = _records[i] as StraightEdgeRecord;
-					canvas.lineTo(locX += line.deltaX, locY += line.deltaY);
-				}
-			}
 		}
 		
 		/**

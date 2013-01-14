@@ -1,11 +1,13 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.model.shape.renderers.ShapeRenderer;
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
 	import com.larrio.dump.tags.DefineFont3Tag;
 	import com.larrio.dump.tags.DefineShape3Tag;
+	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
@@ -26,7 +28,7 @@ package
 	 */
 	public class ImageMain extends Sprite
 	{
-		[Embed(source="../libs/res04.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res03.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		/**
@@ -37,7 +39,7 @@ package
 		{
 			var bytes:ByteArray, swf:SWFile;
 			var rawFile:ByteArray = loaderInfo.bytes;
-			//rawFile = new RawFile();
+			rawFile = new RawFile();
 			
 			bytes = rawFile;
 			
@@ -97,13 +99,16 @@ package
 						break;
 					}
 						
+					case TagType.DEFINE_SHAPE:
+					case TagType.DEFINE_SHAPE2:
 					case TagType.DEFINE_SHAPE3:
+					case TagType.DEFINE_SHAPE4:
 					{
-						break;
+						//break;
 						shape = new Shape();
 						shape.x = 300; shape.y = 300;
 						shape.scaleX = shape.scaleY = 1 / 10;
-						(tag as DefineShape3Tag).shape.draw(shape.graphics);
+						ShapeRenderer.render(shape.graphics, (tag as DefineShapeTag).shape, tag.dict);
 						addChild(shape);
 						break;
 					}
@@ -129,7 +134,7 @@ package
 							shape.y = location.y;
 							shape.scaleX = shape.scaleY = 1 / 600;
 							
-							fontTag.glyphs[i].draw(shape.graphics);
+							//fontTag.glyphs[i].draw(shape.graphics);
 							addChild(shape);
 							
 							location.x += 50;

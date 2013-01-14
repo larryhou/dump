@@ -2,8 +2,12 @@ package
 {
 	
 	import flash.display.Graphics;
+	import flash.display.Loader;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
 	
 	[SWF(width="1024", height="768")]
 	
@@ -22,19 +26,22 @@ package
 		 */
 		public function TestMain()
 		{
-			var shape:Shape = new Shape();
-			shape.x = 300; shape.y = 400;
-			shape.scaleX = shape.scaleY = 10;
-			addChild(shape);
-			
-			_canvas = shape.graphics;
-			_canvas.lineStyle(1, 0xFF0000);
-			_canvas.lineTo(10, 0);
-			
-			_canvas.lineStyle(2);
-			_canvas.lineTo(10, 10);
-			
+			addEventListener(Event.ADDED_TO_STAGE, init);
 		}		
+		
+		private function init(e:Event):void
+		{
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
+			loader.loadBytes(loaderInfo.bytes, new LoaderContext(false, new ApplicationDomain()));
+			
+			trace("Task@2");
+		}
+		protected function completeHandler(e:Event):void
+		{
+			// TODO Auto-generated method stub
+			trace("Task@1");
+		}
 		
 	}
 }

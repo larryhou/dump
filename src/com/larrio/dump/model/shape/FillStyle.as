@@ -7,13 +7,6 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.model.colors.RGBAColor;
 	import com.larrio.dump.model.colors.RGBColor;
 	import com.larrio.dump.tags.TagType;
-	import com.larrio.math.fixed;
-	
-	import flash.display.GradientType;
-	import flash.display.Graphics;
-	import flash.display.InterpolationMethod;
-	import flash.display.SpreadMethod;
-	import flash.utils.flash_proxy;
 	
 	/**
 	 * 
@@ -144,98 +137,6 @@ package com.larrio.dump.model.shape
 				}
 			}
 
-		}
-		
-		/**
-		 * 设置graphics填充样式
-		 */		
-		public function changeStyle(canvas:Graphics):void
-		{
-			switch (_type)
-			{
-				case 0x00:
-				{
-					if (_color is RGBAColor) 
-					{
-						canvas.beginFill(_color.rgb, (_color as RGBAColor).alpha / 0xFF);
-					}
-					else
-					{
-						canvas.beginFill(_color.rgb);
-					}
-					break;
-				}
-					
-				case 0x10:
-				case 0x12:
-				case 0x13:
-				{
-					var gtype:String;
-					var focal:Number = 0;
-					
-					if (_type == 0x10)
-					{
-						gtype = GradientType.LINEAR;
-					}
-					else
-					{
-						gtype = GradientType.RADIAL;
-						if (_type == 0x13)
-						{
-							focal = fixed((_gradient as FocalGradient).focalPoint, 8, 8);
-						}
-					}
-					
-					var colors:Array = [];
-					var alphas:Array = [];
-					var ratios:Array = [];
-					
-					var record:GradRecord;
-					var length:uint = _gradient.gradients.length;
-					for (var i:int = 0; i < length; i++)
-					{
-						record = _gradient.gradients[i];
-						colors.push(record.color.rgb);
-						if (record.color is RGBAColor)
-						{
-							alphas.push((record.color as RGBAColor).alpha / 0xFF);
-						}
-						else
-						{
-							alphas.push(1);
-						}
-						
-						ratios.push(record.ratio / 0xFF);
-					}
-					
-					var spread:String;
-					switch (_gradient.spreadMode)
-					{
-						case 0:spread = SpreadMethod.PAD;break;
-						case 1:spread = SpreadMethod.REFLECT;break;
-						case 2:spread = SpreadMethod.REPEAT;break;
-					}
-					
-					var interpolation:String;
-					switch (_gradient.interpolationMode)
-					{
-						case 0:interpolation = InterpolationMethod.RGB;break;
-						case 1:interpolation = InterpolationMethod.LINEAR_RGB;break;
-					}
-					
-					canvas.beginGradientFill(gtype, colors, alphas, ratios, _gradientMatrix.matrix, spread, interpolation, focal);					
-					break;
-				}
-					
-				case 0x40:
-				case 0x41:
-				case 0x42:
-				case 0x43:
-				{
-					// 位图填充暂时忽略
-					break;
-				}
-			}
 		}
 		
 		/**

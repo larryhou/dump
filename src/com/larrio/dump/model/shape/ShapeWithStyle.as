@@ -4,8 +4,6 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.utils.assertTrue;
 	
-	import flash.display.Graphics;
-	
 	/**
 	 * 
 	 * @author larryhou
@@ -56,72 +54,6 @@ package com.larrio.dump.model.shape
 			_lineStyles.encode(encoder);
 			
 			super.encode(encoder);
-		}
-		
-		/**
-		 * 把数据绘制成图形 
-		 * @param canvas	graphics对象
-		 */		
-		override public function draw(canvas:Graphics):void
-		{
-			var fstyles:FillStyleArray = _fillStyles;
-			var lstyles:LineStyleArray = _lineStyles;
-			
-			var curve:CurvedEdgeRecord;
-			var line:StraightEdgeRecord;
-			var style:StyleChangeRecord;
-			
-			var locX:int, locY:int;
-			
-			var length:uint = _records.length;
-			for (var i:int = 0; i < length; i++)
-			{
-				if (_records[i] is StyleChangeRecord)
-				{
-					style = _records[i] as StyleChangeRecord;
-					if (style.stateNewStyles)
-					{
-						fstyles = style.fillStyles;
-						lstyles = style.lineStyles;
-					}
-					
-					if (style.stateLineStyle && style.lineStyle)
-					{
-						lstyles.styles[style.lineStyle - 1].changeStyle(canvas);
-					}
-					
-					if (style.stateFillStyle0 && style.fillStyle0)
-					{
-						fstyles.styles[style.fillStyle0 - 1].changeStyle(canvas);
-					}
-					
-					if (!style.fillStyle0 && style.fillStyle1)
-					{
-						fstyles.styles[style.fillStyle1 - 1].changeStyle(canvas);
-					}
-					
-					if (style.stateMoveTo)
-					{
-						canvas.moveTo(locX = style.moveToX, locY = style.moveToY);
-					}
-				}
-				else
-				if (_records[i] is CurvedEdgeRecord)
-				{
-					curve = _records[i] as CurvedEdgeRecord;
-					var ctrlX:int = locX += curve.deltaControlX;
-					var ctrlY:int = locY += curve.deltaControlY;
-					
-					locX += curve.deltaAnchorX;
-					locY += curve.deltaAnchorY;
-					canvas.curveTo(ctrlX, ctrlY, locX, locY);
-				}
-				else
-				{
-					line = _records[i] as StraightEdgeRecord;
-					canvas.lineTo(locX += line.deltaX, locY += line.deltaY);
-				}
-			}
 		}
 		
 		/**

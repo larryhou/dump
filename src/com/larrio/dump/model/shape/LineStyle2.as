@@ -6,11 +6,6 @@ package com.larrio.dump.model.shape
 	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.math.fixed;
 	
-	import flash.display.CapsStyle;
-	import flash.display.Graphics;
-	import flash.display.JointStyle;
-	import flash.display.LineScaleMode;
-	
 	/**
 	 * 
 	 * @author larryhou
@@ -113,51 +108,6 @@ package com.larrio.dump.model.shape
 		}
 		
 		/**
-		 * 更新Graphics的线条样式
-		 */		
-		override public function changeStyle(canvas:Graphics):void
-		{
-			var caps:String;
-			switch (_startCapStyle)
-			{
-				case 0:caps = CapsStyle.ROUND;break;
-				case 1:caps = CapsStyle.NONE;break;
-				case 2:caps = CapsStyle.SQUARE;break;
-			}
-			
-			var joints:String;
-			switch (_joinStyle)
-			{
-				case 0:joints = JointStyle.ROUND;break;
-				case 1:joints = JointStyle.BEVEL;break;
-				case 2:joints = JointStyle.MITER;break;
-			}
-			
-			var limit:Number = 3;
-			if (_joinStyle == 2) limit = fixed(_miterLimitFactor, 8, 8);
-			
-			var scale:String;
-			switch (_noHScaleFlag << 1 | _noVScaleFlag)
-			{
-				case 0:scale = LineScaleMode.NORMAL;break;
-				case 1:scale = LineScaleMode.HORIZONTAL;break;
-				case 2:scale = LineScaleMode.VERTICAL;break;
-				case 3:scale = LineScaleMode.NONE;break;
-			}
-			
-			var hinting:Boolean = Boolean(_pixelHintingFlag);
-			if (_hasFillFlag)
-			{
-				//TODO: 调整线型
-				_style.changeStyle(canvas);
-			}
-			else
-			{
-				canvas.lineStyle(_width / 20, _color.rgb, (_color as RGBAColor).alpha / 0xFF, hinting, scale, caps, joints, limit);
-			}
-		}
-		
-		/**
 		 * 字符串输出
 		 */		
 		override public function toString():String
@@ -226,6 +176,26 @@ package com.larrio.dump.model.shape
 		 * Fill style for this stroke.
 		 */		
 		public function get style():FillStyle { return _style; }
+
+		/**
+		 * 没有水平缩放 
+		 */		
+		public function get noHScaleFlag():uint { return _noHScaleFlag; }
+
+		/**
+		 * 没有竖向缩放
+		 */		
+		public function get noVScaleFlag():uint { return _noVScaleFlag; }
+
+		/**
+		 * 是否有hinting
+		 */		
+		public function get pixelHintingFlag():uint { return _pixelHintingFlag; }
+
+		/**
+		 * 是否有填充
+		 */		
+		public function get hasFillFlag():uint { return _hasFillFlag; }
 
 	}
 }
