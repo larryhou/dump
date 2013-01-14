@@ -85,19 +85,19 @@ package com.larrio.dump.model.shape
 						lstyles = style.lineStyles;
 					}
 					
-					if (style.stateLineStyle)
+					if (style.stateLineStyle && style.lineStyle)
 					{
-						lstyles[style.lineStyle - 1].changeStyle(canvas);
+						lstyles.styles[style.lineStyle - 1].changeStyle(canvas);
 					}
 					
-					if (style.stateFillStyle0)
+					if (style.stateFillStyle0 && style.fillStyle0)
 					{
-						fstyles[style.fillStyle0 - 1].changeStyle(canvas);
+						fstyles.styles[style.fillStyle0 - 1].changeStyle(canvas);
 					}
 					
-					if (!style.fillStyle0 && style.stateFillStyle1)
+					if (!style.fillStyle0 && style.fillStyle1)
 					{
-						fstyles[style.fillStyle1 - 1].changeStyle(canvas);
+						fstyles.styles[style.fillStyle1 - 1].changeStyle(canvas);
 					}
 					
 					if (style.stateMoveTo)

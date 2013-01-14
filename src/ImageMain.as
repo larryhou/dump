@@ -4,11 +4,13 @@ package
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
+	import com.larrio.dump.tags.DefineShape3Tag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
 	import flash.display.Bitmap;
 	import flash.display.Loader;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -45,9 +47,11 @@ package
 			includes.push(TagType.DEFINE_BITS_JPEG4);
 			includes.push(TagType.DEFINE_BITS_LOSSLESS);
 			includes.push(TagType.DEFINE_BITS_LOSSLESS2);
-			swf = new SWFile(bytes, includes);
+			swf = new SWFile(bytes);
 			
 			var alphas:ByteArray;
+			
+			var shape:Shape;
 			var loader:Image, bitmap:Bitmap;
 			var position:Point = new Point();
 			for each(var tag:SWFTag in swf.tags)
@@ -60,6 +64,7 @@ package
 					case TagType.DEFINE_BITS_JPEG3:
 					case TagType.DEFINE_BITS_JPEG4:
 					{
+						break;
 						addChild(loader = new Image(tag as DefineBitsTag));
 						
 						loader.x = position.x;
@@ -75,6 +80,7 @@ package
 					case TagType.DEFINE_BITS_LOSSLESS:
 					case TagType.DEFINE_BITS_LOSSLESS2:
 					{
+						break;
 						bitmap = new Bitmap();
 						bitmap.bitmapData = (tag as DefineBitsLosslessTag).data;
 						bitmap.x = position.x;
@@ -84,6 +90,16 @@ package
 						position.x += 10;
 						position.y += 10;
 
+						break;
+					}
+						
+					case TagType.DEFINE_SHAPE3:
+					{
+						shape = new Shape();
+						shape.x = 300; shape.y = 300;
+						shape.scaleX = shape.scaleY = 1 / 10;
+						(tag as DefineShape3Tag).shape.draw(shape.graphics);
+						addChild(shape);
 						break;
 					}
 				}
