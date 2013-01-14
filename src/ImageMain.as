@@ -4,6 +4,7 @@ package
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
+	import com.larrio.dump.tags.DefineFont3Tag;
 	import com.larrio.dump.tags.DefineShape3Tag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
@@ -51,8 +52,11 @@ package
 			
 			var alphas:ByteArray;
 			
-			var shape:Shape;
+			var index:uint, location:Point = new Point(10, 50);
+			
 			var loader:Image, bitmap:Bitmap;
+			var shape:Shape, fontTag:DefineFont3Tag;
+			
 			var position:Point = new Point();
 			for each(var tag:SWFTag in swf.tags)
 			{
@@ -95,6 +99,7 @@ package
 						
 					case TagType.DEFINE_SHAPE3:
 					{
+						break;
 						shape = new Shape();
 						shape.x = 300; shape.y = 300;
 						shape.scaleX = shape.scaleY = 1 / 10;
@@ -102,8 +107,38 @@ package
 						addChild(shape);
 						break;
 					}
+						
+					case TagType.DEFINE_FONT3:
+					{
+						fontTag = tag as DefineFont3Tag;
+						for (var i:int = 0; i < fontTag.glyphs.length; i++)
+						{
+							index++;
+							if (index % 20 == 0)
+							{
+								location.y += 50;
+								location.x = 10;
+							}
+							
+							shape = new Shape();
+							shape.graphics.clear();
+							shape.graphics.lineStyle(1, 0xFF0000);
+							shape.graphics.beginFill(0xFF0000, 0.1);
+							
+							shape.x = location.x; 
+							shape.y = location.y;
+							shape.scaleX = shape.scaleY = 1 / 600;
+							
+							fontTag.glyphs[i].draw(shape.graphics);
+							addChild(shape);
+							
+							location.x += 50;
+						}
+						break;
+					}
 				}
 				
+				//if (shape) break;
 			}
 			
 		}
