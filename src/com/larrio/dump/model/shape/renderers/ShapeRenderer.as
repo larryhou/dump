@@ -121,17 +121,13 @@ package com.larrio.dump.model.shape.renderers
 		 */		
 		private function render():void
 		{
-			var length:int = _records.length;
-			if (_index >= length)
-			{
-				dispatchEvent(new Event(Event.COMPLETE));
-				dispose(); return;
-			}
+			
 			
 			var line:StraightEdgeRecord;
 			var curve:CurvedEdgeRecord;
 			
 			var ctrlX:int, ctrlY:int;
+			var length:int = _records.length;
 			
 			var async:Boolean;
 			while (_index < length)
@@ -163,6 +159,11 @@ package com.larrio.dump.model.shape.renderers
 				++_index;
 			}
 			
+			if (_index >= length)
+			{
+				dispatchEvent(new Event(Event.COMPLETE));
+				dispose();
+			}
 		}
 		
 		/**
