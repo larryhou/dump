@@ -6,7 +6,6 @@ package
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
 	import com.larrio.dump.tags.DefineFont3Tag;
-	import com.larrio.dump.tags.DefineShape3Tag;
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
