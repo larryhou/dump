@@ -121,8 +121,6 @@ package com.larrio.dump.model.shape.renderers
 		 */		
 		private function render():void
 		{
-			
-			
 			var line:StraightEdgeRecord;
 			var curve:CurvedEdgeRecord;
 			
