@@ -54,7 +54,7 @@ package com.larrio.dump.model.shape.renderers
 				callback && callback.call();
 			});
 			
-			renderer.kernel(0);
+			renderer.render();
 		}
 		
 		// instance members
@@ -70,7 +70,10 @@ package com.larrio.dump.model.shape.renderers
 		
 		private var _position:Point;
 		
+		private var _index:uint;
 		private var _lineStyle:Object;
+		
+		private var _bitmaps:Dictionary;
 		
 		/**
 		 * 构造函数
@@ -78,6 +81,7 @@ package com.larrio.dump.model.shape.renderers
 		 * @param canvas	画板
 		 * @param shape		图形数据
 		 * @param dict		SWF素材映射表
+		 * @usage 如果shape为嵌入字体glyph对象，则调用该方法前需要设置canvas的线型以及填充颜色
 		 */		
 		public function ShapeRenderer(canvas:Graphics, shape:Shape, dict:Dictionary, data:larryhou)
 		{
@@ -93,6 +97,10 @@ package com.larrio.dump.model.shape.renderers
 			
 			_lineStyle = {};
 			_position = new Point();
+			
+			_bitmaps = new Dictionary(true);
+			
+			_index = 0;
 		}
 		
 		/**
@@ -111,10 +119,10 @@ package com.larrio.dump.model.shape.renderers
 		 * 迭代单步渲染核心 
 		 * @param index	当前ShapeRecord索引
 		 */		
-		private function kernel(index:uint):void
+		private function render():void
 		{
-			trace(index);
-			if (index >= _records.length)
+			var length:int = _records.length;
+			if (_index >= length)
 			{
 				dispatchEvent(new Event(Event.COMPLETE));
 				dispose(); return;
@@ -124,36 +132,37 @@ package com.larrio.dump.model.shape.renderers
 			var curve:CurvedEdgeRecord;
 			
 			var ctrlX:int, ctrlY:int;
-			if (_records[index] is StyleChangeRecord)
+			
+			var async:Boolean;
+			while (_index < length)
 			{
-				trace("----" + index);
-				changeStyle(_canvas, _records[index] as StyleChangeRecord, function():void
+				if (_records[_index] is StyleChangeRecord)
 				{
-					kernel(++index);
-				});
+					async = changeStyle(_canvas, _records[_index] as StyleChangeRecord);
+					if (!async) break;
+				}
+				else
+				if (_records[_index] is CurvedEdgeRecord)
+				{
+					curve = _records[_index] as CurvedEdgeRecord;
+					
+					ctrlX = _position.x += curve.deltaControlX;
+					ctrlY = _position.y += curve.deltaControlY;
+					
+					_position.x += curve.deltaAnchorX;
+					_position.y += curve.deltaAnchorY;
+					_canvas.curveTo(ctrlX, ctrlY, _position.x, _position.y);
+				}
+				else
+				{
+					line = _records[_index] as StraightEdgeRecord;
+					
+					_canvas.lineTo(_position.x += line.deltaX, _position.y += line.deltaY);
+				}
+				
+				++_index;
 			}
-			else
-			if (_records[index] is CurvedEdgeRecord)
-			{
-				curve = _records[index] as CurvedEdgeRecord;
-				
-				ctrlX = _position.x += curve.deltaControlX;
-				ctrlY = _position.y += curve.deltaControlY;
-				
-				_position.x += curve.deltaAnchorX;
-				_position.y += curve.deltaAnchorY;
-				_canvas.curveTo(ctrlX, ctrlY, _position.x, _position.y);
-				
-				kernel(++index);
-			}
-			else
-			{
-				line = _records[index] as StraightEdgeRecord;
-				
-				_canvas.lineTo(_position.x += line.deltaX, _position.y += line.deltaY);
-				
-				kernel(++index);
-			}
+			
 		}
 		
 		/**
@@ -162,12 +171,13 @@ package com.larrio.dump.model.shape.renderers
 		 * @param callback	样式改变完成后回调函数
 		 * 
 		 */		
-		private function changeStyle(canvas:Graphics, style:StyleChangeRecord, callback:Function):void
+		private function changeStyle(canvas:Graphics, style:StyleChangeRecord):Boolean
 		{
-			_position.x += style.moveToX;
-			_position.y += style.moveToY;
+			_position.x = style.moveToX;
+			_position.y = style.moveToY;
 			canvas.moveTo(_position.x, _position.y);
 			
+			var setStyle:Function;
 			if (_shape is ShapeWithStyle)
 			{
 				if (style.stateNewStyles)
@@ -181,27 +191,19 @@ package com.larrio.dump.model.shape.renderers
 					changeLineStyle(canvas, _lstyles[style.lineStyle - 1]);
 				}
 				
-				var setStyle:Function = function():void
+				if (!style.stateFillStyle0 && style.fillStyle1)
 				{
-					if (!style.stateFillStyle0 && style.fillStyle1)
-					{
-						changeFillStyle(canvas, _fstyles[style.fillStyle1 - 1], callback);
-					}
-					else
-					{
-						callback.call();
-					}
-				};
-				
-				if (style.stateFillStyle0 && style.fillStyle0)
-				{
-					changeFillStyle(canvas, _fstyles[style.fillStyle0 - 1], setStyle);
+					return changeFillStyle(canvas, _fstyles[style.fillStyle1 - 1]);
 				}
 				else
+				if (style.stateFillStyle0 && style.fillStyle0)
 				{
-					setStyle.call();
+					return changeFillStyle(canvas, _fstyles[style.fillStyle0 - 1]);
 				}
+				
 			}
+			
+			return true;
 		}
 		
 		/**
@@ -246,7 +248,7 @@ package com.larrio.dump.model.shape.renderers
 				
 				if (ls.hasFillFlag)
 				{
-					changeFillStyle(canvas, ls.style, null);
+					changeFillStyle(canvas, ls.style, false);
 				}
 				else
 				{
@@ -279,7 +281,7 @@ package com.larrio.dump.model.shape.renderers
 		 * @param style		样式数据
 		 * @param callback	设置完成后回调函数
 		 */		
-		private function changeFillStyle(canvas:Graphics, style:FillStyle, callback:Function):void
+		private function changeFillStyle(canvas:Graphics, style:FillStyle, loop:Boolean = true):Boolean
 		{
 			switch (style.type)
 			{
@@ -294,7 +296,6 @@ package com.larrio.dump.model.shape.renderers
 						canvas.beginFill(style.color.rgb);
 					}
 					
-					callback && callback.call();
 					break;
 				}
 					
@@ -357,7 +358,6 @@ package com.larrio.dump.model.shape.renderers
 					}
 					
 					canvas.beginGradientFill(type, colors, alphas, ratios, style.gradientMatrix.matrix, spread, interpolation, focal);					
-					callback && callback.call();
 					break;
 				}
 					
@@ -366,10 +366,12 @@ package com.larrio.dump.model.shape.renderers
 				case 0x42:
 				case 0x43:
 				{
-					changeBitmapFill(canvas, style, callback);
-					break;
+					return changeBitmapFill(canvas, style, loop);
 				}
+					
 			}
+			
+			return true;
 		}
 		
 		/**
@@ -377,10 +379,16 @@ package com.larrio.dump.model.shape.renderers
 		 * @param style		样式数据
 		 * @param callback	设定完成后回调函数
 		 */		
-		private function changeBitmapFill(canvas:Graphics, style:FillStyle, callback:Function):void
+		private function changeBitmapFill(canvas:Graphics, style:FillStyle, loop:Boolean):Boolean
 		{
 			if (_dict[style.bitmapId] is DefineBitsTag)
 			{
+				if (_bitmaps[style.bitmapId])
+				{
+					canvas.beginBitmapFill(_bitmaps[style.bitmapId], style.bitmapMatrix.matrix);
+					return true;
+				}
+				
 				var bitmap:Bitmap;
 				var jpeg:DefineBitsTag = _dict[style.bitmapId] as DefineBitsTag;
 				
@@ -395,19 +403,19 @@ package com.larrio.dump.model.shape.renderers
 						bitmap.bitmapData = (jpeg as DefineBitsJPEG3Tag).blendAlpha(bitmap.bitmapData);
 					}
 					
+					_bitmaps[style.bitmapId] = bitmap.bitmapData;
+					
 					canvas.beginBitmapFill(bitmap.bitmapData, style.bitmapMatrix.matrix);
-					callback && callback.call();
+					loop && render();
 				});
 				
 				loader.loadBytes(jpeg.data);
+				return false;
 			}
-			else
-			{
-				var lossless:DefineBitsLosslessTag = _dict[style.bitmapId] as DefineBitsLosslessTag;
-				
-				canvas.beginBitmapFill(lossless.data, style.bitmapMatrix.matrix);
-				callback && callback.call();
-			}
+			
+			var lossless:DefineBitsLosslessTag = _dict[style.bitmapId] as DefineBitsLosslessTag;
+			canvas.beginBitmapFill(lossless.data, style.bitmapMatrix.matrix);
+			return true;
 		}
 	}
 }

@@ -28,7 +28,7 @@ package
 	 */
 	public class ImageMain extends Sprite
 	{
-		[Embed(source="../libs/res03.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
 		private var RawFile:Class;
 		
 		/**
@@ -115,6 +115,7 @@ package
 						
 					case TagType.DEFINE_FONT3:
 					{
+						break;
 						fontTag = tag as DefineFont3Tag;
 						for (var i:int = 0; i < fontTag.glyphs.length; i++)
 						{
@@ -134,7 +135,7 @@ package
 							shape.y = location.y;
 							shape.scaleX = shape.scaleY = 1 / 600;
 							
-							//fontTag.glyphs[i].draw(shape.graphics);
+							ShapeRenderer.render(shape.graphics, fontTag.glyphs[i], tag.dict);
 							addChild(shape);
 							
 							location.x += 50;
