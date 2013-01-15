@@ -44,6 +44,7 @@ package com.larrio.dump.model.shape.renderers
 		 * @param shape		图形数据
 		 * @param dict		SWF素材映射表
 		 * @param callback	渲染完成时的回调函数
+		 * @usage 如果shape为嵌入字体glyph对象，则调用该方法前需要设置canvas的线型以及填充颜色
 		 */		
 		public static function render(canvas:Graphics, shape:Shape, dict:Dictionary, callback:Function = null):void
 		{
@@ -81,7 +82,6 @@ package com.larrio.dump.model.shape.renderers
 		 * @param canvas	画板
 		 * @param shape		图形数据
 		 * @param dict		SWF素材映射表
-		 * @usage 如果shape为嵌入字体glyph对象，则调用该方法前需要设置canvas的线型以及填充颜色
 		 */		
 		public function ShapeRenderer(canvas:Graphics, shape:Shape, dict:Dictionary, data:larryhou)
 		{
