@@ -46,7 +46,7 @@ package com.larrio.dump.model.shape.renderers
 		 * @param callback	渲染完成时的回调函数
 		 * @usage 如果shape为嵌入字体glyph对象，则调用该方法前需要设置canvas的线型以及填充颜色
 		 */		
-		public static function render(canvas:Graphics, shape:Shape, dict:Dictionary, callback:Function = null):void
+		public static function render(canvas:Graphics, shape:Shape, dict:Dictionary, callback:Function = null):ShapeRenderer
 		{
 			var renderer:ShapeRenderer = new ShapeRenderer(canvas, shape, dict, new larryhou());
 			renderer.addEventListener(Event.COMPLETE, function(e:Event):void
@@ -56,6 +56,8 @@ package com.larrio.dump.model.shape.renderers
 			});
 			
 			renderer.render();
+			
+			return renderer;
 		}
 		
 		// instance members
@@ -459,6 +461,12 @@ package com.larrio.dump.model.shape.renderers
 		 * 图形绘制原始数据
 		 */		
 		public function get data():Array { return _data; }
+
+		/**
+		 * 画板引用
+		 */		
+		public function get canvas():Graphics { return _canvas; }
+
 
 	}
 }
