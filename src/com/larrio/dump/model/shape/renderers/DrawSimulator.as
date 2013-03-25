@@ -26,7 +26,7 @@ package com.larrio.dump.model.shape.renderers
 		private var _renderer:ShapeRenderer;
 		
 		private var _canvas:Graphics;
-		private var _shape:Shape;
+		private var _shape:com.larrio.dump.model.shape.Shape;
 		
 		private var _dict:Dictionary;
 		
@@ -41,7 +41,7 @@ package com.larrio.dump.model.shape.renderers
 		 * 构造函数
 		 * create a [DrawSimulator] object
 		 */
-		public function DrawSimulator(canvas:Graphics, shape:Shape, dict:Dictionary)
+		public function DrawSimulator(canvas:Graphics, shape:com.larrio.dump.model.shape.Shape, dict:Dictionary)
 		{
 			_canvas = canvas; _dict = dict; _shape = shape;
 		}
@@ -77,41 +77,50 @@ package com.larrio.dump.model.shape.renderers
 				dispatchEvent(new Event(Event.COMPLETE));
 				return;
 			}
+			
+			var params:Array, flag:Boolean;
+			var item:Object, method:String;
+			while (_index < _datalist.length)
+			{
+				item = _datalist[_index];
+				for (method in item) break;
 				
-			var item:Object = _datalist[_index];
-			
-			var method:String;
-			for (method in item) break;
-			
-			var params:Array = item[method] as Array;
-			
-			switch (method)
-			{					
-				case "lineTo":
-				{
-					lineTo(params);
-					break;
-				}
-					
-				case "curveTo":
-				{
-					curveTo(params);
-					break;
-				}
-					
-				default:
-				{
-					if (method == "moveTo")
+				params = item[method] as Array;
+				
+				flag = false;
+				switch (method)
+				{					
+					case "lineTo":
 					{
-						_position.x = params[0];
-						_position.y = params[1];
+						lineTo(params);
+						break;
 					}
-					
-					(_canvas[method] as Function).apply(null, params);
-					forward(++step);
-					break;
+						
+					case "curveTo":
+					{
+						curveTo(params);
+						break;
+					}
+						
+					default:
+					{
+						flag = true;
+						if (method == "moveTo")
+						{
+							_position.x = params[0];
+							_position.y = params[1];
+							trace("moveTo:" + _position);
+						}
+						
+						(_canvas[method] as Function).apply(null, params);
+						break;
+					}
+						
 				}
-					
+				
+				if (!flag) break;
+				
+				_index++;
 			}
 		}
 		
@@ -130,10 +139,10 @@ package com.larrio.dump.model.shape.renderers
 			for (var i:int = 0; i <= MAX_NUM; i++) result.push(bezier(list, i / MAX_NUM));
 			
 			var obj:Object = {value: 0, index: 0};
-			TweenLite.to(obj, 0.5, {value: result.length, onUpdate:function():void
+			TweenLite.to(obj, 0.5, {value: result.length - 1, onUpdate:function():void
 			{
 				var pos:Point;
-				var num:uint = obj.value * result.length >> 0; 
+				var num:uint = obj.value >> 0; 
 				if (num > obj.index)
 				{
 					pos = result[obj.index = num];
@@ -143,6 +152,7 @@ package com.larrio.dump.model.shape.renderers
 			}, 
 			onComplete:function():void
 			{
+				trace("curveTo:" + _index);
 				forward(_index + 1);
 			}});
 		}
@@ -157,12 +167,13 @@ package com.larrio.dump.model.shape.renderers
 			var distance:Number = Point.distance(_position, target);
 			
 			var duration:Number = distance / 1000;
-			TweenLite.to(_position, duration, {x: target.x, y:target.y, onUpdate:function():void
+			TweenLite.to(_position, 0.5, {x: target.x, y:target.y, onUpdate:function():void
 			{
 				_canvas.lineTo(_position.x, _position.y);
 			}, 
 			onComplete:function():void
 			{
+				trace("lineTo:" + _index);
 				forward(_index + 1);
 			}});
 		}

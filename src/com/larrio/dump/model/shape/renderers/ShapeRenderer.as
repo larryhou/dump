@@ -30,6 +30,7 @@ package com.larrio.dump.model.shape.renderers
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
+	import flash.utils.setTimeout;
 	
 	/**
 	 * 图形渲染器
@@ -55,7 +56,7 @@ package com.larrio.dump.model.shape.renderers
 				callback && callback.call();
 			});
 			
-			renderer.render();
+			setTimeout(renderer.render, 0);
 			
 			return renderer;
 		}
