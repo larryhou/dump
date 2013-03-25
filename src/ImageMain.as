@@ -103,7 +103,7 @@ package
 					case TagType.DEFINE_SHAPE3:
 					case TagType.DEFINE_SHAPE4:
 					{
-						//break;
+						break;
 						shape = new Shape();
 						shape.x = 300; shape.y = 300;
 						shape.scaleX = shape.scaleY = 1 / 10;
@@ -114,7 +114,7 @@ package
 						
 					case TagType.DEFINE_FONT3:
 					{
-						break;
+						//break;
 						fontTag = tag as DefineFont3Tag;
 						for (var i:int = 0; i < fontTag.glyphs.length; i++)
 						{

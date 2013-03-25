@@ -76,6 +76,8 @@ package com.larrio.dump.model.shape.renderers
 		
 		private var _bitmaps:Dictionary;
 		
+		private var _data:Array; 
+		
 		/**
 		 * 构造函数
 		 * create a [ShapeRenderer] object
@@ -98,6 +100,7 @@ package com.larrio.dump.model.shape.renderers
 			_lineStyle = {};
 			_position = new Point();
 			
+			_data = [];
 			_bitmaps = new Dictionary(true);
 			
 			_index = 0;
@@ -127,6 +130,8 @@ package com.larrio.dump.model.shape.renderers
 			var ctrlX:int, ctrlY:int;
 			var length:int = _records.length;
 			
+			var _params:Array;
+			
 			var async:Boolean;
 			while (_index < length)
 			{
@@ -145,13 +150,19 @@ package com.larrio.dump.model.shape.renderers
 					
 					_position.x += curve.deltaAnchorX;
 					_position.y += curve.deltaAnchorY;
-					_canvas.curveTo(ctrlX, ctrlY, _position.x, _position.y);
+					_params = [ctrlX, ctrlY, _position.x, _position.y];
+					_canvas.curveTo.apply(null, _params);
+					
+					_data.push({curveTo: _params});
 				}
 				else
 				{
 					line = _records[_index] as StraightEdgeRecord;
 					
-					_canvas.lineTo(_position.x += line.deltaX, _position.y += line.deltaY);
+					_params = [_position.x += line.deltaX, _position.y += line.deltaY];
+					_canvas.lineTo.apply(null, _params);
+					
+					_data.push({lineTo: _params});
 				}
 				
 				++_index;
@@ -175,6 +186,8 @@ package com.larrio.dump.model.shape.renderers
 			_position.x = style.moveToX;
 			_position.y = style.moveToY;
 			canvas.moveTo(_position.x, _position.y);
+			
+			_data.push({moveTo: [_position.x, _position.y]});
 			
 			var setStyle:Function;
 			if (_shape is ShapeWithStyle)
@@ -212,6 +225,8 @@ package com.larrio.dump.model.shape.renderers
 		private function changeLineStyle(canvas:Graphics, style:LineStyle):void
 		{
 			_lineStyle["thickness"] = style.width / 20;
+			
+			var params:Array;
 			
 			var ls:LineStyle2;
 			if (style is LineStyle2)
@@ -255,8 +270,8 @@ package com.larrio.dump.model.shape.renderers
 					_lineStyle["alpha"] = (ls.color as RGBAColor).alpha / 0xFF;
 				}
 				
-				canvas.lineStyle(_lineStyle["thickness"], _lineStyle["color"], _lineStyle["alpha"],  _lineStyle["hinting"], _lineStyle["scale"], _lineStyle["caps"], _lineStyle["joints"], _lineStyle["limit"]);
-
+				params = [_lineStyle["thickness"], _lineStyle["color"], _lineStyle["alpha"],  _lineStyle["hinting"], _lineStyle["scale"], _lineStyle["caps"], _lineStyle["joints"], _lineStyle["limit"]];
+				canvas.lineStyle.apply(null, params);
 			}
 			else
 			{
@@ -271,8 +286,11 @@ package com.larrio.dump.model.shape.renderers
 				
 				_lineStyle["color"] = style.color.rgb;
 				
-				canvas.lineStyle(_lineStyle["thickness"], _lineStyle["color"], _lineStyle["alpha"]);
+				params = [_lineStyle["thickness"], _lineStyle["color"], _lineStyle["alpha"]];
+				canvas.lineStyle.apply(null, params);
 			}
+			
+			params && _data.push({lineStyle: params});
 		}
 		
 		/**
@@ -282,19 +300,24 @@ package com.larrio.dump.model.shape.renderers
 		 */		
 		private function changeFillStyle(canvas:Graphics, style:FillStyle, loop:Boolean = true):Boolean
 		{
+			var params:Array;
+			
 			switch (style.type)
 			{
 				case 0x00:
 				{
 					if (style.color is RGBAColor) 
 					{
-						canvas.beginFill(style.color.rgb, (style.color as RGBAColor).alpha / 0xFF);
+						params = [style.color.rgb, (style.color as RGBAColor).alpha / 0xFF];
 					}
 					else
 					{
-						canvas.beginFill(style.color.rgb);
+						params = [style.color.rgb];
 					}
 					
+					canvas.beginFill.apply(null, params);
+					
+					_data.push({beginFill: params});
 					break;
 				}
 					
@@ -356,7 +379,10 @@ package com.larrio.dump.model.shape.renderers
 						case 1:interpolation = InterpolationMethod.LINEAR_RGB;break;
 					}
 					
-					canvas.beginGradientFill(type, colors, alphas, ratios, style.gradientMatrix.matrix, spread, interpolation, focal);					
+					params = [type, colors, alphas, ratios, style.gradientMatrix.matrix, spread, interpolation, focal];	
+					canvas.beginGradientFill.apply(null, params);
+					
+					_data.push({beginGradientFill: params});
 					break;
 				}
 					
@@ -380,11 +406,15 @@ package com.larrio.dump.model.shape.renderers
 		 */		
 		private function changeBitmapFill(canvas:Graphics, style:FillStyle, loop:Boolean):Boolean
 		{
+			var params:Array;
 			if (_dict[style.bitmapId] is DefineBitsTag)
 			{
 				if (_bitmaps[style.bitmapId])
 				{
-					canvas.beginBitmapFill(_bitmaps[style.bitmapId], style.bitmapMatrix.matrix);
+					params = [_bitmaps[style.bitmapId], style.bitmapMatrix.matrix];
+					canvas.beginBitmapFill.apply(null, params);
+					
+					_data.push({beginBitmapFill: params});
 					return true;
 				}
 				
@@ -404,7 +434,11 @@ package com.larrio.dump.model.shape.renderers
 					
 					_bitmaps[style.bitmapId] = bitmap.bitmapData;
 					
-					canvas.beginBitmapFill(bitmap.bitmapData, style.bitmapMatrix.matrix);
+					params = [bitmap.bitmapData, style.bitmapMatrix.matrix];
+					canvas.beginBitmapFill.apply(null, params);
+					
+					_data.push({beginBitmapFill: params});
+					
 					loop && render();
 				});
 				
@@ -413,9 +447,19 @@ package com.larrio.dump.model.shape.renderers
 			}
 			
 			var lossless:DefineBitsLosslessTag = _dict[style.bitmapId] as DefineBitsLosslessTag;
-			canvas.beginBitmapFill(lossless.data, style.bitmapMatrix.matrix);
+			params = [lossless.data, style.bitmapMatrix.matrix];
+			canvas.beginBitmapFill.apply(null, params);
+			
+			_data.push({beginBitmapFill: params});
+			
 			return true;
 		}
+
+		/**
+		 * 图形绘制原始数据
+		 */		
+		public function get data():Array { return _data; }
+
 	}
 }
 
