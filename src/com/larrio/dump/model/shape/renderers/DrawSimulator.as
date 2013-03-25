@@ -63,6 +63,9 @@ package com.larrio.dump.model.shape.renderers
 			_position = new Point();
 			_datalist = _renderer.data;
 			
+			// 清空临时对象
+			_renderer.canvas.clear();
+			
 			forward(0);
 		}
 		
