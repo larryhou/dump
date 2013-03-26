@@ -1,6 +1,10 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.flash.display.shape.GhostCanvas;
+	import com.larrio.dump.flash.display.shape.GraphicsCanvas;
+	import com.larrio.dump.flash.display.shape.ICanvas;
+	import com.larrio.dump.flash.display.shape.ShapeVectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
@@ -48,13 +52,14 @@ package
 			}
 			
 			
-			trace(shapeTag);
+			trace(ShapeVectorCollector);
 			
-			var canvas:Shape = new Shape();
-			canvas.scaleX = canvas.scaleY = 0.1;
-			addChild(canvas);
+			var shape:Shape = new Shape();
+			shape.scaleX = shape.scaleY = 1 / 5;
+			addChild(shape);
 			
-			
+			var collector:ShapeVectorCollector = new ShapeVectorCollector(shapeTag.shape);
+			collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
 			
 		}
 	}

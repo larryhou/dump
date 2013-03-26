@@ -24,27 +24,27 @@ package com.larrio.dump.flash.display.shape
 		
 		public function lineStyle(thickness:Number = NaN, color:uint = 0, alpha:Number = 1.0, pixelHinting:Boolean = false, scaleMode:String = LineScaleMode.NORMAL, caps:String = null, joints:String = null, miterLimit:Number = 3):void
 		{
-			
+			trace("lineStyle(" + arguments.join(", ") + ")");
 		}
 		
 		public function moveTo(x:Number, y:Number):void
 		{
-			
+			trace("moveTo(" + arguments.join(", ") + ")");
 		}
 		
 		public function lineTo(x:Number, y:Number):void
 		{
-			
+			trace("lineTo(" + arguments.join(", ") + ")");
 		}
 		
 		public function curveTo(controlX:Number, controlY:Number, anchorX:Number, anchorY:Number):void
 		{
-			
+			trace("curveTo(" + arguments.join(", ") + ")");
 		}
 		
 		public function beginFill(color:uint, alpha:Number = 1.0):void
 		{
-			
+			trace("beginFill(" + arguments.join(", ") + ")");
 		}
 		
 		public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix = null, repeat:Boolean = true, smooth:Boolean = false):void
@@ -54,7 +54,7 @@ package com.larrio.dump.flash.display.shape
 		
 		public function beginGradientFill(type:String, colors:Array, alphas:Array, ratios:Array, matrix:Matrix = null, spreadMethod:String = SpreadMethod.PAD, interpolationMethod:String = InterpolationMethod.RGB, focalPointRatio:Number = 0):void
 		{
-			
+			trace("beginGradientFill(" + arguments.join(", ") + ")");
 		}
 		
 		public function endFill():void
