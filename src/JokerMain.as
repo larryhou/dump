@@ -1,7 +1,6 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.model.shape.renderers.DrawSimulator;
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
@@ -55,8 +54,7 @@ package
 			canvas.scaleX = canvas.scaleY = 0.1;
 			addChild(canvas);
 			
-			var simulator:DrawSimulator = new DrawSimulator(canvas.graphics, shapeTag.shape, shapeTag.dict);
-			simulator.start();
+			
 			
 		}
 	}
