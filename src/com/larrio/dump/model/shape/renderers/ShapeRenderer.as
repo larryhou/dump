@@ -141,7 +141,7 @@ package com.larrio.dump.model.shape.renderers
 				if (_records[_index] is StyleChangeRecord)
 				{
 					async = changeStyle(_canvas, _records[_index] as StyleChangeRecord);
-					if (!async) break;
+					//if (!async) break;
 				}
 				else
 				if (_records[_index] is CurvedEdgeRecord)
@@ -171,6 +171,7 @@ package com.larrio.dump.model.shape.renderers
 				++_index;
 			}
 			
+			_canvas.endFill();
 			if (_index >= length)
 			{
 				dispatchEvent(new Event(Event.COMPLETE));
@@ -186,11 +187,17 @@ package com.larrio.dump.model.shape.renderers
 		 */		
 		private function changeStyle(canvas:Graphics, style:StyleChangeRecord):Boolean
 		{
-			_position.x = style.moveToX;
-			_position.y = style.moveToY;
-			canvas.moveTo(_position.x, _position.y);
-			
-			_data.push({moveTo: [_position.x, _position.y]});
+			var params:Array;
+			if (style.stateMoveTo)
+			{
+				_position.x = style.moveToX;
+				_position.y = style.moveToY;
+				
+				params = [_position.x, _position.y];
+				canvas.moveTo.apply(null, params);
+				
+				_data.push({moveTo: params});
+			}
 			
 			var setStyle:Function;
 			if (_shape is ShapeWithStyle)
@@ -199,23 +206,45 @@ package com.larrio.dump.model.shape.renderers
 				{
 					_fstyles = style.fillStyles.styles;
 					_lstyles = style.lineStyles.styles;
+				}				
+								
+				if (style.stateFillStyle0)
+				{
+					_canvas.moveTo(_position.x, _position.y);
+					if (style.fillStyle0)
+					{
+						changeFillStyle(canvas, _fstyles[style.fillStyle0 - 1]);
+					}
+					else
+					{
+						_canvas.endFill();
+					}
+				}
+					
+				if (style.stateFillStyle1)
+				{
+					canvas.moveTo(_position.x, _position.y);
+					if (style.fillStyle1)
+					{
+						changeFillStyle(canvas, _fstyles[style.fillStyle1 - 1]);
+					}
+					else
+					{
+						_canvas.endFill();
+					}
 				}
 				
-				if (style.stateLineStyle && style.lineStyle)
+				if (style.stateLineStyle)
 				{
-					changeLineStyle(canvas, _lstyles[style.lineStyle - 1]);
-				}
-				
-				if (!style.stateFillStyle0 && style.fillStyle1)
-				{
-					return changeFillStyle(canvas, _fstyles[style.fillStyle1 - 1]);
-				}
-				else
-				if (style.stateFillStyle0 && style.fillStyle0)
-				{
-					return changeFillStyle(canvas, _fstyles[style.fillStyle0 - 1]);
-				}
-				
+					if (style.lineStyle)
+					{
+						changeLineStyle(canvas, _lstyles[style.lineStyle - 1]);
+					}
+					else
+					{
+						_canvas.lineStyle(0);
+					}
+				}				
 			}
 			
 			return true;

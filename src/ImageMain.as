@@ -105,7 +105,7 @@ package
 					{
 						//break;
 						shape = new Shape();
-						shape.x = 300; shape.y = 300;
+						shape.x = 0; shape.y = 0;
 						shape.scaleX = shape.scaleY = 1 / 10;
 						ShapeRenderer.render(shape.graphics, (tag as DefineShapeTag).shape, tag.dict);
 						addChild(shape);
