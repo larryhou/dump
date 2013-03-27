@@ -116,8 +116,8 @@ package com.larrio.dump.flash.display.shape
 		 */		
 		private function renderColor():void
 		{
+			_canvas.lineStyle(NaN);
 			_canvas.beginFill(0, 0);
-			_canvas.lineStyle(0, 0, 0);
 			
 			var map:Dictionary;
 			var list:Vector.<ShapeEdge>;
@@ -127,7 +127,7 @@ package com.larrio.dump.flash.display.shape
 			{
 				var style:FillStyle;
 				for each(var color:ColorComponent in comp.map)
-				{
+				{ 
 					style = comp.styles[color.index - 1];
 					
 					// 设置填充样式
@@ -187,35 +187,29 @@ package com.larrio.dump.flash.display.shape
 				map[key].push(edge);
 			}
 			
-			var path:Vector.<ShapeEdge>;
+			var loop:Vector.<ShapeEdge>;
 			var visit:Dictionary = new Dictionary(true);
 			
-			path = new Vector.<ShapeEdge>;
-			edge = list[0];
+			loop = new Vector.<ShapeEdge>;
+			edge = list.pop();
 			
-			var skey:String = createKey(edge.x, edge.x);
-			while (true)
+			while (edge)
 			{
 				visit[edge] = true;
-				path.push(edge);
+				loop.push(edge);
 				
 				key = createKey(edge.tx, edge.ty);
-				if (key != skey && map[key] && map[key].length)
-				{
-					edge = map[key].pop();
-				}
-				else
-				{
-					break;
-				}
+				if (!map[key]) break;
+				
+				edge = map[key].pop();
 			}
 			
-			edge = path[0];
+			edge = loop[0];
 			
 			_canvas.moveTo(edge.x, edge.y);
-			for (i = 0, length = path.length; i < length; i++)
+			for (i = 0, length = loop.length; i < length; i++)
 			{
-				edge = path[i];
+				edge = loop[i];
 				if (edge.curve)
 				{
 					_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.tx, edge.ty);
