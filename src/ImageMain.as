@@ -1,7 +1,9 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.model.shape.renderers.ShapeRenderer;
+	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
+	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
+	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
@@ -39,6 +41,8 @@ package
 			var bytes:ByteArray, swf:SWFile;
 			var rawFile:ByteArray = loaderInfo.bytes;
 			rawFile = new RawFile();
+			
+			var collector:IShapeCollector;
 			
 			bytes = rawFile;
 			
@@ -106,8 +110,8 @@ package
 						//break;
 						shape = new Shape();
 						shape.x = 300; shape.y = 300;
-						shape.scaleX = shape.scaleY = 1 / 10;
-						ShapeRenderer.render(shape.graphics, (tag as DefineShapeTag).shape, tag.dict);
+						collector = new VectorCollector((tag as DefineShapeTag).shape);
+						collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
 						addChild(shape);
 						break;
 					}
@@ -134,7 +138,8 @@ package
 							shape.y = location.y;
 							shape.scaleX = shape.scaleY = 1 / 600;
 							
-							ShapeRenderer.render(shape.graphics, fontTag.glyphs[i], tag.dict);
+							collector = new VectorCollector(fontTag.glyphs[i]);
+							collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
 							addChild(shape);
 							
 							location.x += 50;

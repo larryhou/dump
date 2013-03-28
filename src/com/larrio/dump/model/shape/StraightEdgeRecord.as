@@ -105,12 +105,12 @@ package com.larrio.dump.model.shape
 		/**
 		 * delta X
 		 */		
-		public function get deltaX():uint { return _deltaX; }
+		public function get deltaX():int { return _deltaX; }
 
 		/**
 		 * delta Y
 		 */		
-		public function get deltaY():uint { return _deltaY; }
+		public function get deltaY():int { return _deltaY; }
 
 	}
 }
