@@ -189,12 +189,12 @@ package com.larrio.dump.model.shape
 		/**
 		 * Delta X value.
 		 */		
-		public function get moveToX():uint { return _moveToX; }
+		public function get moveToX():int { return _moveToX; }
 
 		/**
 		 * Delta Y value.
 		 */		
-		public function get moveToY():uint { return _moveToY; }
+		public function get moveToY():int { return _moveToY; }
 
 		/**
 		 * Fill 0 Style.
