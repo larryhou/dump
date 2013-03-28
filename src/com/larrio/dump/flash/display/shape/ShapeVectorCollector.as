@@ -111,7 +111,9 @@ package com.larrio.dump.flash.display.shape
 			
 			var comp:StyleComponent;
 			var map0:Dictionary, map1:Dictionary;
-			for (var i:uint = 0, len:uint = _components.length; i < len; i++)
+			
+			var length:uint, i:uint;
+			for (i = 0, length = _components.length; i < length; i++)
 			{
 				comp = _components[i];
 				
@@ -127,7 +129,7 @@ package com.larrio.dump.flash.display.shape
 					{
 						for (j = 0, slen = sub.length; j < slen; j++)
 						{
-							collect.push(sub[j].tearOff(false));
+							collect.push(ShapeEdge(sub[j]).tearOff(false));
 						}
 					}
 					
@@ -136,14 +138,39 @@ package com.larrio.dump.flash.display.shape
 					{
 						for (j = 0, slen = sub.length; j < slen; j++)
 						{
-							collect.push(sub[j].tearOff(true));
+							collect.push(ShapeEdge(sub[j]).tearOff(true));
 						}
 					}
 					
 					loopKernel(collect, comp, comp.styles[style - 1]);
 				}
 				
-			}
+				var edge:ShapeEdge;
+				for (var m:uint = 0, mlen:uint = comp.edges.length; m < mlen; m++)
+				{
+					edge = comp.edges[m];
+					
+					if (!edge.lineStyle) continue;
+					
+					changeLineStyle(comp.lineStyles[edge.lineStyle - 1]);
+					
+					_canvas.beginFill(0, 0);
+					_canvas.moveTo(edge.x1, edge.y1);
+					
+					if (edge.curved)
+					{
+						_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.x2, edge.y2);
+					}
+					else
+					{
+						_canvas.lineTo(edge.x2, edge.y2);
+					}
+					
+					_canvas.lineStyle(NaN);
+					_canvas.endFill();
+				}
+				
+			}			
 		}
 		
 		/**
@@ -153,35 +180,33 @@ package com.larrio.dump.flash.display.shape
 		{
 			var map:Dictionary = new Dictionary(true);
 			
-			var edge:ShapeEdge, key:String, skey:String;
+			var edge:ShapeEdge;
+			var key:String, skey:String;
 			
 			var i:uint, length:uint;
 			for (i = 0, length = list.length; i < length; i++)
 			{
 				edge = list[i];
-				
 				key = createKey(edge.x1, edge.y1);
+				
 				if (!map[key]) map[key] = [];
 				map[key].push(edge);
 			}
 			
-			var parts:Vector.<Vector.<ShapeEdge>> = new Vector.<Vector.<ShapeEdge>>;
-			
-			// 单个封闭区域
-			var loop:Vector.<ShapeEdge>;
+			var loops:Vector.<Vector.<ShapeEdge>> = new Vector.<Vector.<ShapeEdge>>;
+			var parts:Vector.<ShapeEdge>;
 			
 			var item:ShapeEdge;
 			
 			var visit:Dictionary;
-			
 			for (i = 0, length = list.length; i < length; i++)
 			{
 				edge = list[i];
 				if (edge.loop) continue;
 				
 				edge.loop = true;
-				loop = new Vector.<ShapeEdge>();
-				loop.push(edge);
+				parts = new Vector.<ShapeEdge>();
+				parts.push(edge);
 				
 				visit = new Dictionary(true);
 				for (skey = createKey(edge.x1, edge.y1);;)
@@ -189,8 +214,8 @@ package com.larrio.dump.flash.display.shape
 					key = createKey(edge.x2, edge.y2);
 					if (key == skey)
 					{
-						for each(item in loop) item.loop = true;
-						parts.push(loop);
+						for each(item in parts) item.loop = true;
+						loops.push(parts);
 						break;
 					}
 					
@@ -202,35 +227,16 @@ package com.larrio.dump.flash.display.shape
 					edge = item;
 					visit[edge] = true;
 					
-					loop.push(edge);
+					parts.push(edge);
 				}
 			}
 			
-			for (i = 0, length = comp.edges.length; i < length; i++)
-			{
-				edge = comp.edges[i];
-				
-				if (!edge.lineStyle) continue;
-				changeLineStyle(comp.lineStyles[edge.lineStyle - 1]);
-				
-				_canvas.beginFill(0, 0);
-				_canvas.moveTo(edge.x1, edge.y1);
-				
-				if (edge.curved)
-				{
-					_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.x2, edge.y2);
-				}
-				else
-				{
-					_canvas.lineTo(edge.x2, edge.y2);
-				}
-				
-				_canvas.lineStyle(NaN);
-				_canvas.endFill();
-			}
+			_canvas.lineStyle(NaN);
 			
 			changeFillStyle(style);
-			for (i = 0, length = parts.length; i < length; i++) encloseArea(parts[i]);
+			for each(parts in loops) encloseArea(parts);
+			
+			_canvas.endFill();
 		}
 		
 		private function seekNextEdge(list:Array, edge:ShapeEdge, visit:Dictionary):ShapeEdge
@@ -266,8 +272,6 @@ package com.larrio.dump.flash.display.shape
 		{
 			var edge:ShapeEdge;
 			
-			_canvas.lineStyle(NaN);
-			
 			_canvas.moveTo(loop[0].x1, loop[0].y1);
 			for (var i:uint = 0, length:uint = loop.length; i < length; i++)
 			{
@@ -281,8 +285,6 @@ package com.larrio.dump.flash.display.shape
 					_canvas.lineTo(edge.x2, edge.y2);
 				}
 			}
-			
-			_canvas.endFill();
 		}
 		
 		/**
@@ -360,7 +362,6 @@ package com.larrio.dump.flash.display.shape
 			{
 				_position.x = record.moveToX / TWIPS_PER_PIXEL;
 				_position.y = record.moveToY / TWIPS_PER_PIXEL;
-				_canvas.moveTo(_position.x, _position.y);
 			}
 			
 			if (_shape is ShapeWithStyle)
@@ -641,9 +642,9 @@ class ShapeEdge
 	 */	
 	public var lineStyle:uint;
 	
-	public function ShapeEdge(curve:Boolean)
+	public function ShapeEdge(curved:Boolean)
 	{
-		this.curved = curve;
+		this.curved = curved;
 		this.x1 = this.y1 = this.ctrlX = this.ctrlY = this.x2 = this.y2 = 0;
 	}
 	
