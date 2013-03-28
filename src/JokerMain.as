@@ -1,7 +1,7 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.flash.display.shape.GhostCanvas;
+	import com.larrio.dump.flash.display.shape.SimpleCanvas;
 	import com.larrio.dump.flash.display.shape.GraphicsCanvas;
 	import com.larrio.dump.flash.display.shape.ICanvas;
 	import com.larrio.dump.flash.display.shape.ShapeVectorCollector;
