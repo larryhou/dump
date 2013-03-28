@@ -40,8 +40,7 @@ package com.larrio.dump.flash.display.shape
 		
 		private var _records:Vector.<ShapeRecord>;
 		
-		private var _lineStyle:Object;
-		private var _dict:Dictionary;
+		private var _lineIndex:uint;
 		
 		private var _f0:uint;
 		private var _f1:uint;
@@ -69,9 +68,8 @@ package com.larrio.dump.flash.display.shape
 			_records = _shape.records;
 			
 			_components = new Vector.<StyleComponent>;
-			_components.push(_style = new StyleComponent(_fstyles));
+			_components.push(_style = new StyleComponent(_fstyles, _lstyles));
 			
-			_lineStyle = {};
 		}
 		
 		/**
@@ -81,7 +79,6 @@ package com.larrio.dump.flash.display.shape
 		public function drawVectorOn(canvas:ICanvas):void
 		{
 			_canvas = canvas;
-			_dict = new Dictionary();
 			_position = new Point(0,0);
 			
 			for (var i:int = 0, length:uint = _records.length; i < length; i++)
@@ -100,15 +97,9 @@ package com.larrio.dump.flash.display.shape
 				{
 					changeStyle(_records[i] as StyleChangeRecord);
 				}
-				else
-				{
-					_canvas.endFill();
-				}
 			}
 			
 			renderColor();
-			
-			trace(_canvas);
 		}
 		
 		/**
@@ -116,63 +107,49 @@ package com.larrio.dump.flash.display.shape
 		 */		
 		private function renderColor():void
 		{
-			_canvas.lineStyle(NaN);
+			var collect:Vector.<ShapeEdge>;
 			
-			_canvas.endFill();
-			_canvas.beginFill(0, 0);
-			
-			var map:Dictionary;
-			var list:Vector.<ShapeEdge>;
-			
-			var sub:Array;
-			for (var comp:StyleComponent, i:uint = 0, len:uint = _components.length; i < len; i++)
+			var comp:StyleComponent;
+			var map0:Dictionary, map1:Dictionary;
+			for (var i:uint = 0, len:uint = _components.length; i < len; i++)
 			{
 				comp = _components[i];
 				
-				var style:FillStyle;
-				for (var color:ColorComponent, j:uint = 1; j < comp.maxIndex; j++)
+				map0 = comp.map0;
+				map1 = comp.map1;
+				
+				var sub:Array, item:ShapeEdge, slen:uint, j:uint;
+				for (var style:uint = comp.maxIndex; style >= 1; style--)
 				{
-					color = comp.map[j];
-					style = comp.styles[color.style - 1];
-					
-					list = new Vector.<ShapeEdge>;
-					
-					var k:uint, slen:uint;
-					for each(sub in color.map1)
+					collect = new Vector.<ShapeEdge>;
+					sub = map1[style];
+					if (sub)
 					{
-						if (sub.length)
+						for (j = 0, slen = sub.length; j < slen; j++)
 						{
-							for (k = 0, slen = sub.length; k < slen; k++)
-							{
-								list.push((sub[k] as ShapeEdge).tearOff(false));
-							}
+							collect.push(sub[j].tearOff(false));
 						}
 					}
 					
-					// 矢量反转
-					for each(sub in color.map0)
+					sub = map0[style];
+					if (sub)
 					{
-						if (sub.length)
+						for (j = 0, slen = sub.length; j < slen; j++)
 						{
-							for (k = 0, slen = sub.length; k < slen; k++)
-							{
-								list.push((sub[k] as ShapeEdge).tearOff(true));
-							}
+							collect.push(sub[j].tearOff(true));
 						}
 					}
-
-					// 设置填充样式
-					changeFillStyle(style);
-					loopKernel(list);
+					
+					loopKernel(collect, comp, comp.styles[style - 1]);
 				}
-
+				
 			}
 		}
 		
 		/**
 		 * 迭代渲染核心 
 		 */		
-		private function loopKernel(list:Vector.<ShapeEdge>):void
+		private function loopKernel(list:Vector.<ShapeEdge>, comp:StyleComponent, style:FillStyle):void
 		{
 			var map:Dictionary = new Dictionary(true);
 			
@@ -183,7 +160,7 @@ package com.larrio.dump.flash.display.shape
 			{
 				edge = list[i];
 				
-				key = createKey(edge.x, edge.y);
+				key = createKey(edge.x1, edge.y1);
 				if (!map[key]) map[key] = [];
 				map[key].push(edge);
 			}
@@ -207,9 +184,9 @@ package com.larrio.dump.flash.display.shape
 				loop.push(edge);
 				
 				visit = new Dictionary(true);
-				for (skey = createKey(edge.x, edge.y);;)
+				for (skey = createKey(edge.x1, edge.y1);;)
 				{
-					key = createKey(edge.tx, edge.ty);
+					key = createKey(edge.x2, edge.y2);
 					if (key == skey)
 					{
 						for each(item in loop) item.loop = true;
@@ -229,7 +206,57 @@ package com.larrio.dump.flash.display.shape
 				}
 			}
 			
+			for (i = 0, length = comp.edges.length; i < length; i++)
+			{
+				edge = comp.edges[i];
+				
+				if (!edge.lineStyle) continue;
+				changeLineStyle(comp.lineStyles[edge.lineStyle - 1]);
+				
+				_canvas.beginFill(0, 0);
+				_canvas.moveTo(edge.x1, edge.y1);
+				
+				if (edge.curved)
+				{
+					_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.x2, edge.y2);
+				}
+				else
+				{
+					_canvas.lineTo(edge.x2, edge.y2);
+				}
+				
+				_canvas.lineStyle(NaN);
+				_canvas.endFill();
+			}
+			
+			changeFillStyle(style);
 			for (i = 0, length = parts.length; i < length; i++) encloseArea(parts[i]);
+		}
+		
+		private function seekNextEdge(list:Array, edge:ShapeEdge, visit:Dictionary):ShapeEdge
+		{
+			if (!edge) return null;
+			
+			var item:ShapeEdge;
+			
+			var len:uint, i:uint;
+			for (i = 0, len = list.length; i < len; i++)
+			{
+				item = list[i];
+				if (item == edge && !item.loop)
+				{
+					list.splice(i, 1);
+					return item;
+				}
+			}			
+			
+			for (i = 0, len = list.length; i < len; i++)
+			{
+				item = list[i];
+				if (!item.loop && !visit[item]) return item;
+			}
+			
+			return null;
 		}
 		
 		/**
@@ -239,45 +266,23 @@ package com.larrio.dump.flash.display.shape
 		{
 			var edge:ShapeEdge;
 			
-			_canvas.moveTo(loop[0].x, loop[0].y);
+			_canvas.lineStyle(NaN);
+			
+			_canvas.moveTo(loop[0].x1, loop[0].y1);
 			for (var i:uint = 0, length:uint = loop.length; i < length; i++)
 			{
 				edge = loop[i];
-				if (edge.curve)
+				if (edge.curved)
 				{
-					_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.tx, edge.ty);
+					_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.x2, edge.y2);
 				}
 				else
 				{
-					_canvas.lineTo(edge.tx, edge.ty);
+					_canvas.lineTo(edge.x2, edge.y2);
 				}
 			}
 			
 			_canvas.endFill();
-		}
-		
-		private function seekNextEdge(list:Array, edge:ShapeEdge, visit:Dictionary):ShapeEdge
-		{
-			var item:ShapeEdge;
-			
-			var len:uint, i:uint;
-			for (i = 0, len = list.length; i < len; i++)
-			{
-				item = list[i];
-				if (!item.loop && !visit[item]) return item;
-			}
-			
-			for (i = 0, len = list.length; i < len; i++)
-			{
-				item = list[i];
-				if (item == edge && !item.loop)
-				{
-					list.splice(i, 1);
-					return item;
-				}
-			}
-			
-			return null;
 		}
 		
 		/**
@@ -287,14 +292,12 @@ package com.larrio.dump.flash.display.shape
 		{
 			var edge:ShapeEdge = new ShapeEdge(false);
 			
-			edge.x = _position.x;
-			edge.y = _position.y;
-			edge.tx = _position.x += record.deltaX / TWIPS_PER_PIXEL;
-			edge.ty = _position.y += record.deltaY / TWIPS_PER_PIXEL;
+			edge.x1 = _position.x;
+			edge.y1 = _position.y;
+			edge.x2 = _position.x += record.deltaX / TWIPS_PER_PIXEL;
+			edge.y2 = _position.y += record.deltaY / TWIPS_PER_PIXEL;
 			
 			recordEdge(edge);
-			
-			_canvas.lineTo(edge.tx, edge.ty);
 		}
 		
 		/**
@@ -304,18 +307,16 @@ package com.larrio.dump.flash.display.shape
 		{
 			var edge:ShapeEdge = new ShapeEdge(true);
 			
-			edge.x = _position.x;
-			edge.y = _position.y;
+			edge.x1 = _position.x;
+			edge.y1 = _position.y;
 			
 			edge.ctrlX = _position.x += (record.deltaControlX /  TWIPS_PER_PIXEL);
 			edge.ctrlY = _position.y += (record.deltaControlY / TWIPS_PER_PIXEL);
 			
-			edge.tx = _position.x += (record.deltaAnchorX / TWIPS_PER_PIXEL);
-			edge.ty = _position.y += (record.deltaAnchorY / TWIPS_PER_PIXEL);
+			edge.x2 = _position.x += (record.deltaAnchorX / TWIPS_PER_PIXEL);
+			edge.y2 = _position.y += (record.deltaAnchorY / TWIPS_PER_PIXEL);
 			
 			recordEdge(edge);
-			
-			_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.tx, edge.ty);
 		}
 		
 		/**
@@ -323,48 +324,30 @@ package com.larrio.dump.flash.display.shape
 		 */		
 		private function recordEdge(edge:ShapeEdge):void
 		{
-			var dict:Dictionary = _style.map;
-			var key:String = createKey(edge.x, edge.y);
+			edge.lineStyle = _lineIndex;
 			
-			var color:ColorComponent;
+			_style.edges.push(edge);
 			
 			if (_f0)
 			{
-				if (!dict[_f0]) 
+				if (!_style.map0[_f0])
 				{
-					dict[_f0] = new ColorComponent(_f0);
+					_style.map0[_f0] = [];
 				}
 				
-				color = dict[_f0] as ColorComponent;
-				color.edges.push(edge);
-				
-				if (!color.map0[key])
-				{
-					color.map0[key] = [];
-				}
-				
-				color.map0[key].push(edge);
+				_style.map0[_f0].push(edge);
 			}
 			
 			
 			if (_f1)
 			{
-				if (!dict[_f1]) 
+				if (!_style.map1[_f1])
 				{
-					dict[_f1] = new ColorComponent(_f1);
+					_style.map1[_f1] = [];
 				}
 				
-				color = dict[_f1] as ColorComponent;
-				color.edges.push(edge);
-				
-				if (!color.map1[key])
-				{
-					color.map1[key] = [];
-				}
-				
-				color.map1[key].push(edge);
-			}
-			
+				_style.map1[_f1].push(edge);
+			}			
 		}
 		
 		/**
@@ -387,7 +370,7 @@ package com.larrio.dump.flash.display.shape
 					_fstyles = record.fillStyles.styles;
 					_lstyles = record.lineStyles.styles;
 					
-					_components.push(_style = new StyleComponent(_fstyles));
+					_components.push(_style = new StyleComponent(_fstyles, _lstyles));
 				}
 				
 				if (record.stateFillStyle0)
@@ -404,14 +387,7 @@ package com.larrio.dump.flash.display.shape
 				
 				if (record.stateLineStyle)
 				{
-					if (record.lineStyle)
-					{
-						changeLineStyle(_lstyles[record.lineStyle - 1]);
-					}
-					else
-					{
-						_canvas.lineStyle(NaN);
-					}
+					_lineIndex = record.lineStyle;
 				}
 			}
 		}
@@ -443,7 +419,7 @@ package com.larrio.dump.flash.display.shape
 					case 2:data["joints"] = JointStyle.MITER;break;
 				}
 				
-				_lineStyle["limit"] = 3;
+				data["limit"] = 3;
 				if (ls.joinStyle == 2) data["limit"] = fixed(ls.miterLimitFactor, 8, 8);
 				
 				switch (ls.noHScaleFlag << 1 | ls.noVScaleFlag)
@@ -603,6 +579,7 @@ package com.larrio.dump.flash.display.shape
 }
 
 import com.larrio.dump.model.shape.FillStyle;
+import com.larrio.dump.model.shape.LineStyle;
 import com.larrio.dump.model.shape.ShapeRecord;
 
 import flash.utils.Dictionary;
@@ -613,62 +590,34 @@ class StyleComponent
 	 * 样式列表 
 	 */	
 	public var styles:Vector.<FillStyle>;
+	public var lineStyles:Vector.<LineStyle>;
 	
 	public var maxIndex:uint;
-		
-	/**
-	 * 存储ColorComponent映射 
-	 */	
-	public var map:Dictionary;
 	
-	public function StyleComponent(styles:Vector.<FillStyle>)
-	{
-		this.styles = styles;
-		
-		this.map = new Dictionary(false);
-	}
-}
-
-// 相同填充色区域
-class ColorComponent
-{
-	/**
-	 * 样式索引 
-	 */	
-	public var style:uint;
-	
-	public var edges:Vector.<ShapeEdge>;
-	
-	/**
-	 * 坐标映射表 
-	 */	
 	public var map0:Dictionary;
 	public var map1:Dictionary;
 	
-	/**
-	 * 封闭色块列表 
-	 */	
-	public var parts:Vector.<Array>;
+	public var edges:Vector.<ShapeEdge>;
 	
-	public function ColorComponent(style:uint)
+	public function StyleComponent(styles:Vector.<FillStyle>, lineStyles:Vector.<LineStyle>)
 	{
-		this.style = style;
-		this.parts = new Vector.<Array>;
+		this.styles = styles; this.lineStyles = lineStyles;
+		
 		this.map0 = new Dictionary(false);
 		this.map1 = new Dictionary(false);
 		
 		this.edges = new Vector.<ShapeEdge>;
 	}
 }
-
+ 
 // 图形边界线条
 class ShapeEdge
 {	
 	/**
 	 * 线条起点坐标 
 	 */	
-	public var x:int;
-	public var y:int;
+	public var x1:int;
+	public var y1:int;
 	
 	/**
 	 * 贝塞尔曲线控制点坐标 
@@ -679,18 +628,23 @@ class ShapeEdge
 	/**
 	 * 线条终点坐标
 	 */	
-	public var tx:int;
-	public var ty:int;
+	public var x2:int;
+	public var y2:int;
 	
-	public var curve:Boolean;
+	public var curved:Boolean;
 	
 	// 用来做填充渲染
 	public var loop:Boolean;
 	
+	/**
+	 * 线条样式 
+	 */	
+	public var lineStyle:uint;
+	
 	public function ShapeEdge(curve:Boolean)
 	{
-		this.curve = curve;
-		this.x = this.y = this.ctrlX = this.ctrlY = this.tx = this.ty = 0;
+		this.curved = curve;
+		this.x1 = this.y1 = this.ctrlX = this.ctrlY = this.x2 = this.y2 = 0;
 	}
 	
 	/**
@@ -699,22 +653,22 @@ class ShapeEdge
 	 */	
 	public function tearOff(reverse:Boolean):ShapeEdge
 	{
-		var edge:ShapeEdge = new ShapeEdge(this.curve);
+		var edge:ShapeEdge = new ShapeEdge(this.curved);
 		if (reverse)
 		{
-			edge.x = this.tx;
-			edge.y = this.ty;
+			edge.x1 = this.x2;
+			edge.y1 = this.y2;
 			
-			edge.tx = this.x;
-			edge.ty = this.y;
+			edge.x2 = this.x1;
+			edge.y2 = this.y1;
 		}
 		else
 		{
-			edge.x = this.x;
-			edge.y = this.y;
+			edge.x1 = this.x1;
+			edge.y1 = this.y1;
 			
-			edge.tx = this.tx;
-			edge.ty = this.ty;
+			edge.x2 = this.x2;
+			edge.y2 = this.y2;
 		}
 		
 		edge.ctrlX = this.ctrlX;
