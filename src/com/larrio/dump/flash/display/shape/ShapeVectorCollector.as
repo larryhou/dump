@@ -581,7 +581,6 @@ package com.larrio.dump.flash.display.shape
 
 import com.larrio.dump.model.shape.FillStyle;
 import com.larrio.dump.model.shape.LineStyle;
-import com.larrio.dump.model.shape.ShapeRecord;
 
 import flash.utils.Dictionary;
 
