@@ -99,13 +99,13 @@ package com.larrio.dump.flash.display.shape
 				}
 			}
 			
-			renderColor();
+			renderShape();
 		}
 		
 		/**
 		 * 给线稿上色
 		 */		
-		private function renderColor():void
+		private function renderShape():void
 		{
 			var collect:Vector.<ShapeEdge>;
 			
@@ -142,7 +142,7 @@ package com.larrio.dump.flash.display.shape
 						}
 					}
 					
-					loopKernel(collect, comp, comp.styles[style - 1]);
+					encloseAreas(collect, comp, comp.styles[style - 1]);
 				}
 				
 				var edge:ShapeEdge;
@@ -176,7 +176,7 @@ package com.larrio.dump.flash.display.shape
 		/**
 		 * 迭代渲染核心 
 		 */		
-		private function loopKernel(list:Vector.<ShapeEdge>, comp:StyleComponent, style:FillStyle):void
+		private function encloseAreas(list:Vector.<ShapeEdge>, comp:StyleComponent, style:FillStyle):void
 		{
 			var map:Dictionary = new Dictionary(true);
 			
@@ -234,7 +234,7 @@ package com.larrio.dump.flash.display.shape
 			_canvas.lineStyle(NaN);
 			
 			changeFillStyle(style);
-			for each(parts in loops) encloseArea(parts);
+			for each(parts in loops) renderColor(parts);
 			
 			_canvas.endFill();
 		}
@@ -268,7 +268,7 @@ package com.larrio.dump.flash.display.shape
 		/**
 		 * 把一个封闭路径绘制成填充区域
 		 */		
-		private function encloseArea(loop:Vector.<ShapeEdge>):void
+		private function renderColor(loop:Vector.<ShapeEdge>):void
 		{
 			var edge:ShapeEdge;
 			
