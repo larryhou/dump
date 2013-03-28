@@ -3,8 +3,9 @@ package
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
-	import com.larrio.dump.flash.display.shape.collector.ShapeInfoCollector;
 	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
+	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
+	import com.larrio.dump.flash.display.shape.collector.ShapeInfoCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
@@ -57,8 +58,9 @@ package
 			shape.scaleX = shape.scaleY = 3;
 			addChild(shape);
 			
-			var collector:VectorCollector = new VectorCollector(shapeTag.shape);
-//			var collector:ShapeInfoCollector = new ShapeInfoCollector(shapeTag.shape);
+			var collector:IShapeCollector;
+//			collector = new VectorCollector(shapeTag.shape);
+			collector = new ShapeInfoCollector(shapeTag.shape);
 			collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
 			
 //			trace(collector.components);
