@@ -116,48 +116,53 @@ package com.larrio.dump.flash.display.shape
 		 */		
 		private function renderColor():void
 		{
+			_canvas.lineStyle(NaN);
+			
+			_canvas.endFill();
 			_canvas.beginFill(0, 0);
-			_canvas.lineStyle(0, 0, 0);
 			
 			var map:Dictionary;
 			var list:Vector.<ShapeEdge>;
 			
-			var sub:Array, len:uint, i:uint;
-			for each(var comp:StyleComponent in _components)
+			var sub:Array;
+			for (var comp:StyleComponent, i:uint = 0, len:uint = _components.length; i < len; i++)
 			{
+				comp = _components[i];
+				
 				var style:FillStyle;
-				for each(var color:ColorComponent in comp.map)
+				for (var color:ColorComponent, j:uint = 1; j < comp.maxIndex; j++)
 				{
-					style = comp.styles[color.index - 1];
-					
-					// 设置填充样式
-					changeFillStyle(style);
+					color = comp.map[j];
+					style = comp.styles[color.style - 1];
 					
 					list = new Vector.<ShapeEdge>;
+					
+					var k:uint, slen:uint;
+					for each(sub in color.map1)
+					{
+						if (sub.length)
+						{
+							for (k = 0, slen = sub.length; k < slen; k++)
+							{
+								list.push((sub[k] as ShapeEdge).tearOff(false));
+							}
+						}
+					}
 					
 					// 矢量反转
 					for each(sub in color.map0)
 					{
 						if (sub.length)
 						{
-							for (i = 0, len = sub.length; i < len; i++)
+							for (k = 0, slen = sub.length; k < slen; k++)
 							{
-								list.push((sub[i] as ShapeEdge).tearOff(true));
+								list.push((sub[k] as ShapeEdge).tearOff(true));
 							}
 						}
 					}
-					
-					for each(sub in color.map1)
-					{
-						if (sub.length)
-						{
-							for (i = 0, len = sub.length; i < len; i++)
-							{
-								list.push((sub[i] as ShapeEdge).tearOff(false));
-							}
-						}
-					}
-					
+
+					// 设置填充样式
+					changeFillStyle(style);
 					loopKernel(list);
 				}
 
@@ -169,16 +174,12 @@ package com.larrio.dump.flash.display.shape
 		 */		
 		private function loopKernel(list:Vector.<ShapeEdge>):void
 		{
-			trace(list.length);
-			if (!list.length) return;
-			
 			var map:Dictionary = new Dictionary(true);
 			
-			var i:uint, length:uint;
-			var edge:ShapeEdge, key:String;
+			var edge:ShapeEdge, key:String, skey:String;
 			
-			length = list.length;
-			for (i = 0; i < length; i++)
+			var i:uint, length:uint;
+			for (i = 0, length = list.length; i < length; i++)
 			{
 				edge = list[i];
 				
@@ -187,35 +188,61 @@ package com.larrio.dump.flash.display.shape
 				map[key].push(edge);
 			}
 			
-			var path:Vector.<ShapeEdge>;
-			var visit:Dictionary = new Dictionary(true);
+			var parts:Vector.<Vector.<ShapeEdge>> = new Vector.<Vector.<ShapeEdge>>;
 			
-			path = new Vector.<ShapeEdge>;
-			edge = list[0];
+			// 单个封闭区域
+			var loop:Vector.<ShapeEdge>;
 			
-			var skey:String = createKey(edge.x, edge.x);
-			while (true)
+			var item:ShapeEdge;
+			
+			var visit:Dictionary;
+			
+			for (i = 0, length = list.length; i < length; i++)
 			{
-				visit[edge] = true;
-				path.push(edge);
+				edge = list[i];
+				if (edge.loop) continue;
 				
-				key = createKey(edge.tx, edge.ty);
-				if (key != skey && map[key] && map[key].length)
+				edge.loop = true;
+				loop = new Vector.<ShapeEdge>();
+				loop.push(edge);
+				
+				visit = new Dictionary(true);
+				for (skey = createKey(edge.x, edge.y);;)
 				{
-					edge = map[key].pop();
-				}
-				else
-				{
-					break;
+					key = createKey(edge.tx, edge.ty);
+					if (key == skey)
+					{
+						for each(item in loop) item.loop = true;
+						parts.push(loop);
+						break;
+					}
+					
+					if (!map[key] || !map[key].length) break;
+					
+					item = seekNextEdge(map[key], list[i + 1], visit);
+					if (!item) break;
+					
+					edge = item;
+					visit[edge] = true;
+					
+					loop.push(edge);
 				}
 			}
 			
-			edge = path[0];
+			for (i = 0, length = parts.length; i < length; i++) encloseArea(parts[i]);
+		}
+		
+		/**
+		 * 把一个封闭路径绘制成填充区域
+		 */		
+		private function encloseArea(loop:Vector.<ShapeEdge>):void
+		{
+			var edge:ShapeEdge;
 			
-			_canvas.moveTo(edge.x, edge.y);
-			for (i = 0, length = path.length; i < length; i++)
+			_canvas.moveTo(loop[0].x, loop[0].y);
+			for (var i:uint = 0, length:uint = loop.length; i < length; i++)
 			{
-				edge = path[i];
+				edge = loop[i];
 				if (edge.curve)
 				{
 					_canvas.curveTo(edge.ctrlX, edge.ctrlY, edge.tx, edge.ty);
@@ -227,14 +254,30 @@ package com.larrio.dump.flash.display.shape
 			}
 			
 			_canvas.endFill();
+		}
+		
+		private function seekNextEdge(list:Array, edge:ShapeEdge, visit:Dictionary):ShapeEdge
+		{
+			var item:ShapeEdge;
 			
-			for (i = 0; i < list.length; i++)
+			var len:uint, i:uint;
+			for (i = 0, len = list.length; i < len; i++)
 			{
-				edge = list[i];
-				if (visit[edge]) list.splice(i--, 1);
+				item = list[i];
+				if (!item.loop && !visit[item]) return item;
 			}
 			
-			loopKernel(list);
+			for (i = 0, len = list.length; i < len; i++)
+			{
+				item = list[i];
+				if (item == edge && !item.loop)
+				{
+					list.splice(i, 1);
+					return item;
+				}
+			}
+			
+			return null;
 		}
 		
 		/**
@@ -350,11 +393,13 @@ package com.larrio.dump.flash.display.shape
 				if (record.stateFillStyle0)
 				{
 					_f0 = record.fillStyle0;
+					if (_f0 > _style.maxIndex) _style.maxIndex = _f0;
 				}
 				
 				if (record.stateFillStyle1)
 				{
 					_f1 = record.fillStyle1;
+					if (_f1 > _style.maxIndex) _style.maxIndex = _f1;
 				}
 				
 				if (record.stateLineStyle)
@@ -365,7 +410,7 @@ package com.larrio.dump.flash.display.shape
 					}
 					else
 					{
-						_canvas.lineStyle(0, 0, 0);
+						_canvas.lineStyle(NaN);
 					}
 				}
 			}
@@ -376,7 +421,8 @@ package com.larrio.dump.flash.display.shape
 		 */		
 		private function changeLineStyle(style:LineStyle):void
 		{
-			_lineStyle["thickness"] = style.width;
+			var data:Object = {};
+			data["thickness"] = style.width;
 			
 			var ls:LineStyle2;
 			if (style is LineStyle2)
@@ -385,30 +431,30 @@ package com.larrio.dump.flash.display.shape
 				
 				switch (ls.startCapStyle)
 				{
-					case 0:_lineStyle["caps"] = CapsStyle.ROUND;break;
-					case 1:_lineStyle["caps"] = CapsStyle.NONE;break;
-					case 2:_lineStyle["caps"] = CapsStyle.SQUARE;break;
+					case 0:data["caps"] = CapsStyle.ROUND;break;
+					case 1:data["caps"] = CapsStyle.NONE;break;
+					case 2:data["caps"] = CapsStyle.SQUARE;break;
 				}
 				
 				switch (ls.joinStyle)
 				{
-					case 0:_lineStyle["joints"] = JointStyle.ROUND;break;
-					case 1:_lineStyle["joints"] = JointStyle.BEVEL;break;
-					case 2:_lineStyle["joints"] = JointStyle.MITER;break;
+					case 0:data["joints"] = JointStyle.ROUND;break;
+					case 1:data["joints"] = JointStyle.BEVEL;break;
+					case 2:data["joints"] = JointStyle.MITER;break;
 				}
 				
 				_lineStyle["limit"] = 3;
-				if (ls.joinStyle == 2) _lineStyle["limit"] = fixed(ls.miterLimitFactor, 8, 8);
+				if (ls.joinStyle == 2) data["limit"] = fixed(ls.miterLimitFactor, 8, 8);
 				
 				switch (ls.noHScaleFlag << 1 | ls.noVScaleFlag)
 				{
-					case 0:_lineStyle["scale"] = LineScaleMode.NORMAL;break;
-					case 1:_lineStyle["scale"] = LineScaleMode.HORIZONTAL;break;
-					case 2:_lineStyle["scale"] = LineScaleMode.VERTICAL;break;
-					case 3:_lineStyle["scale"] = LineScaleMode.NONE;break;
+					case 0:data["scale"] = LineScaleMode.NORMAL;break;
+					case 1:data["scale"] = LineScaleMode.HORIZONTAL;break;
+					case 2:data["scale"] = LineScaleMode.VERTICAL;break;
+					case 3:data["scale"] = LineScaleMode.NONE;break;
 				}
 				
-				_lineStyle["hinting"] = Boolean(ls.pixelHintingFlag);
+				data["hinting"] = Boolean(ls.pixelHintingFlag);
 				
 				if (ls.hasFillFlag)
 				{
@@ -416,25 +462,25 @@ package com.larrio.dump.flash.display.shape
 				}
 				else
 				{
-					_lineStyle["color"] = ls.color.rgb;
-					_lineStyle["alpha"] = (ls.color as RGBAColor).alpha / 0xFF;
+					data["color"] = ls.color.rgb;
+					data["alpha"] = (ls.color as RGBAColor).alpha / 0xFF;
 				}
 				
-				_canvas.lineStyle(_lineStyle["thickness"], _lineStyle["color"], _lineStyle["alpha"],  _lineStyle["hinting"], _lineStyle["scale"], _lineStyle["caps"], _lineStyle["joints"], _lineStyle["limit"]);
+				_canvas.lineStyle(data["thickness"], data["color"], data["alpha"],  data["hinting"], data["scale"], data["caps"], data["joints"], data["limit"]);
 			}
 			else
 			{
 				if (style.color is RGBAColor)
 				{
-					_lineStyle["alpha"] = (style.color as RGBAColor).alpha / 0xFF;
+					data["alpha"] = (style.color as RGBAColor).alpha / 0xFF;
 				}
 				else
 				{
-					_lineStyle["alpha"] = 1;
+					data["alpha"] = 1;
 				}
 				
-				_lineStyle["color"] = style.color.rgb;
-				_canvas.lineStyle(_lineStyle["thickness"], _lineStyle["color"], _lineStyle["alpha"]);
+				data["color"] = style.color.rgb;
+				_canvas.lineStyle(data["thickness"], data["color"], data["alpha"]);
 			}
 			
 		}
@@ -567,6 +613,8 @@ class StyleComponent
 	 * 样式列表 
 	 */	
 	public var styles:Vector.<FillStyle>;
+	
+	public var maxIndex:uint;
 		
 	/**
 	 * 存储ColorComponent映射 
@@ -587,7 +635,7 @@ class ColorComponent
 	/**
 	 * 样式索引 
 	 */	
-	public var index:uint;
+	public var style:uint;
 	
 	public var edges:Vector.<ShapeEdge>;
 	
@@ -602,9 +650,9 @@ class ColorComponent
 	 */	
 	public var parts:Vector.<Array>;
 	
-	public function ColorComponent(index:uint)
+	public function ColorComponent(style:uint)
 	{
-		this.index = index;
+		this.style = style;
 		this.parts = new Vector.<Array>;
 		this.map0 = new Dictionary(false);
 		this.map1 = new Dictionary(false);
@@ -636,12 +684,19 @@ class ShapeEdge
 	
 	public var curve:Boolean;
 	
+	// 用来做填充渲染
+	public var loop:Boolean;
+	
 	public function ShapeEdge(curve:Boolean)
 	{
 		this.curve = curve;
 		this.x = this.y = this.ctrlX = this.ctrlY = this.tx = this.ty = 0;
 	}
 	
+	/**
+	 * 从当前对象分裂出一个新的ShapeEdge对象 
+	 * @param reverse	是否需要首位对调：矢量反转
+	 */	
 	public function tearOff(reverse:Boolean):ShapeEdge
 	{
 		var edge:ShapeEdge = new ShapeEdge(this.curve);
