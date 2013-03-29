@@ -98,11 +98,9 @@ package com.larrio.dump.flash.display.shape.collector
 				{
 					drawStyleChange(records[i] as StyleChangeRecord);
 				}
-				else
-				{
-					flush();
-				}
 			}
+			
+			flush();
 		}
 		
 		/**
@@ -227,7 +225,7 @@ package com.larrio.dump.flash.display.shape.collector
 						collect.push((list[i] as ShapeEdge).tearOff(true));
 					}
 				}				
-								
+				
 				encloseArea(collect, style);
 			}
 			
@@ -319,7 +317,7 @@ package com.larrio.dump.flash.display.shape.collector
 			   
 			_canvas.lineStyle(NaN);
 			
-			changeFillStyle(_fillStyles[style - 1]);
+			_fillStyles && changeFillStyle(_fillStyles[style - 1]);
 			for each (parts in loops) renderColor(parts);
 			
 			_canvas.endFill();

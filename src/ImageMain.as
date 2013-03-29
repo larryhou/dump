@@ -1,8 +1,10 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.flash.display.shape.canvas.FontCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
 	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
+	import com.larrio.dump.flash.display.shape.collector.ShapeInfoCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
@@ -107,7 +109,7 @@ package
 					case TagType.DEFINE_SHAPE3:
 					case TagType.DEFINE_SHAPE4:
 					{
-						//break;
+						break;
 						shape = new Shape();
 						shape.x = 300; shape.y = 300;
 						collector = new VectorCollector((tag as DefineShapeTag).shape);
@@ -118,7 +120,7 @@ package
 						
 					case TagType.DEFINE_FONT3:
 					{
-						break;
+						//break;
 						fontTag = tag as DefineFont3Tag;
 						for (var i:int = 0; i < fontTag.glyphs.length; i++)
 						{
@@ -136,12 +138,13 @@ package
 							
 							shape.x = location.x; 
 							shape.y = location.y;
-							shape.scaleX = shape.scaleY = 1 / 600;
+							shape.scaleX = shape.scaleY = 1 / 25;
 							
-							collector = new VectorCollector(fontTag.glyphs[i]);
-							collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
+							collector = new ShapeInfoCollector(fontTag.glyphs[i]);
+							collector.drawVectorOn(new FontCanvas(shape.graphics));
 							addChild(shape);
 							
+							shape.graphics.endFill();
 							location.x += 50;
 						}
 						break;

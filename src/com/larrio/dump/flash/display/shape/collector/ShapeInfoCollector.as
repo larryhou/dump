@@ -233,7 +233,7 @@ package com.larrio.dump.flash.display.shape.collector
 			
 			_canvas.lineStyle(NaN);
 			
-			changeFillStyle(comp.styles[style - 1]);
+			comp.styles && changeFillStyle(comp.styles[style - 1]);
 			for each(parts in loops) renderColor(parts);
 			
 			_canvas.endFill();
@@ -330,8 +330,6 @@ package com.larrio.dump.flash.display.shape.collector
 			
 			_style.edges.push(edge);
 			
-			trace(_position);
-			
 			if (_f0)
 			{
 				if (!_style.map0[_f0])
@@ -366,32 +364,29 @@ package com.larrio.dump.flash.display.shape.collector
 				_position.y = record.moveToY / TWIPS_PER_PIXEL;
 			}
 			
-			if (_shape is ShapeWithStyle)
+			if (record.stateNewStyles)
 			{
-				if (record.stateNewStyles)
-				{
-					_fillStyles = record.fillStyles.styles;
-					_lineStyles = record.lineStyles.styles;
-					
-					_components.push(_style = new StyleComponent(_fillStyles, _lineStyles));
-				}
+				_fillStyles = record.fillStyles.styles;
+				_lineStyles = record.lineStyles.styles;
 				
-				if (record.stateFillStyle0)
-				{
-					_f0 = record.fillStyle0;
-					if (_f0 > _style.maxIndex) _style.maxIndex = _f0;
-				}
-				
-				if (record.stateFillStyle1)
-				{
-					_f1 = record.fillStyle1;
-					if (_f1 > _style.maxIndex) _style.maxIndex = _f1;
-				}
-				
-				if (record.stateLineStyle)
-				{
-					_lineIndex = record.lineStyle;
-				}
+				_components.push(_style = new StyleComponent(_fillStyles, _lineStyles));
+			}
+			
+			if (record.stateFillStyle0)
+			{
+				_f0 = record.fillStyle0;
+				if (_f0 > _style.maxIndex) _style.maxIndex = _f0;
+			}
+			
+			if (record.stateFillStyle1)
+			{
+				_f1 = record.fillStyle1;
+				if (_f1 > _style.maxIndex) _style.maxIndex = _f1;
+			}
+			
+			if (record.stateLineStyle)
+			{
+				_lineIndex = record.lineStyle;
 			}
 		}
 		
