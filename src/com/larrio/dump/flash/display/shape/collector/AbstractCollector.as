@@ -40,7 +40,12 @@ package com.larrio.dump.flash.display.shape.collector
 		 * 构造函数
 		 * create a [AbstractCollector] object
 		 */
-		public function AbstractCollector(shape:Shape)
+		public function AbstractCollector(shape:Shape = null)
+		{
+			shape && load(shape);
+		}
+		
+		public function load(shape:Shape):void
 		{
 			_shape = shape;
 		}

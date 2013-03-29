@@ -34,9 +34,14 @@ package com.larrio.dump.flash.display.shape.collector
 		 * create a [ShapeVectorCollector] object
 		 * @param shape	Shape矢量数据描述对象
 		 */		
-		public function ShapeInfoCollector(shape:Shape)
+		public function ShapeInfoCollector(shape:Shape = null)
 		{
 			super(shape);
+		}
+		
+		override public function load(shape:Shape):void
+		{
+			super.load(shape);
 			
 			if (_shape is ShapeWithStyle)
 			{

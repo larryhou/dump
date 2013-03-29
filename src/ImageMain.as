@@ -4,6 +4,7 @@ package
 	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
 	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
 	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
+	import com.larrio.dump.flash.display.shape.collector.ShapeInfoCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
@@ -62,7 +63,7 @@ package
 			
 			var loader:Image, bitmap:Bitmap;
 			var shape:Shape, fontTag:DefineFont3Tag;
-			trace(OutlineCollector);
+			trace(OutlineCollector, VectorCollector);
 			var position:Point = new Point();
 			for each(var tag:SWFTag in swf.tags)
 			{
@@ -111,7 +112,9 @@ package
 						//break;
 						shape = new Shape();
 						shape.x = 300; shape.y = 300;
-						collector = new OutlineCollector((tag as DefineShapeTag).shape);
+						if (!collector) collector = new OutlineCollector();
+						
+						collector.load((tag as DefineShapeTag).shape);
 						collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
 						addChild(shape);
 						break;

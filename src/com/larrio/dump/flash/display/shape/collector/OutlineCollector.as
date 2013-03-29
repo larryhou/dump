@@ -23,9 +23,14 @@ package com.larrio.dump.flash.display.shape.collector
 		 * 构造函数
 		 * create a [OutlineCollector] object
 		 */
-		public function OutlineCollector(shape:Shape)
+		public function OutlineCollector(shape:Shape = null)
 		{
 			super(shape);
+		}
+		
+		override public function load(shape:Shape):void
+		{
+			super.load(shape);
 			
 			if (_shape is ShapeWithStyle)
 			{
