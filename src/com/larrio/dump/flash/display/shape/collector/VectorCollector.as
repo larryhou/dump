@@ -1,26 +1,15 @@
 package com.larrio.dump.flash.display.shape.collector
 {
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
-	import com.larrio.dump.model.colors.RGBAColor;
 	import com.larrio.dump.model.shape.CurvedEdgeRecord;
 	import com.larrio.dump.model.shape.FillStyle;
-	import com.larrio.dump.model.shape.FocalGradient;
-	import com.larrio.dump.model.shape.GradRecord;
 	import com.larrio.dump.model.shape.LineStyle;
-	import com.larrio.dump.model.shape.LineStyle2;
 	import com.larrio.dump.model.shape.Shape;
 	import com.larrio.dump.model.shape.ShapeRecord;
 	import com.larrio.dump.model.shape.ShapeWithStyle;
 	import com.larrio.dump.model.shape.StraightEdgeRecord;
 	import com.larrio.dump.model.shape.StyleChangeRecord;
-	import com.larrio.math.fixed;
 	
-	import flash.display.CapsStyle;
-	import flash.display.GradientType;
-	import flash.display.InterpolationMethod;
-	import flash.display.JointStyle;
-	import flash.display.LineScaleMode;
-	import flash.display.SpreadMethod;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	
@@ -29,14 +18,8 @@ package com.larrio.dump.flash.display.shape.collector
 	 * @author doudou
 	 * @createTime Mar 27, 2013 11:41:12 PM
 	 */
-	public class VectorCollector implements IShapeCollector
+	public class VectorCollector extends AbstractCollector
 	{
-		private static const TWIPS_PER_PIXEL:uint = 20;
-		
-		private var _shape:Shape;
-		
-		private var _position:Point;
-		
 		private var _map0:Dictionary;
 		private var _map1:Dictionary;
 		
@@ -51,15 +34,13 @@ package com.larrio.dump.flash.display.shape.collector
 		private var _lineStyles:Vector.<LineStyle>;
 		private var _fillStyles:Vector.<FillStyle>;
 		
-		private var _canvas:ICanvas;
-		
 		/**
 		 * 构造函数
 		 * create a [VectorCollector] object
 		 */
 		public function VectorCollector(shape:Shape)
 		{
-			_shape = shape;
+			super(shape);
 			
 			if (_shape is ShapeWithStyle)
 			{
@@ -76,7 +57,7 @@ package com.larrio.dump.flash.display.shape.collector
 		 * 在画板上绘制矢量数据 
 		 * @param canvas	矢量画板
 		 */		
-		public function drawVectorOn(canvas:ICanvas):void
+		override public function drawVectorOn(canvas:ICanvas):void
 		{
 			_canvas = canvas;
 			_position = new Point(0, 0);
@@ -96,7 +77,7 @@ package com.larrio.dump.flash.display.shape.collector
 				else
 				if (records[i] is StyleChangeRecord)
 				{
-					drawStyleChange(records[i] as StyleChangeRecord);
+					changeStyle(records[i] as StyleChangeRecord);
 				}
 			}
 			
@@ -106,7 +87,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 切换线条、填充样式
 		 */		
-		private function drawStyleChange(record:StyleChangeRecord):void
+		override protected function changeStyle(record:StyleChangeRecord):void
 		{
 			if (record.stateMoveTo)
 			{
@@ -143,7 +124,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 处理直线
 		 */		
-		private function drawStraightEdge(record:StraightEdgeRecord):void
+		override protected function drawStraightEdge(record:StraightEdgeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(false);
 			edge.x1 = _position.x;
@@ -158,7 +139,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 处理二阶贝塞尔曲线
 		 */		
-		private function drawCurvedEdge(record:CurvedEdgeRecord):void
+		override protected function drawCurvedEdge(record:CurvedEdgeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(true);
 			edge.x1 = _position.x;
@@ -372,194 +353,7 @@ package com.larrio.dump.flash.display.shape.collector
 					_canvas.lineTo(edge.x2, edge.y2);
 				}
 			}
-		}
-		
-		/**
-		 * 改变线型样式 
-		 */		
-		private function changeLineStyle(style:LineStyle):void
-		{
-			var data:Object = [];
-			
-			data["thickness"] = style.width / TWIPS_PER_PIXEL;
-			
-			var ls:LineStyle2;
-			if (style is LineStyle2)
-			{
-				ls = style as LineStyle2;
-				
-				switch (ls.startCapStyle)
-				{
-					case 0:data["caps"] = CapsStyle.ROUND;break;
-					case 1:data["caps"] = CapsStyle.NONE;break;
-					case 2:data["caps"] = CapsStyle.SQUARE;break;
-				}
-				
-				switch (ls.joinStyle)
-				{
-					case 0:data["joints"] = JointStyle.ROUND;break;
-					case 1:data["joints"] = JointStyle.BEVEL;break;
-					case 2:data["joints"] = JointStyle.MITER;break;
-				}
-				
-				data["limit"] = 3;
-				if (ls.joinStyle == 2) data["limit"] = fixed(ls.miterLimitFactor, 8, 8);
-				
-				switch (ls.noHScaleFlag << 1 | ls.noVScaleFlag)
-				{
-					case 1:	data["scale"] = LineScaleMode.HORIZONTAL;break;
-					case 2:	data["scale"] = LineScaleMode.VERTICAL;break;
-					case 3:	data["scale"] = LineScaleMode.NONE;break;
-					default:data["scale"] = LineScaleMode.NORMAL;break;
-				}
-				
-				data["hinting"] = Boolean(ls.pixelHintingFlag);
-				
-				if (ls.hasFillFlag)
-				{
-					changeFillStyle(ls.style);
-				}
-				else
-				{
-					data["color"] = ls.color.rgb;
-					data["alpha"] = (ls.color as RGBAColor).alpha / 0xFF;
-				}
-				
-				_canvas.lineStyle(data["thickness"], data["color"], data["alpha"],  data["hinting"], data["scale"], data["caps"], data["joints"], data["limit"]);
-			}
-			else
-			{
-				if (style.color is RGBAColor)
-				{
-					data["alpha"] = (style.color as RGBAColor).alpha / 0xFF;
-				}
-				else
-				{
-					data["alpha"] = 1;
-				}
-				
-				data["color"] = style.color.rgb;
-				
-				_canvas.lineStyle(data["thickness"], data["color"], data["alpha"]);
-			}
-			
-		}
-		
-		/**
-		 * 改变填充样式 
-		 */		
-		private function changeFillStyle(style:FillStyle):void
-		{
-			var params:Array;
-			
-			switch (style.type)
-			{
-				case 0x00:
-				{
-					if (style.color is RGBAColor) 
-					{
-						_canvas.beginFill(style.color.rgb, (style.color as RGBAColor).alpha / 0xFF);
-					}
-					else
-					{
-						_canvas.beginFill(style.color.rgb);
-					}
-					
-					break;
-				}
-					
-				case 0x10:
-				case 0x12:
-				case 0x13:
-				{
-					var type:String;
-					var focal:Number = 0;
-					
-					if (style.type == 0x10)
-					{
-						type = GradientType.LINEAR;
-					}
-					else
-					{
-						type = GradientType.RADIAL;
-						if (style.type == 0x13)
-						{
-							focal = fixed((style.gradient as FocalGradient).focalPoint, 8, 8);
-						}
-					}
-					
-					var colors:Array = [];
-					var alphas:Array = [];
-					var ratios:Array = [];
-					
-					var record:GradRecord;
-					var length:uint = style.gradient.gradients.length;
-					for (var i:int = 0; i < length; i++)
-					{
-						record = style.gradient.gradients[i];
-						
-						colors.push(record.color.rgb);
-						if (record.color is RGBAColor)
-						{
-							alphas.push((record.color as RGBAColor).alpha / 0xFF);
-						}
-						else
-						{
-							alphas.push(1);
-						}
-						
-						ratios.push(record.ratio / 0xFF);
-					}
-					
-					var spread:String;
-					switch (style.gradient.spreadMode)
-					{
-						case 0:spread = SpreadMethod.PAD;break;
-						case 1:spread = SpreadMethod.REFLECT;break;
-						case 2:spread = SpreadMethod.REPEAT;break;
-					}
-					
-					var interpolation:String;
-					switch (style.gradient.interpolationMode)
-					{
-						case 0:interpolation = InterpolationMethod.RGB;break;
-						case 1:interpolation = InterpolationMethod.LINEAR_RGB;break;
-					}
-					
-					_canvas.beginGradientFill(type, colors, alphas, ratios, style.gradientMatrix.matrix, spread, interpolation, focal);	
-					break;
-				}
-					
-				case 0x40:
-				case 0x41:
-				case 0x42:
-				case 0x43:
-				{
-					changeBitmapFillStyle(style);
-					break;
-				}
-					
-			}
-			
-		}	
-		
-		/**
-		 * 修改位图填充样式
-		 */		
-		private function changeBitmapFillStyle(style:FillStyle):void
-		{
-			// 暂时不考虑位图填充的情况
-			_canvas.beginFill(0xFF00FF, 0.2);
-		}
-		
-		/**
-		 * 根据坐标生成唯一索引 
-		 */		
-		private function createKey(x:Number, y:Number):String
-		{
-			return x.toFixed(12) + "_" + y.toFixed(12);
-		}
-		
+		}		
 	}
 }
 
