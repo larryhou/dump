@@ -343,5 +343,10 @@ package com.larrio.dump.tags
 		 */		
 		public function get name():String { return _name; }
 
+		/**
+		 * 字符码列表
+		 */		
+		public function get codeTable():Vector.<uint> { return _codeTable; }
+
 	}
 }

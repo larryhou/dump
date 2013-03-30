@@ -11,10 +11,12 @@ package
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
+	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	
-	[SWF(width="1024", height="768")]
+	[SWF(width="1024", height="768", frameRate="60")]
 	
 	/**
 	 * 
@@ -24,8 +26,12 @@ package
 	public class JokerMain extends Sprite
 	{
 		[Embed(source="../libs/joker.swf", mimeType="application/octet-stream")]
-		private var RawFile:Class;
-
+		private var FileByteArray:Class;
+		
+		private var _steps:Array;
+		private var _index:uint;
+		
+		private var _brush:Graphics;
 		
 		/**
 		 * 构造函数
@@ -33,7 +39,7 @@ package
 		 */
 		public function JokerMain()
 		{
-			var swf:SWFile = new SWFile(new RawFile());
+			var swf:SWFile = new SWFile(new FileByteArray());
 			
 			var shapeTag:DefineShapeTag;
 			for each(var tag:SWFTag in swf.tags)
@@ -58,13 +64,38 @@ package
 			shape.scaleX = shape.scaleY = 3;
 			addChild(shape);
 			
+			_brush = shape.graphics;
+			
 			var collector:IShapeCollector;
-//			collector = new VectorCollector(shapeTag.shape);
-			collector = new ShapeInfoCollector(shapeTag.shape);
-			collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
+			collector = new VectorCollector(shapeTag.shape);
+//			collector = new ShapeInfoCollector(shapeTag.shape);
 			
-//			trace(collector.components);
+			var canvas:SimpleCanvas;
+			collector.drawVectorOn(canvas = new SimpleCanvas());
 			
+			_steps = canvas.steps;
+			addEventListener(Event.ENTER_FRAME, frameHandler);
+			
+		}
+		
+		protected function frameHandler(event:Event = null):void
+		{
+			if (_index >= _steps.length)
+			{
+				removeEventListener(Event.ENTER_FRAME, arguments.callee);
+				return;
+			}
+			
+			var step:Object = _steps[_index++];
+			(_brush[step.method] as Function).apply(null, step.params);
+			switch(step.method)
+			{
+				case "moveTo": case "lineTo": case "curveTo":
+				{
+					arguments.callee();
+					break;
+				}
+			}
 		}
 	}
 }

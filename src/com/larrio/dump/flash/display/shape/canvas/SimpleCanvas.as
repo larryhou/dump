@@ -13,7 +13,7 @@ package com.larrio.dump.flash.display.shape.canvas
 	 */
 	public class SimpleCanvas implements ICanvas
 	{
-		private var _result:Array;
+		private var _steps:Array;
 		
 		/**
 		 * 构造函数
@@ -21,47 +21,47 @@ package com.larrio.dump.flash.display.shape.canvas
 		 */
 		public function SimpleCanvas()
 		{
-			_result = [];
+			_steps = [];
 		}
 		
 		public function lineStyle(thickness:Number = NaN, color:uint = 0, alpha:Number = 1.0, pixelHinting:Boolean = false, scaleMode:String = LineScaleMode.NORMAL, caps:String = null, joints:String = null, miterLimit:Number = 3):void
 		{
-			_result.push({method: "lineStyle", params: arguments});
+			_steps.push({method: "lineStyle", params: arguments});
 		}
 		
 		public function moveTo(x:Number, y:Number):void
 		{
-			_result.push({method: "moveTo", params: arguments});
+			_steps.push({method: "moveTo", params: arguments});
 		}
 		
 		public function lineTo(x:Number, y:Number):void
 		{
-			_result.push({method: "lineTo", params: arguments});
+			_steps.push({method: "lineTo", params: arguments});
 		}
 		
 		public function curveTo(controlX:Number, controlY:Number, anchorX:Number, anchorY:Number):void
 		{
-			_result.push({method: "curveTo", params: arguments});
+			_steps.push({method: "curveTo", params: arguments});
 		}
 		
 		public function beginFill(color:uint, alpha:Number = 1.0):void
 		{
-			_result.push({method: "beginFill", params: arguments});
+			_steps.push({method: "beginFill", params: arguments});
 		}
 		
 		public function beginBitmapFill(bitmap:BitmapData, matrix:Matrix = null, repeat:Boolean = true, smooth:Boolean = false):void
 		{
-			_result.push({method: "beginBitmapFill", params: arguments});
+			_steps.push({method: "beginBitmapFill", params: arguments});
 		}	
 		
 		public function beginGradientFill(type:String, colors:Array, alphas:Array, ratios:Array, matrix:Matrix = null, spreadMethod:String = SpreadMethod.PAD, interpolationMethod:String = InterpolationMethod.RGB, focalPointRatio:Number = 0):void
 		{
-			_result.push({method: "beginGradientFill", params: arguments});
+			_steps.push({method: "beginGradientFill", params: arguments});
 		}
 		
 		public function endFill():void
 		{
-			_result.push({method: "endFill", params: arguments});
+			_steps.push({method: "endFill", params: arguments});
 		}
 
 		/**
@@ -69,7 +69,7 @@ package com.larrio.dump.flash.display.shape.canvas
 		 * @usage	{method: "moveTo", params: [1, 3]}
 		 * @example	DisplayObject.graphics[item.method].applay(null, item.params);
 		 */		
-		public function get result():Array { return _result; }
+		public function get steps():Array { return _steps; }
 
 	}
 }
