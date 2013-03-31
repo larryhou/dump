@@ -1,4 +1,4 @@
-package encrypt
+package 
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.encrypt.FileEncryptor;

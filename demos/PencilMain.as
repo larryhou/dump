@@ -1,4 +1,4 @@
-package outline
+package   
 {
 	import com.greensock.TweenLite;
 	import com.larrio.dump.SWFile;
@@ -74,6 +74,7 @@ package outline
 			var canvas:SimpleCanvas = new SimpleCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();
+			
 			for (var i:int = 0; i < chars.length; i++)
 			{
 				outline.load(collector.getGlyphByChar(chars.charAt(i)));
@@ -115,7 +116,6 @@ package outline
 			if (!step)
 			{
 				var rect:Rectangle = _glyph.getBounds(_container);
-				trace(rect);
 				
 				_container.addChild(_glyph = new Shape());
 				_container.setChildIndex(_alias, _container.numChildren - 1);

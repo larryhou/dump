@@ -1,4 +1,4 @@
-package font
+package 
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
