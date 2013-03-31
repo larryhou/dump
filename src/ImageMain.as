@@ -1,26 +1,17 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
-	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
-	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
-	import com.larrio.dump.flash.display.shape.collector.ShapeInfoCollector;
-	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
-	import com.larrio.dump.tags.DefineFont3Tag;
-	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
 	import flash.display.Bitmap;
 	import flash.display.Loader;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.utils.ByteArray;
 	
 	[SWF(width="1024", height="768")]
 	
@@ -31,8 +22,8 @@ package
 	 */
 	public class ImageMain extends Sprite
 	{
-		[Embed(source="../libs/joker.swf", mimeType="application/octet-stream")]
-		private var RawFile:Class;
+		[Embed(source="../libs/res04.swf", mimeType="application/octet-stream")]
+		private var FileByteArray:Class;
 		
 		/**
 		 * 构造函数
@@ -40,34 +31,16 @@ package
 		 */
 		public function ImageMain()
 		{
-			var bytes:ByteArray, swf:SWFile;
-			var rawFile:ByteArray = loaderInfo.bytes;
-			rawFile = new RawFile();
+			var swf:SWFile = new SWFile(new FileByteArray());
 			
-			var collector:IShapeCollector;
-			
-			bytes = rawFile;
-			
-			var includes:Array = [];
-			includes.push(TagType.DEFINE_BITS);
-			includes.push(TagType.DEFINE_BITS_JPEG2);
-			includes.push(TagType.DEFINE_BITS_JPEG3);
-			includes.push(TagType.DEFINE_BITS_JPEG4);
-			includes.push(TagType.DEFINE_BITS_LOSSLESS);
-			includes.push(TagType.DEFINE_BITS_LOSSLESS2);
-			swf = new SWFile(bytes);
-			
-			var alphas:ByteArray;
-			
-			var index:uint, location:Point = new Point(10, 50);
+			var index:uint; 
+			var location:Point = new Point(10, 50);
 			
 			var loader:Image, bitmap:Bitmap;
-			var shape:Shape, fontTag:DefineFont3Tag;
-			trace(OutlineCollector, VectorCollector);
 			var position:Point = new Point();
+			
 			for each(var tag:SWFTag in swf.tags)
 			{
-				alphas = null;
 				switch(tag.type)
 				{
 					case TagType.DEFINE_BITS:
@@ -75,7 +48,6 @@ package
 					case TagType.DEFINE_BITS_JPEG3:
 					case TagType.DEFINE_BITS_JPEG4:
 					{
-						break;
 						addChild(loader = new Image(tag as DefineBitsTag));
 						
 						loader.x = position.x;
@@ -83,15 +55,12 @@ package
 						
 						position.x += 10;
 						position.y += 10;
-						trace(tag);
-
 						break;
 					}
 						
 					case TagType.DEFINE_BITS_LOSSLESS:
 					case TagType.DEFINE_BITS_LOSSLESS2:
 					{
-						break;
 						bitmap = new Bitmap();
 						bitmap.bitmapData = (tag as DefineBitsLosslessTag).data;
 						bitmap.x = position.x;
@@ -104,56 +73,8 @@ package
 						break;
 					}
 						
-					case TagType.DEFINE_SHAPE:
-					case TagType.DEFINE_SHAPE2:
-					case TagType.DEFINE_SHAPE3:
-					case TagType.DEFINE_SHAPE4:
-					{
-						//break;
-						shape = new Shape();
-						shape.x = 300; shape.y = 300;
-						if (!collector) collector = new OutlineCollector();
-						
-						collector.load((tag as DefineShapeTag).shape);
-						collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
-						addChild(shape);
-						break;
-					}
-						
-					case TagType.DEFINE_FONT3:
-					{
-						break;
-						fontTag = tag as DefineFont3Tag;
-						for (var i:int = 0; i < fontTag.glyphs.length; i++)
-						{
-							index++;
-							if (index % 20 == 0)
-							{
-								location.y += 50;
-								location.x = 10;
-							}
-							
-							shape = new Shape();
-							shape.graphics.clear();
-							shape.graphics.lineStyle(1, 0xFF0000);
-							shape.graphics.beginFill(0xFF0000, 0.1);
-							
-							shape.x = location.x; 
-							shape.y = location.y;
-							shape.scaleX = shape.scaleY = 1 / 25;
-							
-							collector = new OutlineCollector(fontTag.glyphs[i]);
-							collector.drawVectorOn(new GraphicsCanvas(shape.graphics));
-							addChild(shape);
-							
-							shape.graphics.endFill();
-							location.x += 50;
-						}
-						break;
-					}
 				}
 				
-				//if (shape) break;
 			}
 			
 		}
