@@ -66,6 +66,9 @@ package com.larrio.dump.doabc
 				{
 					_data.id = decoder.readEU30();
 					_data.method = decoder.readEU30();
+					
+					// 设置函数特征信息
+					_abc.methods[_data.method].trait = this;
 					break;
 				}
 			}
@@ -142,46 +145,81 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			var result:String = "";
-			result += _abc.constants.multinames[_name];
-			if (result) result += ":";
+			var result:String;
+			var multiname:MultinameInfo = _abc.constants.multinames[_name];
+			var ns:NamespaceInfo = _abc.constants.namespaces[multiname.ns];
 			
+			var target:String = _abc.constants.strings[multiname.name];
+			
+			switch (ns.kind)
+			{
+				case NSKindType.PRIVATE_NS:
+				{
+					result = "private";
+					break;
+				}
+					
+				case NSKindType.PACKAGE_INTERNAL_NS:
+				{
+					result = "internal";
+					break;
+				}
+					
+				case NSKindType.PROTECTED_NAMESPACE:
+				{
+					result = "protected";
+					break;
+				}
+					
+				case NSKindType.STATIC_PROTECTED_NS:
+				{
+					result = "protected";
+					break;
+				}
+					
+				case NSKindType.PACKAGE_NAMESPACE:
+				{
+					result = "public";
+					break;
+				}
+			}	
+			
+			result += " ";
 			switch (_kind & 0xF)
 			{
 				case TraitType.SLOT:
 				{
-					result += _abc.constants.multinames[_data.type] || "*";
+					result += "var " + target + ":" + (_abc.constants.multinames[_data.type] || "*");
 					break;
 				}
 					
 				case TraitType.CONST:
 				{
-					result += _abc.constants.multinames[_data.type] || "*";
-					result = "const " + result;
+					result += "const " + target + ":" + (_abc.constants.multinames[_data.type] || "*");
 					break;
 				}
 				
 				case TraitType.CLASS:
 				{
-					result += "Class";
+					result += target + ":Class";
 					break;
 				}
 					
 				case TraitType.GETTER:
 				{
-					result += "getter";
+					result += "function get " + target;
 					break;
 				}
 					
 				case TraitType.SETTER:
 				{
-					result += "setter";
+					result += "function set " + target;
 					break;
 				}
 					
 				default:
 				{
-					result += "Function";
+					result += "function " + target;
 					break;
 				}
 			}

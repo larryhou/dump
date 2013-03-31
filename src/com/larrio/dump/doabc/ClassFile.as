@@ -166,15 +166,7 @@ package com.larrio.dump.doabc
 				item = metadataSTR(trait.metadatas, abc);
 				if (item) item += "\n\t";
 				
-				name = trait.toString().replace(/(private|protected|internal)\s*(\w+:\w+)/, "$1 var $2");
-				if (name.indexOf("const") == 0)
-				{
-					name = "public " + name;
-				}
-				else
-				{
-					if (!name.match(/(private|protected|internal)/)) name = "public var " + name;
-				}
+				name = trait.toString();
 				
 				item += name;
 				result.push(item);
@@ -197,34 +189,28 @@ package com.larrio.dump.doabc
 				if (metadata) result += metadata + "\n";
 			}
 			
-			var attribute:String;
+			var modifier:String;
 			if ((kind & TraitAttriType.FINAL) == TraitAttriType.FINAL)
 			{
-				attribute = "final";
+				modifier = "final";
 			}
 			
 			if ((kind & TraitAttriType.OVERRIDE) == TraitAttriType.OVERRIDE)
 			{
-				attribute = "override";
+				modifier = "override";
 			}
 			
-			if (attribute) result += attribute + " ";
+			if (modifier) result += modifier + " ";
 			
-			if (!abc.constants.strings[info.name]) 
+			if (!trait)
 			{
-				result += _name + "/";
-				if (trait)
-				{
-					result += abc.constants.multinames[trait.name];
-				}
-				else
-				{
-					result += _name.match(/\w+$/);
-				}
+				// 构造函数
+				result += "public function " + _name.match(/\w+$/);
 			}
 			
-			result += info;
-			if (info.body) result += "\n" + info.body;
+			result += info.toString();
+			
+			if (info.body) result += "\n" + info.body.toString();
 			return result;
 		}
 		
