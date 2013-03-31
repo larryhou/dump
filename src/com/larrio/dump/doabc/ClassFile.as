@@ -209,7 +209,8 @@ package com.larrio.dump.doabc
 			}
 			else
 			{
-				result += _name.match(/\w+$/);
+				// 构造函数
+				result += "public " + _name.match(/\w+$/);
 			}
 			
 			result += info.toString(false);
