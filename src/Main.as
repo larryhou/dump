@@ -2,7 +2,6 @@ package
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.tags.DoABCTag;
-	import com.larrio.dump.tags.TagType;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -10,7 +9,6 @@ package
 	import flash.utils.ByteArray;
 	
 	[SWF(frameRate="60", width="600", height="400")]
-	[Event(name="complete", type="flash.events.Event")]
 	
 	/**
 	 * 
@@ -18,12 +16,9 @@ package
 	 * @createTime Dec 15, 2012 2:31:50 PM
 	 */
 	final dynamic public class Main extends Sprite
-	{
-		[Embed(source="../libs/library.swf", symbol="CollectingMainWindowMC")]
-		private const _cls : Class;
-		
+	{		
 		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
-		private var RawFile:Class;
+		private var FileByteArray:Class;
 		
 		public static const v1:uint = 1;
 		private static var v2:uint;
@@ -36,31 +31,31 @@ package
 		private var data:Class;
 		internal var key:*;
 		
+		private var _id:String;
+		
+		private var _callback:Function;
+		
 		/**
 		 * 构造函数
 		 * create a [Main] object
 		 */
 		public function Main()
 		{		
-			var bytes:ByteArray, swf:SWFile;
-			var rawFile:ByteArray = loaderInfo.bytes;
-			rawFile = new RawFile();
+			var bytes:ByteArray;
+			bytes = loaderInfo.bytes;
+			//bytes = new FileByteArray();
 			
-			bytes = rawFile;
-			swf = new SWFile(bytes);
+			var swf:SWFile = new SWFile(bytes);
 			
 			trace(swf.header);
-			//trace(swf.symbol);
 			
 			bytes = swf.repack();
-			//trace(bytes.length);
-			//assertTrue(equals(bytes, rawFile));
 			//new FileReference().save(bytes, "encode.swf");
 			
 			swf = new SWFile(bytes);
 			trace(swf.header);
 			
-			var callback:* = function(date:* = "FUCK YOU!"):String
+			var callback:* = function(date:* = "OptionValue"):String
 			{
 				return String(this);
 			}
@@ -71,32 +66,18 @@ package
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;
-					//trace("\n\n-----------------------------------------\n");
+					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
-					//trace(tag.abc.files.join("\n"));
-					//break;
-				}
-				 
-				switch (swf.tags[i].type)
-				{
-					case TagType.DEFINE_SHAPE3:
-					case TagType.DEFINE_FONT3:
-					{
-						trace(swf.tags[i]);
-						break;
-					}
+					trace(tag.abc.files.join("\n"));
+					break;
 				}
 			}
 			
+		}
+		
+		public function startUp():void
+		{
 			
-			//addChild(new _cls() as DisplayObject);
-						
-//			var size:SWFRect = swf.header.size;
-//			assertTrue(size.width == stage.stageWidth);
-//			assertTrue(size.height == stage.stageHeight);
-//			assertTrue(swf.header.frameRate / 256 == stage.frameRate);
-			
-			//formatTypes(BlendModeType, 30, true)
 		}
 		
 		// 比较两个字节数组是否相等
@@ -123,6 +104,13 @@ package
 		{
 			return super.getBounds(targetCoordinateSpace);
 		}
+
+		public function get id():String { return _id; }
+		public function set id(value:String):void
+		{
+			_id = value;
+		}
+
 		
 	}
 }

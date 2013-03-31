@@ -128,10 +128,11 @@ package com.larrio.dump.doabc
 		/**
 		 * 字符串输出
 		 */		
-		public function toString():String
+		public function toString(keepName:Boolean = true):String
 		{
 			var index:int;
 			var result:String = _constants.strings[_name] || "";
+			if (!keepName) result = "";
 			
 			var optionlen:int = _options? _options.length : -1;
 			

@@ -68,7 +68,7 @@ package com.larrio.dump.doabc
 					
 				case NSKindType.PACKAGE_INTERNAL_NS:
 				{
-					//key = "internal";
+					key = "internal";
 					break;
 				}
 					
@@ -81,6 +81,12 @@ package com.larrio.dump.doabc
 				case NSKindType.STATIC_PROTECTED_NS:
 				{
 					key = "protected";
+					break;
+				}
+					
+				case NSKindType.PACKAGE_NAMESPACE:
+				{
+					//key = "public";
 					break;
 				}
 			}	
