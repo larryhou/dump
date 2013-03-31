@@ -90,7 +90,7 @@ package
 			(_brush[step.method] as Function).apply(null, step.params);
 			switch(step.method)
 			{
-				case "moveTo": case "lineTo": case "curveTo":
+				case "moveTo": //case "lineTo": case "curveTo":
 				{
 					arguments.callee();
 					break;
