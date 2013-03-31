@@ -11,7 +11,6 @@ package
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.ByteArray;
 	
 	[SWF(width="1024", height="768")]
 	
@@ -36,8 +35,6 @@ package
 			var swf:SWFile = new SWFile(new FileByteArray());
 			
 			var index:uint, row:uint; 
-			
-			var rect:Rectangle;
 			var shape:Shape, fontTag:DefineFont3Tag;
 			
 			var container:Sprite = new Sprite();
@@ -60,16 +57,7 @@ package
 							{
 								row++;
 								position.x = 0;
-								if (rect) position.y += LENGTH + ITEM_GAP;
-							}
-							
-							if (!shape) 
-							{
-								rect = new Rectangle();
-							}
-							else
-							{
-								rect = shape.getBounds(container);
+								if (shape) position.y += LENGTH + ITEM_GAP;
 							}
 							
 							shape = new Shape();
@@ -95,7 +83,7 @@ package
 			container.width = stage.stageWidth;
 			container.scaleY = container.scaleX;
 			
-			rect = container.getBounds(this);
+			var rect:Rectangle = container.getBounds(this);
 			container.x = -rect.x;
 			container.y = -rect.y;
 		}
