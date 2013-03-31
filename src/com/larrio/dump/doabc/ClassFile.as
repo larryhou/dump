@@ -189,31 +189,27 @@ package com.larrio.dump.doabc
 				if (metadata) result += metadata + "\n";
 			}
 			
-			var attribute:String;
+			var modifier:String;
 			if ((kind & TraitAttriType.FINAL) == TraitAttriType.FINAL)
 			{
-				attribute = "final";
+				modifier = "final";
 			}
 			
 			if ((kind & TraitAttriType.OVERRIDE) == TraitAttriType.OVERRIDE)
 			{
-				attribute = "override";
+				modifier = "override";
 			}
 			
-			if (attribute) result += attribute + " ";
+			if (modifier) result += modifier + " ";
 			
-
-			if (trait)
-			{
-				result += trait.toString();
-			}
-			else
+			if (!trait)
 			{
 				// 构造函数
 				result += "public " + _name.match(/\w+$/);
 			}
 			
-			result += info.toString(false);
+			result += info.toString();
+			
 			if (info.body) result += "\n" + info.body.toString();
 			return result;
 		}

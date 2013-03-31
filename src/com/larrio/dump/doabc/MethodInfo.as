@@ -26,6 +26,8 @@ package com.larrio.dump.doabc
 		
 		private var _body:MethodBodyInfo;
 		
+		private var _trait:TraitInfo;
+		
 		/**
 		 * 构造函数
 		 * create a [MethodInfo] object
@@ -128,11 +130,11 @@ package com.larrio.dump.doabc
 		/**
 		 * 字符串输出
 		 */		
-		public function toString(keepName:Boolean = true):String
+		public function toString():String
 		{
 			var index:int;
 			var result:String = _constants.strings[_name] || "";
-			if (!keepName) result = "";
+			result = _trait? _trait.toString() : "";
 			
 			var optionlen:int = _options? _options.length : -1;
 			
@@ -208,6 +210,16 @@ package com.larrio.dump.doabc
 		{
 			_body = value;
 		}
+
+		/**
+		 * 函数特征
+		 */		
+		public function get trait():TraitInfo { return _trait; }
+		public function set trait(value:TraitInfo):void
+		{
+			_trait = value;
+		}
+
 
 	}
 }

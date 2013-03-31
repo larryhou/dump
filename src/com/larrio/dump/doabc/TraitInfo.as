@@ -66,6 +66,9 @@ package com.larrio.dump.doabc
 				{
 					_data.id = decoder.readEU30();
 					_data.method = decoder.readEU30();
+					
+					// 设置函数特征信息
+					_abc.methods[_data.method].trait = this;
 					break;
 				}
 			}

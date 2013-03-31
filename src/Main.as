@@ -43,7 +43,7 @@ package
 		{		
 			var bytes:ByteArray;
 			bytes = loaderInfo.bytes;
-			//bytes = new FileByteArray();
+			bytes = new FileByteArray();
 			
 			var swf:SWFile = new SWFile(bytes);
 			
