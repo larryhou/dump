@@ -20,7 +20,7 @@ package
 	 * @author larryhou
 	 * @createTime Mar 25, 2013 3:16:12 PM
 	 */
-	public class JokerMain extends Sprite
+	public class DrawMain extends Sprite
 	{
 		[Embed(source="../libs/joker.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
@@ -34,7 +34,7 @@ package
 		 * 构造函数
 		 * create a [JokerMain] object
 		 */
-		public function JokerMain()
+		public function DrawMain()
 		{
 			var swf:SWFile = new SWFile(new FileByteArray());
 			
