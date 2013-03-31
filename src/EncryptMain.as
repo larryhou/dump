@@ -18,7 +18,7 @@ package
 	 */
 	public class EncryptMain extends Sprite
 	{
-		[Embed(source="../libs/res03.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/res04.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**
@@ -30,7 +30,7 @@ package
 			var bytes:ByteArray;
 			
 			bytes = loaderInfo.bytes;
-//			bytes = new FileByteArray()
+			//bytes = new FileByteArray()
 			var swf:SWFile = new SWFile(bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
