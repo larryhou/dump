@@ -1,7 +1,6 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.doabc.MultinameInfo;
 	import com.larrio.dump.encrypt.FileEncryptor;
 	import com.larrio.dump.tags.DoABCTag;
 	
@@ -20,7 +19,7 @@ package
 	public class EncryptMain extends Sprite
 	{
 		[Embed(source="../libs/res03.swf", mimeType="application/octet-stream")]
-		private var RawFile:Class;
+		private var FileByteArray:Class;
 		
 		/**
 		 * 构造函数
@@ -31,7 +30,7 @@ package
 			var bytes:ByteArray;
 			
 			bytes = loaderInfo.bytes;
-//			bytes = new RawFile()
+//			bytes = new FileByteArray()
 			var swf:SWFile = new SWFile(bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
@@ -42,8 +41,7 @@ package
 			
 			// 导出加密后的SWF
 			bytes = swf.repack();
-			//assertTrue(bytes.length == loaderInfo.bytes.length);
-			//new FileReference().save(bytes, "encrypt.swf");
+			new FileReference().save(bytes, "encrypt.swf");
 			
 			swf = new SWFile(bytes);
 			
@@ -55,30 +53,15 @@ package
 					tag = swf.tags[i] as DoABCTag;
 					trace("\n\n-----------------------------------------\n");
 					
-					//trace(tag.abc.constants.multinames.join("\n"));
-					//trace(tag.abc.constants.namespaces.join("\n"));
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					//break;
 				}
-			}
-			
-			var callback:Function = function (data:Date):String
-			{
-				return data.toString();
-			};
-			
-			var code:uint = 0;
-			while (code <= 0xFF)
-			{
-				//trace(code + "\t" + String.fromCharCode(code));
-				code++;
 			}
 			
 			var text:TextField = new TextField();
 			text.defaultTextFormat = new TextFormat("Monaco", 25, 0xFF0000);
 			text.autoSize = TextFieldAutoSize.LEFT;
-			text.text = "FUCK YOU";
+			text.text = "EncryptTest";
 			addChild(text);
 		}
 	}
