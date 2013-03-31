@@ -3,16 +3,12 @@ package
 	import com.greensock.TweenLite;
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.flash.display.font.GlyphCollector;
-	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
 	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
-	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineFont2Tag;
 	import com.larrio.dump.tags.SWFTag;
-	import com.larrio.dump.tags.TagType;
 	import com.larrio.math.bezier;
 	
-	import flash.display.BitmapData;
 	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.display.Shape;

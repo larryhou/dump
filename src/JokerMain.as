@@ -1,11 +1,8 @@
 package
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
-	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
 	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
 	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
-	import com.larrio.dump.flash.display.shape.collector.ShapeInfoCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
