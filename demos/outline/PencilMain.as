@@ -1,4 +1,4 @@
-package
+package outline
 {
 	import com.greensock.TweenLite;
 	import com.larrio.dump.SWFile;

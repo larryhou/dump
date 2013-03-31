@@ -1,4 +1,4 @@
-package
+package image
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.tags.DefineBitsJPEG3Tag;

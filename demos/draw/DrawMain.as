@@ -1,4 +1,4 @@
-package
+package draw
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
