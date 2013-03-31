@@ -205,7 +205,7 @@ package com.larrio.dump.doabc
 			if (!trait)
 			{
 				// 构造函数
-				result += "public " + _name.match(/\w+$/);
+				result += "public function " + _name.match(/\w+$/);
 			}
 			
 			result += info.toString();

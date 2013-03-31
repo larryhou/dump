@@ -15,7 +15,7 @@ package
 	 * @author larryhou
 	 * @createTime Dec 15, 2012 2:31:50 PM
 	 */
-	final dynamic public class Main extends Sprite
+	final dynamic public class DoABCMain extends Sprite
 	{		
 		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
@@ -39,7 +39,7 @@ package
 		 * 构造函数
 		 * create a [Main] object
 		 */
-		public function Main()
+		public function DoABCMain()
 		{		
 			var bytes:ByteArray;
 			bytes = loaderInfo.bytes;
@@ -69,7 +69,7 @@ package
 					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					break;
+					//break;
 				}
 			}
 			
