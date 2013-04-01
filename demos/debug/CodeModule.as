@@ -12,6 +12,9 @@ package debug
 	 */
 	public class CodeModule extends Sprite
 	{
+		[Embed(source="../../libs/res01.swf", mimeType="application/octet-stream")]
+		private var FileByteArray:Class;
+		
 		/**
 		 * 构造函数
 		 * create a [FileMain] object
