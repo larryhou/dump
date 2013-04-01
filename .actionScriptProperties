@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="PencilMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
+<actionScriptProperties analytics="false" mainApplicationPath="JointMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
   <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="demos" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src"/>
-      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/doudou/Documents/workspace/framework/larrio/greensock"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/larryhou/Documents/workspace/framework/larrio/greensock"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -49,12 +49,14 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="PencilMain.as"/>
-    <application path="ImageMain.as"/>
     <application path="FontMain.as"/>
-    <application path="EncryptMain.as"/>
-    <application path="DrawMain.as"/>
     <application path="DoABCMain.as"/>
+    <application path="DrawMain.as"/>
+    <application path="JointMain.as"/>
+    <application path="EncryptMain.as"/>
+    <application path="PencilMain.as"/>
+    <application path="debug/DebugMain.as"/>
+    <application path="ImageMain.as"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
