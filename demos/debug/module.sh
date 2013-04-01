@@ -10,20 +10,20 @@ output=module.swf
 
 if [ "$debug" = "true" ] || [ "$debug" = "yes" ] || [ "$debug" = "y" ] || [ "$debug" = "t" ];
 then
-	"${mxmlc}"	\
+	"$mxmlc"	\
 	-static-link-runtime-shared-libraries	\
 	-source-path+=../../../larrio/greensock	\
 	-source-path+=../../demos	\
 	-source-path+=../../src	\
-	-file-specs=${main}	\
-	-output=${output}	\
+	-file-specs=$main	\
+	-output=$output	\
 	-debug
 else
-	"${mxmlc}"	\
+	"$mxmlc"	\
 	-static-link-runtime-shared-libraries	\
 	-source-path+=../../../larrio/greensock	\
 	-source-path+=../../demos	\
 	-source-path+=../../src	\
-	-file-specs=${main}	\
-	-output=${output}
+	-file-specs=$main	\
+	-output=$output
 fi
