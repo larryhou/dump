@@ -12,13 +12,16 @@ package debug
 	 */
 	public class DebugMain extends Sprite
 	{
+		[Embed(source="module.swf", mimeType="application/octet-stream")]
+		private var FileByteArray:Class;
+		
 		/**
 		 * 构造函数
 		 * create a [DebugMain] object
 		 */
 		public function DebugMain()
 		{
-			var swf:SWFile = new SWFile(loaderInfo.bytes);
+			var swf:SWFile = new SWFile(new FileByteArray());
 			
 			var tag:DoABCTag;
 			for (var i:int = 0; i < swf.tags.length; i++)
