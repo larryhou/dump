@@ -16,7 +16,18 @@ package script
 		 */
 		public function RecursionModule()
 		{
+			recursive();
+		}
+		
+		private function recursive(loop:uint = 0):uint
+		{
+			trace(loop);
 			
+			var callback:Function = function ():uint
+			{
+				return recursive(++loop);
+			}
+			return callback.call();
 		}
 	}
 }

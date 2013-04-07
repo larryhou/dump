@@ -7,6 +7,7 @@ output=recursionModule.swf
 
 "$mxmlc"	\
 -static-link-runtime-shared-libraries	\
+-default-script-limits 5 15	\
 -source-path+=../../demos	\
 -source-path+=../../src	\
 -file-specs=$main	\

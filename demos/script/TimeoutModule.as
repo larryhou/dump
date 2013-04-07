@@ -16,7 +16,11 @@ package script
 		 */
 		public function TimeoutModule()
 		{
-			
+			var index:uint;
+			while (true)
+			{
+				++index;
+			}
 		}
 	}
 }
