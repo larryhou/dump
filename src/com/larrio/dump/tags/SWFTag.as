@@ -53,8 +53,6 @@ package com.larrio.dump.tags
 				decoder.readBytes(_bytes, 0, _length);
 			}
 			
-			assertTrue(_bytes.length == _length);
-			
 			decoder = new FileDecoder();
 			decoder.writeBytes(_bytes);
 			decoder.position = 0;
