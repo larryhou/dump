@@ -24,19 +24,17 @@ package com.larrio.dump.tags
 		protected var _length:int;
 		protected var _bytes:ByteArray;
 		
-		private var _codeAndLength:uint;
-		private var _modified:Boolean;
-		private var _remain:int;
-		
-		protected var _compressed:Boolean;
-		
 		/**
 		 * 构造函数
 		 * create a [SWFTag] object
 		 */
 		public function SWFTag()
 		{
-			
+			const NAME:String = "TYPE";
+			if (NAME in Object(this).constructor)
+			{
+				_type = Object(this).constructor[NAME];
+			}
 		}
 		
 		/**
@@ -63,18 +61,19 @@ package com.larrio.dump.tags
 			
 			decodeTag(decoder);
 			
+			var remain:uint;
 			if (decoder.position > 0)
 			{
-				_remain = decoder.bytesAvailable;
+				remain = decoder.bytesAvailable;
 			}
 			
-			if (_remain > 0)
+			if (remain > 0)
 			{
 				var warning:String = getQualifiedClassName(this).split("::")[1];
 				if (_character) warning += "@" + _character;
 				
-				trace("#" + warning + "# " + _remain + " UNRESOLVED BYTES:");
-				trace(hexSTR(decoder, 4, decoder.position, _remain));
+				trace("#" + warning + "# " + remain + " UNRESOLVED BYTES:");
+				trace(hexSTR(decoder, 4, decoder.position, remain));
 			}
 			
 			const NAME:String = "TYPE";
@@ -96,13 +95,7 @@ package com.larrio.dump.tags
 			encodeTag(data);
 			data.flush();
 			
-			// AS3的zlib压缩后大小会小一点
-			if (_compressed || _modified)
-			{
-				_length = data.length;
-			}
-			
-			assertTrue(data.length == _length - _remain);
+			_length = data.length;
 			
 			writeTagHeader(encoder);
 			encoder.writeBytes(data);
@@ -114,30 +107,14 @@ package com.larrio.dump.tags
 		 */		
 		protected final function writeTagHeader(encoder:FileEncoder):void
 		{
-			var rlength:uint = _length - _remain;
-			if (_remain == 0)
+			if (_length < 0x3F)
 			{
-				if ((_codeAndLength & 0x3F) < 0x3F)
-				{
-					encoder.writeUI16( _type << 6 | _length);
-				}
-				else
-				{
-					encoder.writeUI16( _type << 6 | 0x3F);
-					encoder.writeS32(_length);
-				}
+				encoder.writeUI16(_type << 6 | _length);
 			}
 			else
 			{
-				if (rlength < 0x3F)
-				{
-					encoder.writeUI16(_type << 6 | rlength);
-				}
-				else
-				{
-					encoder.writeUI16(_type << 6 | 0x3F);
-					encoder.writeS32(rlength);
-				}
+				encoder.writeUI16(_type << 6 | 0x3F);
+				encoder.writeS32(_length);
 			}
 		}
 		
@@ -147,10 +124,10 @@ package com.larrio.dump.tags
 		 */		
 		protected final function readTagHeader(decoder:FileDecoder):void
 		{
-			_codeAndLength = decoder.readUI16();
+			var codeAndLength:uint = decoder.readUI16();
 			
-			_type = _codeAndLength >>> 6;
-			_length = _codeAndLength & 0x3F;
+			_type = codeAndLength >>> 6;
+			_length = codeAndLength & 0x3F;
 			
 			if (_length >= 0x3F)
 			{
@@ -165,7 +142,7 @@ package com.larrio.dump.tags
 		 */		
 		protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeBytes(_bytes);
+			_bytes && encoder.writeBytes(_bytes);
 		}
 		
 		/**
@@ -199,15 +176,6 @@ package com.larrio.dump.tags
 		public function set dict(value:Dictionary):void
 		{
 			_dict = value;
-		}
-
-		/**
-		 * tag内容被修改后设置该标记位
-		 */		
-		public function get modified():Boolean { return _modified; }
-		public function set modified(value:Boolean):void
-		{
-			_modified = value;
 		}
 
 	}

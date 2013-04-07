@@ -91,6 +91,7 @@ package com.larrio.dump.tags
 		public function get matrix():Matrix { return _matrix.matrix; }
 		public function set matrix(value:Matrix):void
 		{
+			_matrix ||= new MatrixRecord();
 			_matrix.matrix = value;
 		}
 
@@ -100,6 +101,7 @@ package com.larrio.dump.tags
 		public function get colorTransform():ColorTransform { return _colorTransform.transform; }
 		public function set colorTransform(value:ColorTransform):void
 		{
+			_colorTransform ||= new ColorTransformRecord();
 			_colorTransform.transform = value;
 		}
 	}

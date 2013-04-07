@@ -9,7 +9,6 @@ package com.larrio.dump.tags
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.display.BitmapData;
-	import flash.utils.ByteArray;
 	
 	/**
 	 * 
@@ -198,8 +197,6 @@ package com.larrio.dump.tags
 			{
 				assertTrue(zlib.length == _unzliblen);
 			}
-			
-			_compressed = true;
 			
 			zlib.compress();
 			encoder.writeBytes(zlib);

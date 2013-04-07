@@ -103,12 +103,12 @@ package com.larrio.dump.model
 		public function toString():String
 		{
 			var result:XML = new XML("<Matrix/>");
-			result.@scaleX = fixed(_scaleX, 16, 16);
-			result.@scaleY = fixed(_scaleY, 16, 16);
-			result.@skew0 = fixed(_skew0, 16, 16);
-			result.@skew1 = fixed(_skew1, 16, 16);
-			result.@translateX = _translateX / 20;
-			result.@translateY = _translateY / 20;
+			result.@scaleX = this.scaleX;
+			result.@scaleY = this.scaleY;
+			result.@skew0 = this.skew0;
+			result.@skew1 = this.skew1;
+			result.@translateX = this.translateX;
+			result.@translateY = this.translateY;
 			return result.toXMLString();	
 		}
 		
@@ -117,13 +117,13 @@ package com.larrio.dump.model
 		 */
 		public function get matrix():Matrix
 		{
-			var a:Number = fixed(_scaleX, 16, 16);
-			var d:Number = fixed(_scaleY, 16, 16);
+			var a:Number = this.scaleX;
+			var d:Number = this.scaleY;
 			
-			var b:Number = fixed(_skew1, 16, 16);
-			var c:Number = fixed(_skew0, 16, 16);
+			var b:Number = this.skew1;
+			var c:Number = this.skew0;
 			
-			return new Matrix(a, b, c, d, _translateX / 20, _translateY / 20);
+			return new Matrix(a, b, c, d, this.translateX, this.translateY);
 		}
 		
 		/**
@@ -133,45 +133,76 @@ package com.larrio.dump.model
 		{
 			value ||= new Matrix();
 			
-			_scaleX = unfixed(value.a, 16, 16);
-			_scaleY = unfixed(value.d, 16, 16);
+			this.scaleX = value.a;
+			this.scaleY = value.d;
 			
-			_skew1 = unfixed(value.b, 16, 16);
-			_skew0 = unfixed(value.c, 16, 16);
+			this.skew1 = value.b;
+			this.skew0 = value.c;
 			
-			_translateX = value.tx * 20;
-			_translateY = value.ty * 20;
+			this.translateX = value.tx;
+			this.translateY = value.ty;
+			
+			if (_scale) _sbits = 0x1F;
+			if (_rotate) _rbits = 0x1F;
 		}
 
 		/**
 		 * 横向缩放：16.16 fixed-point
 		 */		
-		public function get scaleX():uint { return _scaleX; }
+		public function get scaleX():Number { return fixed(_scaleX, 16, 16); }
+		public function set scaleX(value:Number):void
+		{
+			_scale = true;
+			_scaleX = unfixed(value, 16, 16);
+		}
 
 		/**
 		 * 竖向缩放：16.16 fixed-point
 		 */		
-		public function get scaleY():uint { return _scaleY; }
+		public function get scaleY():Number { return fixed(_scaleY, 16, 16); }
+		public function set scaleY(value:Number):void
+		{
+			_scale = true;
+			_scaleY = unfixed(value, 16, 16);
+		}
 
 		/**
 		 * first rotate and skew：16.16 fixed-point
 		 */		
-		public function get skew0():uint { return _skew0; }
+		public function get skew0():Number { return fixed(_skew0, 16, 16); }
+		public function set skew0(value:Number):void
+		{
+			_rotate = true;
+			_skew0 = unfixed(value, 16, 16);
+		}
 
 		/**
 		 * second rotate and skew：16.16 fixed-point
 		 */		
-		public function get skew1():uint { return _skew1; }
+		public function get skew1():Number { return fixed(_skew1, 16, 16); }
+		public function set skew1(value:Number):void
+		{
+			_rotate = true;
+			_skew1 = unfixed(value, 16, 16);
+		}
 
 		/**
 		 * 横向平移：twips
 		 */		
-		public function get translateX():int { return _translateX; }
+		public function get translateX():Number { return _translateX / 20; }
+		public function set translateX(value:Number):void
+		{
+			_translateX = value * 20 >> 0;
+		}
 
 		/**
 		 * 竖向平移：twips
 		 */		
-		public function get translateY():int { return _translateY; }
+		public function get translateY():Number { return _translateY / 20; }
+		public function set translateY(value:Number):void
+		{
+			_translateY = value * 20 >> 0;
+		}
 		
 	}
 }
