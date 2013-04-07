@@ -226,7 +226,7 @@ package com.larrio.dump.tags
 			
 			if (_hasCacheAsBitmap)
 			{
-				result.@bitmapCache = _bitmapCache;
+				result.@bitmapCache = this.bitmapCache;
 			}
 			
 			return result.toXMLString();
@@ -234,24 +234,67 @@ package com.larrio.dump.tags
 
 		/**
 		 * Name of the class to place
+		 * 
+		 * The PlaceFlagHasClassName field indicates that a class name will be specified, indicating the type of object to place.
+		 * Because we no longer use ImportAssets in ActionScript 3.0, 
+		 * there needed to be some way to place a Timeline object using a class imported from another SWF, 
+		 * which does not have a 16-bit character ID in the instantiating SWF. Supported in Flash Player 9.0.45.0 and later.
 		 */		
 		public function get className():String { return _className; }
+		public function set className(value:String):void
+		{
+			_className = value;
+			_hasClassName = 1;
+		}
 
 		/**
 		 * List of filters on this object
 		 */		
 		public function get filterList():FilterList { return _filterList; }
+		public function set filderList(value:FilterList):void
+		{
+			_filterList = value;
+			_hasFilterList = 1;
+		}
 
 		/**
 		 * layer blend mode
 		 */		
 		public function get blendMode():uint { return _blendMode; }
+		public function set blendMode(value:uint):void
+		{
+			_blendMode = _blendMode;
+			_hasBlendMode = 1;
+		}
 
 		/**
 		 * 0 = Bitmap cache disabled
 		 * 1-255 = Bitmap cache enabled
+		 * The PlaceFlagHasCacheAsBitmap field specifies whether Flash Player should internally cache a display object as a bitmap. 
+		 * Caching can speed up rendering when the object does not change frequently.
 		 */		
-		public function get bitmapCache():uint { return _bitmapCache; }
-
+		public function get bitmapCache():Boolean { return Boolean(_bitmapCache); }
+		public function set bitmapCache(value:Boolean):void
+		{
+			_bitmapCache = uint(value);
+		}
+		
+		/**
+		 * The PlaceFlagHasImage field indicates the creation of native Bitmap objects on the display list. 
+		 * When PlaceFlagHasClassName and PlaceFlagHasImage are both defined, 
+		 * this indicates a Bitmap class to be loaded from another SWF. 
+		 * Immediately following the flags is the class name (as above) for the BitmapData class in the loaded SWF. 
+		 * A Bitmap object will be placed with the named BitmapData class as it's internal data. 
+		 * When PlaceFlagHasCharacter and PlaceFlagHasImage are both defined, this indicates a Bitmap from the current SWF. 
+		 * The BitmapData to be used as its internal data will be defined by the following characterID. 
+		 * This only occurs when the BitmapData has a class associated with it. 
+		 * If there is no class associated with the BitmapData, DefineShape should be used with a Bitmap fill. 
+		 * Supported in Flash Player 9.0.45.0 and later.
+		 */		
+		public function get hasImage():Boolean { return Boolean(_hasImage); }
+		public function set hasImage(value:Boolean):void
+		{
+			_hasImage = uint(value);
+		}
 	}
 }
