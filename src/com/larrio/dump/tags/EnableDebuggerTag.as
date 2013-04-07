@@ -13,7 +13,10 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.ENABLE_DEBUGGER;
 		
-		private var _password:String;
+		/**
+		 * MD5加密过的密码
+		 */
+		public var password:String;
 		
 		/**
 		 * 构造函数
@@ -30,7 +33,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_password = decoder.readSTR();
+			password = decoder.readSTR();
 		}
 		
 		/**
@@ -39,7 +42,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeSTR(_password);
+			encoder.writeSTR(password);
 		}
 		
 		/**
@@ -47,14 +50,10 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<EnableDebuggerTag/>");
+			result.@password = password;
+			return result.toXMLString();	
 		}
-
-		/**
-		 * MD5加密过的密码
-		 */		
-		public function get password():String { return _password; }
-
 		
 	}
 }

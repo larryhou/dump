@@ -4,6 +4,7 @@ package com.larrio.dump.model
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.math.fixed;
+	import com.larrio.math.unfixed;
 	
 	import flash.geom.Matrix;
 	
@@ -123,6 +124,23 @@ package com.larrio.dump.model
 			var c:Number = fixed(_skew0, 16, 16);
 			
 			return new Matrix(a, b, c, d, _translateX / 20, _translateY / 20);
+		}
+		
+		/**
+		 * 把原生Matrix转换成MatrixRecord 
+		 */		
+		public function set matrix(value:Matrix):void
+		{
+			value ||= new Matrix();
+			
+			_scaleX = unfixed(value.a, 16, 16);
+			_scaleY = unfixed(value.d, 16, 16);
+			
+			_skew1 = unfixed(value.b, 16, 16);
+			_skew0 = unfixed(value.c, 16, 16);
+			
+			_translateX = value.tx * 20;
+			_translateY = value.ty * 20;
 		}
 
 		/**

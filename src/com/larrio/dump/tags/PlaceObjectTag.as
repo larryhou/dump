@@ -5,8 +5,11 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.ColorTransformRecord;
 	import com.larrio.dump.model.MatrixRecord;
 	
+	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
+	
 	/**
-	 * 
+	 * 控制zIndex显示对象的几何变形以及颜色变换
 	 * @author larryhou
 	 * @createTime Dec 26, 2012 9:37:05 AM
 	 */
@@ -14,7 +17,11 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.PLACE_OBJECT;
 		
-		protected var _depth:uint;
+		/**
+		 * 显示对象zIndex 
+		 */		
+		public var depth:uint;
+		
 		protected var _matrix:MatrixRecord;
 		protected var _colorTransform:ColorTransformRecord;
 		
@@ -34,7 +41,7 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
-			_depth = decoder.readUI16();
+			depth = decoder.readUI16();
 			
 			_matrix = new MatrixRecord();
 			_matrix.decode(decoder);
@@ -53,7 +60,7 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			encoder.writeUI16(_character);
-			encoder.writeUI16(_depth);
+			encoder.writeUI16(depth);
 			
 			_matrix.encode(encoder);
 			
@@ -79,19 +86,21 @@ package com.larrio.dump.tags
 		}
 
 		/**
-		 * Depth of character
-		 */		
-		public function get depth():uint { return _depth; }
-
-		/**
 		 * Transform matrix data
 		 */		
-		public function get matrix():MatrixRecord { return _matrix; }
+		public function get matrix():Matrix { return _matrix.matrix; }
+		public function set matrix(value:Matrix):void
+		{
+			_matrix.matrix = value;
+		}
 
 		/**
 		 * Color transform data
 		 */		
-		public function get colorTransform():ColorTransformRecord { return _colorTransform; }
-
+		public function get colorTransform():ColorTransform { return _colorTransform.transform; }
+		public function set colorTransform(value:ColorTransform):void
+		{
+			_colorTransform.transform = value;
+		}
 	}
 }

@@ -44,13 +44,13 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_hasClipActions = decoder.readUB(1);
-			_hasClipDepth = decoder.readUB(1);
+			_hasMaskDepth = decoder.readUB(1);
 			_hasName = decoder.readUB(1);
 			_hasRatio = decoder.readUB(1);
 			_hasColorTransform = decoder.readUB(1);
 			_hasMatrix = decoder.readUB(1);
 			_hasCharacter = decoder.readUB(1);
-			_move = decoder.readUB(1);
+			_moved = decoder.readUB(1);
 			
 			assertTrue(decoder.readUB(3) == 0);
 			
@@ -60,7 +60,7 @@ package com.larrio.dump.tags
 			_hasBlendMode = decoder.readUB(1);
 			_hasFilterList = decoder.readUB(1);
 			
-			_depth = decoder.readUI16();
+			depth = decoder.readUI16();
 			
 			if (_hasClassName)
 			{
@@ -86,7 +86,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				_ratio = decoder.readUI16();
+				_morphRatio = decoder.readUI16();
 			}
 			
 			if (_hasName)
@@ -94,9 +94,9 @@ package com.larrio.dump.tags
 				_name = decoder.readSTR();
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				_clipDepth = decoder.readUI16();
+				_maskDepth = decoder.readUI16();
 			}
 			
 			if (_hasFilterList)
@@ -129,13 +129,13 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			encoder.writeUB(_hasClipActions, 1);
-			encoder.writeUB(_hasClipDepth, 1);
+			encoder.writeUB(_hasMaskDepth, 1);
 			encoder.writeUB(_hasName, 1);
 			encoder.writeUB(_hasRatio, 1);
 			encoder.writeUB(_hasColorTransform, 1);
 			encoder.writeUB(_hasMatrix, 1);
 			encoder.writeUB(_hasCharacter, 1);
-			encoder.writeUB(_move, 1);
+			encoder.writeUB(_moved, 1);
 			
 			encoder.writeUB(0, 3);
 			
@@ -145,7 +145,7 @@ package com.larrio.dump.tags
 			encoder.writeUB(_hasBlendMode, 1);
 			encoder.writeUB(_hasFilterList, 1);
 			
-			encoder.writeUI16(_depth);
+			encoder.writeUI16(depth);
 			
 			if (_hasClassName)
 			{
@@ -169,7 +169,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				encoder.writeUI16(_ratio);
+				encoder.writeUI16(_morphRatio);
 			}
 			
 			if (_hasName)
@@ -177,9 +177,9 @@ package com.larrio.dump.tags
 				encoder.writeSTR(_name);
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				encoder.writeUI16(_clipDepth);
+				encoder.writeUI16(_maskDepth);
 			}
 			
 			if (_hasFilterList)

@@ -13,8 +13,15 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.FRAME_LABEL;
 		
-		private var _name:String;
-		private var _anchor:int;
+		/**
+		 * 帧标签名字
+		 */	
+		public var name:String;
+		
+		/**
+		 *  网页锚点
+		 */		
+		public var anchor:int;
 		
 		/**
 		 * 构造函数
@@ -31,13 +38,13 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_name = decoder.readSTR();
+			name = decoder.readSTR();
 			
-			_anchor = -1;
+			anchor = -1;
 			if (decoder.length - decoder.position == 1)
 			{
-				_anchor = decoder.readUI8();
-				assertTrue(_anchor == 1 || _anchor == 0);
+				anchor = decoder.readUI8();
+				assertTrue(anchor == 1 || anchor == 0);
 			}
 		}
 		
@@ -47,11 +54,11 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeSTR(_name);
+			encoder.writeSTR(name);
 			
-			if (_anchor == 0 || _anchor == 1)
+			if (anchor == 0 || anchor == 1)
 			{
-				encoder.writeUI8(_anchor);
+				encoder.writeUI8(anchor);
 			}
 		}
 		
@@ -61,18 +68,10 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var result:XML = new XML("<FrameLabelTag/>");
-			result.@name = _name;
+			result.@name = name;
 			
 			return result.toXMLString();
 		}
 
-		/**
-		 * 帧标签名字
-		 */		
-		public function get name():String { return _name; }
-		public function set name(value:String):void
-		{
-			_name = value;
-		}
 	}
 }
