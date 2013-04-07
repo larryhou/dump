@@ -5,7 +5,7 @@ package com.larrio.dump.tags
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
-	 * 
+	 * 脚本运行限制
 	 * @author larryhou
 	 * @createTime Dec 23, 2012 4:41:20 PM
 	 */
@@ -13,8 +13,15 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.SCRIPT_LIMITS;
 		
-		private var _recursion:uint;
-		private var _timeout:uint;
+		/**
+		 * 脚本最大递归深度
+		 */	
+		public var recursion:uint;
+		
+		/**
+		 * 脚本最大运行时间：秒
+		 */	
+		public var timeout:uint;
 		
 		/**
 		 * 构造函数
@@ -31,8 +38,8 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_recursion = decoder.readUI16();
-			_timeout = decoder.readUI16();
+			recursion = decoder.readUI16();
+			timeout = decoder.readUI16();
 		}
 		
 		/**
@@ -41,8 +48,8 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeUI16(_recursion);
-			encoder.writeUI16(_timeout);
+			encoder.writeUI16(recursion);
+			encoder.writeUI16(timeout);
 		}
 		
 		/**
@@ -51,21 +58,10 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var result:XML = new XML("<ScriptLimitsTag/>");
-			result.@MaxRecursionDepth = _recursion;
-			result.@ScriptTimeoutSeconds = _timeout;
+			result.@MaxRecursionDepth = recursion;
+			result.@ScriptTimeoutSeconds = timeout;
 			return result.toXMLString();
 		}
 
-		/**
-		 * 脚本最大递归深度
-		 */		
-		public function get recursion():uint { return _recursion; }
-
-		/**
-		 * 脚本最大运行时间：秒
-		 */		
-		public function get timeout():uint { return _timeout; }
-
-		
 	}
 }

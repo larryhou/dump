@@ -27,7 +27,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_depth = decoder.readUI16();
+			depth = decoder.readUI16();
 		}
 		
 		/**
@@ -36,7 +36,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeUI16(_depth);
+			encoder.writeUI16(depth);
 		}
 		
 		/**
@@ -45,7 +45,7 @@ package com.larrio.dump.tags
 		override public function toString():String
 		{
 			var result:XML = new XML("<RemoveObject2Tag/>");
-			result.@depth = _depth;
+			result.@depth = depth;
 			
 			return result.toXMLString();	
 		}
