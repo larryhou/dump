@@ -72,26 +72,46 @@ package com.larrio.dump.model.colors
 		 * 红色通道
 		 */		
 		public function get red():uint { return _red; }
+		public function set red(value:uint):void
+		{
+			_red = value;
+		}
 
 		/**
 		 * 绿色通道
 		 */		
 		public function get green():uint { return _green; }
+		public function set green(value:uint):void
+		{
+			_green = value;
+		}
 
 		/**
 		 * 蓝色通道
 		 */		
 		public function get blue():uint { return _blue; }
+		public function set blue(value:uint):void
+		{
+			_blue = value;
+		}
 
 		/**
 		 * 颜色值
 		 */		
 		public function get value():uint { return _value; }
+		public function set value(value:uint):void
+		{
+			_value = value;
+		}
 
 		/**
 		 * RGB颜色值
 		 */		
 		public function get rgb():uint { return _rgb; }
+		public function set rgb(value:uint):void
+		{
+			_rgb = value & 0xFFFFFF;
+		}
 		
 	}
 }

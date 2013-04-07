@@ -50,13 +50,17 @@ package com.larrio.dump.tags
 		{
 			var result:XML = new XML("<SetBackgroundColorTag/>");
 			result.appendChild(new XML(_color.toString()));
-			return result.toXMLString();	
+			return result.toXMLString();
 		}		
 
 		/**
 		 * 背景颜色
 		 */		
-		public function get color():RGBColor { return _color; }
-
+		public function get color():uint { return _color.rgb; }
+		public function set color(value:uint):void
+		{
+			_color ||= new RGBColor();
+			_color.rgb = value;
+		}
 	}
 }

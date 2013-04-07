@@ -13,8 +13,15 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.SET_TABLE_INDEX;
 		
-		private var _depth:uint;
-		private var _index:uint;
+		/**
+		 * 特征深度
+		 */
+		public var depth:uint;
+		
+		/**
+		 * TAB顺序索引
+		 */	
+		public var index:uint;
 		
 		/**
 		 * 构造函数
@@ -31,8 +38,8 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_depth = decoder.readUI16();
-			_index = decoder.readUI16();
+			depth = decoder.readUI16();
+			index = decoder.readUI16();
 		}
 		
 		/**
@@ -41,8 +48,8 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeUI16(_depth);
-			encoder.writeUI16(_index);
+			encoder.writeUI16(depth);
+			encoder.writeUI16(index);
 		}
 		
 		/**
@@ -51,21 +58,10 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var result:XML = new XML("<SetTabIndexTag/>");
-			result.@depth = _depth;
-			result.@index = _index;
+			result.@depth = depth;
+			result.@index = index;
 			return result.toXMLString();	
 		}
 
-		/**
-		 * 特征深度
-		 */		
-		public function get depth():uint { return _depth; }
-
-		/**
-		 * TAB顺序索引
-		 */		
-		public function get index():uint { return _index; }
-
-		
 	}
 }
