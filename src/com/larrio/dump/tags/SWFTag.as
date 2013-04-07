@@ -177,6 +177,5 @@ package com.larrio.dump.tags
 		{
 			_dict = value;
 		}
-
 	}
 }
