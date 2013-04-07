@@ -144,46 +144,47 @@ package com.larrio.dump.model
 			
 			if (_scale) _sbits = 0x1F;
 			if (_rotate) _rbits = 0x1F;
+			_tbits = 0x1F;
 		}
 
 		/**
 		 * 横向缩放：16.16 fixed-point
 		 */		
-		public function get scaleX():Number { return fixed(_scaleX, 16, 16); }
+		public function get scaleX():Number { return fixed(_scaleX, 15, 16); }
 		public function set scaleX(value:Number):void
 		{
 			_scale = true;
-			_scaleX = unfixed(value, 16, 16);
+			_scaleX = unfixed(value, 15, 16);
 		}
 
 		/**
 		 * 竖向缩放：16.16 fixed-point
 		 */		
-		public function get scaleY():Number { return fixed(_scaleY, 16, 16); }
+		public function get scaleY():Number { return fixed(_scaleY, 15, 16); }
 		public function set scaleY(value:Number):void
 		{
 			_scale = true;
-			_scaleY = unfixed(value, 16, 16);
+			_scaleY = unfixed(value, 15, 16);
 		}
 
 		/**
 		 * first rotate and skew：16.16 fixed-point
 		 */		
-		public function get skew0():Number { return fixed(_skew0, 16, 16); }
+		public function get skew0():Number { return fixed(_skew0, 15, 16); }
 		public function set skew0(value:Number):void
 		{
 			_rotate = true;
-			_skew0 = unfixed(value, 16, 16);
+			_skew0 = unfixed(value, 15, 16);
 		}
 
 		/**
 		 * second rotate and skew：16.16 fixed-point
 		 */		
-		public function get skew1():Number { return fixed(_skew1, 16, 16); }
+		public function get skew1():Number { return fixed(_skew1, 15, 16); }
 		public function set skew1(value:Number):void
 		{
 			_rotate = true;
-			_skew1 = unfixed(value, 16, 16);
+			_skew1 = unfixed(value, 15, 16);
 		}
 
 		/**
