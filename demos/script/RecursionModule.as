@@ -10,6 +10,7 @@ package script
 	 */
 	public class RecursionModule extends Sprite
 	{
+		
 		/**
 		 * 构造函数
 		 * create a [RecursionMain] object
@@ -21,13 +22,9 @@ package script
 		
 		private function recursive(loop:uint = 0):uint
 		{
-			trace(loop);
-			
-			var callback:Function = function ():uint
-			{
-				return recursive(++loop);
-			}
-			return callback.call();
+			//~/library/Preferences/Macromedia/Flash Player/Logs
+			trace((new Date().time / 1000 >> 0) + ":" + loop);
+			return recursive(++loop);
 		}
 	}
 }

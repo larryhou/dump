@@ -4,17 +4,12 @@ package display
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.PlaceObject2Tag;
 	import com.larrio.dump.tags.SWFTag;
-	import com.larrio.dump.tags.ShowFrameTag;
-	import com.larrio.dump.tags.TagType;
-	import com.larrio.math.fixed;
-	import com.larrio.math.unfixed;
 	
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Matrix;
-	import flash.utils.ByteArray;
 	
 	
 	/**

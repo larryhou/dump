@@ -1,6 +1,7 @@
 package script
 {
 	import flash.display.Sprite;
+	import flash.utils.getTimer;
 	
 	
 	/**
@@ -20,6 +21,7 @@ package script
 			while (true)
 			{
 				++index;
+				trace(getTimer());
 			}
 		}
 	}

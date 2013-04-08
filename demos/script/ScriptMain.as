@@ -9,6 +9,7 @@ package script
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.FileReference;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -67,23 +68,16 @@ package script
 			}
 			else
 			{
-				limit.recursion = 0xFFFF;
+				limit.recursion = 5;
+				new FileReference().save(swf.repack(), "recursion.swf");
 			}
 			
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
-			loader.loadBytes(swf.repack(), new LoaderContext(false, new ApplicationDomain()));
+			TIME_OUT_MODE && loader.loadBytes(swf.repack(), new LoaderContext(false, new ApplicationDomain()));
 			
-			recursive(1);
 			addEventListener(Event.ENTER_FRAME, frameHandler);
 		}
-		
-		private function recursive(loop:uint = 0):uint
-		{
-			trace(loop);
-			return recursive(++loop);
-		}
-
 		
 		protected function frameHandler(event:Event):void
 		{
