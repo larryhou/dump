@@ -90,8 +90,6 @@ package com.larrio.dump.tags
 		/**
 		 * identifiers
 		 */		
-		public function get names():Vector.<String> { return _names; }
-
-		
+		public function get names():Vector.<String> { return _names; }		
 	}
 }

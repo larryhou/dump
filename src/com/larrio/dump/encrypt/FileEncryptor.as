@@ -10,7 +10,6 @@ package com.larrio.dump.encrypt
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.SymbolClassTag;
 	import com.larrio.dump.tags.TagType;
-	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.Dictionary;
 	
@@ -74,7 +73,6 @@ package com.larrio.dump.encrypt
 			var name:String;
 			for each(item in _queue)
 			{
-				item.tag.modified = true;
 				replace(item.strings, 1);
 			}
 			
@@ -91,7 +89,6 @@ package com.larrio.dump.encrypt
 					{
 						if (tag.ids[i] == 0)
 						{
-							tag.modified = true;
 							def = tag.symbols[i];
 							def = def.replace(/(\.)(\w+)$/, ":$2");
 							

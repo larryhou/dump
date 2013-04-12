@@ -6,6 +6,9 @@ package com.larrio.dump.tags
 	import com.larrio.dump.model.ColorTransformRecord;
 	import com.larrio.dump.model.MatrixRecord;
 	
+	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -16,19 +19,19 @@ package com.larrio.dump.tags
 		public static const TYPE:uint = TagType.PLACE_OBJECT2;
 		
 		protected var _hasClipActions:uint;
-		protected var _hasClipDepth:uint;
+		protected var _hasMaskDepth:uint;
 		
 		protected var _hasName:uint;
 		protected var _hasRatio:uint;
 		protected var _hasColorTransform:uint;
 		protected var _hasMatrix:uint;
 		protected var _hasCharacter:uint;
-		protected var _move:uint;
+		protected var _moved:uint;
 		
-		protected var _ratio:uint;
+		protected var _morphRatio:uint;
 		protected var _name:String;
-		protected var _clipDepth:uint;
 		
+		protected var _maskDepth:uint;
 		protected var _clipActions:ClipActions;
 		
 		
@@ -48,15 +51,15 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_hasClipActions = decoder.readUB(1);
-			_hasClipDepth = decoder.readUB(1);
+			_hasMaskDepth = decoder.readUB(1);
 			_hasName = decoder.readUB(1);
 			_hasRatio = decoder.readUB(1);
 			_hasColorTransform = decoder.readUB(1);
 			_hasMatrix = decoder.readUB(1);
 			_hasCharacter = decoder.readUB(1);
-			_move = decoder.readUB(1);
+			_moved = decoder.readUB(1);
 			
-			_depth = decoder.readUI16();
+			depth = decoder.readUI16();
 			if (_hasCharacter)
 			{
 				_character = decoder.readUI16();
@@ -76,7 +79,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				_ratio = decoder.readUI16();
+				_morphRatio = decoder.readUI16();
 			}
 			
 			if (_hasName)
@@ -84,9 +87,9 @@ package com.larrio.dump.tags
 				_name = decoder.readSTR();
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				_clipDepth = decoder.readUI16();
+				_maskDepth = decoder.readUI16();
 			}
 			
 			if (_hasClipActions)
@@ -104,15 +107,15 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			encoder.writeUB(_hasClipActions, 1);
-			encoder.writeUB(_hasClipDepth, 1);
+			encoder.writeUB(_hasMaskDepth, 1);
 			encoder.writeUB(_hasName, 1);
 			encoder.writeUB(_hasRatio, 1);
 			encoder.writeUB(_hasColorTransform, 1);
 			encoder.writeUB(_hasMatrix, 1);
 			encoder.writeUB(_hasCharacter, 1);
-			encoder.writeUB(_move, 1);
+			encoder.writeUB(_moved, 1);
 			
-			encoder.writeUI16(_depth);
+			encoder.writeUI16(depth);
 			
 			if (_hasCharacter)
 			{
@@ -131,7 +134,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				encoder.writeUI16(_ratio);
+				encoder.writeUI16(_morphRatio);
 			}
 			
 			if (_hasName)
@@ -139,9 +142,9 @@ package com.larrio.dump.tags
 				encoder.writeSTR(_name);
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				encoder.writeUI16(_clipDepth);
+				encoder.writeUI16(_maskDepth);
 			}
 			
 			if (_hasClipActions)
@@ -156,7 +159,7 @@ package com.larrio.dump.tags
 		override public function toString():String
 		{
 			var result:XML = new XML("<PlaceObject2Tag/>");
-			result.@depth = _depth;
+			result.@depth = depth;
 			if (_hasName)
 			{
 				result.@name = _name;
@@ -169,7 +172,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				result.@ratio = _ratio;
+				result.@ratio = _morphRatio;
 			}
 			
 			if (_hasMatrix)
@@ -182,9 +185,9 @@ package com.larrio.dump.tags
 				result.appendChild(new XML(_colorTransform.toString()));
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				result.@clipDepth = _clipDepth;
+				result.@maskDepth = _maskDepth;
 			}
 			
 			return result.toXMLString();	
@@ -192,28 +195,101 @@ package com.larrio.dump.tags
 		
 		/**
 		 * Defines a character to be moved
+		 *  • PlaceFlagMove = 0 and PlaceFlagHasCharacter = 1
+		 *	  A new character (with ID of CharacterId) is placed on the display list at the specified depth. 
+		 *	  Other fields set the attributes of this new character.
+		 *	• PlaceFlagMove = 1 and PlaceFlagHasCharacter = 0
+		 *	  The character at the specified depth is modified. Other fields modify the attributes of this character. 
+		 *	  Because any given depth can have only one character, no CharacterId is required.
+		 *	• PlaceFlagMove = 1 and PlaceFlagHasCharacter = 1
+		 *	  The character at the specified Depth is removed, and a new character (with ID of CharacterId) is placed at that depth. 
+		 *	  Other fields set the attributes of this new character.
 		 */		
-		public function get move():uint { return _move; }
+		public function get moved():Boolean { return Boolean(_moved); }
+		public function set moved(value:Boolean):void
+		{
+			_moved = uint(value);
+		}
 
 		/**
-		 * ratio
+		 * The Ratio field specifies a morph ratio for the character being added or modified. 
+		 * This field applies only to characters defined with DefineMorphShape, and controls how far the morph has progressed. 
+		 * A ratio of zero displays the character at the start of the morph. 
+		 * A ratio of 65535 displays the character at the end of the morph. 
+		 * For values between zero and 65535 Flash Player interpolates between the start and end shapes, and displays an in- between shape.
 		 */		
-		public function get ratio():uint { return _ratio; }
+		public function get morphRatio():uint { return _morphRatio; }
+		public function set morphRatio(value:uint):void
+		{
+			_morphRatio = value;
+			_hasRatio = 1;
+		}
 
 		/**
-		 * Name of character
+		 * The Name field specifies a name for the character being added or modified. 
+		 * This field is typically used with sprite characters, and is used to identify the sprite for SetTarget actions. 
+		 * It allows the main file (or other sprites) to perform actions inside the sprite
 		 */		
 		public function get name():String { return _name; }
+		public function set name(value:String):void
+		{
+			_name = value;
+			_hasName = 1;
+		}
 
 		/**
-		 * Clip depth
+		 * The ClipDepth field specifies the top-most depth that will be masked by the character being added. 
+		 * A ClipDepth of zero indicates that this is not a clipping character.
+		 */	
+		public function get maskDepth():uint { return _maskDepth; }
+		public function set maskDepth(value:uint):void
+		{
+			_maskDepth = value;
+			_hasMaskDepth = 1;
+		}
+		
+		/**
+		 * 显示对象对应特征ID
+		 * The CharacterId field specifies the character to be added to the display list. 
+		 * CharacterId is used only when a new character is being added. 
+		 * If a character that is already on the display list is being modified, the CharacterId field is absent.
 		 */		
-		public function get clipDepth():uint { return _clipDepth; }
+		public function set character(value:uint):void
+		{
+			_character = value;
+			_hasCharacter = 1;
+		}
+		
+		/**
+		 * 设置几何变形标记位
+		 * The Matrix field specifies the position, scale and rotation of the character being added or modified.
+		 */		
+		override public function set matrix(value:Matrix):void
+		{
+			super.matrix = value;
+			_hasMatrix = 1;
+		}
+		
+		/**
+		 * 设置颜色变换标记位
+		 * The ColorTransform field specifies the color effect applied to the character being added or modified.
+		 */		
+		override public function set colorTransform(value:ColorTransform):void
+		{
+			super.colorTransform = value;
+			_hasColorTransform = 1;
+		}
 
 		/**
-		 * Clip Actions Data
+		 * The ClipActions field, which is valid only for placing sprite characters, 
+		 * defines one or more event handlers to be invoked when certain events occur.
 		 */		
 		public function get clipActions():ClipActions { return _clipActions; }
+		public function set clipActions(value:ClipActions):void
+		{
+			_clipActions = value;
+			_hasClipActions = 1;
+		}
 
 	}
 }

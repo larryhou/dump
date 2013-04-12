@@ -44,13 +44,13 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_hasClipActions = decoder.readUB(1);
-			_hasClipDepth = decoder.readUB(1);
+			_hasMaskDepth = decoder.readUB(1);
 			_hasName = decoder.readUB(1);
 			_hasRatio = decoder.readUB(1);
 			_hasColorTransform = decoder.readUB(1);
 			_hasMatrix = decoder.readUB(1);
 			_hasCharacter = decoder.readUB(1);
-			_move = decoder.readUB(1);
+			_moved = decoder.readUB(1);
 			
 			assertTrue(decoder.readUB(3) == 0);
 			
@@ -60,7 +60,7 @@ package com.larrio.dump.tags
 			_hasBlendMode = decoder.readUB(1);
 			_hasFilterList = decoder.readUB(1);
 			
-			_depth = decoder.readUI16();
+			depth = decoder.readUI16();
 			
 			if (_hasClassName)
 			{
@@ -86,7 +86,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				_ratio = decoder.readUI16();
+				_morphRatio = decoder.readUI16();
 			}
 			
 			if (_hasName)
@@ -94,9 +94,9 @@ package com.larrio.dump.tags
 				_name = decoder.readSTR();
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				_clipDepth = decoder.readUI16();
+				_maskDepth = decoder.readUI16();
 			}
 			
 			if (_hasFilterList)
@@ -129,13 +129,13 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			encoder.writeUB(_hasClipActions, 1);
-			encoder.writeUB(_hasClipDepth, 1);
+			encoder.writeUB(_hasMaskDepth, 1);
 			encoder.writeUB(_hasName, 1);
 			encoder.writeUB(_hasRatio, 1);
 			encoder.writeUB(_hasColorTransform, 1);
 			encoder.writeUB(_hasMatrix, 1);
 			encoder.writeUB(_hasCharacter, 1);
-			encoder.writeUB(_move, 1);
+			encoder.writeUB(_moved, 1);
 			
 			encoder.writeUB(0, 3);
 			
@@ -145,7 +145,7 @@ package com.larrio.dump.tags
 			encoder.writeUB(_hasBlendMode, 1);
 			encoder.writeUB(_hasFilterList, 1);
 			
-			encoder.writeUI16(_depth);
+			encoder.writeUI16(depth);
 			
 			if (_hasClassName)
 			{
@@ -169,7 +169,7 @@ package com.larrio.dump.tags
 			
 			if (_hasRatio)
 			{
-				encoder.writeUI16(_ratio);
+				encoder.writeUI16(_morphRatio);
 			}
 			
 			if (_hasName)
@@ -177,9 +177,9 @@ package com.larrio.dump.tags
 				encoder.writeSTR(_name);
 			}
 			
-			if (_hasClipDepth)
+			if (_hasMaskDepth)
 			{
-				encoder.writeUI16(_clipDepth);
+				encoder.writeUI16(_maskDepth);
 			}
 			
 			if (_hasFilterList)
@@ -226,7 +226,7 @@ package com.larrio.dump.tags
 			
 			if (_hasCacheAsBitmap)
 			{
-				result.@bitmapCache = _bitmapCache;
+				result.@bitmapCache = this.bitmapCache;
 			}
 			
 			return result.toXMLString();
@@ -234,24 +234,67 @@ package com.larrio.dump.tags
 
 		/**
 		 * Name of the class to place
+		 * 
+		 * The PlaceFlagHasClassName field indicates that a class name will be specified, indicating the type of object to place.
+		 * Because we no longer use ImportAssets in ActionScript 3.0, 
+		 * there needed to be some way to place a Timeline object using a class imported from another SWF, 
+		 * which does not have a 16-bit character ID in the instantiating SWF. Supported in Flash Player 9.0.45.0 and later.
 		 */		
 		public function get className():String { return _className; }
+		public function set className(value:String):void
+		{
+			_className = value;
+			_hasClassName = 1;
+		}
 
 		/**
 		 * List of filters on this object
 		 */		
 		public function get filterList():FilterList { return _filterList; }
+		public function set filderList(value:FilterList):void
+		{
+			_filterList = value;
+			_hasFilterList = 1;
+		}
 
 		/**
 		 * layer blend mode
 		 */		
 		public function get blendMode():uint { return _blendMode; }
+		public function set blendMode(value:uint):void
+		{
+			_blendMode = _blendMode;
+			_hasBlendMode = 1;
+		}
 
 		/**
 		 * 0 = Bitmap cache disabled
 		 * 1-255 = Bitmap cache enabled
+		 * The PlaceFlagHasCacheAsBitmap field specifies whether Flash Player should internally cache a display object as a bitmap. 
+		 * Caching can speed up rendering when the object does not change frequently.
 		 */		
-		public function get bitmapCache():uint { return _bitmapCache; }
-
+		public function get bitmapCache():Boolean { return Boolean(_bitmapCache); }
+		public function set bitmapCache(value:Boolean):void
+		{
+			_bitmapCache = uint(value);
+		}
+		
+		/**
+		 * The PlaceFlagHasImage field indicates the creation of native Bitmap objects on the display list. 
+		 * When PlaceFlagHasClassName and PlaceFlagHasImage are both defined, 
+		 * this indicates a Bitmap class to be loaded from another SWF. 
+		 * Immediately following the flags is the class name (as above) for the BitmapData class in the loaded SWF. 
+		 * A Bitmap object will be placed with the named BitmapData class as it's internal data. 
+		 * When PlaceFlagHasCharacter and PlaceFlagHasImage are both defined, this indicates a Bitmap from the current SWF. 
+		 * The BitmapData to be used as its internal data will be defined by the following characterID. 
+		 * This only occurs when the BitmapData has a class associated with it. 
+		 * If there is no class associated with the BitmapData, DefineShape should be used with a Bitmap fill. 
+		 * Supported in Flash Player 9.0.45.0 and later.
+		 */		
+		public function get hasImage():Boolean { return Boolean(_hasImage); }
+		public function set hasImage(value:Boolean):void
+		{
+			_hasImage = uint(value);
+		}
 	}
 }

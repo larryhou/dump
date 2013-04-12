@@ -50,7 +50,6 @@ package com.larrio.dump.tags
 				_names[i] = decoder.readSTR();
 			}
 			
-			trace(this);
 		}
 		
 		/**
@@ -75,7 +74,6 @@ package com.larrio.dump.tags
 				encoder.writeSTR(_names[i]);
 			}
 			
-			trace(this);
 		}
 		
 		/**

@@ -15,15 +15,30 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.FILE_ATTRIBUTES;
 		
-		private var _blit:Boolean;
+		/**
+		 * 是否使用硬件加速
+		 */		
+		public var blit:Boolean;
 		
-		private var _gpu:Boolean;
+		/**
+		 * 是有使用GPU加速
+		 */	
+		public var gpu:Boolean;
 		
-		private var _metadata:Boolean;
+		/**
+		 * 是否有metadata
+		 */	
+		public var metadata:Boolean;
 		
-		private var _as3:Boolean;
+		/**
+		 * 是否为ActionScript3语言
+		 */	
+		public var as3:Boolean;
 		
-		private var _network:Boolean;
+		/**
+		 * 是否可以访问网络资源
+		 */
+		public var network:Boolean;
 		
 		/**
 		 * 构造函数
@@ -42,14 +57,14 @@ package com.larrio.dump.tags
 		{
 			assertTrue(decoder.readUB(1) == 0);
 			
-			_blit = Boolean(decoder.readUB(1));
-			_gpu = Boolean(decoder.readUB(1));
-			_metadata = Boolean(decoder.readUB(1));
-			_as3 = Boolean(decoder.readUB(1));
+			blit = Boolean(decoder.readUB(1));
+			gpu = Boolean(decoder.readUB(1));
+			metadata = Boolean(decoder.readUB(1));
+			as3 = Boolean(decoder.readUB(1));
 			
 			assertTrue(decoder.readUB(2) == 0);
 			
-			_network = Boolean(decoder.readUB(1));
+			network = Boolean(decoder.readUB(1));
 			
 			assertTrue(decoder.readUB(24) == 0);
 		}
@@ -62,14 +77,14 @@ package com.larrio.dump.tags
 		{
 			encoder.writeUB(0, 1);
 			
-			encoder.writeUB(int(_blit), 1);
-			encoder.writeUB(int(_gpu), 1);
-			encoder.writeUB(int(_metadata), 1);
-			encoder.writeUB(int(_as3), 1);
+			encoder.writeUB(int(blit), 1);
+			encoder.writeUB(int(gpu), 1);
+			encoder.writeUB(int(metadata), 1);
+			encoder.writeUB(int(as3), 1);
 			
 			encoder.writeUB(0, 2);
 			
-			encoder.writeUB(int(_network), 1);
+			encoder.writeUB(int(network), 1);
 			
 			encoder.writeUB(0, 24);
 			encoder.flush();
@@ -84,39 +99,13 @@ package com.larrio.dump.tags
 			var item:XML;
 			var result:XML = new XML("<FileAttributesTag/>");
 			
-			result.@blit = _blit;
-			result.@gpu = _gpu;
-			result.@metadata = _metadata;
-			result.@as3 = _as3;
-			result.@network = _network;
+			result.@blit = blit;
+			result.@gpu = gpu;
+			result.@metadata = metadata;
+			result.@as3 = as3;
+			result.@network = network;
 			
 			return result.toXMLString();
-		}
-
-		/**
-		 * 是否使用硬件加速
-		 */		
-		public function get blit():Boolean { return _blit; }
-
-		/**
-		 * 是有使用GPU加速
-		 */		
-		public function get gpu():Boolean { return _gpu; }
-
-		/**
-		 * 是否有metadata
-		 */		
-		public function get metadata():Boolean { return _metadata; }
-
-		/**
-		 * 是否为ActionScript3语言
-		 */		
-		public function get as3():Boolean { return _as3; }
-
-		/**
-		 * 是否可以访问网络资源
-		 */		
-		public function get network():Boolean { return _network; }
-		
+		}		
 	}
 }

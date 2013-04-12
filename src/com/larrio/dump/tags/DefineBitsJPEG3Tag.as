@@ -93,7 +93,6 @@ package com.larrio.dump.tags
 			encoder.writeBytes(_data);
 			
 			_bitmapAlphaData.compress();
-			_compressed = true;
 			
 			encoder.writeBytes(_bitmapAlphaData);
 		}

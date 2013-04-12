@@ -4,6 +4,8 @@ package com.larrio.dump.model
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	
+	import flash.geom.ColorTransform;
+	
 	/**
 	 * 
 	 * @author larryhou
@@ -17,15 +19,15 @@ package com.larrio.dump.model
 		
 		private var _multiplier:uint;
 		
-		private var _redOffset:uint;
-		private var _greenOffset:uint;
-		private var _blueOffset:uint;
-		private var _alphaOffset:uint;
+		private var _redOffset:int;
+		private var _greenOffset:int;
+		private var _blueOffset:int;
+		private var _alphaOffset:int;
 		
-		private var _redMultiplier:uint;
-		private var _greenMultiplier:uint;
-		private var _blueMultiplier:uint;
-		private var _alphaMultiplier:uint;
+		private var _redMultiplier:int;
+		private var _greenMultiplier:int;
+		private var _blueMultiplier:int;
+		private var _alphaMultiplier:int;
 		
 		/**
 		 * 构造函数
@@ -144,41 +146,124 @@ package com.larrio.dump.model
 		 * red offset
 		 */		
 		public function get redOffset():uint { return _redOffset; }
+		public function set redOffset(value:uint):void
+		{
+			_offset = 1;
+			_redOffset = value;
+		}
 
 		/**
 		 * green offset 
 		 */		
 		public function get greenOffset():uint { return _greenOffset; }
+		public function set greenOffset(value:uint):void
+		{
+			_offset = 1;
+			_greenOffset = value;
+		}
 
 		/**
 		 * blue offset
 		 */		
 		public function get blueOffset():uint { return _blueOffset; }
+		public function set blueOffset(value:uint):void
+		{
+			_offset = 1;
+			_blueOffset = value;
+		}
 
 		/**
 		 * red multiplier
 		 */		
-		public function get redMultiplier():uint { return _redMultiplier; }
+		public function get redMultiplier():Number { return _redMultiplier / 256; }
+		public function set redMultiplier(value:Number):void
+		{
+			_multiplier = 1;
+			_redMultiplier = value * 256 >> 0;
+		}
 
 		/**
 		 * green multiplier
 		 */		
-		public function get greenMultiplier():uint { return _greenMultiplier; }
+		public function get greenMultiplier():Number { return _greenMultiplier / 256; }
+		public function set greenMultiplier(value:Number):void
+		{
+			_multiplier = 1;
+			_greenMultiplier = value * 256 >> 0;
+		}
 
 		/**
 		 * blue multiplier
 		 */		
-		public function get blueMultiplier():uint { return _blueMultiplier; }
+		public function get blueMultiplier():Number { return _blueMultiplier / 256; }
+		public function set blueMultiplier(value:Number):void
+		{
+			_multiplier = 1;
+			_blueMultiplier = value * 256 >> 0;
+		}
 
 		/**
 		 * alpha offset
 		 */		
 		public function get alphaOffset():uint { return _alphaOffset; }
+		public function set alphaOffset(value:uint):void
+		{
+			_alpha = true;
+			
+			_offset = 1;
+			_alphaOffset = value;
+		}
 
 		/**
 		 * alpha multiplier
 		 */		
 		public function get alphaMultiplier():uint { return _alphaMultiplier; }
+		public function set alphaMultiplier(value:uint):void
+		{
+			_alpha = true;
+			
+			_multiplier = 1;
+			_alphaMultiplier = value;
+		}
 
+		/**
+		 * 把ColorTransformRecord转换成原生ColorTransform 
+		 */		
+		public function get transform():ColorTransform 
+		{ 
+			var result:ColorTransform = new ColorTransform();
+			result.redOffset = this.redOffset;
+			result.greenOffset = this.greenOffset;
+			result.blueOffset = this.blueOffset;
+			result.alphaOffset = this.alphaOffset;
+			
+			result.redMultiplier = this.redMultiplier;
+			result.greenMultiplier = this.greenMultiplier;
+			result.blueMultiplier = this.blueMultiplier;
+			result.alphaMultiplier = this.alphaMultiplier;
+			
+			return result; 
+		}
+		
+		/**
+		 * 把原生ColorTransform转换成ColorTransformRecord 
+		 */		
+		public function set transform(value:ColorTransform):void
+		{
+			this.redOffset = value.redOffset;
+			this.greenOffset = value.greenOffset;
+			this.blueOffset = value.blueOffset;
+			this.alphaOffset = value.alphaOffset;
+			
+			this.redMultiplier = value.redMultiplier;
+			this.greenMultiplier = value.greenMultiplier;
+			this.blueMultiplier = value.blueMultiplier;
+			this.alphaMultiplier = value.alphaMultiplier;
+			
+			if (_offset || _multiplier)
+			{
+				if (!_nbits) _nbits = 15;
+			}
+		}
 	}
 }

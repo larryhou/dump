@@ -12,7 +12,10 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.REMOVE_OBJECT;
 		
-		protected var _depth:uint;
+		/**
+		 * Depth of character
+		 */
+		protected var depth:uint;
 		
 		/**
 		 * 构造函数
@@ -30,7 +33,7 @@ package com.larrio.dump.tags
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
 			_character = decoder.readUI16();
-			_depth = decoder.readUI16();
+			depth = decoder.readUI16();
 		}
 		
 		/**
@@ -40,7 +43,7 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			encoder.writeUI16(_character);
-			encoder.writeUI16(_depth);
+			encoder.writeUI16(depth);
 		}
 		
 		/**
@@ -50,14 +53,17 @@ package com.larrio.dump.tags
 		{
 			var result:XML = new XML("<PlaceObjectTag/>");
 			result.@character = _character;
-			result.@depth = _depth;
+			result.@depth = depth;
 			return result.toXMLString();	
 		}
-
+		
 		/**
-		 * Depth of character
+		 * 需要移出显示列表的显示对象特征ID
 		 */		
-		public function get depth():uint { return _depth; }
+		public function set charactor(value:uint):void
+		{
+			_character = value;
+		}
 
 	}
 }

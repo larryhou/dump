@@ -64,9 +64,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function toString():String
 		{
-			var result:String = "";
-			result += _constants.strings[_name] + " type:" + _constants.strings[_type];
-			result += " from:" + _from + " to:" + _to + " target:" + _target;
+			var result:String = _target + "{" + _from + ", " + _to + "}";
+			result += "(" + _constants.multinames[_name] + ":" + (_constants.multinames[_type] || "*") + ")"
 			
 			return result;
 		}

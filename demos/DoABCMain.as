@@ -1,6 +1,7 @@
 package 
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.tags.DoABCTag;
 	
 	import flash.display.DisplayObject;
@@ -43,7 +44,7 @@ package
 		{		
 			var bytes:ByteArray;
 			bytes = loaderInfo.bytes;
-			bytes = new FileByteArray();
+			//bytes = new FileByteArray();
 			
 			var swf:SWFile = new SWFile(bytes);
 			
@@ -52,7 +53,16 @@ package
 			bytes = swf.repack();
 			//new FileReference().save(bytes, "encode.swf");
 			
-			swf = new SWFile(bytes);
+			try
+			{
+				swf = new SWFile(bytes);
+			} 
+			catch(err:Error) 
+			{
+				trace(err);
+			}
+			
+			const MAX_COUNT:uint = 10;
 			trace(swf.header);
 			
 			var callback:* = function(date:* = "OptionValue"):String
@@ -69,7 +79,7 @@ package
 					trace("\n\n-----------------------------------------\n");
 					//trace(tag.abc.constants.strings.join("\n"));
 					trace(tag.abc.files.join("\n"));
-					//break;
+					break;
 				}
 			}
 			

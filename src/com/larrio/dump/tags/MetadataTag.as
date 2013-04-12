@@ -13,7 +13,10 @@ package com.larrio.dump.tags
 	{
 		public static const TYPE:uint = TagType.META_DATA;
 		
-		private var _metadata:String;
+		/**
+		 * metadata字符串
+		 */		
+		public var metadata:String;
 		
 		/**
 		 * 构造函数
@@ -30,7 +33,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
-			_metadata = decoder.readSTR();
+			metadata = decoder.readSTR();
 		}
 		
 		/**
@@ -39,7 +42,7 @@ package com.larrio.dump.tags
 		 */		
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
-			encoder.writeSTR(_metadata);
+			encoder.writeSTR(metadata);
 		}
 		
 		/**
@@ -47,14 +50,9 @@ package com.larrio.dump.tags
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<MetadataTag>" + _metadata + "</MetadataTag>");
+			var result:XML = new XML("<MetadataTag>" + metadata + "</MetadataTag>");
 			return result.toXMLString();
 		}
-
-		/**
-		 * metadata字符串
-		 */		
-		public function get metadata():String { return _metadata; }
 
 	}
 }

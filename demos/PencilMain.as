@@ -19,7 +19,7 @@ package
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
-	[SWF(frameRate="60", width="1024", height="600")]
+	[SWF(frameRate="60", width="600", height="400")]
 	
 	
 	/**
