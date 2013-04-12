@@ -5,6 +5,7 @@ package
 	import com.larrio.dump.tags.DoABCTag;
 	
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
@@ -29,7 +30,7 @@ package
 		public var version:String = "v1.0";
 		protected var author:String = "larryhou";
 		
-		private var data:Class;
+		private var data:Class = MovieClip;
 		internal var key:*;
 		
 		private var _id:String;
