@@ -63,6 +63,16 @@ package com.larrio.dump.tags
 			
 			_abc.encode(encoder);
 		}
+		
+		/**
+		 * 格式化输出DoABCTag
+		 */		
+		public function toString():String
+		{
+			var result:String = "[DoABCTag]name: " + _name + ", flag: 0x" + _flags.toString(16).toUpperCase();
+			result += "\n" + _abc.files.join("\n");
+			return result;
+		}
 
 		/**
 		 * DoABC解析器
