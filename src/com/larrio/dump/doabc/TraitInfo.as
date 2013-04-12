@@ -150,6 +150,13 @@ package com.larrio.dump.doabc
 			var ns:NamespaceInfo = _abc.constants.namespaces[multiname.ns];
 			
 			var target:String = _abc.constants.strings[multiname.name];
+			var option:OptionInfo;
+			if (_data.index)
+			{
+				option = new OptionInfo(_abc.constants);
+				option.index = _data.index;
+				option.kind = _data.kind;
+			}
 			
 			switch (ns.kind)
 			{
@@ -190,12 +197,14 @@ package com.larrio.dump.doabc
 				case TraitType.SLOT:
 				{
 					result += "var " + target + ":" + (_abc.constants.multinames[_data.type] || "*");
+					if (option) result += " = " + option.toString();
 					break;
 				}
 					
 				case TraitType.CONST:
 				{
 					result += "const " + target + ":" + (_abc.constants.multinames[_data.type] || "*");
+					if (option) result += " = " + option.toString();
 					break;
 				}
 				
@@ -225,7 +234,7 @@ package com.larrio.dump.doabc
 			}
 			
 			return result;
-		}
+		}		
 
 		/**
 		 * 特征名称

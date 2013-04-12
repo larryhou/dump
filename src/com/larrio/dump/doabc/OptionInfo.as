@@ -11,8 +11,15 @@ package com.larrio.dump.doabc
 	 */
 	public class OptionInfo implements ICodec
 	{
-		private var _index:uint;
-		private var _kind:uint;
+		/**
+		 * 指向常量池某个数组的索引值 
+		 */	
+		public var index:uint;
+		
+		/**
+		 * 该属性确定了value具体指向哪个常量数组 
+		 */	
+		public var kind:uint;
 		
 		private var _constants:ConstantPool;
 		
@@ -31,8 +38,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_index = decoder.readEU30();
-			_kind = decoder.readUI8();
+			index = decoder.readEU30();
+			kind = decoder.readUI8();
 		}
 		
 		/**
@@ -41,8 +48,8 @@ package com.larrio.dump.doabc
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeEU30(_index);
-			encoder.writeUI8(_kind);
+			encoder.writeEU30(index);
+			encoder.writeUI8(kind);
 		}
 		
 		/**
@@ -52,29 +59,29 @@ package com.larrio.dump.doabc
 		{
 			var result:String = "";
 			
-			switch (_kind)
+			switch (kind)
 			{
 				case OptionKindType.INT:
 				{
-					result += _constants.ints[_index];
+					result += _constants.ints[index];
 					break;
 				}
 					
 				case OptionKindType.UINT:
 				{
-					result += _constants.uints[_index];
+					result += _constants.uints[index];
 					break;
 				}
 					
 				case OptionKindType.DOUBLE:
 				{
-					result += _constants.doubles[_index];
+					result += _constants.doubles[index];
 					break;
 				}
 					
 				case OptionKindType.UTF8:
 				{
-					result += '"' + _constants.strings[_index] + '"';
+					result += '"' + _constants.strings[index] + '"';
 					break;
 				}
 					
@@ -104,25 +111,13 @@ package com.larrio.dump.doabc
 					
 				default:
 				{
-					result += _constants.namespaces[_index];
+					result += _constants.namespaces[index];
 					break;
 				}
 			}
 			
 			return result;
 		}
-		
-		/**
-		 * 指向常量池某个数组的索引值 
-		 */		
-		public function get index():uint { return _index; }
-		
-		/**
-		 * 该属性确定了value具体指向哪个常量数组 
-		 * @return 
-		 * 
-		 */		
-		public function get kind():uint { return _kind; }
 		
 	}
 }
