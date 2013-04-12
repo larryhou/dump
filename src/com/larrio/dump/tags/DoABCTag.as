@@ -63,22 +63,6 @@ package com.larrio.dump.tags
 			
 			_abc.encode(encoder);
 		}
-		
-		/**
-		 * 打印DoABC解码信息
-		 */		
-		public function print():void
-		{
-			if (!_bytes) return;
-			
-			var decoder:FileDecoder = new FileDecoder();
-			decoder.writeBytes(_bytes);
-			decoder.position = 0;
-			
-			_abc.decode(decoder);
-			
-			decoder.length = 0;
-		}
 
 		/**
 		 * DoABC解析器
