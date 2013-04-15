@@ -16,15 +16,18 @@ package com.larrio.dump.flash.display.shape.collector
 	public class OutlineCollector extends AbstractCollector
 	{
 		private var _styles:Vector.<LineStyle>;
+		private var _includeInvisible:Boolean;
 		
 		private var _lineStyle:uint;
+		private var _index:uint;
 		
 		/**
 		 * 构造函数
 		 * create a [OutlineCollector] object
 		 */
-		public function OutlineCollector(shape:Shape = null)
+		public function OutlineCollector(shape:Shape = null, includeInvisible:Boolean = false)
 		{
+			this.includeInvisible = includeInvisible;
 			super(shape);
 		}
 		
@@ -62,12 +65,24 @@ package com.larrio.dump.flash.display.shape.collector
 			{
 				if (record.lineStyle)
 				{
-					changeLineStyle(_styles[record.lineStyle - 1]);
+					_index = record.lineStyle;
+					changeLineStyle(_styles[_index - 1]);
+				}
+				else
+				if (_includeInvisible)
+				{
+					_canvas.lineStyle(0.1, 0xFF0000, 1);
 				}
 				else
 				{
+					_index = 0;
 					_canvas.lineStyle(NaN);
 				}
+			}
+			else
+			if (!_index && _includeInvisible)
+			{
+				_canvas.lineStyle(0.1, 0xFF0000, 1);
 			}
 		}
 		
@@ -89,5 +104,15 @@ package com.larrio.dump.flash.display.shape.collector
 			
 			_canvas.curveTo(ctrlX, ctrlY, anchorX, anchorY);
 		}
+
+		/**
+		 * 包含不可见线条
+		 */		
+		public function get includeInvisible():Boolean { return _includeInvisible; }
+		public function set includeInvisible(value:Boolean):void
+		{
+			_includeInvisible = value;
+		}
+
 	}
 }
