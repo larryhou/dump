@@ -29,6 +29,8 @@ package
 	 */
 	public class PencilMain extends Sprite
 	{
+		private const LINE_THICKNESS:uint = 6;
+		
 		[Embed(source="../libs/fonts.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
@@ -65,12 +67,15 @@ package
 			
 			for each(collector in list)
 			{
-				if (collector.name == "Songti SC Bold") break;
+//				if (collector.name == "Wawati SC Regular") break;
+//				if (collector.name == "Yuanti SC Regular") break;
+				if (collector.name == "Xingkai SC Bold") break;
+//				if (collector.name == "Songti SC Bold") break;
 			}
 	
 //			collector = list[0];
 			
-			var chars:String = "侯坤峰";
+			var chars:String = "魔方";
 			var canvas:SimpleCanvas = new SimpleCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();
@@ -94,7 +99,7 @@ package
 			_container.addChild(_glyph);
 			
 			_pencil = _glyph.graphics;
-			_pencil.lineStyle(10, 0xFF00FF);
+			_pencil.lineStyle(LINE_THICKNESS, 0xFF00FF);
 			
 			_position = new Point();
 			_container.addChild(_alias = new (getDefinitionByName("Pencil") as Class)());
@@ -122,7 +127,7 @@ package
 				_glyph.x = rect.x + rect.width + 20;
 				
 				_pencil = _glyph.graphics;
-				_pencil.lineStyle(10, 0xFF00FF);
+				_pencil.lineStyle(LINE_THICKNESS, 0xFF00FF);
 				
 				forward();
 				return;
@@ -153,7 +158,7 @@ package
 				
 				var pos:Point;
 				var data:Object = {t: 0};
-				TweenLite.to(data, 0.3, {t: 1, onUpdate:function ():void
+				TweenLite.to(data, 0.15, {t: 1, onUpdate:function ():void
 				{
 					pos = bezier(list.concat(), data.t);
 					
