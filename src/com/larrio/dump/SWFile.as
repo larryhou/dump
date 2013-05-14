@@ -49,6 +49,12 @@ package com.larrio.dump
 				includes.push(TagType.SET_BACKGROUND_COLOR);
 				includes.push(TagType.FRAME_LABEL);
 				includes.push(TagType.PROTECT);
+				includes.push(TagType.PLACE_OBJECT);
+				includes.push(TagType.PLACE_OBJECT2);
+				includes.push(TagType.PLACE_OBJECT3);
+				includes.push(TagType.REMOVE_OBJECT);
+				includes.push(TagType.REMOVE_OBJECT2);
+				includes.push(TagType.SHOW_FRAME);
 				includes.push(TagType.END);
 				includes.push(TagType.EXPORT_ASSETS);
 				includes.push(TagType.IMPORT_ASSETS);
