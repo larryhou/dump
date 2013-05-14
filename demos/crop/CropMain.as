@@ -10,6 +10,7 @@ package crop
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
 	/**
@@ -69,6 +70,8 @@ package crop
 		{
 			var loaderInfo:LoaderInfo = e.currentTarget as LoaderInfo;
 			addChild(loaderInfo.content);
+			
+			//new FileReference().save(loaderInfo.bytes, "repack.swf");
 			
 		}
 	}
