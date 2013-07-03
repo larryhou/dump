@@ -105,8 +105,8 @@ package com.larrio.dump.tags
 		}
 
 		/**
-		 * 0：8位
-		 * 1：16位
+		 * 0: 8位
+		 * 1: 16位
 		 * 压缩音频始终16位
 		 */		
 		public function get sampleSize():uint { return _sampleSize; }
@@ -116,7 +116,8 @@ package com.larrio.dump.tags
 		}
 
 		/**
-		 * 单声道、立体声
+		 * 0: 单声道
+		 * 1：立体声
 		 */		
 		public function get soundType():uint { return _soundType; }
 		public function set soundType(value:uint):void
