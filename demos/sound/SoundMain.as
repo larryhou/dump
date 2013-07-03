@@ -5,8 +5,15 @@ package sound
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.media.Sound;
 	import flash.net.FileReference;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
 	import flash.text.engine.BreakOpportunity;
 	
 	/**
@@ -25,17 +32,48 @@ package sound
 		 */
 		public function SoundMain()
 		{
+			//setup();
+			
+			verify();
+		}
+		
+		private function setup():void
+		{
+			var soundTag:DefineSoundTag;
 			var swf:SWFile = new SWFile(new FileByteArray());
+			//			var swf:SWFile = new SWFile(loaderInfo.bytes);
 			for each(var tag:SWFTag in swf.tags)
 			{
 				if (tag.type == TagType.DEFINE_SOUND)
 				{
-					trace(tag);
+					soundTag = tag as DefineSoundTag;
+					trace(soundTag);
+					
+					soundTag.sampleCount = 0;
+					
 					//new FileReference().save((tag as DefineSound).data, "extract.mp3");
 					break;
 				}
 			}
-			trace(swf);
+			
+			new FileReference().save(swf.repack(), "S02.swf");
+		}
+		
+		private function verify():void
+		{
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
+			loader.load(new URLRequest("../libs/S02.swf"), new LoaderContext(false, ApplicationDomain.currentDomain));
+		}
+		
+		protected function completeHandler(event:Event):void
+		{
+			var loaderInfo:LoaderInfo = event.currentTarget as LoaderInfo;
+			var cls:Class = loaderInfo.applicationDomain.getDefinition("larrio") as Class;
+			var s:Sound = new cls();
+			s.play();
+			
+			trace(s);
 		}
 	}
 }
