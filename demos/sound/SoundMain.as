@@ -1,7 +1,7 @@
 package sound
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.tags.DefineSound;
+	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	

@@ -299,7 +299,7 @@ package com.larrio.dump.tags
 					
 				case TagType.DEFINE_SOUND:
 				{
-					return new DefineSound();
+					return new DefineSoundTag();
 				}
 			}
 			
