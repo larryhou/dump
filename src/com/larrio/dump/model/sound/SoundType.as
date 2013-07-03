@@ -11,7 +11,7 @@ package com.larrio.dump.model.sound
 		/**
 		 * 单声道 
 		 */		
-		public static const MOMO:uint = 0;
+		public static const MONO:uint = 0;
 		
 		/**
 		 * 立体声
