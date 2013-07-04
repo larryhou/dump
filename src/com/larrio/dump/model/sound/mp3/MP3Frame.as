@@ -51,7 +51,7 @@ package com.larrio.dump.model.sound.mp3
 		{
 			if (source.bytesAvailable < 4) return false;
 			
-			var flags:uint = source.readUnsignedByte();
+			var flags:uint = source.readUnsignedInt();
 			source.position -= 4;
 			
 			var decoder:FileDecoder = new FileDecoder();
@@ -100,7 +100,12 @@ package com.larrio.dump.model.sound.mp3
 			decoder.byteAlign();
 			
 			_data = new ByteArray();
-			decoder.readBytes(_data, 0, caculateSampleSize());
+			var size:uint = caculateSampleSize();
+			
+			if (decoder.bytesAvailable)
+			{
+				decoder.readBytes(_data, 0, size);
+			}
 		}	
 				
 		/**
@@ -125,7 +130,10 @@ package com.larrio.dump.model.sound.mp3
 			encoder.writeUB(_emphasis, 2);
 			encoder.flush();
 			
-			encoder.writeBytes(_data);
+			if (_data.length)
+			{
+				encoder.writeBytes(_data);
+			}
 		}
 		
 		/**
@@ -135,7 +143,7 @@ package com.larrio.dump.model.sound.mp3
 		{
 			var realVersion:uint = MpegVersion.getVersion(_version);
 			var realBitRate:uint = BitRate.getRate(_bitrate, realVersion, MpegLayer.getLayer(_layer));
-			var realSamplingRate:uint = SamplingRate.getRate(_samplingRate, realVersion);
+			var realSamplingRate:uint = SamplingRate.getRate(_samplingRate, _version);
 			
 			return ((_version == MpegVersion.MPEG1? 144 : 72) * realBitRate) / realSamplingRate + _padding - 4;
 		}
@@ -152,12 +160,28 @@ package com.larrio.dump.model.sound.mp3
 			result.@version = realVersion;
 			result.@layer = realLayer;
 			result.@bitRate = BitRate.getRate(_bitrate, realVersion, realLayer);
-			result.@samplingRate = SamplingRate.getRate(_samplingRate, realVersion);
-			result.@channelMode = _channelMode;
+			result.@samplingRate = SamplingRate.getRate(_samplingRate, _version);
+			result.@channelMode = getChannelMode();
 			result.@orignal = _original;
 			result.@copyright = _copyright;
 			result.@sampleSize = _data? _data.length : 0;
+			result.@length = (_data? _data.length : 0) + 4;
 			return result.toXMLString();
+		}
+		
+		/**
+		 * 获取升到字符串表示
+		 */		
+		private function getChannelMode():String
+		{
+			switch(_channelMode)
+			{
+				case 0:case 1:return "Stereo";
+				case 2:return "Dual";
+				case 3:return "Mono";
+			}
+			
+			return "unknown";
 		}
 
 		/**

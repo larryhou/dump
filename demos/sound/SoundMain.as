@@ -37,9 +37,11 @@ package sound
 		 */
 		public function SoundMain()
 		{
-			//setup();
+			_mp3 = new MP3File();
 			
-			verify();
+			setup();
+			
+			//verify();
 		}
 		
 		private function setup():void
@@ -54,14 +56,26 @@ package sound
 					soundTag = tag as DefineSoundTag;
 					trace(soundTag);
 					
-					soundTag.sampleCount = 10000;
+					parseMP3Data(soundTag.data);
+					
+					//soundTag.sampleCount = 10000;
 					
 					//new FileReference().save((tag as DefineSound).data, "extract.mp3");
 					break;
 				}
 			}
 			
-			new FileReference().save(swf.repack(), "S02.swf");
+			//new FileReference().save(swf.repack(), "S02.swf");
+		}
+		
+		private function parseMP3Data(data:ByteArray):void
+		{
+			var decoder:FileDecoder = new FileDecoder();
+			decoder.writeBytes(data);
+			decoder.position = 0;
+			
+			_mp3.decode(decoder);
+			trace(_mp3);
 		}
 		
 		private function countSamples(mp3:ByteArray):uint

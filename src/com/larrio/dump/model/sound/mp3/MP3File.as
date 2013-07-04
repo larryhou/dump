@@ -18,6 +18,9 @@ package com.larrio.dump.model.sound.mp3
 		private var _tags:Vector.<ID3Tag>;
 		
 		private var _sampleCount:uint;
+		private var _skipBytes:uint;
+		
+		private var _length:uint;
 		
 		/**
 		 * 构造函数
@@ -34,7 +37,10 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_skipBytes = 0;
 			_sampleCount = 0;
+			
+			_length = decoder.length;
 			_seekSamples = decoder.readS16();
 			
 			_tags = new Vector.<ID3Tag>;
@@ -61,7 +67,10 @@ package com.larrio.dump.model.sound.mp3
 					_frames.push(frame);
 				}
 				
-				if (position == decoder.position) decoder.readByte();
+				if (position == decoder.position) 
+				{
+					decoder.readByte(); _skipBytes++;
+				}
 			}
 			
 			assertTrue(decoder.bytesAvailable == 0);
@@ -85,7 +94,18 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function toString():String
 		{
-			return "<MP3File/>";	
+			var result:XML = new XML("<MP3File/>");
+			result.@frameCount = _frames.length;
+			result.@sampleCount = _sampleCount;
+			result.@id3Count = _tags.length;
+			result.@skipBytes = _skipBytes;
+			result.@length = _length;
+			for (var i:int = 0, length:uint = _frames.length; i < length; i++)
+			{
+				result.appendChild(new XML(_frames[i].toString()));
+			}
+			
+			return result.toXMLString();
 		}
 
 		/**

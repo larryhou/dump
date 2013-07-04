@@ -65,7 +65,7 @@ package com.larrio.dump.model.sound.mp3
 			
 			// 3
 			key = createKey(1, 3);
-			list = _map[key] = [0];
+			list = map[key] = [0];
 			list.push(32);
 			list.push(40);
 			list.push(48);
@@ -145,7 +145,7 @@ package com.larrio.dump.model.sound.mp3
 			if (bits >= 0xF || bits == 0 || version <= 0 || version > 2 || layer <= 0 || layer > 3) return 0;
 			
 			var list:Array = _map[createKey(version, layer)] as Array;
-			return list[bits];
+			return list[bits] * 1000;
 		}
 	}
 }

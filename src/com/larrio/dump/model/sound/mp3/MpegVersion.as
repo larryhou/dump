@@ -27,7 +27,7 @@ package com.larrio.dump.model.sound.mp3
 		/**
 		 * 版本号转换 
 		 */		
-		public static function getVersion(value:uint):uint
+		public static function getVersion(value:uint, bitrate:Boolean = false):uint
 		{
 			switch (value)
 			{

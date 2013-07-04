@@ -58,7 +58,10 @@ package com.larrio.dump.model.sound.mp3
 			size |= (decoder.readUI8() & 0x7F) << 0;
 			
 			_data = new ByteArray();
-			decoder.readBytes(_data, 0, size);
+			if (decoder.bytesAvailable)
+			{
+				decoder.readBytes(_data, 0, size);
+			}
 		}
 		
 		/**
@@ -77,7 +80,10 @@ package com.larrio.dump.model.sound.mp3
 			encoder.writeUI8((size >>> 7) & 0x7F);
 			encoder.writeUI8((size >>> 0) & 0x7F);
 			
-			encoder.writeBytes(_data);
+			if (_data.length)
+			{
+				encoder.writeBytes(_data);
+			}
 		}
 		
 		/**
