@@ -53,7 +53,6 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public static function getRate(bits:uint, version:uint):uint
 		{
-			if (bits > 3 || bits == 1 || version > 2) return 0;
 			var list:Array = _map[version];
 			return list[bits];
 		}
