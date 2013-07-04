@@ -1,6 +1,7 @@
 package sound
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
@@ -15,6 +16,7 @@ package sound
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.text.engine.BreakOpportunity;
+	import flash.utils.ByteArray;
 	
 	/**
 	 * 
@@ -49,7 +51,7 @@ package sound
 					soundTag = tag as DefineSoundTag;
 					trace(soundTag);
 					
-					soundTag.sampleCount = 0;
+					soundTag.sampleCount = 10000;
 					
 					//new FileReference().save((tag as DefineSound).data, "extract.mp3");
 					break;
@@ -57,6 +59,13 @@ package sound
 			}
 			
 			new FileReference().save(swf.repack(), "S02.swf");
+		}
+		
+		private function countSamples(mp3:ByteArray):uint
+		{
+			
+			
+			return 0;
 		}
 		
 		private function verify():void
