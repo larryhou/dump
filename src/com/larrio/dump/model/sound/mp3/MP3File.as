@@ -15,6 +15,9 @@ package com.larrio.dump.model.sound.mp3
 		private var _seekSamples:int;
 		
 		private var _frames:Vector.<MP3Frame>;
+		private var _tags:Vector.<ID3Tag>;
+		
+		private var _sampleCount:uint;
 		
 		/**
 		 * 构造函数
@@ -31,14 +34,34 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			_sampleCount = 0;
 			_seekSamples = decoder.readS16();
+			
+			_tags = new Vector.<ID3Tag>;
 			_frames = new Vector.<MP3Frame>();
 			
-			var frame:MP3Frame;
+			var position:uint;
+			var frame:MP3Frame, id3:ID3Tag;
 			while (decoder.bytesAvailable)
 			{
-				frame = new MP3Frame();
-				frame.decode(decoder);
+				position = decoder.position;
+				while (ID3Tag.verify(decoder))
+				{
+					id3 = new ID3Tag();
+					id3.decode(decoder);
+					_tags.push(id3);
+				}
+				
+				while (MP3Frame.verify(decoder))
+				{
+					frame = new MP3Frame();
+					frame.decode(decoder);
+					
+					_sampleCount += frame.data.length / 2;	// MP3的样本大小为2字节
+					_frames.push(frame);
+				}
+				
+				if (position == decoder.position) decoder.readByte();
 			}
 			
 			assertTrue(decoder.bytesAvailable == 0);
@@ -51,7 +74,7 @@ package com.larrio.dump.model.sound.mp3
 		public function encode(encoder:FileEncoder):void
 		{
 			encoder.writeS16(_seekSamples);
-			for (var i:int = 0, lenght = _frames.length; i < lenght; i++)
+			for (var i:int = 0, length:uint = _frames.length; i < length; i++)
 			{
 				_frames[i].encode(encoder);
 			}
@@ -82,5 +105,10 @@ package com.larrio.dump.model.sound.mp3
 		{
 			_seekSamples = value;
 		}
+
+		/**
+		 * 采样数据总数
+		 */		
+		public function get sampleCount():uint { return _sampleCount; }
 	}
 }

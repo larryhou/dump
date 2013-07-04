@@ -42,6 +42,8 @@ package com.larrio.dump.model.sound.mp3
 			list.push(12000);
 			list.push(8000);
 			list.push(null);
+			
+			return map;
 		}
 		
 		/**

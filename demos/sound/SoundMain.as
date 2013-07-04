@@ -2,6 +2,7 @@ package sound
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.codec.FileDecoder;
+	import com.larrio.dump.model.sound.mp3.MP3File;
 	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
@@ -27,6 +28,8 @@ package sound
 	{
 		[Embed(source="../libs/S01.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
+		
+		private var _mp3:MP3File;
 		
 		/**
 		 * 构造函数

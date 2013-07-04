@@ -43,11 +43,35 @@ package com.larrio.dump.model.sound.mp3
 			
 		}
 		
-		public function verify():void
+		/**
+		 * 检测当前字节位置是否为MP3Frame对象
+		 * @param source	MP3字节数组
+		 */		
+		public static function verify(source:ByteArray):Boolean
 		{
+			if (source.bytesAvailable < 4) return false;
 			
+			var flags:uint = source.readUnsignedByte();
+			source.position -= 4;
+			
+			var decoder:FileDecoder = new FileDecoder();
+			decoder.writeUnsignedInt(flags);
+			decoder.position = 0;
+			
+			var result:Boolean = true;
+			result &&= decoder.readUB(11) == 0x7FF;	// check sync
+			result &&= decoder.readUB(2) != 1;		// check version
+			result &&= decoder.readUB(2) != 0;		// check layer
+			
+			decoder.readUB(1);
+			
+			var value:uint = decoder.readUB(4);
+			result &&= value != 15 && value != 0;	// check bitRate
+			result &&= decoder.readUB(2) != 3;		// check samplingRate
+			
+			return result;
 		}
-		
+				
 		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
@@ -77,6 +101,31 @@ package com.larrio.dump.model.sound.mp3
 			
 			_data = new ByteArray();
 			decoder.readBytes(_data, 0, caculateSampleSize());
+		}	
+				
+		/**
+		 * 二进制编码 
+		 * @param encoder	编码器
+		 */		
+		public function encode(encoder:FileEncoder):void
+		{
+			encoder.writeUB(_sync, 11);
+			encoder.writeUB(_version, 2);
+			encoder.writeUB(_layer, 2);
+			encoder.writeUB(_protection, 1);
+			encoder.writeUB(_bitrate, 4);
+			encoder.writeUB(_samplingRate, 2);
+			encoder.writeUB(_padding, 1);
+			encoder.writeUB(_reserved, 1);
+			
+			encoder.writeUB(_channelMode, 2);
+			encoder.writeUB(_extension, 2);
+			encoder.writeUB(_copyright, 1);
+			encoder.writeUB(_original, 1);
+			encoder.writeUB(_emphasis, 2);
+			encoder.flush();
+			
+			encoder.writeBytes(_data);
 		}
 		
 		/**
@@ -90,22 +139,25 @@ package com.larrio.dump.model.sound.mp3
 			
 			return ((_version == MpegVersion.MPEG1? 144 : 72) * realBitRate) / realSamplingRate + _padding - 4;
 		}
-				
-		/**
-		 * 二进制编码 
-		 * @param encoder	编码器
-		 */		
-		public function encode(encoder:FileEncoder):void
-		{
-			
-		}
 		
 		/**
 		 * 字符串输出
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var realLayer:uint = MpegLayer.getLayer(_layer);
+			var realVersion:uint = MpegVersion.getVersion(_version);
+			
+			var result:XML = new XML("<MP3Frame/>");
+			result.@version = realVersion;
+			result.@layer = realLayer;
+			result.@bitRate = BitRate.getRate(_bitrate, realVersion, realLayer);
+			result.@samplingRate = SamplingRate.getRate(_samplingRate, realVersion);
+			result.@channelMode = _channelMode;
+			result.@orignal = _original;
+			result.@copyright = _copyright;
+			result.@sampleSize = _data? _data.length : 0;
+			return result.toXMLString();
 		}
 
 		/**
