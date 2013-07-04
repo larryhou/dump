@@ -24,6 +24,7 @@ package com.larrio.dump.model.sound.mp3
 		private var _duration:Number;
 		
 		private var _standalone:Boolean;
+		private var _unknowns:Vector.<UnknownByte>;
 		
 		/**
 		 * 构造函数
@@ -54,6 +55,7 @@ package com.larrio.dump.model.sound.mp3
 			
 			_tags = new Vector.<ID3Tag>;
 			_frames = new Vector.<MP3Frame>();
+			_unknowns = new Vector.<UnknownByte>;
 			
 			var position:uint;
 			var frame:MP3Frame, id3:ID3Tag;
@@ -80,7 +82,8 @@ package com.larrio.dump.model.sound.mp3
 				
 				if (position == decoder.position) 
 				{
-					decoder.readByte(); _skipBytes++;
+					_skipBytes++;
+					_unknowns.push(new UnknownByte(decoder.position, decoder.readByte())); 
 				}
 			}
 			
@@ -117,10 +120,26 @@ package com.larrio.dump.model.sound.mp3
 			result.@id3Count = _tags.length;
 			result.@skipBytes = _skipBytes;
 			result.@length = _length;
-			for (var i:int = 0, length:uint = _frames.length; i < length; i++)
+			
+			var i:uint, len:uint;
+			for (i = 0, len = _frames.length; i < len; i++)
 			{
 				result.appendChild(new XML(_frames[i].toString()));
 			}
+			
+			var byte:UnknownByte, item:XML;
+			var bytes:XML = new XML("<Unknowns/>");
+			for (i = 0, len = _unknowns.length; i < len; i++)
+			{
+				byte = _unknowns[i];
+				item = new XML("<byte/>");
+				item.@offset = byte.offset;
+				item.@value = byte.byte.toString(16).toUpperCase();
+				item.@char = String.fromCharCode(byte.byte);
+				bytes.appendChild(item);
+			}
+			
+			result.appendChild(bytes);
 			
 			return result.toXMLString();
 		}
@@ -147,5 +166,11 @@ package com.larrio.dump.model.sound.mp3
 		 * 采样数据总数
 		 */		
 		public function get sampleCount():uint { return _sampleCount; }
+
+		/**
+		 * 为解析的未知字节信息列表
+		 */		
+		public function get unknowns():Vector.<UnknownByte> { return _unknowns; }
+
 	}
 }
