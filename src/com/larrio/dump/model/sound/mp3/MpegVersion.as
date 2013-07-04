@@ -27,16 +27,16 @@ package com.larrio.dump.model.sound.mp3
 		/**
 		 * 版本号转换 
 		 */		
-		public static function getVersion(value:uint, bitrate:Boolean = false):uint
+		public static function getVersion(value:uint):String
 		{
 			switch (value)
 			{
-				case 0: return 2;
-				case 2: return 2;
-				case 3: return 1;
+				case 0: return "MPEG2.5";
+				case 2: return "MPEG2";
+				case 3: return "MPEG1";
 			}
 			
-			return 0;
+			return "unknown";
 		}
 
 		

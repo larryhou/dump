@@ -26,16 +26,16 @@ package com.larrio.dump.model.sound.mp3
 		/**
 		 * 图层转换 
 		 */		
-		public static function getLayer(value:uint):uint
+		public static function getLayer(value:uint):String
 		{
 			switch (value)
 			{
-				case 1: return 3;
-				case 2: return 2;
-				case 3: return 1;
+				case 1: return "III";
+				case 2: return "II";
+				case 3: return "I";
 			}
 			
-			return 0;
+			return "unknown";
 		}
 	}
 }

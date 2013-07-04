@@ -2,6 +2,8 @@ package com.larrio.dump.tags
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.model.sound.SoundFormatType;
+	import com.larrio.dump.model.sound.SoundRateType;
 	
 	import flash.utils.ByteArray;
 	
@@ -16,7 +18,7 @@ package com.larrio.dump.tags
 		
 		private var _format:uint;
 		
-		private var _sampleRate:uint;
+		private var _samplingRate:uint;
 		
 		private var _sampleSize:uint;
 		
@@ -45,7 +47,7 @@ package com.larrio.dump.tags
 			_dict[_character] = this;
 			
 			_format = decoder.readUB(4);
-			_sampleRate = decoder.readUB(2);
+			_samplingRate = decoder.readUB(2);
 			_sampleSize = decoder.readUB(1);
 			_soundType = decoder.readUB(1);
 			
@@ -63,7 +65,7 @@ package com.larrio.dump.tags
 		{
 			encoder.writeUI16(_character);
 			encoder.writeUB(_format, 4);
-			encoder.writeUB(_sampleRate, 2);
+			encoder.writeUB(_samplingRate, 2);
 			encoder.writeUB(_sampleSize, 1);
 			encoder.writeUB(_soundType, 1);
 			
@@ -77,12 +79,13 @@ package com.larrio.dump.tags
 		public function toString():String
 		{
 			var result:XML = new XML("<DefineSoundTag/>");
-			result.@format = _format;
-			result.@sampleRate = _sampleRate;
-			result.@smapleSize = _sampleSize;
-			result.@soundType = _soundType;
+			result.@format = SoundFormatType.getFormat(_format);
+			result.@samplingRate = SoundRateType.getRate(_samplingRate);
+			result.@sampleCount = _sampleCount;
+			result.@sampleSize = _sampleSize == 0? "8" : "16";
+			result.@soundType = _soundType == 0? "Mono" : "Stereo";
 			result.@length = _data.length;
-			return result.toXMLString();	
+			return result.toXMLString();
 		}
 
 		/**
@@ -98,10 +101,10 @@ package com.larrio.dump.tags
 		 * 采样码率
 		 * @see com.larrio.dump.model.sound.SoundRateType
 		 */		
-		public function get sampleRate():uint { return _sampleRate; }
+		public function get sampleRate():uint { return _samplingRate; }
 		public function set sampleRate(value:uint):void
 		{
-			_sampleRate = value;
+			_samplingRate = value;
 		}
 
 		/**

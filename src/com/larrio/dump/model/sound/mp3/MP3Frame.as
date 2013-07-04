@@ -34,6 +34,9 @@ package com.larrio.dump.model.sound.mp3
 		private var _emphasis:uint;
 		private var _data:ByteArray;
 		
+		private var _duration:Number;
+		private var _sampleCount:uint;
+		
 		/**
 		 * 构造函数
 		 * create a [MP3Frame] object
@@ -106,6 +109,11 @@ package com.larrio.dump.model.sound.mp3
 			{
 				decoder.readBytes(_data, 0, size);
 			}
+			
+			var rbitRate:uint = BitRate.getRate(_bitrate, _version, _layer);
+			
+			_sampleCount = FrameSamples.getFrameCount(_version, _layer);
+			_duration = _data.length / rbitRate * 8;
 		}	
 				
 		/**
@@ -141,11 +149,10 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		private function caculateSampleSize():uint
 		{
-			var realVersion:uint = MpegVersion.getVersion(_version);
-			var realBitRate:uint = BitRate.getRate(_bitrate, realVersion, MpegLayer.getLayer(_layer));
-			var realSamplingRate:uint = SamplingRate.getRate(_samplingRate, _version);
+			var rbitRate:uint = BitRate.getRate(_bitrate, _version, _layer);
+			var rsamplingRate:uint = SamplingRate.getRate(_samplingRate, _version);
 			
-			return ((_version == MpegVersion.MPEG1? 144 : 72) * realBitRate) / realSamplingRate + _padding - 4;
+			return ((_version == MpegVersion.MPEG1? 144 : 72) * rbitRate) / rsamplingRate + _padding - 4;
 		}
 		
 		/**
@@ -153,13 +160,10 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function toString():String
 		{
-			var realLayer:uint = MpegLayer.getLayer(_layer);
-			var realVersion:uint = MpegVersion.getVersion(_version);
-			
 			var result:XML = new XML("<MP3Frame/>");
-			result.@version = realVersion;
-			result.@layer = realLayer;
-			result.@bitRate = BitRate.getRate(_bitrate, realVersion, realLayer);
+			result.@version = MpegVersion.getVersion(_version);
+			result.@layer = MpegLayer.getLayer(_layer);
+			result.@bitRate = BitRate.getRate(_bitrate, _version, _layer);
 			result.@samplingRate = SamplingRate.getRate(_samplingRate, _version);
 			result.@channelMode = getChannelMode();
 			result.@orignal = _original;
@@ -335,5 +339,15 @@ package com.larrio.dump.model.sound.mp3
 		{
 			_sync = value;
 		}
+
+		/**
+		 * 单帧播放时长
+		 */		
+		public function get duration():Number { return _duration; }
+
+		/**
+		 * 单帧包含样本数
+		 */		
+		public function get sampleCount():uint { return _sampleCount; }
 	}
 }

@@ -21,14 +21,18 @@ package com.larrio.dump.model.sound.mp3
 		private var _skipBytes:uint;
 		
 		private var _length:uint;
+		private var _duration:Number;
+		
+		private var _standalone:Boolean;
 		
 		/**
 		 * 构造函数
 		 * create a [MP3File] object
-		 */
-		public function MP3File()
+		 * @param standalone	是否为独立MP3文件，相对于SoundTag嵌入文件
+		 */		
+		public function MP3File(standalone:Boolean = false)
 		{
-			
+			_standalone = standalone;
 		}
 		
 		/**
@@ -38,10 +42,15 @@ package com.larrio.dump.model.sound.mp3
 		public function decode(decoder:FileDecoder):void
 		{
 			_skipBytes = 0;
+			
+			_duration = 0;
 			_sampleCount = 0;
 			
 			_length = decoder.length;
-			_seekSamples = decoder.readS16();
+			if (!_standalone)
+			{
+				_seekSamples = decoder.readS16();
+			}
 			
 			_tags = new Vector.<ID3Tag>;
 			_frames = new Vector.<MP3Frame>();
@@ -63,7 +72,9 @@ package com.larrio.dump.model.sound.mp3
 					frame = new MP3Frame();
 					frame.decode(decoder);
 					
-					_sampleCount += frame.data.length / 2;	// MP3的样本大小为2字节
+					_duration += frame.duration;
+					_sampleCount += frame.sampleCount;
+					
 					_frames.push(frame);
 				}
 				
@@ -82,7 +93,11 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeS16(_seekSamples);
+			if (!_standalone)
+			{
+				encoder.writeS16(_seekSamples);
+			}
+			
 			for (var i:int = 0, length:uint = _frames.length; i < length; i++)
 			{
 				_frames[i].encode(encoder);
@@ -97,6 +112,8 @@ package com.larrio.dump.model.sound.mp3
 			var result:XML = new XML("<MP3File/>");
 			result.@frameCount = _frames.length;
 			result.@sampleCount = _sampleCount;
+			result.@seekSamples = _seekSamples;
+			result.@duration = _duration.toFixed(1) + "s";
 			result.@id3Count = _tags.length;
 			result.@skipBytes = _skipBytes;
 			result.@length = _length;

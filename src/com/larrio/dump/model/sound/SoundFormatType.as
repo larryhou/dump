@@ -11,7 +11,7 @@ package com.larrio.dump.model.sound
 		/**
 		 * 未压缩 
 		 */		
-		public static const UNCOMP_NATIVE_ENDIANT:uint = 0;
+		public static const UNCOMP_NATIVE_ENDIAN:uint = 0;
 		
 		/**
 		 * ADPCM压缩
@@ -26,7 +26,7 @@ package com.larrio.dump.model.sound
 		/**
 		 * 未压缩 
 		 */		
-		public static const UNCOMP_LITTLE_ENDIANT:uint = 3;
+		public static const UNCOMP_LITTLE_ENDIAN:uint = 3;
 		
 		/**
 		 *  Nellymoser 16 kHz
@@ -47,6 +47,26 @@ package com.larrio.dump.model.sound
 		 * Speex 
 		 */		
 		public static const SPEEX:uint = 11;
+		
+		/**
+		 * 获取音频格式字符串表示
+		 */		
+		public static function getFormat(value:uint):String
+		{
+			switch (value)
+			{
+				case 0: return "Uncompressed, native-endian";
+				case 1: return "ADPCM";
+				case 2: return "MP3";
+				case 3: return "Uncompressed, little-endian";
+				case 4: return "Nellymoser 16 kHz";
+				case 5: return "Nellymoser 8 kHz";
+				case 6: return "Nellymoser";
+				case 11:return "Speex";
+			}
+			
+			return "Unknown";
+		}
 		
 	}
 }

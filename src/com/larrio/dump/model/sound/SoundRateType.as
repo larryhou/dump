@@ -27,5 +27,21 @@ package com.larrio.dump.model.sound
 		 * 44KHz 
 		 */		
 		public static const HZ_44K:uint = 3;
+		
+		/**
+		 * 获取音频采样频率字符串表示
+		 */		
+		public static function getRate(value:uint):String
+		{
+			switch(value)
+			{
+				case 0:return "5.5kHz";
+				case 1:return "11kHz";
+				case 2:return "22kHz";
+				case 3:return "44kHz";
+			}
+			
+			return "unknown";
+		}
 	}
 }

@@ -26,7 +26,7 @@ package com.larrio.dump.model.sound.mp3
 			var map:Dictionary = new Dictionary(false);
 			
 			// 1
-			key = createKey(1, 1);
+			key = createKey(1, MpegLayer.LAYER1);
 			list = map[key] = [0];
 			list.push(32);
 			list.push(64);
@@ -45,7 +45,7 @@ package com.larrio.dump.model.sound.mp3
 			list.push(null);
 			
 			// 2
-			key = createKey(1, 2);
+			key = createKey(1, MpegLayer.LAYER2);
 			list = map[key] = [0];
 			list.push(32);
 			list.push(48);
@@ -64,7 +64,7 @@ package com.larrio.dump.model.sound.mp3
 			list.push(null);
 			
 			// 3
-			key = createKey(1, 3);
+			key = createKey(1, MpegLayer.LAYER3);
 			list = map[key] = [0];
 			list.push(32);
 			list.push(40);
@@ -83,7 +83,7 @@ package com.larrio.dump.model.sound.mp3
 			list.push(null);
 			
 			// 4
-			key = createKey(2, 1);
+			key = createKey(2, MpegLayer.LAYER1);
 			list = map[key] = [0];
 			list.push(32);
 			list.push(48);
@@ -102,7 +102,7 @@ package com.larrio.dump.model.sound.mp3
 			list.push(null);
 			
 			// 5
-			key = createKey(2, 2);
+			key = createKey(2, MpegLayer.LAYER2);
 			list = map[key] = [0];
 			list.push(8);
 			list.push(16);
@@ -121,7 +121,7 @@ package com.larrio.dump.model.sound.mp3
 			list.push(null);
 			
 			// 6
-			map[createKey(2, 3)] = map[key];
+			map[createKey(2, MpegLayer.LAYER3)] = map[key];
 			return map;
 		}
 		
@@ -141,8 +141,8 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public static function getRate(bits:uint, version:uint, layer:uint):uint
 		{
-			var key:String = createKey(version, layer);
-			if (bits >= 0xF || bits == 0 || version <= 0 || version > 2 || layer <= 0 || layer > 3) return 0;
+			if (version == MpegVersion.MPEG2_5 || version == MpegVersion.MPEG2_5) version = 2;
+			if (version == MpegVersion.MPEG1) version = 1;
 			
 			var list:Array = _map[createKey(version, layer)] as Array;
 			return list[bits] * 1000;
