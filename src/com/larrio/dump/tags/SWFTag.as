@@ -161,11 +161,19 @@ package com.larrio.dump.tags
 		 * TAG字节数组
 		 */		
 		public function get bytes():ByteArray { return _bytes; }
+		public function set bytes(value:ByteArray):void
+		{
+			_bytes = value;
+		}
 
 		/**
 		 * 特征ID
 		 */		
 		public function get character():uint { return _character; }
+		public function set character(value:uint):void
+		{
+			_character = value;
+		}
 
 		/**
 		 * 映射表

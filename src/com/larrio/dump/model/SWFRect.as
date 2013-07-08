@@ -29,7 +29,7 @@ package com.larrio.dump.model
 		 */
 		public function SWFRect()
 		{
-			
+			_nbits = 0x1F;
 		}
 		
 		/**
@@ -84,21 +84,37 @@ package com.larrio.dump.model
 		 * SWF左边界：twips 
 		 */		
 		public function get minX():int { return _minX; }
+		public function set minX(value:int):void
+		{
+			_minX = value;
+		}
 
 		/**
 		 * SWF右边界：twips 
 		 */		
 		public function get maxX():int { return _maxX; }
+		public function set maxX(value:int):void
+		{
+			_maxX = value;
+		}
 
 		/**
 		 * SWF上边界：twips 
 		 */		
 		public function get minY():int { return _minY; }
+		public function set minY(value:int):void
+		{
+			_minY = value;
+		}
 
 		/**
 		 * SWF下边界：twips 
 		 */		
 		public function get maxY():int { return _maxY; }
+		public function set maxY(value:int):void
+		{
+			_maxY = value;
+		}
 
 		/**
 		 * SWF宽度：像素 

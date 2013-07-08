@@ -84,11 +84,19 @@ package com.larrio.dump.tags
 		 * 链接名唯一id
 		 */		
 		public function get ids():Vector.<uint> { return _ids; }
+		public function set ids(value:Vector.<uint>):void
+		{
+			_ids = value;
+		}
 
 		/**
 		 * 链接名完全限定名
 		 */		
 		public function get symbols():Vector.<String> { return _symbols; }
+		public function set symbols(value:Vector.<String>):void
+		{
+			_symbols = value;
+		}
 
 	}
 }

@@ -123,6 +123,10 @@ package com.larrio.dump.model
 		 * 标记SWF是否被压缩
 		 */		
 		public function get compressed():Boolean { return _compressed; }
+		public function set compressed(value:Boolean):void
+		{
+			_compressed = value;
+		}
 
 		/**
 		 * SWF头文件标记
@@ -133,6 +137,10 @@ package com.larrio.dump.model
 		 * SWF版本号
 		 */		
 		public function get version():uint { return _version; }
+		public function set version(value:uint):void
+		{
+			_version = value;
+		}
 
 		/**
 		 * 解压后的总长度：包含头文件长度
@@ -143,16 +151,28 @@ package com.larrio.dump.model
 		 * SWF尺寸大小
 		 */		
 		public function get size():SWFRect { return _size; }
+		public function set size(value:SWFRect):void
+		{
+			_size = value;
+		}
 
 		/**
 		 * SWF帧率：8.8 FIXED number
 		 */		
 		public function get frameRate():uint { return _frameRate; }
+		public function set frameRate(value:uint):void
+		{
+			_frameRate = value;
+		}
 
 		/**
 		 * SWF总帧数
 		 */		
 		public function get frameCount():uint { return _frameCount; }
+		public function set frameCount(value:uint):void
+		{
+			_frameCount = value;
+		}
 
 
 	}

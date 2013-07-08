@@ -254,7 +254,7 @@ package com.larrio.dump.tags
 		 * CharacterId is used only when a new character is being added. 
 		 * If a character that is already on the display list is being modified, the CharacterId field is absent.
 		 */		
-		public function set character(value:uint):void
+		override public function set character(value:uint):void
 		{
 			_character = value;
 			_hasCharacter = 1;

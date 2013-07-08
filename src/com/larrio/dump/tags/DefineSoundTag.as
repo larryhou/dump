@@ -101,8 +101,8 @@ package com.larrio.dump.tags
 		 * 采样码率
 		 * @see com.larrio.dump.model.sound.SoundRateType
 		 */		
-		public function get sampleRate():uint { return _samplingRate; }
-		public function set sampleRate(value:uint):void
+		public function get samplingRate():uint { return _samplingRate; }
+		public function set samplingRate(value:uint):void
 		{
 			_samplingRate = value;
 		}

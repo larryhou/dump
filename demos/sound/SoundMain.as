@@ -2,6 +2,7 @@ package sound
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.codec.FileDecoder;
+	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.model.sound.mp3.MP3File;
 	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.SWFTag;
@@ -51,6 +52,12 @@ package sound
 			//			var swf:SWFile = new SWFile(loaderInfo.bytes);
 			for each(var tag:SWFTag in swf.tags)
 			{
+				if (tag.type == TagType.DO_ABC)
+				{
+					saveDoABCTag(tag);
+					continue;
+				}
+				
 				if (tag.type == TagType.DEFINE_SOUND)
 				{
 					soundTag = tag as DefineSoundTag;
@@ -61,7 +68,7 @@ package sound
 					//soundTag.sampleCount = 10000;
 					
 					//new FileReference().save((tag as DefineSound).data, "extract.mp3");
-					break;
+					//break;
 				}
 			}
 			
@@ -83,6 +90,14 @@ package sound
 			
 			
 			return 0;
+		}
+		
+		private function saveDoABCTag(tag:SWFTag):void
+		{
+			var encoder:FileEncoder = new FileEncoder();
+			tag.encode(encoder);
+			
+			new FileReference().save(encoder, "tag.abc");
 		}
 		
 		private function verify():void

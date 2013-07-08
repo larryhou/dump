@@ -73,12 +73,15 @@ package com.larrio.dump
 				for each (var type:uint in includes) _include[type] = true;
 			}
 			
-			// 写入文件二进制已编码字节
-			_decoder = new FileDecoder();
-			_decoder.writeBytes(bytes);
-			_decoder.position = 0;
-			
-			unpack();
+			if (bytes)
+			{
+				// 写入文件二进制已编码字节
+				_decoder = new FileDecoder();
+				_decoder.writeBytes(bytes);
+				_decoder.position = 0;
+				
+				unpack();
+			}
 		}
 		
 		/**
@@ -167,11 +170,19 @@ package com.larrio.dump
 		 * SWF头信息
 		 */		
 		public function get header():SWFHeader { return _header; }
+		public function set header(value:SWFHeader):void
+		{
+			_header = value;
+		}
 
 		/**
 		 * SWF文件TAG数组
 		 */		
 		public function get tags():Vector.<SWFTag> { return _tags; }
+		public function set tags(value:Vector.<SWFTag>):void
+		{
+			_tags = value;
+		}
 
 		/**
 		 * SWF链接名TAG

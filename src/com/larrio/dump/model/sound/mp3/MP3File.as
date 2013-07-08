@@ -3,8 +3,10 @@ package com.larrio.dump.model.sound.mp3
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.dump.model.sound.mp3.id3.ID3Tag;
+	import com.larrio.dump.utils.assertTrue;
+	
+	import flash.utils.Dictionary;
 	
 	/**
 	 * MP3文件编码器
@@ -19,6 +21,7 @@ package com.larrio.dump.model.sound.mp3
 		private var _tags:Vector.<ID3Tag>;
 		
 		private var _sampleCount:uint;
+		private var _samplingRate:uint;
 		private var _skipBytes:uint;
 		
 		private var _length:uint;
@@ -58,6 +61,9 @@ package com.larrio.dump.model.sound.mp3
 			_frames = new Vector.<MP3Frame>();
 			_unknowns = new Vector.<UnknownByte>;
 			
+			var rate:uint;
+			var map:Dictionary = new Dictionary();
+			
 			var position:uint;
 			var frame:MP3Frame, id3:ID3Tag;
 			while (decoder.bytesAvailable)
@@ -75,6 +81,10 @@ package com.larrio.dump.model.sound.mp3
 					frame = new MP3Frame();
 					frame.decode(decoder);
 					
+					rate = SamplingRate.getRate(frame.samplingRate, frame.version);
+					if (!map[rate]) map[rate] = 0;
+					map[rate]++;
+					
 					_duration += frame.duration;
 					_sampleCount += frame.sampleCount;
 					
@@ -86,6 +96,12 @@ package com.larrio.dump.model.sound.mp3
 					_skipBytes++;
 					_unknowns.push(new UnknownByte(decoder.position, decoder.readByte())); 
 				}
+			}
+			
+			_samplingRate = 0;
+			for (var r:* in map)
+			{				
+				if (uint(map[_samplingRate]) < uint(map[r])) _samplingRate = r;
 			}
 			
 			assertTrue(decoder.bytesAvailable == 0);
@@ -173,5 +189,9 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function get unknowns():Vector.<UnknownByte> { return _unknowns; }
 
+		/**
+		 * 采样码率
+		 */		
+		public function get samplingRate():uint { return _samplingRate; }
 	}
 }
