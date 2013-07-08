@@ -219,6 +219,19 @@ package com.larrio.dump.codec
 			
 			bytes.position = 0;
 			return bytes.readMultiByte(bytes.length, "utf-8");
-		}		
+		}
+		
+		/**
+		 * 读取28位synchsafe整形
+		 */		
+		public function readSynchsafe():uint
+		{
+			var value:uint = 0;
+			value |= (readUI8() & 0x7F) << 21;
+			value |= (readUI8() & 0x7F) << 14;
+			value |= (readUI8() & 0x7F) << 7;
+			value |= (readUI8() & 0x7F) << 0;
+			return value;
+		}
 	}
 }

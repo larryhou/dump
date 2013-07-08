@@ -4,6 +4,7 @@ package com.larrio.dump.model.sound.mp3
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
+	import com.larrio.dump.model.sound.mp3.id3.ID3Tag;
 	
 	/**
 	 * MP3文件编码器

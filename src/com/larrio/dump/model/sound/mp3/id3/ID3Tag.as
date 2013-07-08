@@ -1,4 +1,4 @@
-package com.larrio.dump.model.sound.mp3
+package com.larrio.dump.model.sound.mp3.id3
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
@@ -13,6 +13,11 @@ package com.larrio.dump.model.sound.mp3
 	 */
 	public class ID3Tag implements ICodec
 	{
+		private static const UNSYNCHRONISATION:uint = 1 << 7;
+		private static const EXTEND_HEADER:uint = 1 << 6;
+		private static const EXPERIMENTAL_INDICATOR:uint = 1 << 5;
+		private static const FOOTER:uint = 1 << 4;
+		
 		private var _identifier:String;
 		private var _version:uint;
 		private var _flags:uint;
@@ -47,20 +52,18 @@ package com.larrio.dump.model.sound.mp3
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
+			var _length:uint;
+			
 			_identifier = decoder.readMultiByte(3, "utf-8");
 			_version = decoder.readUI16();
 			_flags = decoder.readUI8();
 			
-			var size:uint = 0;
-			size |= (decoder.readUI8() & 0x7F) << 21;
-			size |= (decoder.readUI8() & 0x7F) << 14;
-			size |= (decoder.readUI8() & 0x7F) << 7;
-			size |= (decoder.readUI8() & 0x7F) << 0;
+			_length = decoder.readSynchsafe();
 			
 			_data = new ByteArray();
-			if (decoder.bytesAvailable)
+			if (_length)
 			{
-				decoder.readBytes(_data, 0, size);
+				decoder.readBytes(_data, 0, _length);
 			}
 		}
 		
@@ -74,11 +77,7 @@ package com.larrio.dump.model.sound.mp3
 			encoder.writeUI16(_version);
 			encoder.writeUI8(_flags);
 			
-			var size:uint = _data.length;
-			encoder.writeUI8((size >>> 21) & 0x7F);
-			encoder.writeUI8((size >>> 14) & 0x7F);
-			encoder.writeUI8((size >>> 7) & 0x7F);
-			encoder.writeUI8((size >>> 0) & 0x7F);
+			encoder.writeSynchsafe(_data.length);
 			
 			if (_data.length)
 			{

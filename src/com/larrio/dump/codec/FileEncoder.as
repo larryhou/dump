@@ -251,5 +251,17 @@ package com.larrio.dump.codec
 			writeByte(0);
 		}
 		
+		/**
+		 * 写入32位synchsafe整形
+		 * @param value	28位整形
+		 */		
+		public function writeSynchsafe(value:uint):void
+		{
+			writeUI8((value >>> 21) & 0x7F);
+			writeUI8((value >>> 14) & 0x7F);
+			writeUI8((value >>> 7) & 0x7F);
+			writeUI8((value >>> 0) & 0x7F);
+		}
+		
 	}
 }
