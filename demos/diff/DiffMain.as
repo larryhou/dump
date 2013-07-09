@@ -37,39 +37,17 @@ package diff
 			removeTypes.push(TagType.ENABLE_DEBUGGER2);
 			removeTypes.push(TagType.IMPORT_ASSETS);
 			removeTypes.push(TagType.IMPORT_ASSETS2);
-			removeTypes.push(63, 41);
-			
-			var keepTypes:Array = [];
-			keepTypes.push(TagType.DO_ABC);
+			removeTypes.push(TagType.PRODUCT_INFO);
+			removeTypes.push(TagType.DEBUG_ID);
+			removeTypes.push(TagType.PROTECT);
 			
 			removeTags(swf1, removeTypes);
 			removeTags(swf2, removeTypes);
 			
-			//keepTags(swf1, keepTypes);
-			//keepTags(swf2, keepTypes);
-			
 			var result:Boolean = compare(swf1.repack(), swf2.repack());
 			trace("result:" + result);
 		}
-		
-		private function keepTags(swf:SWFile, types:Array):void
-		{
-			var dict:Dictionary = new Dictionary();
-			for each (var type:uint in types) dict[type] = true;
-			
-			var tag:SWFTag;
-			for (var i:int = 0, length:uint = swf.tags.length; i < length; i++)
-			{
-				tag = swf.tags[i];
-				if (!dict[tag.type])
-				{
-					swf.tags.splice(i--, 1);
-					length--;
-					continue;
-				}
-			}
-		}
-		
+				
 		private function removeTags(swf:SWFile, types:Array):void
 		{
 			var dict:Dictionary = new Dictionary();
