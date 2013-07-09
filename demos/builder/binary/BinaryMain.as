@@ -18,7 +18,7 @@ package builder.binary
 	 */
 	public class BinaryMain extends Sprite
 	{
-		[Embed(source="../libs/img01.png", mimeType="application/octet-stream")]
+		[Embed(source="../libs/img03.png", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**
@@ -29,6 +29,7 @@ package builder.binary
 		{
 			var swf:SWFBuilder = new SWFBuilder();
 			swf.insertBinary(new FileByteArray(), "com.larrio::SimpleBinary");
+			swf.insertBinary(new FileByteArray(), "com.larrio::Binary");
 			
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
@@ -41,7 +42,7 @@ package builder.binary
 			
 			trace(loaderInfo.applicationDomain.getDefinition("com.larrio::SimpleBinary"));
 			
-			var data:ByteArray = new (getDefinitionByName("com.larrio::SimpleBinary") as Class)() as ByteArray;
+			var data:ByteArray = new (getDefinitionByName("com.larrio::Binary") as Class)() as ByteArray;
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, assetReadyHandler);
 			loader.loadBytes(data, new LoaderContext(false, ApplicationDomain.currentDomain));
