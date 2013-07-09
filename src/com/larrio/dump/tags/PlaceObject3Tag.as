@@ -52,7 +52,7 @@ package com.larrio.dump.tags
 			_hasCharacter = decoder.readUB(1);
 			_moved = decoder.readUB(1);
 			
-			//assertTrue(decoder.readUB(3) == 0);
+			decoder.readUB(3);
 			
 			_hasImage = decoder.readUB(1);
 			_hasClassName = decoder.readUB(1);

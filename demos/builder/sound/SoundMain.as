@@ -1,4 +1,4 @@
-package sound
+package builder.sound
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.codec.FileDecoder;
@@ -17,7 +17,6 @@ package sound
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.text.engine.BreakOpportunity;
 	import flash.utils.ByteArray;
 	
 	/**

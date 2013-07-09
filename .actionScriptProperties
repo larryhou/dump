@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="sound/TestMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
+<actionScriptProperties analytics="false" mainApplicationPath="builder/image/ImageBuilderMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
   <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="demos" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src"/>
@@ -50,23 +50,24 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="sound/MP3Main.as"/>
-    <application path="sound/SoundMain.as"/>
-    <application path="crop/CropMain.as"/>
     <application path="MorphMain.as"/>
-    <application path="OutlineMain.as"/>
-    <application path="closure/ClosureMain.as"/>
-    <application path="protect/ProtectMain.as"/>
-    <application path="display/DisplayMain.as"/>
     <application path="script/ScriptMain.as"/>
-    <application path="FontMain.as"/>
     <application path="DrawMain.as"/>
+    <application path="closure/ClosureMain.as"/>
+    <application path="builder/image/ImageBuilderMain.as"/>
+    <application path="display/DisplayMain.as"/>
+    <application path="protect/ProtectMain.as"/>
+    <application path="OutlineMain.as"/>
+    <application path="ImageMain.as"/>
+    <application path="builder/sound/SoundMain.as"/>
+    <application path="crop/CropMain.as"/>
+    <application path="FontMain.as"/>
     <application path="DoABCMain.as"/>
     <application path="JointMain.as"/>
     <application path="PencilMain.as"/>
     <application path="EncryptMain.as"/>
     <application path="debug/DebugMain.as"/>
-    <application path="ImageMain.as"/>
+    <application path="builder/sound/MP3Main.as"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

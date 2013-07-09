@@ -13,6 +13,7 @@ package com.larrio.dump
 	import com.larrio.dump.tags.ShowFrameTag;
 	import com.larrio.dump.tags.SymbolClassTag;
 	import com.larrio.dump.tags.creators.audio.MP3TagCreator;
+	import com.larrio.dump.tags.creators.image.ImageTagCreator;
 	
 	import flash.utils.ByteArray;
 	
@@ -79,6 +80,40 @@ package com.larrio.dump
 			var asset:AssetItem = new AssetItem(name, creator.classTag, creator.assetTag);
 			
 			_assets.push(asset);
+		}
+		
+		/**
+		 * 嵌入PNG透明通道图片 
+		 * @param bytes	图片二进制文件
+		 * @param name	图片导出类
+		 */		
+		public function insertPNG(bytes:ByteArray, name:String):void
+		{
+			
+		}
+		
+		/**
+		 * 嵌入JPEG 
+		 * @param bytes
+		 * @param name
+		 * 
+		 */		
+		public function insertImage(bytes:ByteArray, name:String):void
+		{
+			var creator:ImageTagCreator = new ImageTagCreator(bytes, name);
+			var asset:AssetItem = new AssetItem(name, creator.classTag, creator.assetTag);
+			
+			_assets.push(asset);
+		}
+		
+		/**
+		 * 嵌入二进制文件 
+		 * @param bytes	二进制文件
+		 * @param name	导出链接名
+		 */		
+		public function insertBinary(bytes:ByteArray, name:String):void
+		{
+			
 		}
 		
 		/**

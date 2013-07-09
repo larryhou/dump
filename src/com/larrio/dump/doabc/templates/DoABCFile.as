@@ -53,7 +53,7 @@ package com.larrio.dump.doabc.templates
 		 * 对导出类重命名
 		 * @param value	目标类名 [com.package]::[className]
 		 */		
-		protected final function rename(value:String):void
+		protected final function rename(value:String,indice:Array):void
 		{
 			value = value.replace(/^\s*|\s*$/g, "");
 			if (!_tag || !value) return;
@@ -69,9 +69,9 @@ package com.larrio.dump.doabc.templates
 			var qualifiedClassName:String = prefix + ":" + className;
 			
 			var strings:Vector.<String> = _tag.abc.constants.strings;
-			strings[1] = prefix;
-			strings[2] = className;
-			strings[5] = qualifiedClassName;
+			strings[indice[0]] = prefix;
+			strings[indice[1]] = className;
+			strings[indice[2]] = qualifiedClassName;
 		}
 
 		/**

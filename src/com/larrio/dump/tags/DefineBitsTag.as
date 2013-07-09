@@ -67,6 +67,10 @@ package com.larrio.dump.tags
 		 * 对于JPEG3、JPEG4则需要混合alpha通道才能正确展示
 		 */		
 		public function get data():ByteArray { return _data; }
+		public function set data(value:ByteArray):void
+		{
+			_data = data;
+		}
 
 	}
 }

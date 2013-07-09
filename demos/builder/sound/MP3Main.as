@@ -1,18 +1,15 @@
-package sound
+package builder.sound
 {
 	import com.larrio.dump.SWFBuilder;
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.model.sound.mp3.MP3File;
-	import com.larrio.dump.tags.FileAttributesTag;
-	import com.larrio.dump.tags.SWFTag;
 	
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.media.Sound;
-	import flash.net.FileReference;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
