@@ -9,7 +9,7 @@ package com.larrio.dump.doabc
 	public class TraitDataInfo
 	{
 		/**
-		 * slot & disp 
+		 * slot and disp 
 		 */	
 		public var id:uint;
 		

@@ -8,7 +8,7 @@ package com.larrio.math
 	 * @param value	浮点数
 	 * @param size	存储占用比特位数量
 	 * @param high	指数存储占用比特位数量
-	 * @param bias	指数偏移，如果保持默认则取值为：(1 << (high - 1)) - 1
+	 * @param bias	指数偏移，如果保持默认则取值为：(1 &gt;&gt; (high - 1)) - 1
 	 * @return 二进制：最大32位
 	 */		
 	public function unfloat(value:Number, size:uint, high:uint, bias:uint = 0):uint

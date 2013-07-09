@@ -10,7 +10,7 @@ package com.larrio.math
 	 * @param value	无符号整形
 	 * @param size	存储占用比特位数量
 	 * @param high	指数存储占用比特位数量
-	 * @param bias	指数偏移，如果保持默认则取值为：(1 << (high - 1)) - 1
+	 * @param bias	指数偏移，如果保持默认则取值为：(1 &lt;&lt; (high - 1)) - 1
 	 * @return 浮点数
 	 */	
 	public function float(value:uint, size:uint, hight:uint, bias:uint = 0):Number
