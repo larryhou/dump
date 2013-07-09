@@ -69,7 +69,7 @@ package com.larrio.dump.tags
 		public function get data():ByteArray { return _data; }
 		public function set data(value:ByteArray):void
 		{
-			_data = data;
+			_data = value;
 		}
 
 	}
