@@ -26,7 +26,7 @@ package com.larrio.dump.model.colors
 		 */		
 		override public function decode(decoder:FileDecoder):void
 		{
-			assertTrue(decoder.readUI8() == 0);
+			decoder.readUI8();
 			super.decode(decoder);
 		}
 		
