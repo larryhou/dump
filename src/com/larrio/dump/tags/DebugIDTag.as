@@ -36,8 +36,6 @@ package com.larrio.dump.tags
 			decoder.readBytes(_data, 0, 16);
 			
 			assertTrue(decoder.bytesAvailable == 0);
-			
-			trace(this);
 		}
 		
 		/**
