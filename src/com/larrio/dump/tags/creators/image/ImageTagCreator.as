@@ -2,6 +2,7 @@ package com.larrio.dump.tags.creators.image
 {
 	import com.larrio.dump.doabc.templates.image.ImageDoABC;
 	import com.larrio.dump.tags.DefineBitsJPEG2Tag;
+	import com.larrio.dump.tags.DefineBitsJPEG3Tag;
 	import com.larrio.dump.tags.DoABCTag;
 	
 	import flash.utils.ByteArray;
@@ -27,6 +28,8 @@ package com.larrio.dump.tags.creators.image
 			_assetTag = new DefineBitsJPEG2Tag();
 			_assetTag.character = 0;	// 预留字段
 			_assetTag.data = bytes;
+			
+			DefineBitsJPEG3Tag
 		}
 
 		/**

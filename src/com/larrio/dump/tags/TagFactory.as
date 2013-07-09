@@ -301,6 +301,16 @@ package com.larrio.dump.tags
 				{
 					return new DefineSoundTag();
 				}
+					
+				case TagType.PRODUCT_INFO:
+				{
+					return new ProductInfoTag();
+				}
+					
+				case TagType.DEBUG_ID:
+				{
+					return new DebugIDTag();
+				}
 			}
 			
 			return new SWFTag();

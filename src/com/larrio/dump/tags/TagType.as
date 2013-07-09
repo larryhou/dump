@@ -68,6 +68,7 @@ package com.larrio.dump.tags
 		
 		public static const ENABLE_DEBUGGER                    :uint = 0x3A; // 58
 		public static const ENABLE_DEBUGGER2                   :uint = 0x40; // 64
+		public static const DEBUG_ID                           :uint = 0x3F; // 63
 		
 		public static const END                                :uint = 0x0;  // 0
 		
@@ -112,5 +113,7 @@ package com.larrio.dump.tags
 		public static const SYMBOL_CLASS                       :uint = 0x4C; // 76
 		
 		public static const VIDEO_FRAME                        :uint = 0x3D; // 61
+		
+		public static const PRODUCT_INFO                       :uint = 0x29; // 41
 	}
 }
