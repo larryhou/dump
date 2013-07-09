@@ -20,7 +20,7 @@ package builder.image
 	 */
 	public class PNGMain extends Sprite
 	{
-		[Embed(source="../libs/img01.png", mimeType="application/octet-stream")]
+		[Embed(source="../libs/img02.png", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**
@@ -46,6 +46,8 @@ package builder.image
 			
 			var image:BitmapData = new (getDefinitionByName("com.larrio.SimpleImage") as Class)() as BitmapData;
 			addChild(new Bitmap(image));
+			
+			trace(image.getPixel32(5,5).toString(16).toUpperCase());
 		}
 	}
 }

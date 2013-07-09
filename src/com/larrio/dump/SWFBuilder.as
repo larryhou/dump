@@ -83,20 +83,9 @@ package com.larrio.dump
 		}
 		
 		/**
-		 * 嵌入PNG透明通道图片 
+		 * 嵌入JPEG 
 		 * @param bytes	图片二进制文件
 		 * @param name	图片导出类
-		 */		
-		public function insertPNG(bytes:ByteArray, name:String):void
-		{
-			
-		}
-		
-		/**
-		 * 嵌入JPEG 
-		 * @param bytes
-		 * @param name
-		 * 
 		 */		
 		public function insertImage(bytes:ByteArray, name:String):void
 		{

@@ -13,7 +13,7 @@ package builder.image
 	 * @author larryhou
 	 * @createTime Jul 8, 2013 1:38:51 PM
 	 */
-	public class ImageBuilderMain extends Sprite
+	public class ImageABCMain extends Sprite
 	{
 		[Embed(source="../libs/image.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
@@ -22,7 +22,7 @@ package builder.image
 		 * 构造函数
 		 * create a [ImageMain] object
 		 */
-		public function ImageBuilderMain()
+		public function ImageABCMain()
 		{
 			var swf:SWFile = new SWFile(new FileByteArray());
 			trace(swf);

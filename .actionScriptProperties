@@ -12,8 +12,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_charts.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="1" linkType="1" path="${PROJECT_FRAMEWORKS}/locale/{locale}"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/advancedgrids.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/charts.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_air.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/charts.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/netmon.swc" useDefaultLinkType="false"/>
           <libraryPathEntry applicationDomain="default" forceLoad="false" index="1" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/osmf.swc" useDefaultLinkType="true">
             <crossDomainRsls>
@@ -24,8 +24,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/spark.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/sparkskins.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp_air.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/videoPlayer.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp_air.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flash-integration.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/authoringsupport.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp.swc" useDefaultLinkType="false"/>
@@ -50,23 +50,23 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="builder/image/PNGMain.as"/>
     <application path="MorphMain.as"/>
-    <application path="script/ScriptMain.as"/>
     <application path="DrawMain.as"/>
+    <application path="script/ScriptMain.as"/>
     <application path="closure/ClosureMain.as"/>
-    <application path="builder/image/ImageBuilderMain.as"/>
     <application path="display/DisplayMain.as"/>
     <application path="protect/ProtectMain.as"/>
-    <application path="OutlineMain.as"/>
+    <application path="builder/image/PNGMain.as"/>
     <application path="ImageMain.as"/>
+    <application path="OutlineMain.as"/>
     <application path="builder/sound/SoundMain.as"/>
-    <application path="crop/CropMain.as"/>
     <application path="FontMain.as"/>
+    <application path="crop/CropMain.as"/>
     <application path="DoABCMain.as"/>
+    <application path="builder/image/ImageABCMain.as"/>
     <application path="JointMain.as"/>
-    <application path="PencilMain.as"/>
     <application path="EncryptMain.as"/>
+    <application path="PencilMain.as"/>
     <application path="debug/DebugMain.as"/>
     <application path="builder/sound/MP3Main.as"/>
   </applications>
