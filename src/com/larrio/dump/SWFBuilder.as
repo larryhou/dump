@@ -13,6 +13,7 @@ package com.larrio.dump
 	import com.larrio.dump.tags.ShowFrameTag;
 	import com.larrio.dump.tags.SymbolClassTag;
 	import com.larrio.dump.tags.creators.audio.MP3TagCreator;
+	import com.larrio.dump.tags.creators.binary.BinaryTagCreator;
 	import com.larrio.dump.tags.creators.image.ImageTagCreator;
 	
 	import flash.utils.ByteArray;
@@ -102,7 +103,10 @@ package com.larrio.dump
 		 */		
 		public function insertBinary(bytes:ByteArray, name:String):void
 		{
+			var creator:BinaryTagCreator = new BinaryTagCreator(bytes, name);
+			var asset:AssetItem = new AssetItem(name, creator.classTag, creator.assetTag);
 			
+			_assets.push(asset);
 		}
 		
 		/**

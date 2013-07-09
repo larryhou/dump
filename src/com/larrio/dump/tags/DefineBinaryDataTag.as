@@ -69,7 +69,10 @@ package com.larrio.dump.tags
 		 * 二进制数据
 		 */		
 		public function get data():ByteArray { return _data; }
-
+		public function set data(value:ByteArray):void
+		{
+			_data = value;
+		}
 		
 	}
 }

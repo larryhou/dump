@@ -53,7 +53,7 @@ package com.larrio.dump.doabc.templates
 		 * 对导出类重命名
 		 * @param value	目标类名 [com.package]::[className]
 		 */		
-		protected final function rename(value:String,indice:Array):void
+		protected function rename(value:String,indice:Array):void
 		{
 			value = value.replace(/^\s*|\s*$/g, "");
 			if (!_tag || !value) return;
