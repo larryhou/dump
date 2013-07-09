@@ -24,7 +24,7 @@ package builder.sound
 	 * @author larryhou
 	 * @createTime Jul 3, 2013 5:56:18 PM
 	 */
-	public class SoundMain extends Sprite
+	public class SoundABCMain extends Sprite
 	{
 		[Embed(source="../libs/S01.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
@@ -35,7 +35,7 @@ package builder.sound
 		 * 构造函数
 		 * create a [SoundMain] object
 		 */
-		public function SoundMain()
+		public function SoundABCMain()
 		{
 			_mp3 = new MP3File();
 			
