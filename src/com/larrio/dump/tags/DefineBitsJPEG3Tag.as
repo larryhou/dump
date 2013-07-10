@@ -102,6 +102,10 @@ package com.larrio.dump.tags
 		 * One byte per pixel. Total size after decompression must equal (width * height) of JPEG image.
 		 */		
 		public function get bitmapAlphaData():ByteArray { return _bitmapAlphaData; }
+		public function set bitmapAlphaData(value:ByteArray):void
+		{
+			_bitmapAlphaData = value;	
+		}
 
 	}
 }
