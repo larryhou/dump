@@ -31,6 +31,8 @@ package com.larrio.dump.tags
 		 */		
 		override protected function decodeTag(decoder:FileDecoder):void
 		{
+			var _size:uint;
+			
 			_character = decoder.readUI16();
 			_dict[_character] = this;
 			
@@ -53,7 +55,7 @@ package com.larrio.dump.tags
 		override protected function encodeTag(encoder:FileEncoder):void
 		{
 			encoder.writeUI16(_character);
-			encoder.writeUI32(_size);
+			encoder.writeUI32(_data.length);
 			encoder.writeUI16(_deblockParam);
 			encoder.writeBytes(_data);
 			
