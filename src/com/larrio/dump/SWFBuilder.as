@@ -5,14 +5,13 @@ package com.larrio.dump
 	import com.larrio.dump.doabc.templates.image.ImageDoABC;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.model.SWFRect;
-	import com.larrio.dump.tags.DefineBitsLosslessTag;
-	import com.larrio.dump.tags.DefineBitsTag;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.EndTag;
 	import com.larrio.dump.tags.FileAttributesTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.ShowFrameTag;
 	import com.larrio.dump.tags.SymbolClassTag;
+	import com.larrio.dump.tags.TagType;
 	import com.larrio.dump.tags.creators.audio.MP3TagCreator;
 	import com.larrio.dump.tags.creators.binary.BinaryTagCreator;
 	import com.larrio.dump.tags.creators.image.AlphaJPEGTagCreator;
@@ -106,7 +105,21 @@ package com.larrio.dump
 		 */		
 		public function insertImageByTag(tag:SWFTag, name:String):void
 		{
-			if (tag is DefineBitsTag || tag is DefineBitsLosslessTag)
+			var available:Boolean;
+			switch(tag.type)
+			{
+				case TagType.DEFINE_BITS:
+				case TagType.DEFINE_BITS_JPEG2:
+				case TagType.DEFINE_BITS_JPEG3:
+				case TagType.DEFINE_BITS_JPEG4:
+				case TagType.DEFINE_BITS_LOSSLESS:
+				case TagType.DEFINE_BITS_LOSSLESS2:
+				{
+					available = true; break;
+				}
+			}
+			
+			if (available)
 			{
 				var asset:AssetItem = new AssetItem(name, new ImageDoABC(name).tag, tag);
 				_assets.push(asset);
