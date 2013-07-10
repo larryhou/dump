@@ -68,6 +68,8 @@ package com.larrio.dump.doabc.templates
 			var className:String = list.pop();
 			var qualifiedClassName:String = prefix + ":" + className;
 			
+			_tag.name = prefix.replace(/\./g, "/") + "/" + className;
+			
 			var strings:Vector.<String> = _tag.abc.constants.strings;
 			strings[indice[0]] = prefix;
 			strings[indice[1]] = className;

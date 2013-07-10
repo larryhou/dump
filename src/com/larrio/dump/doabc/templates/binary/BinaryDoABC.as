@@ -40,6 +40,8 @@ package com.larrio.dump.doabc.templates.binary
 			var className:String = list.pop();
 			var qualifiedClassName:String = prefix + ":" + className;
 			
+			_tag.name = prefix.replace(/\./g, "/") + "/" + className;
+			
 			var strings:Vector.<String> = _tag.abc.constants.strings;
 			strings[1] = qualifiedClassName;
 			strings[3] = "";
