@@ -3,7 +3,7 @@ package com.larrio.dump.tags
 	import flash.utils.Dictionary;
 	
 	/**
-	 * 
+	 * 定义TAG判定工具
 	 * @author larryhou
 	 * @createTime Jul 10, 2013 2:14:58 PM
 	 */
