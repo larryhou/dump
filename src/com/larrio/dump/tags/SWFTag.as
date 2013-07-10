@@ -149,7 +149,12 @@ package com.larrio.dump.tags
 		 */		
 		protected function decodeTag(decoder:FileDecoder):void
 		{
-			
+			if (DefineTagType.isDefineTag(_type))
+			{
+				_character = decoder.readUI16();
+				
+				decoder.position -= 2;
+			}
 		}
 		
 		/**
