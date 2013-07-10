@@ -152,6 +152,7 @@ package com.larrio.dump.tags
 			if (DefineTagType.isDefineTag(_type))
 			{
 				_character = decoder.readUI16();
+				_dict[_character] = this;
 				
 				decoder.position -= 2;
 			}
