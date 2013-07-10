@@ -1,16 +1,12 @@
 package com.larrio.dump
 {
-	import avmplus.USE_ITRAITS;
-	
 	import com.adobe.images.JPGEncoder;
 	import com.adobe.images.PNGEncoder;
-	import com.larrio.dump.doabc.templates.audio.MP3DoABC;
 	import com.larrio.dump.doabc.templates.image.ImageDoABC;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DefineBitsLosslessTag;
 	import com.larrio.dump.tags.DefineBitsTag;
-	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.EndTag;
 	import com.larrio.dump.tags.FileAttributesTag;
