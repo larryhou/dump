@@ -155,7 +155,7 @@ package com.larrio.dump
 				item.assetTag.character = i + 1;
 				
 				symbol.ids.push(item.assetTag.character);
-				symbol.symbols.push(item.name);
+				symbol.symbols.push(item.name.replace("::", "."));
 			}
 			
 			// 素材列表
