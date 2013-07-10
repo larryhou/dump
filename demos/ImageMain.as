@@ -31,7 +31,7 @@ package
 		 */
 		public function ImageMain()
 		{
-			var swf:SWFile = new SWFile(new FileByteArray());
+			var swf:SWFile = new SWFile(new FileByteArray(), []);
 			
 			var index:uint; 
 			var location:Point = new Point(10, 50);
