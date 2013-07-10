@@ -189,5 +189,9 @@ package com.larrio.dump
 		 */		
 		public function get symbolTags():Vector.<SymbolClassTag> { return _symbolTags; }
 
+		/**
+		 * 素材字典
+		 */		
+		public function get dict():Dictionary { return _dict; }
 	}
 }

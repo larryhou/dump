@@ -3,8 +3,11 @@ package com.larrio.dump
 	import avmplus.USE_ITRAITS;
 	
 	import com.larrio.dump.doabc.templates.audio.MP3DoABC;
+	import com.larrio.dump.doabc.templates.image.ImageDoABC;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.model.SWFRect;
+	import com.larrio.dump.tags.DefineBitsLosslessTag;
+	import com.larrio.dump.tags.DefineBitsTag;
 	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.EndTag;
@@ -73,7 +76,7 @@ package com.larrio.dump
 		/**
 		 * 嵌入MP3素材文件 
 		 * @param bytes	MP3字节码
-		 * @param name	MP3导出类
+		 * @param name	MP3导出类: package::ClassName
 		 */		
 		public function insertMP3(bytes:ByteArray, name:String):void
 		{
@@ -86,7 +89,7 @@ package com.larrio.dump
 		/**
 		 * 嵌入JPEG 
 		 * @param bytes	图片二进制文件
-		 * @param name	图片导出类
+		 * @param name	图片导出类: package::ClassName
 		 */		
 		public function insertImage(bytes:ByteArray, name:String):void
 		{
@@ -94,6 +97,20 @@ package com.larrio.dump
 			var asset:AssetItem = new AssetItem(name, creator.classTag, creator.assetTag);
 			
 			_assets.push(asset);
+		}
+		
+		/**
+		 * 插入图片素材TAG
+		 * @param tag	DefineBitsTag | DefineLosslessTag
+		 * @param name	图片素材导入类名: package::ClassName
+		 */		
+		public function insertImageByTag(tag:SWFTag, name:String):void
+		{
+			if (tag is DefineBitsTag || tag is DefineBitsLosslessTag)
+			{
+				var asset:AssetItem = new AssetItem(name, new ImageDoABC(name).tag, tag);
+				_assets.push(asset);
+			}
 		}
 		
 		/**
