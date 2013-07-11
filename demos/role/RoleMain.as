@@ -33,7 +33,7 @@ package role
 		 */
 		public function RoleMain()
 		{
-			var swf:SWFile = new SWFile(new FileByteArray());
+			var swf:SWFile = new SWFile(new FileByteArray(), []);
 			trace(swf);
 			
 			var character:uint;
@@ -55,7 +55,7 @@ package role
 				if (tag)
 				{
 					var swfBuilder:SWFBuilder = new SWFBuilder();
-					swfBuilder.insertImageByTag(tag, "image::role");
+					swfBuilder.insertImageByTag(tag, "role");
 					
 					var loader:Loader = new Loader();
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
@@ -69,9 +69,10 @@ package role
 		{
 			var loaderInfo:LoaderInfo = event.currentTarget as LoaderInfo;
 			
-			var image:BitmapData = new (getDefinitionByName("image.role") as Class)() as BitmapData;
+			var image:BitmapData = new (getDefinitionByName("role") as Class)() as BitmapData;
 			addChild(new Bitmap(image));
 			
+			var swf:SWFile = new SWFile(loaderInfo.bytes);
 			new FileReference().save(loaderInfo.bytes, "image.role.swf");
 		}
 	}

@@ -7,6 +7,7 @@ package com.larrio.dump.tags
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
 	/**
@@ -178,6 +179,17 @@ package com.larrio.dump.tags
 		public function get character():uint { return _character; }
 		public function set character(value:uint):void
 		{
+			// 针对不解析TAG内容修改character值情况下兼容性优化
+			if (getQualifiedClassName(this) == getQualifiedClassName(SWFTag) && _bytes)
+			{
+				var encoder:ByteArray = new ByteArray();
+				encoder.writeByte((value >>> 0) & 0xFF);
+				encoder.writeByte((value >>> 8) & 0xFF);
+				
+				_bytes[0] = encoder[0];
+				_bytes[1] = encoder[1];
+			}
+			
 			_character = value;
 		}
 

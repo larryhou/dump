@@ -34,13 +34,13 @@ package com.larrio.dump.doabc.templates.binary
 			var list:Array = value.split("::");
 			if (list.length == 2)
 			{
-				prefix = list.shift();
+				prefix = list.shift().replace(/\./g, "/");
 			}
 			
 			var className:String = list.pop();
 			var qualifiedClassName:String = prefix + ":" + className;
 			
-			_tag.name = prefix.replace(/\./g, "/") + "/" + className;
+			_tag.name = prefix + (prefix? "/" : "") + className;
 			
 			var strings:Vector.<String> = _tag.abc.constants.strings;
 			strings[1] = qualifiedClassName;
