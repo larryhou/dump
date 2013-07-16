@@ -6,6 +6,7 @@ package com.larrio.dump.model.sound.mp3
 	import com.larrio.dump.model.sound.mp3.id3.ID3Tag;
 	import com.larrio.dump.utils.assertTrue;
 	
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -13,7 +14,7 @@ package com.larrio.dump.model.sound.mp3
 	 * @author larryhou
 	 * @createTime Jul 4, 2013 9:41:53 AM
 	 */
-	public class MP3File implements ICodec
+	public class MP3File
 	{
 		private var _seekSamples:int;
 		
@@ -44,12 +45,16 @@ package com.larrio.dump.model.sound.mp3
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
-		public function decode(decoder:FileDecoder):void
+		public function decode(bytes:ByteArray):void
 		{
 			_skipBytes = 0;
 			
 			_duration = 0;
 			_sampleCount = 0;
+			
+			var decoder:FileDecoder = new FileDecoder();
+			decoder.writeBytes(bytes);
+			decoder.position = 0;
 			
 			_length = decoder.length;
 			if (!_standalone)
@@ -111,8 +116,10 @@ package com.larrio.dump.model.sound.mp3
 		 * 二进制编码 
 		 * @param encoder	编码器
 		 */		
-		public function encode(encoder:FileEncoder):void
+		public function encode():ByteArray
 		{
+			var encoder:FileEncoder = new FileEncoder();
+			
 			if (!_standalone)
 			{
 				encoder.writeS16(_seekSamples);
@@ -122,6 +129,8 @@ package com.larrio.dump.model.sound.mp3
 			{
 				_frames[i].encode(encoder);
 			}
+			
+			return encoder;
 		}
 		
 		/**

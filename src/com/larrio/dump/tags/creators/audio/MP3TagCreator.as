@@ -44,7 +44,12 @@ package com.larrio.dump.tags.creators.audio
 			_assetTag.soundType = 1;	// 默认立体声
 			_assetTag.sampleCount = _mp3.sampleCount;
 			_assetTag.samplingRate = getSamplingRateType(_mp3.samplingRate);
-			_assetTag.data = bytes;
+			
+			var data:ByteArray = new ByteArray();
+			data.writeShort(0);
+			data.writeBytes(bytes);
+			
+			_assetTag.data = data;
 		}
 		
 		/**
