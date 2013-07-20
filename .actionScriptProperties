@@ -3,8 +3,8 @@
   <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="demos" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src"/>
-      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/larryhou/Documents/workspace/framework/larrio/greensock"/>
-      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/larryhou/Documents/workspace/framework/as3corelib/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/doudou/Documents/workspace/framework/larrio/greensock"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/doudou/Documents/workspace/framework/as3corelib/src"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
