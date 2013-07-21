@@ -4,9 +4,12 @@ package com.larrio.dump.model.sound.mp3.id3
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.sound.mp3.id3.frames.ID3Frame;
-	import com.larrio.dump.model.sound.mp3.id3.header.ID3ExtendHeader;
-	import com.larrio.dump.model.sound.mp3.id3.header.ID3Footer;
-	import com.larrio.dump.model.sound.mp3.id3.header.ID3Header;
+	import com.larrio.dump.model.sound.mp3.id3.frames.ID3FrameFactory;
+	import com.larrio.dump.model.sound.mp3.id3.frames.headers.ID3FrameHeaderFactory;
+	import com.larrio.dump.model.sound.mp3.id3.headers.ID3ExtendHeader;
+	import com.larrio.dump.model.sound.mp3.id3.headers.ID3Footer;
+	import com.larrio.dump.model.sound.mp3.id3.headers.ID3Header;
+	import com.larrio.dump.utils.hexSTR;
 	
 	import flash.utils.ByteArray;
 	
@@ -23,6 +26,7 @@ package com.larrio.dump.model.sound.mp3.id3
 		
 		public var frames:Vector.<ID3Frame>;
 		
+		public var padding:ByteArray;
 		public var footer:ID3Footer;
 		
 		/**
@@ -71,18 +75,129 @@ package com.larrio.dump.model.sound.mp3.id3
 			}
 			
 			decoder = new FileDecoder();
-			decoder.writeBytes(data);
+			if (header.flags & ID3Header.UNSYNCHRONISATION)
+			{
+				decoder.writeBytes(unsynchronise(data));
+			}
+			else
+			{
+				decoder.writeBytes(data);
+			}
+			
 			decoder.position = 0;
 			decodeBody(decoder);
 		}
 		
 		private function decodeBody(decoder:FileDecoder):void
 		{
+			var position:uint;			
 			if (header.flags & ID3Header.EXTEND_HEADER)
 			{
 				extendHeader = new ID3ExtendHeader();
 				extendHeader.decode(decoder);
 			}
+			
+			frames = new Vector.<ID3Frame>();
+			
+			var frame:ID3Frame,identifier:String;
+			while (decoder.bytesAvailable)
+			{
+				position = decoder.position;
+				
+				if (frameVerify(decoder))
+				{
+					frame = ID3FrameFactory.create(identifier);
+					frame.header = ID3FrameHeaderFactory.create(header.majorVersion);
+					
+					frame.decode(decoder);
+					frames.push(frame);
+				}
+				
+				if (header.flags & ID3Header.FOOTER)
+				{
+					if (ID3Footer.verify(decoder))
+					{
+						footer = new ID3Footer();
+						footer.decode(decoder);
+					}
+				}
+				
+				if (decoder.position == position)
+				{
+					padding = new ByteArray();
+					decoder.readBytes(padding, 0, decoder.bytesAvailable);
+					trace(hexSTR(padding,4,0,0,true));
+				}
+			}			
+		}
+		
+		private function frameVerify(bytes:ByteArray):Boolean
+		{
+			var MIN_HEADER_SIZE:uint;
+			var NUM_IDENTIFIER_BYTES:uint;
+			switch (header.majorVersion)
+			{
+				case 0x03:
+				case 0x04:
+				{
+					MIN_HEADER_SIZE = 10;
+					NUM_IDENTIFIER_BYTES = 4;
+					break;
+				}
+					
+				default:
+				{
+					MIN_HEADER_SIZE = 6;
+					NUM_IDENTIFIER_BYTES = 3;
+					break;
+				}
+			}
+			
+			if (bytes.bytesAvailable < MIN_HEADER_SIZE + 1) return false;
+			
+			var identifier:String = bytes.readUTFBytes(NUM_IDENTIFIER_BYTES);
+			bytes.position -= NUM_IDENTIFIER_BYTES;
+			
+			return identifier.match(/^[A-Z0-9]+$/) != null;
+		}
+		
+		private function synchronise(bytes:ByteArray):ByteArray
+		{
+			var buffer:ByteArray = new ByteArray();
+			for (var i:int = 0; i < bytes.length - 2; i++)
+			{
+				buffer.writeByte(bytes[i]);
+				if (bytes[i] == 0xFF && bytes[i + 1] == 0x00)
+				{
+					if (bytes[i + 2] == 0x00 || (bytes[i + 2] & 0xE0) == 0xE0) i++;
+				}				
+			}
+			
+			buffer.writeByte(bytes[i]);
+			if (bytes[i] != 0xFF) buffer.writeByte(bytes[i + 1]);
+			
+			return buffer;
+		}
+		
+		private function unsynchronise(bytes:ByteArray):ByteArray
+		{
+			var buffer:ByteArray = new ByteArray();
+			for (var i:int = 0; i < bytes.length - 1; i++)
+			{
+				buffer.writeByte(bytes[i]);
+				if (bytes[i] == 0xFF)
+				{
+					if ((bytes[i + 1] & 0xE0) == 0xE0 || bytes[i + 1] == 0x00)
+					{
+						buffer.writeByte(0);
+					}
+				}
+			}
+			
+			buffer.writeByte(buffer[i]);
+			if (bytes[i] == 0xFF) buffer.writeByte(0);
+			
+			return buffer;
 		}
 		
 		/**

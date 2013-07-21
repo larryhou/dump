@@ -244,7 +244,7 @@ package com.larrio.dump.codec
 			var result:uint = 0;
 			while (numbytes)
 			{
-				result |= (readUI8() & 0x7F) << (numbytes - 1);
+				result |= (readUI8() & 0x7F) << (numbytes - 1) * 7;
 				numbytes--;
 			}
 			
