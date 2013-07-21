@@ -37,6 +37,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			
 			data = new ByteArray();
 			decoder.readBytes(data, 0, header.length);
+			data.position = 0;
 		}
 		
 		/**

@@ -15,13 +15,12 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */
 		public static function create(identifier:String):ID3Frame
 		{
-			var frame:ID3Frame;
-			switch (identifier)
+			if (identifier.match(/^T/) && identifier != "TXXX")
 			{
-				default:frame = new ID3Frame();break;
+				return new ID3TextFrame();
 			}
 			
-			return frame;
+			return new ID3Frame();
 		}
 	}
 }

@@ -9,9 +9,9 @@ package com.larrio.dump.model.sound.mp3.id3
 	import com.larrio.dump.model.sound.mp3.id3.headers.ID3ExtendHeader;
 	import com.larrio.dump.model.sound.mp3.id3.headers.ID3Footer;
 	import com.larrio.dump.model.sound.mp3.id3.headers.ID3Header;
-	import com.larrio.dump.utils.hexSTR;
 	
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	/**
 	 * ID3 v2.4.0
@@ -29,6 +29,8 @@ package com.larrio.dump.model.sound.mp3.id3
 		public var padding:ByteArray;
 		public var footer:ID3Footer;
 		
+		public var dict:Dictionary;
+		
 		/**
 		 * 构造函数
 		 * create a [ID3Tag] object
@@ -40,11 +42,7 @@ package com.larrio.dump.model.sound.mp3.id3
 		
 		private function reset():void
 		{
-			header = null;
-			data = null;
-			
 			extendHeader = null;
-			frames = null;
 			footer = null;
 		}
 		
@@ -97,20 +95,24 @@ package com.larrio.dump.model.sound.mp3.id3
 				extendHeader.decode(decoder);
 			}
 			
+			dict = new Dictionary();
 			frames = new Vector.<ID3Frame>();
 			
 			var frame:ID3Frame,identifier:String;
 			while (decoder.bytesAvailable)
 			{
 				position = decoder.position;
+				identifier = frameVerify(decoder);
 				
-				if (frameVerify(decoder))
+				if (identifier)
 				{
 					frame = ID3FrameFactory.create(identifier);
 					frame.header = ID3FrameHeaderFactory.create(header.majorVersion);
 					
 					frame.decode(decoder);
 					frames.push(frame);
+					
+					dict[frame.header.identifier] = frame;
 				}
 				
 				if (header.flags & ID3Header.FOOTER)
@@ -126,12 +128,13 @@ package com.larrio.dump.model.sound.mp3.id3
 				{
 					padding = new ByteArray();
 					decoder.readBytes(padding, 0, decoder.bytesAvailable);
-					trace(hexSTR(padding,4,0,0,true));
 				}
-			}			
+			}	
+			
+			trace(frames);
 		}
 		
-		private function frameVerify(bytes:ByteArray):Boolean
+		private function frameVerify(bytes:ByteArray):String
 		{
 			var MIN_HEADER_SIZE:uint;
 			var NUM_IDENTIFIER_BYTES:uint;
@@ -153,12 +156,16 @@ package com.larrio.dump.model.sound.mp3.id3
 				}
 			}
 			
-			if (bytes.bytesAvailable < MIN_HEADER_SIZE + 1) return false;
+			var identifier:String;
+			if (bytes.bytesAvailable >= MIN_HEADER_SIZE + 1)
+			{
+				identifier = bytes.readUTFBytes(NUM_IDENTIFIER_BYTES);
+				bytes.position -= NUM_IDENTIFIER_BYTES;
+				
+				if (!identifier.match(/^[A-Z0-9]+$/)) identifier = null;
+			}
 			
-			var identifier:String = bytes.readUTFBytes(NUM_IDENTIFIER_BYTES);
-			bytes.position -= NUM_IDENTIFIER_BYTES;
-			
-			return identifier.match(/^[A-Z0-9]+$/) != null;
+			return identifier;
 		}
 		
 		private function synchronise(bytes:ByteArray):ByteArray
