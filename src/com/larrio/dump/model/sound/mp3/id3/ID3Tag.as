@@ -3,6 +3,10 @@ package com.larrio.dump.model.sound.mp3.id3
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.sound.mp3.id3.frames.ID3Frame;
+	import com.larrio.dump.model.sound.mp3.id3.header.ID3ExtendHeader;
+	import com.larrio.dump.model.sound.mp3.id3.header.ID3Footer;
+	import com.larrio.dump.model.sound.mp3.id3.header.ID3Header;
 	
 	import flash.utils.ByteArray;
 	
@@ -12,17 +16,14 @@ package com.larrio.dump.model.sound.mp3.id3
 	 * @createTime Jul 4, 2013 2:38:05 PM
 	 */
 	public class ID3Tag implements ICodec
-	{
-		private static const UNSYNCHRONISATION:uint = 1 << 7;
-		private static const EXTEND_HEADER:uint = 1 << 6;
-		private static const EXPERIMENTAL_INDICATOR:uint = 1 << 5;
-		private static const FOOTER:uint = 1 << 4;
+	{			
+		public var data:ByteArray;
+		public var header:ID3Header;
+		public var extendHeader:ID3ExtendHeader;
 		
-		private var _identifier:String;
-		private var _version:uint;
-		private var _flags:uint;
+		public var frames:Vector.<ID3Frame>;
 		
-		private var _data:ByteArray;
+		public var footer:ID3Footer;
 		
 		/**
 		 * 构造函数
@@ -33,17 +34,23 @@ package com.larrio.dump.model.sound.mp3.id3
 			
 		}
 		
+		private function reset():void
+		{
+			header = null;
+			data = null;
+			
+			extendHeader = null;
+			frames = null;
+			footer = null;
+		}
+		
 		/**
 		 * 判定当前位置是否为ID3Tag
 		 * @param source	字节数据
 		 */		
 		public static function verify(source:ByteArray):Boolean
 		{
-			if (source.bytesAvailable < 10) return false;
-			var str:String = source.readMultiByte(3, "utf-8");
-			source.position -= 3;
-			
-			return str == "ID3";
+			return ID3Header.verify(source);
 		}
 		
 		/**
@@ -51,19 +58,30 @@ package com.larrio.dump.model.sound.mp3.id3
 		 * @param decoder	解码器
 		 */		
 		public function decode(decoder:FileDecoder):void
-		{
-			var _length:uint;
+		{	
+			reset();
 			
-			_identifier = decoder.readMultiByte(3, "utf-8");
-			_version = decoder.readUI16();
-			_flags = decoder.readUI8();
+			header = new ID3Header();
+			header.decode(decoder);
 			
-			_length = decoder.readSynchsafe();
-			
-			_data = new ByteArray();
-			if (_length)
+			data = new ByteArray();
+			if (header.length)
 			{
-				decoder.readBytes(_data, 0, _length);
+				decoder.readBytes(data, 0, header.length);
+			}
+			
+			decoder = new FileDecoder();
+			decoder.writeBytes(data);
+			decoder.position = 0;
+			decodeBody(decoder);
+		}
+		
+		private function decodeBody(decoder:FileDecoder):void
+		{
+			if (header.flags & ID3Header.EXTEND_HEADER)
+			{
+				extendHeader = new ID3ExtendHeader();
+				extendHeader.decode(decoder);
 			}
 		}
 		
@@ -73,15 +91,17 @@ package com.larrio.dump.model.sound.mp3.id3
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeMultiByte(_identifier, "utf-8");
-			encoder.writeUI16(_version);
-			encoder.writeUI8(_flags);
+			header.length = data.length;
+			header.encode(encoder);
 			
-			encoder.writeSynchsafe(_data.length);
-			
-			if (_data.length)
+			encodeBody(encoder);
+		}
+		
+		private function encodeBody(encoder:FileEncoder):void
+		{
+			if (header.length)
 			{
-				encoder.writeBytes(_data);
+				encoder.writeBytes(data);
 			}
 		}
 		
@@ -92,26 +112,6 @@ package com.larrio.dump.model.sound.mp3.id3
 		{
 			return "<ID3Tag/>";	
 		}
-
-		/**
-		 * ID3Tag内容
-		 */		
-		public function get data():ByteArray { return _data; }
-
-		/**
-		 * 标记位
-		 */		
-		public function get flags():uint { return _flags; }
-
-		/**
-		 * 2字节版本号
-		 */		
-		public function get version():uint { return _version; }
-
-		/**
-		 * ID3标识符
-		 */		
-		public function get identifier():String { return _identifier; }
 
 	}
 }

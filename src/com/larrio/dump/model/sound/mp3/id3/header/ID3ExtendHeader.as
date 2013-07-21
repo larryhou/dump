@@ -1,4 +1,4 @@
-package com.larrio.dump.model.sound.mp3.id3
+package com.larrio.dump.model.sound.mp3.id3.header
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
