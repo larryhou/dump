@@ -4,7 +4,7 @@ package com.larrio.dump.model.sound.mp3
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.model.sound.mp3.id3.ID3Tag;
-	import com.larrio.dump.model.sound.mp3.id3.ID3FooterTag;
+	import com.larrio.dump.model.sound.mp3.id3.FooterID3Tag;
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
@@ -21,7 +21,7 @@ package com.larrio.dump.model.sound.mp3
 		
 		private var _frames:Vector.<MP3Frame>;
 		private var _tags:Vector.<ID3Tag>;
-		private var _footer:ID3FooterTag;
+		private var _footer:FooterID3Tag;
 		
 		private var _sampleCount:uint;
 		private var _samplingRate:uint;
@@ -77,9 +77,9 @@ package com.larrio.dump.model.sound.mp3
 			{
 				position = decoder.position;
 				
-				if (ID3FooterTag.verify(decoder))
+				if (FooterID3Tag.verify(decoder))
 				{
-					_footer = new ID3FooterTag();
+					_footer = new FooterID3Tag();
 					_footer.decode(decoder);
 				}
 				

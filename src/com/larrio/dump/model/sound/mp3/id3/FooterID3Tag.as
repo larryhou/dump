@@ -11,7 +11,7 @@ package com.larrio.dump.model.sound.mp3.id3
 	 * @author doudou
 	 * @createTime Jul 21, 2013 4:21:19 PM
 	 */
-	public class ID3FooterTag implements ICodec
+	public class FooterID3Tag implements ICodec
 	{
 		private static const NUM_IDENTIFIER_BYES:uint = 3;
 		
@@ -23,7 +23,7 @@ package com.larrio.dump.model.sound.mp3.id3
 		 * 构造函数
 		 * create a [ID3FooterTag] object
 		 */
-		public function ID3FooterTag()
+		public function FooterID3Tag()
 		{
 			
 		}
