@@ -19,6 +19,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			{
 				return new ID3TextFrame();
 			}
+			else
+			if (identifier.match(/^W/) && identifier != "WXXX")
+			{
+				return new ID3LinkFrame();
+			}
 			
 			return new ID3Frame();
 		}

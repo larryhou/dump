@@ -37,7 +37,17 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			
 			data = new ByteArray();
 			decoder.readBytes(data, 0, header.length);
-			data.position = 0;
+			
+			decoder = new FileDecoder();
+			decoder.writeBytes(data);
+			decoder.position = 0;
+			
+			decodeInside(decoder);
+		}
+		
+		protected function decodeInside(decoder:FileDecoder):void
+		{
+			
 		}
 		
 		/**
@@ -47,6 +57,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		public function encode(encoder:FileEncoder):void
 		{
 			header.encode(encoder);
+			encodeInside(encoder);
+		}
+		
+		protected function encodeInside(encoder:FileEncoder):void
+		{
 			encoder.writeBytes(data);
 		}
 		

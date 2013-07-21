@@ -2,26 +2,26 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.model.sound.mp3.id3.encoding.ID3Encoding;
 	
 	/**
 	 * 
 	 * @author doudou
-	 * @createTime Jul 22, 2013 2:59:23 AM
+	 * @createTime Jul 22, 2013 3:26:19 AM
 	 */
-	public class ID3TextFrame extends ID3Frame
+	public class ID3UserLinkFrame extends ID3LinkFrame
 	{
 		public var encoding:uint;
-		public var content:String;
+		public var description:String;
 		
 		/**
 		 * 构造函数
-		 * create a [ID3TextFrame] object
+		 * create a [ID3UserLinkFrame] object
 		 */
-		public function ID3TextFrame()
+		public function ID3UserLinkFrame()
 		{
 			
-		}	
+		}
+		
 		
 		/**
 		 * 二进制解码 
@@ -29,8 +29,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		override protected function decodeInside(decoder:FileDecoder):void
 		{
-			encoding = data.readUnsignedByte();
-			content = data.readMultiByte(data.bytesAvailable, ID3Encoding.type2charset(encoding));
+			super.decodeInside(decoder);
 		}
 		
 		/**
