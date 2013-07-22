@@ -3,6 +3,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.model.sound.mp3.id3.frames.headers.ID3FrameHeader;
 	
 	import flash.utils.ByteArray;
 	
@@ -13,10 +14,9 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 	 */
 	public class ID3Frame implements ICodec
 	{
-		private var _identifier:String;
-		private var _flags:uint;
+		public var header:ID3FrameHeader;
 		
-		private var _data:ByteArray;
+		public var bytes:ByteArray;
 		
 		/**
 		 * 构造函数
@@ -26,25 +26,28 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		{
 			
 		}
-		
+				
 		/**
 		 * 二进制解码 
 		 * @param decoder	解码器
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			var _length:uint;
+			header.decode(decoder);
 			
-			_identifier = decoder.readUTFBytes(4);
+			bytes = new ByteArray();
+			decoder.readBytes(bytes, 0, header.length);
 			
-			_length = decoder.readSynchsafe();
-			_flags = decoder.readUI16();
+			decoder = new FileDecoder();
+			decoder.writeBytes(bytes);
+			decoder.position = 0;
 			
-			_data = new ByteArray();
-			if (_length)
-			{
-				decoder.readBytes(_data, 0, _length);
-			}
+			decodeInside(decoder);
+		}
+		
+		protected function decodeInside(decoder:FileDecoder):void
+		{
+			
 		}
 		
 		/**
@@ -53,13 +56,13 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			encoder.writeUTFBytes(_identifier);
-			encoder.writeSynchsafe(_data.length);
-			encoder.writeUI16(_flags);
-			if (_data.length)
-			{
-				encoder.writeBytes(_data);
-			}
+			header.encode(encoder);
+			encodeInside(encoder);
+		}
+		
+		protected function encodeInside(encoder:FileEncoder):void
+		{
+			encoder.writeBytes(bytes);
 		}
 		
 		/**
@@ -67,22 +70,9 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		public function toString():String
 		{
-			return "";	
+			var result:XML = new XML("<id3frame/>");
+			result.@identifier = header.identifier;
+			return result.toXMLString();	
 		}
-
-		/**
-		 * 帧标记
-		 */		
-		public function get identifier():String { return _identifier; }
-
-		/**
-		 * 标记位
-		 */		
-		public function get flags():uint { return _flags; }
-
-		/**
-		 * 帧数据
-		 */		
-		public function get data():ByteArray { return _data; }
 	}
 }

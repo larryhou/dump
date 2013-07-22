@@ -15,13 +15,38 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */
 		public static function create(identifier:String):ID3Frame
 		{
-			var frame:ID3Frame;
-			switch (identifier)
+			if (identifier.match(/^T/))
 			{
-				default:frame = new ID3Frame();break;
+				return identifier == "TXXX"? new ID3UserTextFrame() : new ID3TextFrame();
 			}
 			
-			return frame;
+			
+			if (identifier.match(/^W/))
+			{
+				return identifier == "WXXX"? new ID3UserLinkFrame() : new ID3LinkFrame();
+			}
+			
+			if (identifier == "APIC")
+			{
+				return new ID3APICFrame();
+			}
+			
+			if (identifier == "GEOB")
+			{
+				return new ID3GEOBFrame();
+			}
+			
+			if (identifier == "PRIV")
+			{
+				return new ID3PRIVFrame();
+			}
+			
+			if (identifier == "COMM")
+			{
+				return new ID3COMMFrame();
+			}
+			
+			return new ID3Frame();
 		}
 	}
 }

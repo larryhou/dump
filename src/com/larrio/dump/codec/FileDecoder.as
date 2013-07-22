@@ -233,5 +233,22 @@ package com.larrio.dump.codec
 			value |= (readUI8() & 0x7F) << 0;
 			return value;
 		}
+		
+		/**
+		 * 读取固定字节数的syncsafe整形
+		 * @param numbytes	占用字节数目
+		 * @return 无符号整形
+		 */		
+		public function syncsafe(numbytes:uint = 4):uint
+		{
+			var result:uint = 0;
+			while (numbytes)
+			{
+				result |= (readUI8() & 0x7F) << (numbytes - 1) * 7;
+				numbytes--;
+			}
+			
+			return result;
+		}
 	}
 }
