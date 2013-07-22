@@ -29,8 +29,8 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		override protected function decodeInside(decoder:FileDecoder):void
 		{
-			encoding = data.readUnsignedByte();
-			content = data.readMultiByte(data.bytesAvailable, ID3Encoding.type2charset(encoding));
+			encoding = bytes.readUnsignedByte();
+			content = bytes.readMultiByte(bytes.bytesAvailable, ID3Encoding.type2charset(encoding));
 		}
 		
 		/**

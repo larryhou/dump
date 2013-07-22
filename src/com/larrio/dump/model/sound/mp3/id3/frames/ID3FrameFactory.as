@@ -26,6 +26,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 				return identifier == "WXXX"? new ID3UserLinkFrame() : new ID3LinkFrame();
 			}
 			
+			if (identifier == "APIC")
+			{
+				return new ID3ImageFrame();
+			}
+			
 			return new ID3Frame();
 		}
 	}

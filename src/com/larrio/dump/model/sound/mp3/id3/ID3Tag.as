@@ -112,7 +112,8 @@ package com.larrio.dump.model.sound.mp3.id3
 					frame.decode(decoder);
 					frames.push(frame);
 					
-					dict[frame.header.identifier] = frame;
+					if (!dict[identifier]) dict[identifier] = [];
+					dict[identifier].push(frame);
 				}
 				
 				if (header.flags & ID3Header.FOOTER)

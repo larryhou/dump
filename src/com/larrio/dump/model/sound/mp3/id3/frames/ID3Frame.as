@@ -16,7 +16,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 	{
 		public var header:ID3FrameHeader;
 		
-		public var data:ByteArray;
+		public var bytes:ByteArray;
 		
 		/**
 		 * 构造函数
@@ -35,11 +35,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		{
 			header.decode(decoder);
 			
-			data = new ByteArray();
-			decoder.readBytes(data, 0, header.length);
+			bytes = new ByteArray();
+			decoder.readBytes(bytes, 0, header.length);
 			
 			decoder = new FileDecoder();
-			decoder.writeBytes(data);
+			decoder.writeBytes(bytes);
 			decoder.position = 0;
 			
 			decodeInside(decoder);
@@ -62,7 +62,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		
 		protected function encodeInside(encoder:FileEncoder):void
 		{
-			encoder.writeBytes(data);
+			encoder.writeBytes(bytes);
 		}
 		
 		/**
@@ -70,7 +70,9 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		public function toString():String
 		{
-			return "<ID3Frame/>";	
+			var result:XML = new XML("<id3frame/>");
+			result.@identifier = header.identifier;
+			return result.toXMLString();	
 		}
 	}
 }
