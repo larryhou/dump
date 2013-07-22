@@ -28,7 +28,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			
 			if (identifier == "APIC")
 			{
-				return new ID3ImageFrame();
+				return new ID3APICFrame();
 			}
 			
 			return new ID3Frame();

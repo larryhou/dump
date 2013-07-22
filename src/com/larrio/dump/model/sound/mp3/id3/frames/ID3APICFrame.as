@@ -11,7 +11,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 	 * @author doudou
 	 * @createTime Jul 22, 2013 11:11:11 PM
 	 */
-	public class ID3ImageFrame extends ID3Frame
+	public class ID3APICFrame extends ID3Frame
 	{
 		public var encoding:uint;
 		public var mimeType:String;
@@ -23,7 +23,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 * 构造函数
 		 * create a [ID3ImageFrame] object
 		 */
-		public function ID3ImageFrame()
+		public function ID3APICFrame()
 		{
 			
 		}
