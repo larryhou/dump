@@ -21,7 +21,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		
 		/**
 		 * 构造函数
-		 * create a [ID3ImageFrame] object
+		 * create a [ID3APICFrame] object
 		 */
 		public function ID3APICFrame()
 		{

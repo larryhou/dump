@@ -31,6 +31,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 				return new ID3APICFrame();
 			}
 			
+			if (identifier == "GEOB")
+			{
+				return new ID3GEOBFrame();
+			}
+			
 			return new ID3Frame();
 		}
 	}
