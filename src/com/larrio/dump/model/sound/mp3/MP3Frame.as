@@ -107,7 +107,7 @@ package com.larrio.dump.model.sound.mp3
 			
 			if (decoder.bytesAvailable)
 			{
-				decoder.readBytes(_data, 0, size);
+				decoder.readBytes(_data, 0, Math.min(size, decoder.bytesAvailable));
 			}
 			
 			var rbitRate:uint = BitRate.getRate(_bitrate, _version, _layer);

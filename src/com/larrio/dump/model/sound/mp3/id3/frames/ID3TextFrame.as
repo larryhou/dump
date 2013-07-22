@@ -39,7 +39,8 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
-			super.encodeInside(encoder);
+			encoder.writeUI8(encoding);
+			encoder.writeMultiByte(content, ID3Encoding.type2charset(encoding));
 		}
 		
 		override public function toString():String
