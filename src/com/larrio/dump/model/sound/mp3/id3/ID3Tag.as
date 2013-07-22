@@ -83,10 +83,10 @@ package com.larrio.dump.model.sound.mp3.id3
 			}
 			
 			decoder.position = 0;
-			decodeBody(decoder);
+			decodeInside(decoder);
 		}
 		
-		private function decodeBody(decoder:FileDecoder):void
+		private function decodeInside(decoder:FileDecoder):void
 		{
 			var position:uint;			
 			if (header.flags & ID3Header.EXTEND_HEADER)
@@ -129,7 +129,7 @@ package com.larrio.dump.model.sound.mp3.id3
 					padding = new ByteArray();
 					decoder.readBytes(padding, 0, decoder.bytesAvailable);
 				}
-			}	
+			}
 			
 			trace(frames);
 		}
@@ -213,17 +213,43 @@ package com.larrio.dump.model.sound.mp3.id3
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			header.length = data.length;
-			header.encode(encoder);
+			var buffer:FileEncoder;
 			
-			encodeBody(encoder);
-		}
-		
-		private function encodeBody(encoder:FileEncoder):void
-		{
-			if (header.length)
+			buffer = new FileEncoder();
+			encodeInside(buffer);
+			
+			var bytes:ByteArray;
+			if (header.flags & ID3Header.UNSYNCHRONISATION)
 			{
-				encoder.writeBytes(data);
+				bytes = synchronise(buffer);
+			}
+			
+			header.length = bytes.length;
+			
+			header.encode(encoder);
+			encoder.writeBytes(bytes);
+		}
+			
+		private function encodeInside(encoder:FileEncoder):void
+		{
+			if (header.flags & ID3Header.EXTEND_HEADER)
+			{
+				extendHeader.encode(encoder);
+			}
+			
+			for (var i:int = 0; i < frames.length; i++)
+			{
+				frames[i].encode(encoder);
+			}
+			
+			if (header.flags & ID3Header.FOOTER)
+			{
+				footer.encode(encoder);
+			}
+			else
+			if (padding)
+			{
+				encoder.writeBytes(padding);
 			}
 		}
 		

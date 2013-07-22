@@ -2,6 +2,7 @@ package builder.sound
 {
 	import com.larrio.dump.SWFBuilder;
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.model.sound.mp3.MP3File;
 	import com.larrio.dump.tags.SWFTag;
 	
@@ -11,6 +12,7 @@ package builder.sound
 	import flash.media.Sound;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
 	
@@ -55,7 +57,12 @@ package builder.sound
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
 			loader.loadBytes(creator.export(), new LoaderContext(false, ApplicationDomain.currentDomain));
-			trace(swf);
+			
+			var bytes:FileDecoder = new FileDecoder();
+			bytes.writeByte(0xFF);
+			bytes.position = 0;
+			
+			trace(bytes[0]);
 		}
 		
 		protected function completeHandler(event:Event):void
