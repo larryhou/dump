@@ -132,7 +132,7 @@ package com.larrio.dump.model.sound.mp3.id3
 				}
 			}
 			
-			trace(frames);
+			trace(this);
 		}
 		
 		private function frameVerify(bytes:ByteArray):String
@@ -259,7 +259,13 @@ package com.larrio.dump.model.sound.mp3.id3
 		 */		
 		public function toString():String
 		{
-			return "<ID3Tag/>";	
+			var result:XML = new XML("<id3tag/>");
+			for (var i:int = 0; i < frames.length; i++)
+			{
+				result.appendChild(new XML(frames[i].toString()));
+			}
+			
+			return result.toXMLString();	
 		}
 
 	}

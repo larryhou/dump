@@ -12,7 +12,7 @@ package mp3
 	 */
 	public class MP3ParseMain extends Sprite
 	{
-		[Embed(source="../libs/sleep.mp3", mimeType="application/octet-stream")]
+		[Embed(source="../libs/allrise.mp3", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**
@@ -23,7 +23,7 @@ package mp3
 		{
 			var file:MP3File = new MP3File(true);
 			file.decode(new FileByteArray());
-			trace(file);
+			//trace(file);
 			
 		}
 	}

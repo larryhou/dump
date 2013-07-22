@@ -62,5 +62,12 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			
 			encoder.writeMultiByte(content, ID3Encoding.type2charset(encoding));
 		}
+		
+		override public function toString():String
+		{
+			var result:XML = new XML(super.toString());
+			result.@description = description;
+			return result.toXMLString()
+		}
 	}
 }

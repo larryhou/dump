@@ -2,6 +2,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.model.sound.mp3.id3.encoding.ID3Encoding;
 	
 	/**
 	 * 
@@ -27,7 +28,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		override protected function decodeInside(decoder:FileDecoder):void
 		{
-			url = bytes.readUTF();
+			url = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
 		}
 		
 		/**
@@ -36,7 +37,14 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		 */		
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
-			super.encodeInside(encoder);
+			encoder.writeMultiByte(url, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+		}
+		
+		override public function toString():String
+		{
+			var result:XML = new XML(super.toString());
+			result.@url = url;
+			return result.toXMLString();
 		}
 	}
 }

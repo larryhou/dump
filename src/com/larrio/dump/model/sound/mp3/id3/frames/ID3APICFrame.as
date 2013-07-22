@@ -62,8 +62,6 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			
 			data = new ByteArray();
 			decoder.readBytes(data);
-			
-			trace(this);
 		}
 		
 		/**

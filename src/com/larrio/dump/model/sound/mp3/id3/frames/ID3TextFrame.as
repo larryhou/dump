@@ -41,5 +41,13 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		{
 			super.encodeInside(encoder);
 		}
+		
+		override public function toString():String
+		{
+			var result:XML = new XML(super.toString());
+			result.@encoding = ID3Encoding.type2charset(encoding);
+			result.@content = content;
+			return result.toXMLString();
+		}
 	}
 }

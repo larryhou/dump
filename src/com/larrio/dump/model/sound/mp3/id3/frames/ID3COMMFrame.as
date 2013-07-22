@@ -7,18 +7,22 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 	/**
 	 * 
 	 * @author doudou
-	 * @createTime Jul 22, 2013 3:26:19 AM
+	 * @createTime Jul 23, 2013 12:02:48 AM
 	 */
-	public class ID3UserLinkFrame extends ID3LinkFrame
+	public class ID3COMMFrame extends ID3Frame
 	{
 		public var encoding:uint;
+		
+		public var language:String;
+		
 		public var description:String;
+		public var content:String;
 		
 		/**
 		 * 构造函数
-		 * create a [ID3UserLinkFrame] object
+		 * create a [ID3COMMFrame] object
 		 */
-		public function ID3UserLinkFrame()
+		public function ID3COMMFrame()
 		{
 			
 		}
@@ -31,6 +35,7 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		override protected function decodeInside(decoder:FileDecoder):void
 		{
 			encoding = decoder.readUI8();
+			language = decoder.readUTFBytes(3);
 			
 			var length:uint;
 			var offset:uint = decoder.position;
@@ -40,11 +45,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 			
 			decoder.position = offset;
 			description = decoder.readMultiByte(length, ID3Encoding.type2charset(encoding));
-			
+				
 			decoder.readUnsignedByte();
 			if (decoder[decoder.position] == 0x00) decoder.position++;
 			
-			url = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			content = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.type2charset(encoding));
 		}
 		
 		/**
@@ -54,6 +59,8 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
 			encoder.writeUI8(encoding);
+			encoder.writeUTF(language);
+			
 			encoder.writeMultiByte(description, ID3Encoding.type2charset(encoding));
 			
 			encoder.writeByte(0);
@@ -62,13 +69,16 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 				encoder.writeByte(0);
 			}
 			
-			encoder.writeMultiByte(url, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			encoder.writeMultiByte(content, ID3Encoding.type2charset(encoding));
 		}
 		
 		override public function toString():String
 		{
 			var result:XML = new XML(super.toString());
+			result.@encoding = ID3Encoding.type2charset(encoding);
+			result.@language = language;
 			result.@description = description;
+			result.@content = content;
 			return result.toXMLString();
 		}
 	}

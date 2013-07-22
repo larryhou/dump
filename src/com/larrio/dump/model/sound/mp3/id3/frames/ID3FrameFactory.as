@@ -41,6 +41,11 @@ package com.larrio.dump.model.sound.mp3.id3.frames
 				return new ID3PRIVFrame();
 			}
 			
+			if (identifier == "COMM")
+			{
+				return new ID3COMMFrame();
+			}
+			
 			return new ID3Frame();
 		}
 	}
