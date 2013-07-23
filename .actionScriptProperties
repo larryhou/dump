@@ -55,7 +55,6 @@
     <application path="script/ScriptMain.as"/>
     <application path="display/DisplayMain.as"/>
     <application path="builder/sound/SoundABCMain.as"/>
-    <application path="builder/binary/classes/BinaryClass.as"/>
     <application path="role/RoleMain.as"/>
     <application path="builder/binary/BinaryABCMain.as"/>
     <application path="crop/CropMain.as"/>
