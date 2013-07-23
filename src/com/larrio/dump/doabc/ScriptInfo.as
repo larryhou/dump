@@ -12,21 +12,13 @@ package com.larrio.dump.doabc
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 3:43:37 PM
 	 */
-	public class ScriptInfo implements ICodec, IScript
+	public class ScriptInfo extends ScriptNode implements ICodec
 	{
 		private var _initializer:uint;
 		
 		private var _traits:Vector.<TraitInfo>;
-		private var _map:Dictionary;
-		
-		private var _variables:Vector.<TraitInfo>;
-		private var _methods:Vector.<TraitInfo>;
-		private var _classes:Vector.<TraitInfo>;
-		
 		
 		private var _abc:DoABC;
-		
-		private var _belong:IScript;
 		
 		/**
 		 * 构造函数
@@ -48,8 +40,7 @@ package com.larrio.dump.doabc
 			_abc.methods[_initializer].type = MethodType.INITIALIZER;
 			_abc.methods[_initializer].belong = this;
 			
-			_map = new Dictionary();
-			
+			var type:uint;
 			var _lenght:uint, i:int;
 			
 			_lenght = decoder.readEU30();
@@ -59,35 +50,17 @@ package com.larrio.dump.doabc
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 				
-				_map[_traits[i].data.id] = _traits[i];
-				
-				// 特征归类
-				switch (_traits[i].kind & 0xF)
+				type = addTrait(_traits[i]);
+				if (type)
 				{
-					case TraitType.GETTER:
-					case TraitType.SETTER:
-					case TraitType.METHOD:
-					case TraitType.FUNCTION:
+					if (type == 1)
 					{
-						if (!_methods) _methods = new Vector.<TraitInfo>;
-						_methods.push(_traits[i]);
-						break;
+						_abc.methods[_traits[i].data.method].belong = this;
 					}
-						
-					case TraitType.CLASS:
+					else
+					if (type == 2)
 					{
-						if (!_classes) _classes = new Vector.<TraitInfo>;
-						_classes.push(_traits[i]);
-						
 						_abc.classes[_traits[i].data.classi].belong = this;
-						break;
-					}
-						
-					default:
-					{
-						if (!_variables) _variables = new Vector.<TraitInfo>;
-						_variables.push(_traits[i]);
-						break;
 					}
 				}
 				
@@ -113,11 +86,6 @@ package com.larrio.dump.doabc
 			}
 		}
 		
-		public function getTrait(id:uint):TraitInfo
-		{
-			return _map[id] as TraitInfo;
-		}
-		
 		/**
 		 * 字符串输出
 		 */		
@@ -137,29 +105,5 @@ package com.larrio.dump.doabc
 		 */		
 		public function get traits():Vector.<TraitInfo> { return _traits; }
 		
-		/**
-		 * 全局变量特征信息
-		 */		
-		public function get variables():Vector.<TraitInfo> { return _variables; }
-		
-		/**
-		 * 方法特征信息
-		 */		
-		public function get methods():Vector.<TraitInfo> { return _methods; }
-		
-		/**
-		 * 类特征信息
-		 */		
-		public function get classes():Vector.<TraitInfo> { return _classes; }
-
-		/**
-		 * 对象所属容器
-		 */		
-		public function get belong():IScript { return _belong; }
-		public function set belong(value:IScript):void
-		{
-			_belong = value;
-		}
-
 	}
 }

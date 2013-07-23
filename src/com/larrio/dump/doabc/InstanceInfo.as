@@ -13,7 +13,7 @@ package com.larrio.dump.doabc
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 3:43:17 PM
 	 */
-	public class InstanceInfo implements ICodec, IScript
+	public class InstanceInfo extends ScriptNode implements ICodec
 	{
 		private var _name:uint;
 		private var _superName:uint;
@@ -26,16 +26,10 @@ package com.larrio.dump.doabc
 		private var _initializer:uint;
 		
 		private var _traits:Vector.<TraitInfo>;
-		private var _map:Dictionary;
 		
 		private var _abc:DoABC;
 		
-		private var _variables:Vector.<TraitInfo>;
-		private var _methods:Vector.<TraitInfo>;
-		
 		private var _protocol:Boolean;
-		
-		private var _belong:IScript;
 		
 		/**
 		 * 构造函数
@@ -80,8 +74,6 @@ package com.larrio.dump.doabc
 			_abc.methods[_initializer].type = MethodType.CONSTRUCTOR;
 			_abc.methods[_initializer].belong = this;
 			
-			_map = new Dictionary();
-			
 			_length = decoder.readES30();
 			_traits = new Vector.<TraitInfo>(_length, true);
 			for (i = 0; i < _length; i++)
@@ -89,29 +81,9 @@ package com.larrio.dump.doabc
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 				
-				_map[_traits[i].data.id] = _traits[i];
-				
-				// 特征归类
-				switch (_traits[i].kind & 0xF)
+				if (addTrait(_traits[i]))
 				{
-					case TraitType.GETTER:
-					case TraitType.SETTER:
-					case TraitType.METHOD:
-					case TraitType.FUNCTION:
-					{
-						if (!_methods) _methods = new Vector.<TraitInfo>;
-						_methods.push(_traits[i]);
-						
-						_abc.methods[_traits[i].data.method].belong = this;
-						break;
-					}
-					
-					default:
-					{
-						if (!_variables) _variables = new Vector.<TraitInfo>;
-						_variables.push(_traits[i]);
-						break;
-					}
+					_abc.methods[_traits[i].data.method].belong = this;
 				}
 			}
 			
@@ -153,12 +125,7 @@ package com.larrio.dump.doabc
 			}
 			
 		}
-		
-		public function getTrait(id:uint):TraitInfo
-		{
-			return _map[id] as TraitInfo;
-		}
-		
+				
 		/**
 		 * 字符串输出
 		 */		
@@ -220,27 +187,9 @@ package com.larrio.dump.doabc
 		public function get traits():Vector.<TraitInfo> { return _traits; }
 
 		/**
-		 * 实例成员变量
-		 */		
-		public function get variables():Vector.<TraitInfo> { return _variables; }
-
-		/**
-		 * 实例方法
-		 */		
-		public function get methods():Vector.<TraitInfo> { return _methods; }
-
-		/**
 		 * 是否为接口
 		 */		
 		public function get protocol():Boolean { return _protocol; }
 		
-		/**
-		 * 对象所属容器
-		 */		
-		public function get belong():IScript { return _belong; }
-		public function set belong(value:IScript):void
-		{
-			_belong = value;
-		}
 	}
 }

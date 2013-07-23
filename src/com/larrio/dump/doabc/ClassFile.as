@@ -41,7 +41,7 @@ package com.larrio.dump.doabc
 			var appending:String = "";
 			
 			// instance class info
-			if (script.variables) appending += "\n\t" + variableSTR(script.variables, abc);
+			if (script.slots) appending += "\n\t" + variableSTR(script.slots, abc);
 			if (script.methods)
 			{				
 				length = script.methods.length;
@@ -111,7 +111,7 @@ package com.larrio.dump.doabc
 			}
 			
 			// static class info
-			if (info.variables) _content += "\n\t" + variableSTR(info.variables, abc);
+			if (info.slots) _content += "\n\t" + variableSTR(info.slots, abc);
 			if (info.methods)
 			{				
 				length = info.methods.length;
@@ -131,7 +131,7 @@ package com.larrio.dump.doabc
 			}
 
 			// instance class info
-			if (instance.variables) _content += "\n\t" + variableSTR(instance.variables, abc);
+			if (instance.slots) _content += "\n\t" + variableSTR(instance.slots, abc);
 			if (!instance.protocol)
 			{
 				_content += "\n";
