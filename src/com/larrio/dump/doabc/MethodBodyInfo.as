@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.interfaces.IScript;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -13,7 +14,7 @@ package com.larrio.dump.doabc
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 3:43:45 PM
 	 */
-	public class MethodBodyInfo implements ICodec
+	public class MethodBodyInfo implements ICodec, IScript
 	{
 		private var _method:uint;
 		
@@ -32,9 +33,11 @@ package com.larrio.dump.doabc
 		
 		private var _abc:DoABC;
 		
-		private var _slots:Dictionary;
+		private var _map:Dictionary;
 		
 		private var _timestamp:uint;
+		
+		private var _belong:IScript;
 		
 		/**
 		 * 构造函数
@@ -79,7 +82,7 @@ package com.larrio.dump.doabc
 				_exceptions[i].decode(decoder);
 			}
 			
-			_slots = new Dictionary(false);
+			_map = new Dictionary(false);
 			
 			_length = decoder.readEU30();
 			_traits = new Vector.<TraitInfo>(_length, true);
@@ -88,7 +91,7 @@ package com.larrio.dump.doabc
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
 				
-				_slots[_traits[i].data.id] = _traits[i];
+				_map[_traits[i].data.id] = _traits[i];
 			}
 			
 			// decode opcode
@@ -143,9 +146,9 @@ package com.larrio.dump.doabc
 		 * 获取某个slot位置的特征属性 
 		 * @param slot 
 		 */		
-		public function getTraitAt(slot:uint):TraitInfo
+		public function getTrait(slot:uint):TraitInfo
 		{
-			return _slots[slot];
+			return _map[slot] as TraitInfo;
 		}
 		
 		/**
@@ -219,6 +222,16 @@ package com.larrio.dump.doabc
 		 * 函数特征
 		 */		
 		public function get traits():Vector.<TraitInfo> { return _traits; }
+		
+		/**
+		 * 对象所属容器
+		 */		
+		public function get belong():IScript { return _belong; }
+		public function set belong(value:IScript):void
+		{
+			_belong = value;
+		}
+
 
 	}
 }

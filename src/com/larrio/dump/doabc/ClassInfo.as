@@ -3,24 +3,28 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.interfaces.IScript;
+	
+	import flash.utils.Dictionary;
 	
 	/**
 	 * DoABC之类信息
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 3:46:41 PM
 	 */
-	public class ClassInfo implements ICodec
+	public class ClassInfo implements ICodec, IScript
 	{
-		protected var _initializer:uint;
-		protected var _traits:Vector.<TraitInfo>;
+		private var _initializer:uint;
+		private var _traits:Vector.<TraitInfo>;
+		private var _map:Dictionary;
 		
-		protected var _variables:Vector.<TraitInfo>;
-		protected var _methods:Vector.<TraitInfo>;
-		protected var _classes:Vector.<TraitInfo>;
+		private var _variables:Vector.<TraitInfo>;
+		private var _methods:Vector.<TraitInfo>;
 		
-		protected var _instance:InstanceInfo;
+		private var _instance:InstanceInfo;
+		private var _abc:DoABC;
 		
-		protected var _abc:DoABC;
+		private var _belong:IScript;
 		
 		/**
 		 * 构造函数
@@ -39,7 +43,11 @@ package com.larrio.dump.doabc
 		{
 			_initializer = decoder.readEU30();
 			
+			_abc.methods[_initializer].initializer = true;
+			_abc.methods[_initializer].belong = this;
+			
 			var _lenght:uint, i:int;
+			_map = new Dictionary();
 			
 			_lenght = decoder.readEU30();
 			_traits = new Vector.<TraitInfo>(_lenght, true);
@@ -47,6 +55,8 @@ package com.larrio.dump.doabc
 			{
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
+				
+				_map[_traits[i].data.id] = _traits[i];
 				
 				// 特征归类
 				switch (_traits[i].kind & 0xF)
@@ -60,14 +70,7 @@ package com.larrio.dump.doabc
 						_methods.push(_traits[i]);
 						break;
 					}
-					
-					case TraitType.CLASS:
-					{
-						if (!_classes) _classes = new Vector.<TraitInfo>;
-						_classes.push(_traits[i]);
-						break;
-					}
-						
+											
 					default:
 					{
 						if (!_variables) _variables = new Vector.<TraitInfo>;
@@ -96,8 +99,12 @@ package com.larrio.dump.doabc
 			for (i = 0; i < length; i++)
 			{
 				_traits[i].encode(encoder);
-			}
-			
+			}			
+		}
+		
+		public function getTrait(id:uint):TraitInfo
+		{
+			return _map[id] as TraitInfo;
 		}
 		
 		/**
@@ -134,11 +141,6 @@ package com.larrio.dump.doabc
 		 * 方法特征信息
 		 */		
 		public function get methods():Vector.<TraitInfo> { return _methods; }
-
-		/**
-		 * 类特征信息
-		 */		
-		public function get classes():Vector.<TraitInfo> { return _classes; }
 		
 		/**
 		 * class对应instance
@@ -147,7 +149,18 @@ package com.larrio.dump.doabc
 		public function set instance(value:InstanceInfo):void
 		{
 			_instance = value;
+			_instance.belong = this;
 		}
+		
+		/**
+		 * 对象所属容器
+		 */		
+		public function get belong():IScript { return _belong; }
+		public function set belong(value:IScript):void
+		{
+			_belong = value;
+		}
+
 
 	}
 }

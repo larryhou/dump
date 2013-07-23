@@ -1,7 +1,8 @@
-package 
+package abc 
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.doabc.DoABC;
+	import com.larrio.dump.doabc.MethodInfo;
 	import com.larrio.dump.tags.DoABCTag;
 	
 	import flash.display.DisplayObject;
@@ -81,6 +82,7 @@ package
 					//trace(tag.abc.constants.strings.join("\n"));
 					//trace(tag.abc.files.join("\n"));
 					trace(tag);
+					
 					break;
 				}
 			}
@@ -126,5 +128,22 @@ package
 		
 	}
 }
+
+function print(msg:String):void
+{
+	trace(msg);
+	var i:uint = 0;
+	i++;
+}
+
+function log(msg:String):void
+{
+	trace(msg);
+	var k:uint = 10;
+	k--;
+}
+
+var t:uint = 144;
+const version:String = "v1.0";
 
 class larryhou {}

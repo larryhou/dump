@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.interfaces.IScript;
 	import com.larrio.dump.utils.assertTrue;
 	
 	/**
@@ -12,6 +13,7 @@ package com.larrio.dump.doabc
 	 */
 	public class MethodInfo implements ICodec
 	{
+		private var _id:uint;
 		private var _name:uint;
 		
 		private var _returnType:uint;
@@ -27,6 +29,9 @@ package com.larrio.dump.doabc
 		private var _body:MethodBodyInfo;
 		
 		private var _trait:TraitInfo;
+		
+		private var _initializer:Boolean;
+		private var _belong:IScript;
 		
 		/**
 		 * 构造函数
@@ -136,6 +141,11 @@ package com.larrio.dump.doabc
 			var result:String = _constants.strings[_name] || "";
 			result = _trait? _trait.toString() : "";
 			
+			if (!_trait) 
+			{
+				result = _initializer? "initializer" : ("closure" + _id);
+			}
+			
 			var optionlen:int = _options? _options.length : -1;
 			
 			var item:String, list:Array = [];
@@ -209,6 +219,7 @@ package com.larrio.dump.doabc
 		public function set body(value:MethodBodyInfo):void
 		{
 			_body = value;
+			_body.belong = _belong;
 		}
 
 		/**
@@ -220,6 +231,28 @@ package com.larrio.dump.doabc
 			_trait = value;
 		}
 
+		/**
+		 * 函数id
+		 */		
+		public function get id():uint { return _id; }
+		public function set id(value:uint):void
+		{
+			_id = value;
+		}
 
+		/**
+		 * 是否为构造器
+		 */		
+		public function get initializer():Boolean { return _initializer; }
+		public function set initializer(value:Boolean):void
+		{
+			_initializer = value;
+		}
+
+		public function get belong():IScript { return _belong; }
+		public function set belong(value:IScript):void
+		{
+			_belong = value;
+		}
 	}
 }

@@ -3,6 +3,7 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.interfaces.IScript;
 	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.dump.utils.hexSTR;
 	import com.larrio.dump.utils.padding;
@@ -125,8 +126,16 @@ package com.larrio.dump.doabc
 		{
 			var info:MethodInfo = _abc.methods[_method];
 			
-			// FIXME: sometimes cannot get slot info
-			return (info.body.getTraitAt(id) || id).toString();
+			var trait:TraitInfo;
+			var container:IScript = info.body;
+			
+			while (container && !trait)
+			{
+				trait = container.getTrait(id);
+				container = container.belong;
+			}
+			
+			return (trait || id).toString();
 		}
 		
 		/**
@@ -228,7 +237,7 @@ package com.larrio.dump.doabc
 					case OpcodeType.NEWFUNCTION_OP:
 					{
 						target = decoder.readEU30();
-						item += methodSTR(target);
+						item += methodSTR(target);						
 						
 						if (!_closures) _closures = new Vector.<uint>;
 						

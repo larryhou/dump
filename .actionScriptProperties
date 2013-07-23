@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="builder/binary/BinaryABCMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
+<actionScriptProperties analytics="false" mainApplicationPath="abc/DoABCMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
   <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="demos" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src"/>
@@ -50,15 +50,15 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="builder/InsertMain.as"/>
+    <application path="abc/DoABCMain.as"/>
     <application path="MorphMain.as"/>
+    <application path="builder/InsertMain.as"/>
     <application path="script/ScriptMain.as"/>
     <application path="display/DisplayMain.as"/>
     <application path="builder/sound/SoundABCMain.as"/>
-    <application path="role/RoleMain.as"/>
-    <application path="builder/binary/BinaryABCMain.as"/>
     <application path="crop/CropMain.as"/>
-    <application path="DoABCMain.as"/>
+    <application path="builder/binary/BinaryABCMain.as"/>
+    <application path="role/RoleMain.as"/>
     <application path="builder/image/AlphaImageMain.as"/>
     <application path="builder/image/ImageABCMain.as"/>
     <application path="EncryptMain.as"/>
@@ -67,16 +67,16 @@
     <application path="builder/sound/MP3ModifierMain.as"/>
     <application path="closure/ClosureMain.as"/>
     <application path="protect/ProtectMain.as"/>
-    <application path="diff/DiffMain.as"/>
     <application path="builder/image/PNGMain.as"/>
-    <application path="OutlineMain.as"/>
+    <application path="diff/DiffMain.as"/>
     <application path="ImageMain.as"/>
+    <application path="OutlineMain.as"/>
     <application path="FontMain.as"/>
     <application path="JointMain.as"/>
     <application path="product/ProductMain.as"/>
     <application path="FlexUnitCompilerApplication.as"/>
-    <application path="builder/binary/BinaryMain.as"/>
     <application path="PencilMain.as"/>
+    <application path="builder/binary/BinaryMain.as"/>
     <application path="debug/DebugMain.as"/>
     <application path="builder/sound/MP3Main.as"/>
   </applications>

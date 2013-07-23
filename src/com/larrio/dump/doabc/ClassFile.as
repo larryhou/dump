@@ -1,6 +1,5 @@
 package com.larrio.dump.doabc
-{
-	
+{	
 	
 	/**
 	 * 类文件信息
@@ -55,9 +54,15 @@ package com.larrio.dump.doabc
 				}
 			}
 			
+			var initializer:MethodInfo = abc.methods[script.initializer];
+			
+			appending += "\n\n";
+			appending += initializer.toString() + "\n";
+			appending += initializer? initializer.body.toString() : "";
+			
 			if (appending)
 			{
-				_content += "\nPACKAGE MEMBERS:" + appending;
+				_content += "\nSCRIPT MEMBERS:" + appending;
 			}
 			
 		}

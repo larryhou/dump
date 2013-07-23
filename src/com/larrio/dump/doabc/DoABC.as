@@ -70,6 +70,7 @@ package com.larrio.dump.doabc
 			{
 				_methods[i] = new MethodInfo(_constants);
 				_methods[i].decode(decoder);
+				_methods[i].id = i;
 			}
 			
 			_deOffset.set(_methods, decoder.position);

@@ -3,14 +3,17 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
+	import com.larrio.dump.interfaces.IScript;
 	import com.larrio.dump.utils.assertTrue;
+	
+	import flash.utils.Dictionary;
 	
 	/**
 	 * DoABC之实例信息
 	 * @author larryhou
 	 * @createTime Dec 16, 2012 3:43:17 PM
 	 */
-	public class InstanceInfo implements ICodec
+	public class InstanceInfo implements ICodec, IScript
 	{
 		private var _name:uint;
 		private var _superName:uint;
@@ -23,6 +26,7 @@ package com.larrio.dump.doabc
 		private var _initializer:uint;
 		
 		private var _traits:Vector.<TraitInfo>;
+		private var _map:Dictionary;
 		
 		private var _abc:DoABC;
 		
@@ -30,6 +34,8 @@ package com.larrio.dump.doabc
 		private var _methods:Vector.<TraitInfo>;
 		
 		private var _protocol:Boolean;
+		
+		private var _belong:IScript;
 		
 		/**
 		 * 构造函数
@@ -71,6 +77,7 @@ package com.larrio.dump.doabc
 			}
 			
 			_initializer = decoder.readEU30();
+			_map = new Dictionary();
 			
 			_length = decoder.readES30();
 			_traits = new Vector.<TraitInfo>(_length, true);
@@ -78,6 +85,8 @@ package com.larrio.dump.doabc
 			{
 				_traits[i] = new TraitInfo(_abc);
 				_traits[i].decode(decoder);
+				
+				_map[_traits[i].data.id] = _traits[i];
 				
 				// 特征归类
 				switch (_traits[i].kind & 0xF)
@@ -89,6 +98,8 @@ package com.larrio.dump.doabc
 					{
 						if (!_methods) _methods = new Vector.<TraitInfo>;
 						_methods.push(_traits[i]);
+						
+						_abc.methods[_traits[i].data.method].belong = this;
 						break;
 					}
 					
@@ -138,6 +149,11 @@ package com.larrio.dump.doabc
 				_traits[i].encode(encoder);
 			}
 			
+		}
+		
+		public function getTrait(id:uint):TraitInfo
+		{
+			return _map[id] as TraitInfo;
 		}
 		
 		/**
@@ -214,7 +230,14 @@ package com.larrio.dump.doabc
 		 * 是否为接口
 		 */		
 		public function get protocol():Boolean { return _protocol; }
-
-
+		
+		/**
+		 * 对象所属容器
+		 */		
+		public function get belong():IScript { return _belong; }
+		public function set belong(value:IScript):void
+		{
+			_belong = value;
+		}
 	}
 }
