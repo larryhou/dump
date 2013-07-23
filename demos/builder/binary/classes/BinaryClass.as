@@ -1,4 +1,4 @@
-package builder.binary
+package builder.binary.classes
 {
 	import flash.display.Sprite;
 	
@@ -8,13 +8,13 @@ package builder.binary
 	 * @author larryhou
 	 * @createTime Jul 9, 2013 10:21:46 AM
 	 */
-	public class BinaryFileMain extends Sprite
+	public class BinaryClass extends Sprite
 	{
 		/**
 		 * 构造函数
-		 * create a [BinaryFileMain] object
+		 * create a [BinaryClass] object
 		 */
-		public function BinaryFileMain()
+		public function BinaryClass()
 		{
 			new SimpleByteArray();
 		}

@@ -16,7 +16,7 @@ package builder.binary
 	 */
 	public class BinaryABCMain extends Sprite
 	{
-		[Embed(source="../bin/BinaryFileMain.swf", mimeType="application/octet-stream")]
+		[Embed(source="classes/class.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

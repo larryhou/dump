@@ -19,7 +19,7 @@ package com.larrio.dump.doabc.templates.audio
 		public function MP3DoABC(name:String)
 		{
 			decodeDoABCTag(new TemplateTag());
-			rename(name, [1, 2, 5]);
+			rename(name);
 		}
 	}
 }

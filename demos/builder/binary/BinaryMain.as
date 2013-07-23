@@ -29,7 +29,7 @@ package builder.binary
 		{
 			var swf:SWFBuilder = new SWFBuilder();
 			swf.insertBinary(new FileByteArray(), "com.larrio::SimpleBinary");
-			swf.insertBinary(new FileByteArray(), "com.larrio::Binary");
+			swf.insertBinary(new FileByteArray(), "com.larrio.Binary");
 			
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);

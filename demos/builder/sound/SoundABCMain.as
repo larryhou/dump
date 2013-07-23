@@ -1,23 +1,13 @@
 package builder.sound
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.model.sound.mp3.MP3File;
-	import com.larrio.dump.tags.DefineSoundTag;
+	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.media.Sound;
 	import flash.net.FileReference;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.utils.ByteArray;
 	
 	/**
 	 * 
@@ -26,10 +16,8 @@ package builder.sound
 	 */
 	public class SoundABCMain extends Sprite
 	{
-		[Embed(source="../libs/S01.swf", mimeType="application/octet-stream")]
+		[Embed(source="classes/class.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
-		
-		private var _mp3:MP3File;
 		
 		/**
 		 * 构造函数
@@ -37,60 +25,24 @@ package builder.sound
 		 */
 		public function SoundABCMain()
 		{
-			_mp3 = new MP3File();
-			
-			setup();
-			
-			//verify();
-		}
-		
-		private function setup():void
-		{
-			var soundTag:DefineSoundTag;
 			var swf:SWFile = new SWFile(new FileByteArray());
-			//			var swf:SWFile = new SWFile(loaderInfo.bytes);
+			
+			var abcTag:DoABCTag;
 			for each(var tag:SWFTag in swf.tags)
 			{
 				if (tag.type == TagType.DO_ABC)
 				{
-					saveDoABCTag(tag);
-					continue;
+					abcTag = tag as DoABCTag;
+					if (abcTag.name.match(/SimpleSound$/))
+					{
+						saveDoABCTag(tag);
+						break;
+					}
 				}
 				
-				if (tag.type == TagType.DEFINE_SOUND)
-				{
-					soundTag = tag as DefineSoundTag;
-					trace(soundTag);
-					
-					parseMP3Data(soundTag.data);
-					
-					//soundTag.sampleCount = 10000;
-					
-					//new FileReference().save((tag as DefineSound).data, "extract.mp3");
-					//break;
-				}
 			}
-			
-			//new FileReference().save(swf.repack(), "S02.swf");
 		}
-		
-		private function parseMP3Data(data:ByteArray):void
-		{
-			var decoder:FileDecoder = new FileDecoder();
-			decoder.writeBytes(data);
-			decoder.position = 0;
-			
-			_mp3.decode(decoder);
-			trace(_mp3);
-		}
-		
-		private function countSamples(mp3:ByteArray):uint
-		{
-			
-			
-			return 0;
-		}
-		
+				
 		private function saveDoABCTag(tag:SWFTag):void
 		{
 			var encoder:FileEncoder = new FileEncoder();
@@ -99,21 +51,5 @@ package builder.sound
 			new FileReference().save(encoder, "tag.abc");
 		}
 		
-		private function verify():void
-		{
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
-			loader.load(new URLRequest("../libs/S02.swf"), new LoaderContext(false, ApplicationDomain.currentDomain));
-		}
-		
-		protected function completeHandler(event:Event):void
-		{
-			var loaderInfo:LoaderInfo = event.currentTarget as LoaderInfo;
-			var cls:Class = loaderInfo.applicationDomain.getDefinition("larrio") as Class;
-			var s:Sound = new cls();
-			s.play();
-			
-			trace(s);
-		}
 	}
 }

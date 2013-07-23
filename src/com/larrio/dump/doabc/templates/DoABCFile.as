@@ -51,29 +51,40 @@ package com.larrio.dump.doabc.templates
 		
 		/**
 		 * 对导出类重命名
-		 * @param value	目标类名 [com.package]::[className]
+		 * @param value	目标类名 [com.package]::[className] or [com.package].[className]
 		 */		
-		protected function rename(value:String,indice:Array):void
+		protected function rename(value:String):void
 		{
 			value = value.replace(/^\s*|\s*$/g, "");
-			if (!_tag || !value) return;
+			
+			// check class name
+			if (!value || !value.match(/^([^0-9]\w*(\.[^0-9]\w*)*(::|\.))?[^0-9]\w*$/))
+			{
+				throw new ArgumentError("Invalide class name:" + value);
+			}
+			
+			// standardize class name
+			value = value.replace(/\.(\w+)$/, "::$1");
+			
 			
 			var prefix:String = "";
 			var list:Array = value.split("::");
 			if (list.length == 2)
 			{
-				prefix = list.shift().replace(/\./g, "");
+				prefix = list.shift();
 			}
 			
 			var className:String = list.pop();
 			var qualifiedClassName:String = prefix + ":" + className;
 			
-			_tag.name = prefix + (prefix? "/" : "") + className;
+			_tag.name = prefix.replace(/\./g, "/") + (prefix? "/" : "") + className;
 			
 			var strings:Vector.<String> = _tag.abc.constants.strings;
-			strings[indice[0]] = prefix;
-			strings[indice[1]] = className;
-			strings[indice[2]] = qualifiedClassName;
+			strings[1] = qualifiedClassName;
+			strings[2] = "";
+			strings[3] = qualifiedClassName + "/" + className;
+			strings[4] = prefix;
+			strings[5] = className;
 		}
 
 		/**

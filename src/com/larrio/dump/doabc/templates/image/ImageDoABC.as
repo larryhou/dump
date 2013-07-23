@@ -19,7 +19,7 @@ package com.larrio.dump.doabc.templates.image
 		public function ImageDoABC(name:String)
 		{
 			decodeDoABCTag(new TemplateTag());
-			rename(name, [3, 4, 7]);
+			rename(name);
 		}
 	}
 }

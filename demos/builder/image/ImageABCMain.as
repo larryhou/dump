@@ -1,7 +1,10 @@
 package builder.image
 {
+	import builder.image.classes.SimpleBitmapData;
+	
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.tags.DoABCTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
@@ -15,7 +18,7 @@ package builder.image
 	 */
 	public class ImageABCMain extends Sprite
 	{
-		[Embed(source="../libs/image.swf", mimeType="application/octet-stream")]
+		[Embed(source="classes/class.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**
@@ -27,12 +30,18 @@ package builder.image
 			var swf:SWFile = new SWFile(new FileByteArray());
 			trace(swf);
 			
+			var abcTag:DoABCTag;
 			for each(var tag:SWFTag in swf.tags)
 			{
 				if (tag.type == TagType.DO_ABC)
 				{
-					saveDoABCTag(tag);
-					break;
+					abcTag = tag as DoABCTag;
+					if (abcTag.name.match(/SimpleBitmapData$/))
+					{
+						saveDoABCTag(tag);
+						break;
+					}
+					
 				}
 			}
 		}

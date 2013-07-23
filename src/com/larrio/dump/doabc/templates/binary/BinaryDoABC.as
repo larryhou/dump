@@ -19,36 +19,7 @@ package com.larrio.dump.doabc.templates.binary
 		public function BinaryDoABC(name:String)
 		{
 			decodeDoABCTag(new TemplateTag());
-			rename(name, null);
+			rename(name);
 		}
-		
-		/**
-		 * 修改类名
-		 */		
-		override protected function rename(value:String, indice:Array):void
-		{
-			value = value.replace(/^\s*|\s*$/g, "");
-			if (!_tag || !value) return;
-			
-			var prefix:String = "";
-			var list:Array = value.split("::");
-			if (list.length == 2)
-			{
-				prefix = list.shift().replace(/\./g, "/");
-			}
-			
-			var className:String = list.pop();
-			var qualifiedClassName:String = prefix + ":" + className;
-			
-			_tag.name = prefix + (prefix? "/" : "") + className;
-			
-			var strings:Vector.<String> = _tag.abc.constants.strings;
-			strings[1] = qualifiedClassName;
-			strings[3] = "";
-			strings[4] = qualifiedClassName + "/" + className;
-			strings[5] = prefix;
-			strings[6] = className;
-		}
-
 	}
 }
