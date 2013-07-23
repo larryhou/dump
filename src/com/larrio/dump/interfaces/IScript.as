@@ -16,6 +16,11 @@ package com.larrio.dump.interfaces
 		function getTrait(id:uint):TraitInfo;
 		
 		/**
+		 * 获取特征列表
+		 */		
+		function get traits():Vector.<TraitInfo>;
+		
+		/**
 		 * 对象所属
 		 */		
 		function get belong():IScript;
