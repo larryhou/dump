@@ -44,12 +44,12 @@ package com.larrio.dump.files.mp3.id3.frames
 			length = decoder.position - 1 - offset;
 			
 			decoder.position = offset;
-			description = decoder.readMultiByte(length, ID3Encoding.type2charset(encoding));
+			description = decoder.readMultiByte(length, ID3Encoding.charset(encoding));
 				
 			decoder.readUnsignedByte();
 			if (decoder[decoder.position] == 0x00) decoder.position++;
 			
-			content = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.type2charset(encoding));
+			content = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.charset(encoding));
 		}
 		
 		/**
@@ -61,7 +61,7 @@ package com.larrio.dump.files.mp3.id3.frames
 			encoder.writeUI8(encoding);
 			encoder.writeUTF(language);
 			
-			encoder.writeMultiByte(description, ID3Encoding.type2charset(encoding));
+			encoder.writeMultiByte(description, ID3Encoding.charset(encoding));
 			
 			encoder.writeByte(0);
 			if (encoding == ID3Encoding.UNICODE || encoding == ID3Encoding.UNICODE_BIG_ENDIAN)
@@ -69,13 +69,13 @@ package com.larrio.dump.files.mp3.id3.frames
 				encoder.writeByte(0);
 			}
 			
-			encoder.writeMultiByte(content, ID3Encoding.type2charset(encoding));
+			encoder.writeMultiByte(content, ID3Encoding.charset(encoding));
 		}
 		
 		override public function toString():String
 		{
 			var result:XML = new XML(super.toString());
-			result.@encoding = ID3Encoding.type2charset(encoding);
+			result.@encoding = ID3Encoding.charset(encoding);
 			result.@language = language;
 			result.@description = description;
 			result.@content = content;

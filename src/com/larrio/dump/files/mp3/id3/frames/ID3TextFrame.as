@@ -30,7 +30,7 @@ package com.larrio.dump.files.mp3.id3.frames
 		override protected function decodeInside(decoder:FileDecoder):void
 		{
 			encoding = bytes.readUnsignedByte();
-			content = bytes.readMultiByte(bytes.bytesAvailable, ID3Encoding.type2charset(encoding));
+			content = bytes.readMultiByte(bytes.bytesAvailable, ID3Encoding.charset(encoding));
 		}
 		
 		/**
@@ -40,13 +40,13 @@ package com.larrio.dump.files.mp3.id3.frames
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
 			encoder.writeUI8(encoding);
-			encoder.writeMultiByte(content, ID3Encoding.type2charset(encoding));
+			encoder.writeMultiByte(content, ID3Encoding.charset(encoding));
 		}
 		
 		override public function toString():String
 		{
 			var result:XML = new XML(super.toString());
-			result.@encoding = ID3Encoding.type2charset(encoding);
+			result.@encoding = ID3Encoding.charset(encoding);
 			result.@content = content;
 			return result.toXMLString();
 		}

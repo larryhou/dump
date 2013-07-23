@@ -16,7 +16,7 @@ package com.larrio.dump.files.mp3.id3.encoding
 		
 		public static const UTF_8:uint = 0x03;
 		
-		public static function type2charset(encoding:uint):String
+		public static function charset(encoding:uint):String
 		{
 			switch (encoding)
 			{

@@ -44,7 +44,7 @@ package com.larrio.dump.files.mp3.id3.frames
 			length = decoder.position - 1 - offset;
 			
 			decoder.position = offset;
-			mimeType = decoder.readMultiByte(length, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			mimeType = decoder.readMultiByte(length, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 			
 			decoder.readUnsignedByte();
 			type = decoder.readUI8();
@@ -55,7 +55,7 @@ package com.larrio.dump.files.mp3.id3.frames
 			length = decoder.position - 1 - offset;
 			
 			decoder.position = offset;
-			description = decoder.readMultiByte(length, ID3Encoding.type2charset(encoding));
+			description = decoder.readMultiByte(length, ID3Encoding.charset(encoding));
 			
 			decoder.readUnsignedByte();
 			if (decoder[decoder.position] == 0x00) decoder.position++;
@@ -106,7 +106,7 @@ package com.larrio.dump.files.mp3.id3.frames
 		override public function toString():String
 		{
 			var result:XML = new XML(super.toString());
-			result.@encoding = ID3Encoding.type2charset(encoding);
+			result.@encoding = ID3Encoding.charset(encoding);
 			result.@mimeType = mimeType;
 			result.@type = formatType();
 			result.@description = description;

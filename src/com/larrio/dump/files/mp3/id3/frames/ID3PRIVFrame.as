@@ -38,7 +38,7 @@ package com.larrio.dump.files.mp3.id3.frames
 			length = decoder.position - 1;
 			
 			decoder.position = offset;
-			owner = decoder.readMultiByte(length, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			owner = decoder.readMultiByte(length, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 			
 			decoder.readUnsignedByte();
 			
@@ -52,7 +52,7 @@ package com.larrio.dump.files.mp3.id3.frames
 		 */		
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
-			encoder.writeMultiByte(owner, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			encoder.writeMultiByte(owner, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 			encoder.writeByte(0);
 			encoder.writeBytes(data);
 		}

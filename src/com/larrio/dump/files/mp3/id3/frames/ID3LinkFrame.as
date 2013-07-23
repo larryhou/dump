@@ -28,7 +28,7 @@ package com.larrio.dump.files.mp3.id3.frames
 		 */		
 		override protected function decodeInside(decoder:FileDecoder):void
 		{
-			url = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			url = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 		}
 		
 		/**
@@ -37,7 +37,7 @@ package com.larrio.dump.files.mp3.id3.frames
 		 */		
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
-			encoder.writeMultiByte(url, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			encoder.writeMultiByte(url, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 		}
 		
 		override public function toString():String

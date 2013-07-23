@@ -39,12 +39,12 @@ package com.larrio.dump.files.mp3.id3.frames
 			length = decoder.position - 1 - offset;
 			
 			decoder.position = offset;
-			description = decoder.readMultiByte(length, ID3Encoding.type2charset(encoding));
+			description = decoder.readMultiByte(length, ID3Encoding.charset(encoding));
 			
 			decoder.readUnsignedByte();
 			if (decoder[decoder.position] == 0x00) decoder.position++;
 			
-			url = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			url = decoder.readMultiByte(decoder.bytesAvailable, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 		}
 		
 		/**
@@ -54,7 +54,7 @@ package com.larrio.dump.files.mp3.id3.frames
 		override protected function encodeInside(encoder:FileEncoder):void
 		{
 			encoder.writeUI8(encoding);
-			encoder.writeMultiByte(description, ID3Encoding.type2charset(encoding));
+			encoder.writeMultiByte(description, ID3Encoding.charset(encoding));
 			
 			encoder.writeByte(0);
 			if (encoding == ID3Encoding.UNICODE || encoding == ID3Encoding.UNICODE_BIG_ENDIAN)
@@ -62,7 +62,7 @@ package com.larrio.dump.files.mp3.id3.frames
 				encoder.writeByte(0);
 			}
 			
-			encoder.writeMultiByte(url, ID3Encoding.type2charset(ID3Encoding.ISO_8859_1));
+			encoder.writeMultiByte(url, ID3Encoding.charset(ID3Encoding.ISO_8859_1));
 		}
 		
 		override public function toString():String
