@@ -165,7 +165,7 @@ package com.larrio.dump.files.mp3.frames
 		 */		
 		public function toString():String
 		{
-			var result:XML = new XML("<MP3Frame/>");
+			var result:XML = new XML("<frame/>");
 			result.@version = MpegVersion.getVersion(_version);
 			result.@layer = MpegLayer.getLayer(_layer);
 			result.@bitRate = BitRate.getRate(_bitrate, _version, _layer);
