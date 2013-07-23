@@ -18,12 +18,12 @@
 		<link>
 			<name>[source path] greensock</name>
 			<type>2</type>
-			<location>/Users/doudou/Documents/workspace/framework/larrio/greensock</location>
+			<locationURI>DOCUMENTS/framework/larrio/greensock</locationURI>
 		</link>
 		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>/Users/doudou/Documents/workspace/framework/as3corelib/src</location>
+			<locationURI>DOCUMENTS/framework/as3corelib/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
