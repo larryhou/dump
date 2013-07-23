@@ -9,7 +9,7 @@ package com.larrio.dump.files.mp3
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
-	import com.larrio.dump.files.mp3.data.MP3Frame;
+	import com.larrio.dump.files.mp3.frames.MpegFrame;
 	import com.larrio.dump.files.mp3.data.SamplingRate;
 	import com.larrio.dump.files.mp3.data.UnknownByte;
 	
@@ -22,7 +22,7 @@ package com.larrio.dump.files.mp3
 	{
 		private var _seekSamples:int;
 		
-		private var _frames:Vector.<MP3Frame>;
+		private var _frames:Vector.<MpegFrame>;
 		private var _tags:Vector.<ID3v2Tag>;
 		private var _footer:ID3v1Tag;
 		
@@ -68,14 +68,14 @@ package com.larrio.dump.files.mp3
 			}
 			
 			_tags = new Vector.<ID3v2Tag>;
-			_frames = new Vector.<MP3Frame>();
+			_frames = new Vector.<MpegFrame>();
 			_unknowns = new Vector.<UnknownByte>;
 			
 			var rate:uint;
 			var map:Dictionary = new Dictionary();
 			
 			var position:uint;
-			var frame:MP3Frame, id3:ID3v2Tag;
+			var frame:MpegFrame, id3:ID3v2Tag;
 			while (decoder.bytesAvailable)
 			{
 				position = decoder.position;
@@ -93,9 +93,9 @@ package com.larrio.dump.files.mp3
 					_tags.push(id3);
 				}
 				
-				while (MP3Frame.verify(decoder))
+				while (MpegFrame.verify(decoder))
 				{
-					frame = new MP3Frame();
+					frame = new MpegFrame();
 					frame.decode(decoder);
 					
 					rate = SamplingRate.getRate(frame.samplingRate, frame.version);
@@ -190,8 +190,8 @@ package com.larrio.dump.files.mp3
 		/**
 		 * MP3帧信息
 		 */		
-		public function get frames():Vector.<MP3Frame> { return _frames; }
-		public function set frames(value:Vector.<MP3Frame>):void
+		public function get frames():Vector.<MpegFrame> { return _frames; }
+		public function set frames(value:Vector.<MpegFrame>):void
 		{
 			_frames = value;
 		}

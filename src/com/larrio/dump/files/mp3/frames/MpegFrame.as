@@ -1,4 +1,4 @@
-package com.larrio.dump.files.mp3.data
+package com.larrio.dump.files.mp3.frames
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
@@ -6,13 +6,18 @@ package com.larrio.dump.files.mp3.data
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
+	import com.larrio.dump.files.mp3.data.BitRate;
+	import com.larrio.dump.files.mp3.data.FrameSamples;
+	import com.larrio.dump.files.mp3.data.MpegLayer;
+	import com.larrio.dump.files.mp3.data.MpegVersion;
+	import com.larrio.dump.files.mp3.data.SamplingRate;
 	
 	/**
 	 * 
 	 * @author larryhou
 	 * @createTime Jul 4, 2013 9:41:41 AM
 	 */
-	public class MP3Frame implements ICodec
+	public class MpegFrame implements ICodec
 	{
 		private var _sync:uint;
 		private var _version:uint;
@@ -41,7 +46,7 @@ package com.larrio.dump.files.mp3.data
 		 * 构造函数
 		 * create a [MP3Frame] object
 		 */
-		public function MP3Frame()
+		public function MpegFrame()
 		{
 			
 		}
