@@ -30,7 +30,7 @@ package com.larrio.dump.doabc
 		
 		private var _trait:TraitInfo;
 		
-		private var _initializer:Boolean;
+		private var _type:uint;
 		private var _belong:IScript;
 		
 		/**
@@ -141,9 +141,9 @@ package com.larrio.dump.doabc
 			var result:String = _constants.strings[_name] || "";
 			result = _trait? _trait.toString() : "";
 			
-			if (!_trait) 
+			if (!_trait && _type != MethodType.CONSTRUCTOR) 
 			{
-				result = _initializer? "initializer" : ("closure" + _id);
+				result = _type == MethodType.INITIALIZER? "initializer" : ("closure" + _id);
 			}
 			
 			var optionlen:int = _options? _options.length : -1;
@@ -241,18 +241,23 @@ package com.larrio.dump.doabc
 		}
 
 		/**
-		 * 是否为构造器
+		 * 函数所属对象
 		 */		
-		public function get initializer():Boolean { return _initializer; }
-		public function set initializer(value:Boolean):void
-		{
-			_initializer = value;
-		}
-
 		public function get belong():IScript { return _belong; }
 		public function set belong(value:IScript):void
 		{
 			_belong = value;
 		}
+
+		/**
+		 * 函数类型
+		 * @see MethodType
+		 */		
+		public function get type():uint { return _type; }
+		public function set type(value:uint):void
+		{
+			_type = value;
+		}
+
 	}
 }

@@ -77,6 +77,9 @@ package com.larrio.dump.doabc
 			}
 			
 			_initializer = decoder.readEU30();
+			_abc.methods[_initializer].type = MethodType.CONSTRUCTOR;
+			_abc.methods[_initializer].belong = this;
+			
 			_map = new Dictionary();
 			
 			_length = decoder.readES30();

@@ -45,7 +45,7 @@ package com.larrio.dump.doabc
 		{
 			_initializer = decoder.readEU30();
 			
-			_abc.methods[_initializer].initializer = true;
+			_abc.methods[_initializer].type = MethodType.INITIALIZER;
 			_abc.methods[_initializer].belong = this;
 			
 			_map = new Dictionary();
