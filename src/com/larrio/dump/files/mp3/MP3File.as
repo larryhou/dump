@@ -3,12 +3,15 @@ package com.larrio.dump.files.mp3
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.dump.files.mp3.id3.ID3Tag;
-	import com.larrio.dump.files.mp3.id3.FooterID3Tag;
+	import com.larrio.dump.files.mp3.id3.ID3v2Tag;
+	import com.larrio.dump.files.mp3.id3.ID3v1Tag;
 	import com.larrio.dump.utils.assertTrue;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import com.larrio.dump.files.mp3.data.MP3Frame;
+	import com.larrio.dump.files.mp3.data.SamplingRate;
+	import com.larrio.dump.files.mp3.data.UnknownByte;
 	
 	/**
 	 * MP3文件编码器
@@ -20,8 +23,8 @@ package com.larrio.dump.files.mp3
 		private var _seekSamples:int;
 		
 		private var _frames:Vector.<MP3Frame>;
-		private var _tags:Vector.<ID3Tag>;
-		private var _footer:FooterID3Tag;
+		private var _tags:Vector.<ID3v2Tag>;
+		private var _footer:ID3v1Tag;
 		
 		private var _sampleCount:uint;
 		private var _samplingRate:uint;
@@ -64,7 +67,7 @@ package com.larrio.dump.files.mp3
 				_seekSamples = decoder.readS16();
 			}
 			
-			_tags = new Vector.<ID3Tag>;
+			_tags = new Vector.<ID3v2Tag>;
 			_frames = new Vector.<MP3Frame>();
 			_unknowns = new Vector.<UnknownByte>;
 			
@@ -72,20 +75,20 @@ package com.larrio.dump.files.mp3
 			var map:Dictionary = new Dictionary();
 			
 			var position:uint;
-			var frame:MP3Frame, id3:ID3Tag;
+			var frame:MP3Frame, id3:ID3v2Tag;
 			while (decoder.bytesAvailable)
 			{
 				position = decoder.position;
 				
-				if (FooterID3Tag.verify(decoder))
+				if (ID3v1Tag.verify(decoder))
 				{
-					_footer = new FooterID3Tag();
+					_footer = new ID3v1Tag();
 					_footer.decode(decoder);
 				}
 				
-				while (ID3Tag.verify(decoder))
+				while (ID3v2Tag.verify(decoder))
 				{
-					id3 = new ID3Tag();
+					id3 = new ID3v2Tag();
 					id3.decode(decoder);
 					_tags.push(id3);
 				}

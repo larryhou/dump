@@ -1,4 +1,4 @@
-package com.larrio.dump.files.mp3
+package com.larrio.dump.files.mp3.data
 {
 	import flash.utils.Dictionary;
 	

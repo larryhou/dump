@@ -1,4 +1,4 @@
-package com.larrio.dump.files.mp3
+package com.larrio.dump.files.mp3.data
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;

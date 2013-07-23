@@ -18,7 +18,7 @@ package com.larrio.dump.files.mp3.id3
 	 * @author larryhou
 	 * @createTime Jul 4, 2013 2:38:05 PM
 	 */
-	public class ID3Tag implements ICodec
+	public class ID3v2Tag implements ICodec
 	{			
 		public var data:ByteArray;
 		public var header:ID3Header;
@@ -35,7 +35,7 @@ package com.larrio.dump.files.mp3.id3
 		 * 构造函数
 		 * create a [ID3Tag] object
 		 */
-		public function ID3Tag()
+		public function ID3v2Tag()
 		{
 			
 		}
