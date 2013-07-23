@@ -1,6 +1,6 @@
 package mp3
 {
-	import com.larrio.dump.model.sound.mp3.MP3File;
+	import com.larrio.dump.files.mp3.MP3File;
 	
 	import flash.display.Sprite;
 	

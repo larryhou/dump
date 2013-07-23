@@ -3,7 +3,7 @@ package builder.sound
 	import com.larrio.dump.SWFBuilder;
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.codec.FileDecoder;
-	import com.larrio.dump.model.sound.mp3.MP3File;
+	import com.larrio.dump.files.mp3.MP3File;
 	
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;

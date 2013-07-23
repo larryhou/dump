@@ -4,7 +4,7 @@ package com.larrio.dump.tags.creators.audio
 	import com.larrio.dump.doabc.templates.audio.MP3DoABC;
 	import com.larrio.dump.model.sound.SoundFormatType;
 	import com.larrio.dump.model.sound.SoundRateType;
-	import com.larrio.dump.model.sound.mp3.MP3File;
+	import com.larrio.dump.files.mp3.MP3File;
 	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.DoABCTag;
 	
