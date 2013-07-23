@@ -1,4 +1,4 @@
-package script
+package scripts
 {
 	import flash.display.Sprite;
 	import flash.utils.getTimer;

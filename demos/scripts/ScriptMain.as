@@ -1,4 +1,4 @@
-package script
+package scripts
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.tags.SWFTag;
