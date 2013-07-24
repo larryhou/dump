@@ -16,6 +16,7 @@ package com.larrio.dump.encrypt.collectors
 		public var interfaces:Vector.<String>;
 		public var classes:Vector.<String>;
 		public var symbols:Vector.<String>;
+		public var documents:Vector.<String>;
 		
 		/**
 		 * 构造函数
@@ -26,6 +27,7 @@ package com.larrio.dump.encrypt.collectors
 			interfaces = new Vector.<String>;
 			classes = new Vector.<String>;
 			symbols = new Vector.<String>;
+			documents = new Vector.<String>;
 		}
 		
 		override protected function collectFromABC(abc:DoABC):void
@@ -55,6 +57,10 @@ package com.larrio.dump.encrypt.collectors
 				if (symbolTag.ids[i] != 0)
 				{
 					symbols.push(item);
+				}
+				else
+				{
+					documents.push(item);
 				}
 			}
 		}
