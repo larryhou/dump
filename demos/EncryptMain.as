@@ -34,6 +34,7 @@ package
 			var swf:SWFile = new SWFile(bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
+			encryptor.keys.strong = true;
 			encryptor.pushSWF(swf);
 			
 			trace(encryptor.encrypt());
