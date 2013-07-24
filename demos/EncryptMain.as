@@ -30,14 +30,14 @@ package
 			var bytes:ByteArray;
 			
 			bytes = loaderInfo.bytes;
-			//bytes = new FileByteArray()
+			bytes = new FileByteArray()
 			var swf:SWFile = new SWFile(bytes);
 			
 			var encryptor:FileEncryptor = new FileEncryptor();
-			encryptor.decrypting = false;
-			encryptor.addFile(swf);
+			encryptor.pushSWF(swf);
 			
 			trace(encryptor.encrypt());
+			trace(encryptor.log);
 			
 			// 导出加密后的SWF
 			bytes = swf.repack();
@@ -48,6 +48,7 @@ package
 			var tag:DoABCTag;
 			for (var i:int = 0; i < swf.tags.length; i++)
 			{
+				break;
 				if (swf.tags[i].type == DoABCTag.TYPE)
 				{
 					tag = swf.tags[i] as DoABCTag;

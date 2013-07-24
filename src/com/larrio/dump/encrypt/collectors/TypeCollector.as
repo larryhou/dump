@@ -3,6 +3,7 @@ package com.larrio.dump.encrypt.collectors
 	import com.larrio.dump.doabc.DoABC;
 	import com.larrio.dump.doabc.InstanceInfo;
 	import com.larrio.dump.doabc.MethodInfo;
+	import com.larrio.dump.doabc.MultinameInfo;
 	import com.larrio.dump.doabc.OptionInfo;
 	import com.larrio.dump.doabc.ScriptInfo;
 	import com.larrio.dump.doabc.TraitInfo;
@@ -52,13 +53,17 @@ package com.larrio.dump.encrypt.collectors
 			}
 			
 			var method:MethodInfo;
+			var multiname:MultinameInfo;
 			for each(trait in script.methods)
 			{
 				method = abc.methods[trait.data.method];				
 				
 				for each(var pt:uint in method.paramTypes)
 				{
-					item = abc.constants.multinames[pt].toString();
+					multiname = abc.constants.multinames[pt];
+					if (!multiname) continue;
+					
+					item = multiname.toString();
 					if (!has(item))
 					{
 						add(item);

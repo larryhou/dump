@@ -11,7 +11,7 @@ package com.larrio.dump.encrypt.core
 	 * @author doudou
 	 * @createTime Jul 23, 2013 11:45:41 PM
 	 */
-	public class EncryptKeys
+	public class KeyChain
 	{
 		private var _map:Dictionary;
 		private var _exclude:Dictionary;
@@ -22,9 +22,9 @@ package com.larrio.dump.encrypt.core
 		
 		/**
 		 * 构造函数
-		 * create a [KeyGenerator] object
+		 * create a [KeyChain] object
 		 */
-		public function EncryptKeys()
+		public function KeyChain()
 		{
 			_map = new Dictionary(false);
 			_exclude = new Dictionary(false);
@@ -51,7 +51,7 @@ package com.larrio.dump.encrypt.core
 			var interfaces:Vector.<String> = adjust(classCollector.interfaces.concat());
 			
 			var excludes:Vector.<String> = adjust(adjust(classCollector.interfaces.concat()));
-			excludes = excludes.concat(classCollector.symbols);
+			excludes = excludes.concat(adjust(classCollector.symbols));
 			
 			var className:String;
 			var dict:Dictionary = new Dictionary(true);
@@ -99,7 +99,13 @@ package com.larrio.dump.encrypt.core
 					item = list.shift();
 					if (item)
 					{
-						if (_exclude[item] || _map[item]) continue;
+						if (_map[item]) continue;
+						if (_exclude[item]) 
+						{
+							_map[item] = item;
+							continue;
+						}
+						
 						if (item.match(reg)) continue;
 						
 						key = null;
@@ -168,7 +174,9 @@ package com.larrio.dump.encrypt.core
 					name = name.match(/<([^>]+)>/)[1];
 				}
 				
-				list[i] = name.replace(/:\w+:/g, ":");
+				name.replace(/:\w+:/g, ":");
+				name = name.replace(/\.(\w+)$/, ":$1");
+				list[i] = name;
 			}
 			
 			return list;
@@ -308,16 +316,5 @@ package com.larrio.dump.encrypt.core
 			}			
 		}
 
-	}
-}
-
-class NameItem
-{
-	public var prefix:String;
-	public var name:String;
-	
-	public function NameItem(prefix:String = null, name:String = null)
-	{
-		this.prefix = prefix; this.name = name;
 	}
 }

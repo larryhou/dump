@@ -1,7 +1,7 @@
 package doabc
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.encrypt.SimpleEncryptor;
+	import com.larrio.dump.encrypt.FileEncryptor;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -36,14 +36,14 @@ package doabc
 			var swf:SWFile = new SWFile(loaderInfo.bytes);
 			
 			var settings:XML;
-			var encryptor:SimpleEncryptor = new SimpleEncryptor();
+			var encryptor:FileEncryptor = new FileEncryptor();
 			encryptor.pushSWF(swf);
 			settings = encryptor.encrypt();
 			trace(settings.toXMLString());
 			trace(encryptor.log);
 			
 			var bytes:ByteArray = swf.repack();
-			new FileReference().save(bytes, "encrpt.swf");
+			new FileReference().save(bytes, "encrypt.swf");
 			
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
