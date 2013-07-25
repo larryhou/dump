@@ -8,7 +8,7 @@ package
 	/**
 	 * 
 	 * @author larryhou
-	 * @createTime Apr 22, 2013 1:23:20 AM
+	 * @createTime Apr 22, 2013 1d:23:20 AM
 	 */
 	public class MorphMain extends Sprite
 	{

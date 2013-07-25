@@ -39,7 +39,7 @@ package diff
 			removeTypes.push(TagType.IMPORT_ASSETS2);
 			removeTypes.push(TagType.PRODUCT_INFO);
 			removeTypes.push(TagType.DEBUG_ID);
-			removeTypes.push(TagType.PROTECT);
+			//removeTypes.push(TagType.PROTECT);
 			
 			removeTags(swf1, removeTypes);
 			removeTags(swf2, removeTypes);
@@ -60,6 +60,7 @@ package diff
 				if (dict[tag.type])
 				{
 					swf.tags.splice(i--, 1);
+					trace(tag);
 					length--;
 					continue;
 				}
