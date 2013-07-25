@@ -174,7 +174,7 @@ package com.larrio.dump.encrypt.core
 					name = name.match(/<([^>]+)>/)[1];
 				}
 				
-				name.replace(/:\w+:/g, ":");
+				name = name.replace(/:\w+:/g, ":");
 				name = name.replace(/\.(\w+)$/, ":$1");
 				list[i] = name;
 			}
