@@ -207,7 +207,6 @@ package com.larrio.dump.encrypt.core
 					name = name.match(/<([^>]+)>/)[1];
 				}
 				
-				name = name.replace(/:{2,}/, ":");
 				name = name.replace(/:\w+:/g, ":");
 				name = name.replace(/\.(\w+)$/, ":$1");
 				list[i] = name;
@@ -242,14 +241,12 @@ package com.larrio.dump.encrypt.core
 		{
 			if (!settings) return;
 			
-			var name:String, key:String;
-			
 			var data:XML, list:XMLList;
-			
 			
 			data = settings.excludes[0];
 			list = data.children();
 			
+			var name:String;
 			for each(item in list)
 			{
 				name = String(item.@name);
@@ -262,6 +259,7 @@ package com.larrio.dump.encrypt.core
 			data = settings.includes[0];
 			list = data.children();
 			
+			var key:String;
 			for each (var item:XML in list)
 			{
 				name = String(item.@name);
