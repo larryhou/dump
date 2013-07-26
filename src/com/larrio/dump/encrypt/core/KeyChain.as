@@ -14,6 +14,7 @@ package com.larrio.dump.encrypt.core
 	public class KeyChain
 	{
 		private var _map:Dictionary;
+		private var _reverse:Dictionary;
 		private var _exclude:Dictionary;
 		
 		private var _strong:Boolean;
@@ -27,7 +28,9 @@ package com.larrio.dump.encrypt.core
 		public function KeyChain()
 		{
 			_map = new Dictionary(false);
+			_reverse = new Dictionary(false);
 			_exclude = new Dictionary(false);
+			
 			
 			this.strong = false;
 		}
@@ -40,6 +43,32 @@ package com.larrio.dump.encrypt.core
 			if (_map[name] is Function) return null;
 			if (_map[name] is Class) return null;
 			return _map[name];
+		}
+		
+		/**
+		 * 检查加密串的有效性
+		 */		
+		public function checkValidate():Boolean
+		{
+			var name:String, key:String;
+			for (name in _map)
+			{
+				key = _map[name];
+				if (!_reverse[key]) return false;
+			}
+			
+			for (key in _reverse)
+			{
+				name = _reverse[key];
+				if (!_map[name]) return false;
+			}
+			
+			for (name in _exclude)
+			{
+				if (_map[name] && _map[name] != name) return false;
+			}
+			
+			return true;
 		}
 		
 		/**
@@ -103,18 +132,20 @@ package com.larrio.dump.encrypt.core
 						if (_exclude[item]) 
 						{
 							_map[item] = item;
+							_reverse[item] = item;
 							continue;
 						}
 						
 						if (item.match(reg)) continue;
 						
 						key = null;
-						while(!key || _map[key])
+						while(!key || _reverse[key])
 						{
 							key = randomKey(item, _pool);
 						}
 						
 						_map[item] = key;
+						_reverse[key] = item;
 					}
 				}
 				
@@ -138,6 +169,7 @@ package com.larrio.dump.encrypt.core
 				if (!_map[value])
 				{
 					_map[value] = key;
+					_reverse[key] = value;
 				}
 				
 				value += "/" + name;
@@ -147,6 +179,7 @@ package com.larrio.dump.encrypt.core
 				if (!_map[value])
 				{
 					_map[value] = key;
+					_reverse[key] = value;
 				}
 			}
 		}
@@ -222,6 +255,7 @@ package com.larrio.dump.encrypt.core
 				if (name && key && !_map[name])
 				{
 					_map[name] = key;
+					_reverse[key] = name;
 				}
 			}
 			

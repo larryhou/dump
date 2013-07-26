@@ -43,12 +43,55 @@ package com.larrio.dump.encrypt
 		/**
 		 * 添加SWF文件 
 		 * @param swf SWFile对象
+		 * @return 返回当前SWF索引
 		 */	
-		public function pushSWF(swf:SWFile):void
+		public function pushSWF(swf:SWFile):uint
 		{
 			_files.push(swf);
 			_typeCollector.collect(swf);
 			_classCollector.collect(swf);
+			
+			return _files.length - 1;
+		}
+		
+		/**
+		 * 删除某个SWF文件 
+		 * @param swf	SWFile对象
+		 * @return 返回成功删除的SWF文件
+		 */		
+		public function removeSWF(swf:SWFile):SWFile
+		{
+			var index:uint = _files.indexOf(swf);
+			if (index >= 0)
+			{
+				_files.splice(index, 1);
+				return swf;
+			}
+			
+			return null;
+		}
+		
+		/**
+		 * 删除某个位置的SWF文件 
+		 * @param index	添加顺序索引：从0开始
+		 * @return 返回成功删除的SWF文件
+		 */			
+		public function removeSWFAt(index:uint):SWFile
+		{
+			if (!_files.length || index < 0 || index >= _files.length - 1) return null;
+			var swf:SWFile = _files.splice(index, 1).pop();
+			return swf;
+		}
+		
+		/**
+		 * 清除所有SWF文件
+		 * @return 返回成功删除的SWF文件列表
+		 */		
+		public function removeAllSWFs():Vector.<SWFile>
+		{
+			var result:Vector.<SWFile> = _files;
+			_files = new Vector.<SWFile>;
+			return result;
 		}
 		
 		/**
@@ -59,7 +102,12 @@ package com.larrio.dump.encrypt
 		public function encrypt(settings:XML = null):XML
 		{
 			_keys.settings = settings;
-			_keys.createKeys(_typeCollector, _classCollector);		
+			_keys.createKeys(_typeCollector, _classCollector);	
+			
+			if (!_keys.checkValidate())
+			{
+				throw new Error("Invalidate key pairs!!");
+			}
 			
 			for each(var swf:SWFile in _files) processFile(swf);
 			
