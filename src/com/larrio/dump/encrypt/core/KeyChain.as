@@ -244,20 +244,8 @@ package com.larrio.dump.encrypt.core
 			
 			var name:String, key:String;
 			
-			var data:XML = settings.includes[0];
-			var list:XMLList = data.children();
+			var data:XML, list:XMLList;
 			
-			for each (var item:XML in list)
-			{
-				name = String(item.@name);
-				key = String(item.@key);
-				
-				if (name && key && !_map[name])
-				{
-					_map[name] = key;
-					_reverse[key] = name;
-				}
-			}
 			
 			data = settings.excludes[0];
 			list = data.children();
@@ -270,6 +258,21 @@ package com.larrio.dump.encrypt.core
 					_exclude[name] = true;
 				}
 			}
+			
+			data = settings.includes[0];
+			list = data.children();
+			
+			for each (var item:XML in list)
+			{
+				name = String(item.@name);
+				key = String(item.@key);
+				
+				if (name && key && !_map[name] && !_exclude[name])
+				{
+					_map[name] = key;
+					_reverse[key] = name;
+				}
+			}		
 		}
 		
 		/**
