@@ -147,47 +147,58 @@ package com.larrio.dump.encrypt.core
 						_map[item] = key;
 						_reverse[key] = item;
 					}
-				}
+				}				
 				
-				if (!prefix) continue;
-				
-				value = prefix + ":" + name;
-				if (_exclude[value]) continue;
-				
-				if (prefix.match(reg))
+				if (prefix)
 				{
-					var suffix:String = prefix.match(reg)[0];
+					// encrypt qulified class name
+					value = prefix + ":" + name;
+					if (!_exclude[value])
+					{
+						if (prefix.match(reg))
+						{
+							var suffix:String = prefix.match(reg)[0];
+							
+							prefix = prefix.replace(suffix, "");
+							key = _map[prefix] + suffix + ":" + _map[name];
+						}
+						else
+						{
+							key = _map[prefix] + ":" + _map[name];
+						}
+						
+						if (!_map[value])
+						{
+							_map[value] = key;
+							_reverse[key] = value;
+						}
+					}				
 					
-					prefix = prefix.replace(suffix, "");
-					key = _map[prefix] + suffix + ":" + _map[name];
 				}
 				else
 				{
-					key = _map[prefix] + ":" + _map[name];
-				}
+					value = name;
+					key = _map[value];
+				}				
 				
-				if (!_map[value])
-				{
-					_map[value] = key;
-					_reverse[key] = value;
-				}
-				
+				// encrypt constructor name
 				value += "/" + name;
-				if (_exclude[value]) continue;
-				
-				key += "/" + _map[name];
-				if (!_map[value])
+				if (!_exclude[value]) 
 				{
-					_map[value] = key;
-					_reverse[key] = value;
-				}
+					key += "/" + _map[name];
+					if (!_map[value])
+					{
+						_map[value] = key;
+						_reverse[key] = value;
+					}
+				}			
 			}
 		}
 		
 		private function formatItem(name:String):Array
 		{
 			var list:Array = name.split(":");
-			if (list.length == 1) list.unshift(null);
+			if (list.length == 1) list.unshift("");
 			if (list.length != 2)
 			{
 				throw new ArgumentError("Invalidate class name:" + name);
