@@ -78,7 +78,7 @@ package com.larrio.dump.encrypt
 		 */			
 		public function removeSWFAt(index:uint):SWFile
 		{
-			if (!_files.length || index < 0 || index >= _files.length) return null;
+			if (!_files.length || index >= _files.length) return null;
 			var swf:SWFile = _files.splice(index, 1).pop();
 			return swf;
 		}
