@@ -218,7 +218,7 @@ package com.larrio.dump.encrypt.core
 				name = String(item.@name);
 				key = String(item.@key);
 				
-				if (name && key && _map[name])
+				if (name && key && !_map[name])
 				{
 					_map[name] = key;
 				}
