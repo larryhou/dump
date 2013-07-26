@@ -51,7 +51,7 @@ package com.larrio.dump.encrypt.core
 			var interfaces:Vector.<String> = adjust(classCollector.interfaces.concat());
 			
 			var excludes:Vector.<String> = adjust(adjust(classCollector.interfaces.concat()));
-			excludes = excludes.concat(adjust(classCollector.symbols));
+			excludes = excludes.concat(adjust(classCollector.symbols.concat()));
 			
 			var className:String;
 			var dict:Dictionary = new Dictionary(true);
@@ -174,6 +174,7 @@ package com.larrio.dump.encrypt.core
 					name = name.match(/<([^>]+)>/)[1];
 				}
 				
+				name = name.replace(/:{2,}/, ":");
 				name = name.replace(/:\w+:/g, ":");
 				name = name.replace(/\.(\w+)$/, ":$1");
 				list[i] = name;
