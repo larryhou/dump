@@ -50,7 +50,7 @@ package com.larrio.dump.encrypt.core
 			var includes:Vector.<String> = adjust(classCollector.classes.concat());
 			var interfaces:Vector.<String> = adjust(classCollector.interfaces.concat());
 			
-			var excludes:Vector.<String> = adjust(adjust(classCollector.interfaces.concat()));
+			var excludes:Vector.<String> = adjust(classCollector.interfaces.concat());
 			excludes = excludes.concat(adjust(classCollector.symbols.concat()));
 			
 			var className:String;
