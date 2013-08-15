@@ -50,33 +50,32 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="doabc/DoABCMain.as"/>
-    <application path="doabc/SimpleEncryptMain.as"/>
-    <application path="builder/InsertMain.as"/>
     <application path="MorphMain.as"/>
+    <application path="builder/InsertMain.as"/>
     <application path="display/DisplayMain.as"/>
     <application path="builder/sound/SoundABCMain.as"/>
-    <application path="role/RoleMain.as"/>
-    <application path="builder/binary/BinaryABCMain.as"/>
     <application path="crop/CropMain.as"/>
+    <application path="builder/binary/BinaryABCMain.as"/>
+    <application path="role/RoleMain.as"/>
     <application path="builder/image/AlphaImageMain.as"/>
     <application path="builder/image/ImageABCMain.as"/>
     <application path="EncryptMain.as"/>
+    <application path="doabc/SimpleEncryptMain.as"/>
+    <application path="doabc/DoABCMain.as"/>
     <application path="mp3/MP3ParseMain.as"/>
     <application path="DrawMain.as"/>
     <application path="builder/sound/MP3ModifierMain.as"/>
     <application path="closure/ClosureMain.as"/>
     <application path="protect/ProtectMain.as"/>
-    <application path="diff/DiffMain.as"/>
     <application path="builder/image/PNGMain.as"/>
-    <application path="OutlineMain.as"/>
+    <application path="diff/DiffMain.as"/>
     <application path="ImageMain.as"/>
+    <application path="OutlineMain.as"/>
     <application path="FontMain.as"/>
     <application path="JointMain.as"/>
     <application path="product/ProductMain.as"/>
-    <application path="FlexUnitCompilerApplication.as"/>
-    <application path="builder/binary/BinaryMain.as"/>
     <application path="PencilMain.as"/>
+    <application path="builder/binary/BinaryMain.as"/>
     <application path="debug/DebugMain.as"/>
     <application path="builder/sound/MP3Main.as"/>
   </applications>
