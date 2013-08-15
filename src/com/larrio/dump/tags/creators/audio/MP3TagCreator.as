@@ -2,9 +2,9 @@ package com.larrio.dump.tags.creators.audio
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.doabc.templates.audio.MP3DoABC;
+	import com.larrio.dump.files.mp3.MP3File;
 	import com.larrio.dump.model.sound.SoundFormatType;
 	import com.larrio.dump.model.sound.SoundRateType;
-	import com.larrio.dump.files.mp3.MP3File;
 	import com.larrio.dump.tags.DefineSoundTag;
 	import com.larrio.dump.tags.DoABCTag;
 	
@@ -26,16 +26,20 @@ package com.larrio.dump.tags.creators.audio
 		 * 构造函数
 		 * create a [MP3TagCreator] object
 		 */
-		public function MP3TagCreator(bytes:ByteArray, name:String)
+		public function MP3TagCreator(bytes:ByteArray, name:String, mp3:MP3File = null)
 		{
+			_mp3 = mp3;
 			_classTag = new MP3DoABC(name).tag;
 			
 			var decoder:FileDecoder = new FileDecoder();
 			decoder.writeBytes(bytes);
 			decoder.position = 0;
 			
-			_mp3 = new MP3File(true);
-			_mp3.decode(decoder);
+			if (!_mp3)
+			{
+				_mp3 = new MP3File(true);
+				_mp3.decode(decoder);
+			}			
 			
 			_assetTag = new DefineSoundTag();
 			_assetTag.character = 0;	// 预留字段

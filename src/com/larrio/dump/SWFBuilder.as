@@ -3,6 +3,7 @@ package com.larrio.dump
 	import com.adobe.images.JPGEncoder;
 	import com.adobe.images.PNGEncoder;
 	import com.larrio.dump.doabc.templates.image.ImageDoABC;
+	import com.larrio.dump.files.mp3.MP3File;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.model.SWFRect;
 	import com.larrio.dump.tags.DoABCTag;
@@ -77,9 +78,9 @@ package com.larrio.dump
 		 * @param bytes	MP3字节码
 		 * @param name	MP3导出类：package::ClassName
 		 */		
-		public function insertMP3(bytes:ByteArray, name:String):void
+		public function insertMP3(bytes:ByteArray, name:String, mp3:MP3File = null):void
 		{
-			var creator:MP3TagCreator = new MP3TagCreator(bytes, name);
+			var creator:MP3TagCreator = new MP3TagCreator(bytes, name, mp3);
 			var asset:AssetItem = new AssetItem(name, creator.classTag, creator.assetTag);
 			
 			_assets.push(asset);
