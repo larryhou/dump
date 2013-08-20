@@ -1,7 +1,10 @@
 package
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.flash.display.shape.canvas.CanvasContainer;
 	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
+	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
 	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
@@ -47,9 +50,27 @@ package
 				if (shapeTag) break;
 			}
 			
+			var outline:SimpleCanvas;
+			var list:Vector.<ICanvas> = new Vector.<ICanvas>();
+			list.push(new GraphicsCanvas(graphics));
+			list.push(outline = new SimpleCanvas());
+			
 			var collector:OutlineCollector = new OutlineCollector(shapeTag.shape, true);
-			collector.drawVectorOn(new GraphicsCanvas(graphics));
+			collector.drawVectorOn(new CanvasContainer(list));
+			
+			var step:Object;
+			for (var i:int = 0; i < outline.steps.length; i++)
+			{
+				step = outline.steps[i];
+				trace(padding(step["method"]) + ":[" + step.params + "]");
+			}
 
+		}
+		
+		private function padding(value:String):String
+		{
+			while (value.length < 10) value += " ";
+			return value;
 		}
 	}
 }

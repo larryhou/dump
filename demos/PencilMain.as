@@ -75,7 +75,7 @@ package
 	
 //			collector = list[0];
 			
-			var chars:String = "火影";
+			var chars:String = "卧龙";
 			var canvas:SimpleCanvas = new SimpleCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();

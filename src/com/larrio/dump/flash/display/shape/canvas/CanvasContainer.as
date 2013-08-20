@@ -12,15 +12,15 @@ package com.larrio.dump.flash.display.shape.canvas
 	 * @author larryhou
 	 * @createTime Mar 26, 2013 12:43:55 PM
 	 */
-	public class SuperCanvas implements ICanvas
+	public class CanvasContainer implements ICanvas
 	{
 		private var _list:Vector.<ICanvas>;
 		
 		/**
 		 * 构造函数
-		 * create a [SuperCanvas] object
+		 * create a [CanvasContainer] object
 		 */
-		public function SuperCanvas(list:Vector.<ICanvas>)
+		public function CanvasContainer(list:Vector.<ICanvas>)
 		{
 			_list = list;
 		}
