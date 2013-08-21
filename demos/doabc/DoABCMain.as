@@ -52,7 +52,7 @@ package doabc
 			
 			trace(swf.header);
 			
-			bytes = swf.repack();
+			//bytes = swf.repack();
 			//new FileReference().save(bytes, "encode.swf");
 			
 			try

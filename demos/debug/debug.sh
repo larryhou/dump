@@ -17,7 +17,6 @@ then
 	-source-path+=../../demos	\
 	-source-path+=../../src	\
 	-file-specs=$main	\
-    -optimize=false	\
 	-output=$output	\
 	-debug
 else
@@ -27,6 +26,5 @@ else
 	-source-path+=../../demos	\
 	-source-path+=../../src	\
 	-file-specs=$main	\
-    -optimize=false	\
 	-output=$output
 fi

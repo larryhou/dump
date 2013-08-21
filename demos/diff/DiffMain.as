@@ -41,8 +41,8 @@ package diff
 			removeTypes.push(TagType.DEBUG_ID);
 			//removeTypes.push(TagType.PROTECT);
 			
-			removeTags(swf1, removeTypes);
-			removeTags(swf2, removeTypes);
+//			removeTags(swf1, removeTypes);
+//			removeTags(swf2, removeTypes);
 			
 			var result:Boolean = compare(swf1.repack(), swf2.repack());
 			trace("result:" + result);

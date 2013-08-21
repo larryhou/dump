@@ -49,7 +49,7 @@ package builder.image
 			
 			var swfBuilder:SWFBuilder = new SWFBuilder();
 			//swfBuilder.insertJPEG(content.bitmapData, "com.larrio::AlphaImage", 80);
-			swfBuilder.insertAlphaJPEG(content.bitmapData, "com.larrio::AlphaImage", 30);
+			swfBuilder.insertAlphaJPEG(content.bitmapData, "com.larrio::AlphaImage", 80);
 			
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
