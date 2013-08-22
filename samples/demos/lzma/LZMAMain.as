@@ -1,13 +1,16 @@
 package demos.lzma
 {
 	import com.larrio.dump.SWFile;
+	import com.larrio.dump.compress.CompressAlgorithms;
 	
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.net.FileReference;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
+	[SWF(width="1024", height="768")]
 	
 	/**
 	 * 
@@ -32,33 +35,12 @@ package demos.lzma
 			trace(swf.header);
 			
 			swf = new SWFile(swf.repack());
+			swf.header.compressAlgorithm = CompressAlgorithms.ZLIB;
 			trace(swf.header);
 			
-			var bytes:ByteArray = swf.repack();
-			bytes.endian = Endian.BIG_ENDIAN;
-			bytes.position = 0;
-			data.position = 0;
-			
-			var b1:uint, b2:uint;
-			while (bytes.bytesAvailable && data.bytesAvailable)
-			{
-				b1 = bytes.readUnsignedByte();
-				b2 = data.readUnsignedByte();
-				if (b1 != b2)
-				{
-					trace(bytes.position);
-					
-					bytes.position--;
-					data.position--;
-					
-					trace(printBytes(bytes, 4));
-					trace(printBytes(data, 4));
-					break;
-				}
-			}
-			
-			new FileReference().save(swf.repack(), "lzma.swf");
-			
+			var loader:Loader = new Loader();
+			loader.loadBytes(swf.repack());
+			addChild(loader);
 		}
 		
 		private function printBytes(bytes:ByteArray, length:uint = 1):String

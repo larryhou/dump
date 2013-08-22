@@ -45,6 +45,7 @@ import flash.utils.Endian;
 function uncompressLZMA(source:ByteArray, length:uint):void
 {
 	var position:uint = source.position;
+	source.endian = Endian.LITTLE_ENDIAN;
 	
 	var bytes:ByteArray = new ByteArray();
 	bytes.endian = Endian.LITTLE_ENDIAN;
@@ -62,7 +63,6 @@ function uncompressLZMA(source:ByteArray, length:uint):void
 	// write compressed data
 	source.position = 9;
 	source.readBytes(bytes, 13);
-	trace(source.length - 9, length - 8);
 	
 	// lzma uncompress
 	bytes.position = 0;

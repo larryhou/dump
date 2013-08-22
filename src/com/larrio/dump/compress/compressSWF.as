@@ -42,28 +42,25 @@ import flash.utils.Endian;
  * @param source	压缩数据
  * @param length	SWF压缩前字节长度
  */
-function compressLZMA(bytes:ByteArray):void
+function compressLZMA(source:ByteArray):void
 {
-	var length:uint = bytes.length;
-	
-	bytes.compress("lzma");
-	bytes.position = 0;
+	source.compress("lzma");
+	source.position = 0;
 	
 	var data:ByteArray = new ByteArray();
 	data.endian = Endian.LITTLE_ENDIAN;
 	
 	// write compressed size
-	data.writeUnsignedInt(bytes.length - 13);
-	trace(bytes.length - 13, length);
+	data.writeUnsignedInt(source.length - 13);
 	
 	// write lzma properties
-	for (var i:int = 0; i < 5; i++) data.writeByte(bytes[i]);
+	for (var i:int = 0; i < 5; i++) data.writeByte(source[i]);
 	
 	// write compressed data
-	data.writeBytes(bytes, 13);
+	data.writeBytes(source, 13);
 	
-	bytes.position = 0;
-	bytes.writeBytes(data);
+	source.length = 0;
+	source.writeBytes(data);
 	
 	data.clear();
 }
