@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="diff/DiffMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
-  <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="demos" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="demos/lzma/LZMAMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
+  <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc -target-player 11.4" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="samples" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/framework/larrio/greensock"/>
@@ -50,34 +50,10 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="MorphMain.as"/>
-    <application path="builder/InsertMain.as"/>
-    <application path="display/DisplayMain.as"/>
-    <application path="builder/sound/SoundABCMain.as"/>
-    <application path="crop/CropMain.as"/>
-    <application path="builder/binary/BinaryABCMain.as"/>
-    <application path="role/RoleMain.as"/>
-    <application path="builder/image/AlphaImageMain.as"/>
-    <application path="builder/image/ImageABCMain.as"/>
-    <application path="EncryptMain.as"/>
-    <application path="doabc/SimpleEncryptMain.as"/>
-    <application path="doabc/DoABCMain.as"/>
-    <application path="mp3/MP3ParseMain.as"/>
-    <application path="DrawMain.as"/>
-    <application path="builder/sound/MP3ModifierMain.as"/>
-    <application path="closure/ClosureMain.as"/>
-    <application path="protect/ProtectMain.as"/>
-    <application path="builder/image/PNGMain.as"/>
-    <application path="diff/DiffMain.as"/>
-    <application path="ImageMain.as"/>
-    <application path="OutlineMain.as"/>
-    <application path="FontMain.as"/>
-    <application path="JointMain.as"/>
-    <application path="product/ProductMain.as"/>
-    <application path="PencilMain.as"/>
-    <application path="builder/binary/BinaryMain.as"/>
-    <application path="debug/DebugMain.as"/>
-    <application path="builder/sound/MP3Main.as"/>
+    <application path="demos/lzma/LZMAMain.as"/>
+    <application path="demos/display/DisplayMain.as"/>
+    <application path="demos/diff/DiffMain.as"/>
+    <application path="demos/JointMain.as"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
