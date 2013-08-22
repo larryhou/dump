@@ -45,29 +45,24 @@ import flash.utils.Endian;
 function compressLZMA(bytes:ByteArray):void
 {
 	var length:uint = bytes.length;
+	
 	bytes.compress("lzma");
-	
-	var properties:ByteArray = new ByteArray();
-	
 	bytes.position = 0;
-	bytes.readBytes(properties, 0, 5);
 	
 	var data:ByteArray = new ByteArray();
 	data.endian = Endian.LITTLE_ENDIAN;
 	
-	bytes.position = 13;
-	
 	// write compressed size
-	data.writeUnsignedInt(bytes.length - bytes.position);
-	trace(bytes.length - bytes.position, length);
+	data.writeUnsignedInt(bytes.length - 13);
+	trace(bytes.length - 13, length);
 	
 	// write lzma properties
-	data.writeBytes(properties);
+	for (var i:int = 0; i < 5; i++) data.writeByte(bytes[i]);
 	
 	// write compressed data
-	bytes.readBytes(data, data.position);
+	data.writeBytes(bytes, 13);
 	
-	bytes.length = 0;
+	bytes.position = 0;
 	bytes.writeBytes(data);
 	
 	data.clear();

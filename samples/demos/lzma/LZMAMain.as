@@ -57,7 +57,7 @@ package demos.lzma
 				}
 			}
 			
-			//new FileReference().save(swf.repack(), "lzma.swf");
+			new FileReference().save(swf.repack(), "lzma.swf");
 			
 		}
 		
