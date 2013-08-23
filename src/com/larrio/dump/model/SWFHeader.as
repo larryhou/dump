@@ -2,6 +2,8 @@ package com.larrio.dump.model
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
+	import com.larrio.dump.compress.CompressAlgorithms;
+	import com.larrio.dump.compress.uncompressSWF;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
 	import com.larrio.math.fixed;
@@ -16,18 +18,14 @@ package com.larrio.dump.model
 	public class SWFHeader implements ICodec
 	{
 		private var _signature:String;
-		
 		private var _version:uint;
 		
 		private var _length:uint;
-		
 		private var _size:SWFRect;
-		
 		private var _frameRate:uint;
-		
 		private var _frameCount:uint;
 		
-		private var _compressed:Boolean;
+		private var _compressionAlgorithm:String;
 		
 		/**
 		 * 构造函数
@@ -44,18 +42,7 @@ package com.larrio.dump.model
 		 */		
 		public function encode(encoder:FileEncoder):void
 		{
-			if (_compressed)
-			{
-				encoder.writeUI8(("C").charCodeAt(0));
-			}
-			else
-			{
-				encoder.writeUI8(("F").charCodeAt(0));
-			}
-			
-			encoder.writeUI8(("W").charCodeAt(0));
-			encoder.writeUI8(("S").charCodeAt(0));
-			
+			encoder.writeUTFBytes(_signature);
 			encoder.writeUI8(_version);
 		}
 		
@@ -65,11 +52,7 @@ package com.larrio.dump.model
 		 */		
 		public function decode(decoder:FileDecoder):void
 		{
-			_signature = String.fromCharCode(decoder.readUI8());
-			_compressed = (_signature == "C");
-			
-			_signature += String.fromCharCode(decoder.readUI8());
-			_signature += String.fromCharCode(decoder.readUI8());
+			_signature = decoder.readUTFBytes(3);
 			
 			_version = decoder.readUI8();			
 			_length = decoder.readUI32();
@@ -77,11 +60,13 @@ package com.larrio.dump.model
 			var bytes:ByteArray;
 			var position:uint = decoder.position;
 			
-			if (_compressed)
+			if (compressAlgorithm != CompressAlgorithms.NONE)
 			{
 				bytes = new ByteArray();
 				decoder.readBytes(bytes);
-				bytes.uncompress();
+				
+				bytes.position = 0;
+				uncompressSWF(bytes, compressAlgorithm, _length);
 				
 				decoder.position = position;
 				decoder.writeBytes(bytes);
@@ -94,9 +79,6 @@ package com.larrio.dump.model
 			_size = new SWFRect();
 			_size.decode(decoder);
 			
-			//assertTrue(_size.minX == 0);
-			//assertTrue(_size.minY == 0);
-			
 			_frameRate = decoder.readUI16();
 			_frameCount = decoder.readUI16();
 		}
@@ -108,7 +90,6 @@ package com.larrio.dump.model
 		{
 			var result:XML = new XML("<Header/>");
 			result.@signature = _signature;
-			result.@compressed = _compressed;
 			result.@version = _version;
 			result.@width = _size.width;
 			result.@height = _size.height;
@@ -117,15 +98,6 @@ package com.larrio.dump.model
 			result.@size = _length;
 			
 			return result.toXMLString();
-		}
-
-		/**
-		 * 标记SWF是否被压缩
-		 */		
-		public function get compressed():Boolean { return _compressed; }
-		public function set compressed(value:Boolean):void
-		{
-			_compressed = value;
 		}
 
 		/**
@@ -174,6 +146,20 @@ package com.larrio.dump.model
 			_frameCount = value;
 		}
 
-
+		/**
+		 * 设置压缩方式
+		 */		
+		public function get compressAlgorithm():String { return _signature; }
+		public function set compressAlgorithm(value:String):void
+		{
+			if (!value || !value.match(/^[FCZ]WS$/i))
+			{
+				_signature = CompressAlgorithms.ZLIB;
+			}
+			else
+			{
+				_signature = value.toUpperCase();
+			}
+		}
 	}
 }
