@@ -9,8 +9,8 @@ output=classes/class.swf
 
 "$mxmlc"	\
 -static-link-runtime-shared-libraries	\
--source-path+=../../../demos	\
--source-path+=../../../src	\
+-source-path+=../../../../samples	\
+-source-path+=../../../../src	\
 -file-specs=$main	\
 -optimize=false \
 -output=$output	\
