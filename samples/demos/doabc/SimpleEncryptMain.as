@@ -37,6 +37,7 @@ package demos.doabc
 			
 			var settings:XML;
 			var encryptor:FileEncryptor = new FileEncryptor();
+			encryptor.keys.strong = true;
 			encryptor.pushSWF(swf);
 			settings = encryptor.encrypt();
 			trace(settings.toXMLString());

@@ -215,7 +215,7 @@ package com.larrio.dump.encrypt.core
 				name = list[i];
 				if (name.indexOf("__AS3__.vec:Vector.") == 0)
 				{
-					name = name.match(/<([^>]+)>/)[1];
+					name = name.match(/<(.+)>$/)[1];
 				}
 				
 				name = name.replace(/:\w+:/g, ":");
