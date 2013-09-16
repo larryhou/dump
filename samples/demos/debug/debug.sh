@@ -13,18 +13,18 @@ if [ "$debug" = "true" ] || [ "$debug" = "yes" ] || [ "$debug" = "y" ] || [ "$de
 then
 	"$mxmlc"	\
 	-static-link-runtime-shared-libraries	\
-	-source-path+=../../../larrio/greensock	\
-	-source-path+=../../demos	\
-	-source-path+=../../src	\
+	-source-path+=../../../../larrio/greensock	\
+	-source-path+=../../../samples/	\
+	-source-path+=../../../src	\
 	-file-specs=$main	\
 	-output=$output	\
 	-debug
 else
 	"$mxmlc"	\
 	-static-link-runtime-shared-libraries	\
-	-source-path+=../../../larrio/greensock	\
-	-source-path+=../../demos	\
-	-source-path+=../../src	\
+	-source-path+=../../../../larrio/greensock	\
+	-source-path+=../../../samples/	\
+	-source-path+=../../../src	\
 	-file-specs=$main	\
 	-output=$output
 fi

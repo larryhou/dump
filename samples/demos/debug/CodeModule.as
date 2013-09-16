@@ -12,7 +12,7 @@ package demos.debug
 	 */
 	public class CodeModule extends Sprite
 	{
-		[Embed(source="../../libs/res01.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/res01.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**
