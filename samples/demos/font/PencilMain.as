@@ -75,7 +75,7 @@ package demos.font
 	
 //			collector = list[0];
 			
-			var chars:String = "卧龙";
+			var chars:String = "上海";
 			var canvas:SimpleCanvas = new SimpleCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();

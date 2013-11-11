@@ -115,5 +115,7 @@ package com.larrio.dump.tags
 		public static const VIDEO_FRAME                        :uint = 0x3D; // 61
 		
 		public static const PRODUCT_INFO                       :uint = 0x29; // 41
+		
+		public static const ENABLE_TELEMETRY                   :uint = 0x5D; // 93
 	}
 }

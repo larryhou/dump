@@ -41,7 +41,7 @@ package demos.display
 			
 			var matrix:Matrix = new Matrix();
 			matrix.scale(1.5, 1.5);
-			matrix.tx = 200;
+			matrix.tx = 0;
 			matrix.ty = 0;
 			
 			place.matrix = matrix;

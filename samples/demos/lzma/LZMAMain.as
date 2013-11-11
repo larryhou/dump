@@ -19,7 +19,7 @@ package demos.lzma
 	 */
 	public class LZMAMain extends Sprite
 	{
-		[Embed(source="../libs/lzma.swf", mimeType="application/octet-stream")]
+		[Embed(source="../libs/shit.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

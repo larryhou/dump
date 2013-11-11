@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="demos/vector/OutlineMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
-  <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc -target-player 11.4" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="samples" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="demos/doabc/DoABCMain.as" projectUUID="2b8ec108-b518-4555-9f1c-eda2626fadf9" version="10">
+  <compiler additionalCompilerArguments="-locale en_US -include-libraries+=libs/include.swc -target-player 11.3" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="samples" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/framework/larrio/greensock"/>
@@ -50,6 +50,9 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="demos/ImageMain.as"/>
+    <application path="demos/font/FontMain.as"/>
+    <application path="demos/vector/MorphMain.as"/>
     <application path="demos/vector/OutlineMain.as"/>
     <application path="demos/vector/DrawMain.as"/>
     <application path="demos/builder/sound/MP3ModifierMain.as"/>

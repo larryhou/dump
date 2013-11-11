@@ -311,6 +311,11 @@ package com.larrio.dump.tags
 				{
 					return new DebugIDTag();
 				}
+					
+				case TagType.ENABLE_TELEMETRY:
+				{
+					return new EnableTelemetryTag();
+				}
 			}
 			
 			return new SWFTag();
