@@ -2,7 +2,7 @@ package com.larrio.dump.model
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.compress.CompressAlgorithms;
+	import com.larrio.dump.compress.CompressMethods;
 	import com.larrio.dump.compress.uncompressSWF;
 	import com.larrio.dump.interfaces.ICodec;
 	import com.larrio.dump.utils.assertTrue;
@@ -24,8 +24,6 @@ package com.larrio.dump.model
 		private var _size:SWFRect;
 		private var _frameRate:uint;
 		private var _frameCount:uint;
-		
-		private var _compressionAlgorithm:String;
 		
 		/**
 		 * 构造函数
@@ -60,13 +58,13 @@ package com.larrio.dump.model
 			var bytes:ByteArray;
 			var position:uint = decoder.position;
 			
-			if (compressAlgorithm != CompressAlgorithms.NONE)
+			if (compressMethod != CompressMethods.NONE)
 			{
 				bytes = new ByteArray();
 				decoder.readBytes(bytes);
 				
 				bytes.position = 0;
-				uncompressSWF(bytes, compressAlgorithm, _length);
+				uncompressSWF(bytes, compressMethod, _length);
 				
 				decoder.position = position;
 				decoder.writeBytes(bytes);
@@ -149,12 +147,12 @@ package com.larrio.dump.model
 		/**
 		 * 设置压缩方式
 		 */		
-		public function get compressAlgorithm():String { return _signature; }
-		public function set compressAlgorithm(value:String):void
+		public function get compressMethod():String { return _signature; }
+		public function set compressMethod(value:String):void
 		{
 			if (!value || !value.match(/^[FCZ]WS$/i))
 			{
-				_signature = CompressAlgorithms.ZLIB;
+				_signature = CompressMethods.ZLIB;
 			}
 			else
 			{

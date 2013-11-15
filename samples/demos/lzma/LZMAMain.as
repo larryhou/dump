@@ -1,7 +1,7 @@
 package demos.lzma
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.compress.CompressAlgorithms;
+	import com.larrio.dump.compress.CompressMethods;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -35,7 +35,7 @@ package demos.lzma
 			trace(swf.header);
 			
 			swf = new SWFile(swf.repack());
-			swf.header.compressAlgorithm = CompressAlgorithms.ZLIB;
+			swf.header.compressMethod = CompressMethods.ZLIB;
 			trace(swf.header);
 			
 			var loader:Loader = new Loader();

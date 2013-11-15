@@ -6,7 +6,7 @@ package com.larrio.dump.compress
 	 * @author larryhou
 	 * @createTime Aug 22, 2013 12:42:53 PM
 	 */
-	public class CompressAlgorithms
+	public class CompressMethods
 	{
 		/**
 		 * 不压缩 

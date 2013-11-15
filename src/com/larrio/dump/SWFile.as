@@ -2,7 +2,7 @@ package com.larrio.dump
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
-	import com.larrio.dump.compress.CompressAlgorithms;
+	import com.larrio.dump.compress.CompressMethods;
 	import com.larrio.dump.compress.compressSWF;
 	import com.larrio.dump.model.SWFHeader;
 	import com.larrio.dump.tags.SWFTag;
@@ -114,9 +114,9 @@ package com.larrio.dump
 			
 			// 写入压缩前的总字节长度
 			_encoder.writeUI32(_encoder.length + 4 + content.length);
-			if (_header.compressAlgorithm != CompressAlgorithms.NONE)
+			if (_header.compressMethod != CompressMethods.NONE)
 			{
-				compressSWF(content, _header.compressAlgorithm);
+				compressSWF(content, _header.compressMethod);
 			}
 			
 			_encoder.writeBytes(content);

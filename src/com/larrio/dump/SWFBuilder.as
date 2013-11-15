@@ -2,7 +2,7 @@ package com.larrio.dump
 {
 	import com.adobe.images.JPGEncoder;
 	import com.adobe.images.PNGEncoder;
-	import com.larrio.dump.compress.CompressAlgorithms;
+	import com.larrio.dump.compress.CompressMethods;
 	import com.larrio.dump.doabc.templates.image.ImageDoABC;
 	import com.larrio.dump.files.mp3.MP3File;
 	import com.larrio.dump.model.SWFHeader;
@@ -43,7 +43,7 @@ package com.larrio.dump
 		private function createHeader():SWFHeader
 		{
 			var header:SWFHeader = new SWFHeader();
-			header.compressAlgorithm = CompressAlgorithms.ZLIB;
+			header.compressMethod = CompressMethods.ZLIB;
 			header.frameCount = 1;
 			header.frameRate = 24 << 8;
 			header.size = new SWFRect();

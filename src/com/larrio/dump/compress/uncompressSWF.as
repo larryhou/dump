@@ -14,8 +14,8 @@ package com.larrio.dump.compress
 	{
 		switch (algorithm)
 		{
-			case CompressAlgorithms.LZMA:uncompressLZMA(bytes, length);break;
-			case CompressAlgorithms.ZLIB:uncompressZLIB(bytes);break;
+			case CompressMethods.LZMA:uncompressLZMA(bytes, length);break;
+			case CompressMethods.ZLIB:uncompressZLIB(bytes);break;
 		}
 	}
 }
