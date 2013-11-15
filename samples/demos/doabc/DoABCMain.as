@@ -1,8 +1,6 @@
 package demos.doabc 
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.doabc.DoABC;
-	import com.larrio.dump.doabc.MethodInfo;
 	import com.larrio.dump.tags.DoABCTag;
 	
 	import flash.display.DisplayObject;
@@ -46,7 +44,7 @@ package demos.doabc
 		{		
 			var bytes:ByteArray;
 			bytes = loaderInfo.bytes;
-			bytes = new FileByteArray();
+			//bytes = new FileByteArray();
 			
 			var swf:SWFile = new SWFile(bytes);
 			
