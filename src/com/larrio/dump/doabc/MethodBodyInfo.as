@@ -3,10 +3,8 @@ package com.larrio.dump.doabc
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.dump.interfaces.IScript;
 	
 	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
 	/**
@@ -96,7 +94,11 @@ package com.larrio.dump.doabc
 			_opcode = new OpcodeInfo(_abc);
 			_opcode.method = _method;
 			
-			_opcode.decode(decoder);
+			try
+			{
+				_opcode.decode(decoder);
+			} 
+			catch(error:Error) {}			
 		}
 		
 		/**
