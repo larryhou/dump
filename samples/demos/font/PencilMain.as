@@ -31,7 +31,7 @@ package demos.font
 	{
 		private const LINE_THICKNESS:uint = 6;
 		
-		[Embed(source="../libs/fonts.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/fonts.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		private var _steps:Array;

@@ -20,10 +20,5 @@
 			<type>2</type>
 			<locationURI>DOCUMENTS/framework/larrio/greensock</locationURI>
 		</link>
-		<link>
-			<name>[source path] src</name>
-			<type>2</type>
-			<locationURI>DOCUMENTS/framework/as3corelib/src</locationURI>
-		</link>
 	</linkedResources>
 </projectDescription>

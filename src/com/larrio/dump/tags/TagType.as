@@ -117,5 +117,7 @@ package com.larrio.dump.tags
 		public static const PRODUCT_INFO                       :uint = 0x29; // 41
 		
 		public static const ENABLE_TELEMETRY                   :uint = 0x5D; // 93
+		
+		public static const DO_ACTION                           :uint = 0x0C; // 12
 	}
 }

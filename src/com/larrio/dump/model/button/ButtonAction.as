@@ -1,7 +1,7 @@
 package com.larrio.dump.model.button
 {
-	import com.larrio.dump.actions.ActionFactory;
-	import com.larrio.dump.actions.SWFAction;
+	import com.larrio.dump.doabc.actions.ActionFactory;
+	import com.larrio.dump.doabc.actions.ActionRecord;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
@@ -26,7 +26,7 @@ package com.larrio.dump.model.button
 		private var _key:uint;
 		private var _overDownToIdle:uint;
 		
-		private var _actions:Vector.<SWFAction>;
+		private var _actions:Vector.<ActionRecord>;
 		
 		/**
 		 * 构造函数
@@ -57,11 +57,11 @@ package com.larrio.dump.model.button
 			_key = decoder.readUB(7);
 			_overDownToIdle = decoder.readUB(1);
 			
-			_actions = new Vector.<SWFAction>();
+			_actions = new Vector.<ActionRecord>();
 			
 			var type:uint;
-			var action:SWFAction;
-			while (type = decoder.readUI8())
+			var action:ActionRecord;
+			while ((type = decoder.readUI8()) != 0)
 			{
 				decoder.position--;
 				action = ActionFactory.create(type);
@@ -202,7 +202,7 @@ package com.larrio.dump.model.button
 		/**
 		 * Actions to perform.
 		 */		
-		public function get actions():Vector.<SWFAction> { return _actions; }
+		public function get actions():Vector.<ActionRecord> { return _actions; }
 
 	}
 }

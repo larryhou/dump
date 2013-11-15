@@ -1,7 +1,7 @@
 package com.larrio.dump.model
 {
-	import com.larrio.dump.actions.ActionFactory;
-	import com.larrio.dump.actions.SWFAction;
+	import com.larrio.dump.doabc.actions.ActionFactory;
+	import com.larrio.dump.doabc.actions.ActionRecord;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
@@ -19,7 +19,7 @@ package com.larrio.dump.model
 		private var _size:uint;
 		
 		private var _keyCode:uint;
-		private var _actions:Vector.<SWFAction>;
+		private var _actions:Vector.<ActionRecord>;
 		
 		/**
 		 * 构造函数
@@ -51,10 +51,10 @@ package com.larrio.dump.model
 			
 			if (byteAvailable)
 			{
-				_actions = new Vector.<SWFAction>();
+				_actions = new Vector.<ActionRecord>();
 			}
 			
-			var action:SWFAction;
+			var action:ActionRecord;
 			
 			var type:uint;
 			var position:uint, offset:uint;
@@ -134,7 +134,7 @@ package com.larrio.dump.model
 		/**
 		 * Actions to perform
 		 */		
-		public function get actions():Vector.<SWFAction> { return _actions; }
+		public function get actions():Vector.<ActionRecord> { return _actions; }
 
 	}
 }

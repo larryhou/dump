@@ -22,7 +22,7 @@ package demos
 	 */
 	public class ImageMain extends Sprite
 	{
-		[Embed(source="../libs/res04.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../libs/res04.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

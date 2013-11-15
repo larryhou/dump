@@ -1,4 +1,4 @@
-package com.larrio.dump.actions
+package com.larrio.dump.doabc.actions
 {
 	
 	/**
@@ -20,9 +20,9 @@ package com.larrio.dump.actions
 		/**
 		 * 工厂方法获取DoAction解析器 
 		 * @param type	action code
-		 * @return SWFAction object
+		 * @return ActionRecord object
 		 */		
-		public static function create(type:uint):SWFAction
+		public static function create(type:uint):ActionRecord
 		{
 			switch(type)
 			{
@@ -34,7 +34,7 @@ package com.larrio.dump.actions
 					
 			}
 			
-			return new SWFAction();
+			return new ActionRecord();
 		}
 	}
 }

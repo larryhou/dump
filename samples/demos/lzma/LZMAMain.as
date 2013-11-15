@@ -5,10 +5,8 @@ package demos.lzma
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
-	import flash.net.FileReference;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
-	import flash.utils.Endian;
 	
 	[SWF(width="1024", height="768")]
 	
@@ -19,7 +17,7 @@ package demos.lzma
 	 */
 	public class LZMAMain extends Sprite
 	{
-		[Embed(source="../libs/shit.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/shit.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

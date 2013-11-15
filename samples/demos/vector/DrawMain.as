@@ -22,7 +22,7 @@ package demos.vector
 	 */
 	public class DrawMain extends Sprite
 	{
-		[Embed(source="../libs/joker.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/joker.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		private var _steps:Array;

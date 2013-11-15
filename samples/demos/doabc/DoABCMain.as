@@ -20,7 +20,7 @@ package demos.doabc
 	 */
 	final dynamic public class DoABCMain extends Sprite
 	{		
-		[Embed(source="../libs/importAssets.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/importAssets.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		public static const v1:uint = 1;

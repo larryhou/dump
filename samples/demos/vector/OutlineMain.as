@@ -21,7 +21,7 @@ package demos.vector
 	 */
 	public class OutlineMain extends Sprite
 	{
-		[Embed(source="../libs/joker.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/joker.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

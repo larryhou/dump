@@ -39,7 +39,7 @@ package com.larrio.dump.model
 			_eventFlags.decode(decoder);
 			
 			var action:ClipActionRecord;
-			while (_actionEndFlag = decoder.readUI32())
+			while (Boolean(_actionEndFlag = decoder.readUI32()) != 0)
 			{
 				decoder.position -= 4;
 				

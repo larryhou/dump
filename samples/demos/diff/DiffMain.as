@@ -16,10 +16,10 @@ package demos.diff
 	 */
 	public class DiffMain extends Sprite
 	{
-		[Embed(source="../libs/lib03.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/lib03.swf", mimeType="application/octet-stream")]
 		private var FileByteArray1:Class;
 		
-		[Embed(source="../libs/lib04.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/lib04.swf", mimeType="application/octet-stream")]
 		private var FileByteArray2:Class;
 		
 		/**

@@ -2,8 +2,6 @@ package com.larrio.dump.utils
 {
 	import flash.utils.ByteArray;
 	
-	import flashx.textLayout.debug.assert;
-	
 	/**
 	 * 打印二进制数据
 	 * @author larryhou
@@ -38,7 +36,7 @@ package com.larrio.dump.utils
 			}
 		}
 		
-		var length:uint;
+		length = 0;
 		if (left.length > 0)
 		{
 			length = column * 13;

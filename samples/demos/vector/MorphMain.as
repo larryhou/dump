@@ -12,7 +12,7 @@ package demos.vector
 	 */
 	public class MorphMain extends Sprite
 	{
-		[Embed(source="../libs/morph.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/morph.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 
 		/**

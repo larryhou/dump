@@ -1,7 +1,7 @@
 package com.larrio.dump.tags
 {
-	import com.larrio.dump.actions.ActionFactory;
-	import com.larrio.dump.actions.SWFAction;
+	import com.larrio.dump.doabc.actions.ActionFactory;
+	import com.larrio.dump.doabc.actions.ActionRecord;
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
@@ -52,8 +52,8 @@ package com.larrio.dump.tags
 			_actions = new Vector.<ICodec>();
 			
 			var type:uint;
-			var action:SWFAction;
-			while (type = decoder.readUI8())
+			var action:ActionRecord;
+			while ((type = decoder.readUI8()) != 0)
 			{
 				decoder.position--;
 				action = ActionFactory.create(type);

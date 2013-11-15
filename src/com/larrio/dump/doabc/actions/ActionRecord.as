@@ -1,4 +1,4 @@
-package com.larrio.dump.actions
+package com.larrio.dump.doabc.actions
 {
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
@@ -12,7 +12,7 @@ package com.larrio.dump.actions
 	 * @author larryhou
 	 * @createTime Dec 24, 2012 10:06:57 PM
 	 */
-	public class SWFAction implements ICodec
+	public class ActionRecord implements ICodec
 	{
 		protected var _type:uint;
 		protected var _length:uint;
@@ -21,9 +21,9 @@ package com.larrio.dump.actions
 		
 		/**
 		 * 构造函数
-		 * create a [SWFAction] object
+		 * create a [ActionRecord] object
 		 */
-		public function SWFAction()
+		public function ActionRecord()
 		{
 			
 		}

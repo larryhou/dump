@@ -22,7 +22,7 @@ package demos.font
 	 */
 	public class FontMain extends Sprite
 	{
-		[Embed(source="../libs/res01.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/res01.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

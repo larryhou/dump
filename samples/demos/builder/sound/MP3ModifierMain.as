@@ -12,7 +12,6 @@ package demos.builder.sound
 	import flash.media.Sound;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
 	
@@ -23,10 +22,10 @@ package demos.builder.sound
 	 */
 	public class MP3ModifierMain extends Sprite
 	{
-		[Embed(source="../libs/short.mp3", mimeType="application/octet-stream")]
+		[Embed(source="../../../../libs/short.mp3", mimeType="application/octet-stream")]
 		private var MP3ByteArray:Class;
 		
-		[Embed(source="../libs/mp3.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../../libs/mp3.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 
 		
