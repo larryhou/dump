@@ -5,7 +5,7 @@ package com.larrio.math
 	/**
 	 * 贝塞尔工具
 	 * @author larryhou
-	 * @createTime 2012/8/21 16:24
+	 * @createTime 2015/1/30 14:13
 	 * 
 	 * 绘制贝赛尔曲线点
 	 * @param	list	控制点
@@ -15,25 +15,29 @@ package com.larrio.math
 	 */
 	public function bezier(list:Array/*list.length >= 2*/, ratio:Number/*0 =< ratio <= 1*/):Point
 	{
-		if (!list) return null;
-		
+		var result:Point;
 		if (list.length > 1)
 		{
-			var pos:Point;
+			var ctrl:Object;
+			
 			var length:int = list.length;
 			for (var i:int = 0; i < length - 1; i++)
 			{
-				pos = list[i];
+				ctrl = list[i];
 				
-				list[i] = new Point();
-				list[i].x = (1 - ratio) * pos.x + ratio * list[i + 1].x;
-				list[i].y = (1 - ratio) * pos.y + ratio * list[i + 1].y;
+				list[i] = { x:0, y:0 };
+				list[i].x = (1 - ratio) * ctrl.x + ratio * list[i + 1].x;
+				list[i].y = (1 - ratio) * ctrl.y + ratio * list[i + 1].y;
 			}
 			
 			list.pop();
-			return arguments.callee.apply(null, arguments);
+			result = bezier(list, ratio);
+		}
+		else
+		{
+			result = new Point(list[0].x, list[0].y);
 		}
 		
-		return list[0];
+		return result;
 	}
 }
