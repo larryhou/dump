@@ -45,7 +45,7 @@ package com.larrio.dump.tags
 			var fontTag:DefineFontTag = _dict[_font] as DefineFontTag;
 			fontTag.fontInfo = this;
 				
-			_name = decoder.readMultiByte(decoder.readUI8(), "UTF8");
+			_name = decoder.readMultiByte(decoder.readUI8(), "UTF-8");
 			
 			assertTrue(decoder.readUB(2) == 0);
 			
@@ -85,7 +85,7 @@ package com.larrio.dump.tags
 			
 			var bytes:ByteArray;
 			bytes = new ByteArray();
-			bytes.writeMultiByte(_name, "UTF8");
+			bytes.writeMultiByte(_name, "UTF-8");
 			encoder.writeUI8(bytes.length);
 			encoder.writeBytes(bytes);
 			

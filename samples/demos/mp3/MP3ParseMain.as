@@ -12,7 +12,7 @@ package demos.mp3
 	 */
 	public class MP3ParseMain extends Sprite
 	{
-		[Embed(source="../libs/sleep.mp3", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/sleep.mp3", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		/**

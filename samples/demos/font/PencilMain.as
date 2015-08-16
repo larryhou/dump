@@ -67,15 +67,16 @@ package demos.font
 			
 			for each(collector in list)
 			{
-//				if (collector.name == "Wawati SC Regular") break;
-//				if (collector.name == "Yuanti SC Regular") break;
-				if (collector.name == "Xingkai SC Bold") break;
-//				if (collector.name == "Songti SC Bold") break;
+				trace(collector.name);
+//				if (collector.name.indexOf("宋体") >= 0) break;
+				if (collector.name.indexOf("行楷") >= 0) break;
+//				if (collector.name.indexOf("娃娃体") >= 0) break;
+//				if (collector.name.indexOf("圆体") >= 0) break;
 			}
 	
 //			collector = list[0];
 			
-			var chars:String = "上海";
+			var chars:String = "牛逼";
 			var canvas:SimpleCanvas = new SimpleCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();
@@ -113,7 +114,6 @@ package demos.font
 			if (_index >= _steps.length)
 			{
 				_alias.visible = false;
-				removeEventListener(Event.ENTER_FRAME, arguments.callee);
 				return;
 			}
 			
@@ -177,24 +177,6 @@ package demos.font
 					forward();
 				}
 				});
-			}
-		}
-		
-		protected function frameHandler(event:Event):void
-		{
-			if (_index >= _steps.length)
-			{
-				removeEventListener(Event.ENTER_FRAME, arguments.callee);
-				return;
-			}
-			
-			var step:Object = _steps[_index++];
-			
-			(_pencil[step.method] as Function).apply(null, step.params);
-			
-			if (step.method == "moveTo")
-			{
-				frameHandler(null);
 			}
 		}
 	}

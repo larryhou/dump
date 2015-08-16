@@ -72,7 +72,7 @@ package com.larrio.dump.tags
 			
 			_langcode = decoder.readUI8();
 			
-			_name = decoder.readMultiByte(decoder.readUI8(), "UTF8");
+			_name = decoder.readMultiByte(decoder.readUI8(), "UTF-8");
 			
 			var length:uint, i:int;
 			length = decoder.readUI16();
@@ -172,7 +172,7 @@ package com.larrio.dump.tags
 			
 			var bytes:ByteArray;
 			bytes = new ByteArray();
-			bytes.writeMultiByte(_name, "UTF8");
+			bytes.writeMultiByte(_name, "UTF-8");
 			bytes.writeByte(0);
 			
 			encoder.writeUI8(bytes.length);
