@@ -1,13 +1,13 @@
 package com.larrio.dump.flash.display.shape.collector
 {
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
-	import com.larrio.dump.model.shape.CurvedEdgeRecord;
+	import com.larrio.dump.model.shape.CurvedEdgeShapeRecord;
 	import com.larrio.dump.model.shape.FillStyle;
 	import com.larrio.dump.model.shape.LineStyle;
 	import com.larrio.dump.model.shape.Shape;
 	import com.larrio.dump.model.shape.ShapeWithStyle;
-	import com.larrio.dump.model.shape.StraightEdgeRecord;
-	import com.larrio.dump.model.shape.StyleChangeRecord;
+	import com.larrio.dump.model.shape.StraightEdgeShapeRecord;
+	import com.larrio.dump.model.shape.StyleChangeShapeRecord;
 	
 	import flash.utils.Dictionary;
 	
@@ -91,7 +91,7 @@ package com.larrio.dump.flash.display.shape.collector
 					{
 						for (j = 0, slen = sub.length; j < slen; j++)
 						{
-							collect.push(ShapeEdge(sub[j]).tearOff(false));
+							collect.push(ShapeEdge(sub[j]).unify(false));
 						}
 					}
 					
@@ -100,7 +100,7 @@ package com.larrio.dump.flash.display.shape.collector
 					{
 						for (j = 0, slen = sub.length; j < slen; j++)
 						{
-							collect.push(ShapeEdge(sub[j]).tearOff(true));
+							collect.push(ShapeEdge(sub[j]).unify(true));
 						}
 					}
 					
@@ -255,7 +255,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 绘制直线 
 		 */		
-		override protected function drawStraightEdge(record:StraightEdgeRecord):void
+		override protected function drawStraightEdge(record:StraightEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(false);
 			
@@ -270,7 +270,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 绘制贝塞尔弧线 
 		 */		
-		override protected function drawCurvedEdge(record:CurvedEdgeRecord):void
+		override protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(true);
 			
@@ -321,7 +321,7 @@ package com.larrio.dump.flash.display.shape.collector
 		 * 切换样式 
 		 * @param style	线条、填充样式
 		 */		
-		override protected function changeStyle(record:StyleChangeRecord):void
+		override protected function changeShapeStyle(record:StyleChangeShapeRecord):void
 		{
 			if (record.stateMoveTo)
 			{
@@ -439,7 +439,7 @@ class ShapeEdge
 	 * 从当前对象分裂出一个新的ShapeEdge对象 
 	 * @param reverse	是否需要首位对调：矢量反转
 	 */	
-	public function tearOff(reverse:Boolean):ShapeEdge
+	public function unify(reverse:Boolean):ShapeEdge
 	{
 		var edge:ShapeEdge = new ShapeEdge(this.curved);
 		if (reverse)

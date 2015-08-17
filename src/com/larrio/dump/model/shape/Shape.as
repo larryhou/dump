@@ -57,12 +57,12 @@ package com.larrio.dump.model.shape
 					if (decoder.readUB(1))
 					{
 						// line
-						record = new StraightEdgeRecord(_shape);
+						record = new StraightEdgeShapeRecord(_shape);
 					}
 					else
 					{
 						// curve
-						record = new CurvedEdgeRecord(_shape);
+						record = new CurvedEdgeShapeRecord(_shape);
 					}
 				}
 				else
@@ -71,20 +71,21 @@ package com.larrio.dump.model.shape
 					if (flag)
 					{
 						// style change
-						record = new StyleChangeRecord(_shape, numfbits, numlbits, flag);
+						record = new StyleChangeShapeRecord(_shape, numfbits, numlbits, flag);
 					}
 					else
 					{
 						// end
+						record = new EndShapeRecord()
 						break;
 					}
 				}
 				
 				record.decode(decoder);
-				if (record is StyleChangeRecord)
+				if (record is StyleChangeShapeRecord)
 				{
-					numfbits = (record as StyleChangeRecord).numfbits;
-					numlbits = (record as StyleChangeRecord).numlbits;
+					numfbits = (record as StyleChangeShapeRecord).numfbits;
+					numlbits = (record as StyleChangeShapeRecord).numlbits;
 				}
 				
 				_records.push(record);

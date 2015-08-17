@@ -9,7 +9,7 @@ package com.larrio.dump.model.shape
 	 * @author larryhou
 	 * @createTime Dec 28, 2012 12:45:52 PM
 	 */
-	public class StyleChangeRecord extends ShapeRecord
+	public class StyleChangeShapeRecord extends ShapeRecord
 	{
 		private var _stateNewStyles:uint;
 		private var _stateLineStyle:uint;
@@ -38,7 +38,7 @@ package com.larrio.dump.model.shape
 		 * 构造函数
 		 * create a [StyleChangeRecord] object
 		 */
-		public function StyleChangeRecord(shape:uint, numfbits:uint, numlbits:uint, flag:uint)
+		public function StyleChangeShapeRecord(shape:uint, numfbits:uint, numlbits:uint, flag:uint)
 		{
 			_numfbits = _inumfbits = numfbits;
 			_numlbits = _inumlbits = numlbits;

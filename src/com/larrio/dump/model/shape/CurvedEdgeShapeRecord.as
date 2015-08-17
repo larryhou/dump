@@ -10,7 +10,7 @@ package com.larrio.dump.model.shape
 	 * @author larryhou
 	 * @createTime Dec 27, 2012 10:49:58 PM
 	 */
-	public class CurvedEdgeRecord extends ShapeRecord
+	public class CurvedEdgeShapeRecord extends ShapeRecord
 	{
 		private var _numbits:uint;
 		
@@ -24,7 +24,7 @@ package com.larrio.dump.model.shape
 		 * 构造函数
 		 * create a [CurvedEdgeRecord] object
 		 */
-		public function CurvedEdgeRecord(shape:uint)
+		public function CurvedEdgeShapeRecord(shape:uint)
 		{
 			super(shape);	
 		}

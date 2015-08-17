@@ -69,14 +69,15 @@ package demos.font
 			{
 				trace(collector.name);
 //				if (collector.name.indexOf("宋体") >= 0) break;
-				if (collector.name.indexOf("行楷") >= 0) break;
+//				if (collector.name.indexOf("行楷") >= 0) break;
 //				if (collector.name.indexOf("娃娃体") >= 0) break;
 //				if (collector.name.indexOf("圆体") >= 0) break;
+				if (collector.name.indexOf("CXingKaiHK") >= 0) break;
 			}
 	
 //			collector = list[0];
 			
-			var chars:String = "牛逼";
+			var chars:String = "積發";
 			var canvas:SimpleCanvas = new SimpleCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();

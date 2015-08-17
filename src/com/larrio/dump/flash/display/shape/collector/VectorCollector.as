@@ -1,14 +1,15 @@
 package com.larrio.dump.flash.display.shape.collector
 {
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
-	import com.larrio.dump.model.shape.CurvedEdgeRecord;
+	import com.larrio.dump.model.shape.CurvedEdgeShapeRecord;
+	import com.larrio.dump.model.shape.EndShapeRecord;
 	import com.larrio.dump.model.shape.FillStyle;
 	import com.larrio.dump.model.shape.LineStyle;
 	import com.larrio.dump.model.shape.Shape;
 	import com.larrio.dump.model.shape.ShapeRecord;
 	import com.larrio.dump.model.shape.ShapeWithStyle;
-	import com.larrio.dump.model.shape.StraightEdgeRecord;
-	import com.larrio.dump.model.shape.StyleChangeRecord;
+	import com.larrio.dump.model.shape.StraightEdgeShapeRecord;
+	import com.larrio.dump.model.shape.StyleChangeShapeRecord;
 	
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
@@ -20,19 +21,21 @@ package com.larrio.dump.flash.display.shape.collector
 	 */
 	public class VectorCollector extends AbstractCollector
 	{
-		private var _map0:Dictionary;
-		private var _map1:Dictionary;
+		private var _fillEdgeMap:Dictionary;
+		private var _lineEdgeMap:Dictionary;
 		
-		private var _f0:uint;
-		private var _f1:uint;
-		private var _maxIndex:uint;
+		private var _fillStyle0:uint;
+		private var _fillStyle1:uint;
+		private var _fillStyleOffset:int;
+		private var _lineStyleOffset:int;
+		private var _maxFillStyleIndex:uint;
 		
-		private var _line:uint;
-		
-		private var _edges:Array;
+		private var _lineStyle:uint;
 		
 		private var _lineStyles:Vector.<LineStyle>;
 		private var _fillStyles:Vector.<FillStyle>;
+		
+		private var _parts:Vector.<ShapeEdge>;
 		
 		/**
 		 * 构造函数
@@ -53,9 +56,9 @@ package com.larrio.dump.flash.display.shape.collector
 				_fillStyles = (_shape as ShapeWithStyle).fillStyles.styles;
 			}
 			
-			_edges = [];
-			_map0 = new Dictionary(true);
-			_map1 = new Dictionary(true);
+			_fillEdgeMap = new Dictionary(true);
+			_lineEdgeMap = new Dictionary(true);
+			_parts = new Vector.<ShapeEdge>();
 		}
 		
 		/**
@@ -70,164 +73,302 @@ package com.larrio.dump.flash.display.shape.collector
 			var records:Vector.<ShapeRecord> = _shape.records;
 			for (var i:int = 0, length:uint = records.length; i < length; i++)
 			{
-				if (records[i] is StraightEdgeRecord)
+				if (records[i] is StraightEdgeShapeRecord)
 				{
-					drawStraightEdge(records[i] as StraightEdgeRecord);
+					drawStraightEdge(records[i] as StraightEdgeShapeRecord);
 				}
 				else
-				if (records[i] is CurvedEdgeRecord)
+				if (records[i] is CurvedEdgeShapeRecord)
 				{
-					drawCurvedEdge(records[i] as CurvedEdgeRecord);
+					drawCurvedEdge(records[i] as CurvedEdgeShapeRecord);
 				}
 				else
-				if (records[i] is StyleChangeRecord)
+				if (records[i] is StyleChangeShapeRecord)
 				{
-					changeStyle(records[i] as StyleChangeRecord);
+					changeShapeStyle(records[i] as StyleChangeShapeRecord);
 				}
-			}
-			
-			flush();
+				else
+				if (records[i] is EndShapeRecord)
+				{
+					processShapeParts(_parts, _lineStyle, _fillStyle0, _fillStyle1);
+					commit();
+				}
+			}	
 		}
 		
 		/**
 		 * 切换线条、填充样式
 		 */		
-		override protected function changeStyle(record:StyleChangeRecord):void
+		override protected function changeShapeStyle(record:StyleChangeShapeRecord):void
 		{
 			if (record.stateMoveTo)
 			{
-				_position.x = record.moveToX / TWIPS_PER_PIXEL;
-				_position.y = record.moveToY / TWIPS_PER_PIXEL;
+				_position.x = trim(record.moveToX / TWIPS_PER_PIXEL);
+				_position.y = trim(record.moveToY / TWIPS_PER_PIXEL);
+			}
+			
+			if (record.stateLineStyle || record.stateFillStyle0 || record.stateFillStyle1)
+			{
+				processShapeParts(_parts, _lineStyle, _fillStyle0, _fillStyle1);
+				_parts.length = 0;
 			}
 			
 			if (record.stateNewStyles)
 			{
-				flush();
+				_lineStyleOffset = _lineStyles.length;
+				_fillStyleOffset = _fillStyles.length;
+				_lineStyles = _lineStyles.concat(record.lineStyles.styles);
+				_fillStyles = _fillStyles.concat(record.fillStyles.styles);
+			}
+			
+			if (record.stateLineStyle  && record.lineStyle  == 0 &&
+			    record.stateFillStyle0 && record.fillStyle0 == 0 &&
+			    record.stateFillStyle1 && record.fillStyle1 == 0)
+			{
+				commit();
 				
-				_lineStyles = record.lineStyles.styles;
-				_fillStyles = record.fillStyles.styles;
+				_lineStyle = 0;
+				_lineEdgeMap = new Dictionary(true);
+				_fillEdgeMap = new Dictionary(true);
+				_fillStyle0 = 0;
+				_fillStyle1 = 0;				
+			}
+			else
+			{
+				if (record.stateLineStyle)
+				{
+					_lineStyle = _lineStyleOffset + record.lineStyle;
+				}
+				
+				if (record.stateFillStyle0)
+				{
+					_fillStyle0 = _fillStyleOffset + record.fillStyle0;
+				}
+				
+				if (record.stateFillStyle1)
+				{
+					_fillStyle1 = _fillStyleOffset + record.fillStyle1;
+				}
+			}			
+		}
+		
+		private function processShapeParts(parts:Vector.<ShapeEdge>, lineStyle:int, fillStyle0:int, fillStyle1:int):void
+		{
+			var i:int;
+			if (lineStyle != 0)
+			{
+				if (!_lineEdgeMap[lineStyle]) _lineEdgeMap[lineStyle] = new Vector.<ShapeEdge>();
+				for (i = 0; i < parts.length; i++)
+				{
+					parts[i].lineStyle = lineStyle;
+					_lineEdgeMap[lineStyle].push(parts[i]);
+				}
 			}
 			
-			if (record.stateLineStyle)
+			var edge:ShapeEdge;
+			if (fillStyle0 != 0)
 			{
-				_line = record.lineStyle;
+				if (!_fillEdgeMap[fillStyle0]) _fillEdgeMap[fillStyle0] = new Vector.<ShapeEdge>();
+				for (i = parts.length - 1; i >= 0; i--)
+				{
+					edge = parts[i].reverse();
+					edge.fillStyle = fillStyle0;
+					
+					_fillEdgeMap[fillStyle0].push(edge);
+				}
 			}
 			
-			if (record.stateFillStyle0)
+			if (fillStyle1 != 0)
 			{
-				_f0 = record.fillStyle0;
-				if (_f0 > _maxIndex) _maxIndex = _f0;
-			}
-			
-			if (record.stateFillStyle1)
-			{
-				_f1 = record.fillStyle1;
-				if (_f1 > _maxIndex) _maxIndex = _f1;
+				if (!_fillEdgeMap[fillStyle1]) _fillEdgeMap[fillStyle1] = new Vector.<ShapeEdge>();
+				for (i = 0; i < parts.length; i++)
+				{
+					edge = parts[i];
+					edge.fillStyle = fillStyle1;
+					_fillEdgeMap[fillStyle1].push(edge);
+				}
 			}
 		}
 		
 		/**
 		 * 处理直线
 		 */		
-		override protected function drawStraightEdge(record:StraightEdgeRecord):void
+		override protected function drawStraightEdge(record:StraightEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(false);
 			edge.x1 = _position.x;
 			edge.y1 = _position.y;
 			
-			edge.x2 = _position.x += record.deltaX / TWIPS_PER_PIXEL;
-			edge.y2 = _position.y += record.deltaY / TWIPS_PER_PIXEL;
+			edge.x2 = _position.x = trim(_position.x + record.deltaX / TWIPS_PER_PIXEL);
+			edge.y2 = _position.y = trim(_position.y + record.deltaY / TWIPS_PER_PIXEL);
 			
-			storeEdge(edge);
+			_parts.push(edge);
 		}
 		
 		/**
 		 * 处理二阶贝塞尔曲线
 		 */		
-		override protected function drawCurvedEdge(record:CurvedEdgeRecord):void
+		override protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(true);
 			edge.x1 = _position.x;
 			edge.y1 = _position.y;
 			
-			edge.ctrX = _position.x += record.deltaControlX / TWIPS_PER_PIXEL;
-			edge.ctrY = _position.y += record.deltaControlY / TWIPS_PER_PIXEL;
+			edge.ctrX = _position.x = trim(_position.x + record.deltaControlX / TWIPS_PER_PIXEL);
+			edge.ctrY = _position.y = trim(_position.y + record.deltaControlY / TWIPS_PER_PIXEL);
 			
-			edge.x2 = _position.x += record.deltaAnchorX / TWIPS_PER_PIXEL;
-			edge.y2 = _position.y += record.deltaAnchorY / TWIPS_PER_PIXEL;
+			edge.x2 = _position.x = trim(_position.x + record.deltaAnchorX / TWIPS_PER_PIXEL);
+			edge.y2 = _position.y = trim(_position.y + record.deltaAnchorY / TWIPS_PER_PIXEL);
 			
-			storeEdge(edge);
+			_parts.push(edge);
 		}
 		
-		/**
-		 * 存储边界对象
-		 */		
-		private function storeEdge(edge:ShapeEdge):void
+		private function trim(value:Number):Number
 		{
-			edge.lineStyle = _line;
-			
-			_edges.push(edge);
-			
-			if (_f0)
-			{
-				if (!_map0[_f0]) _map0[_f0] = [];
-				_map0[_f0].push(edge);
-			}
-			
-			if (_f1)
-			{
-				if (!_map1[_f1]) _map1[_f1] = [];
-				_map1[_f1].push(edge);
-			}
+			return Math.round(value * 100000) / 100000;
 		}
 		
-		/**
-		 * 渲染缓冲区数据并清空
-		 */		
-		private function flush():void
+		private function joinStyledPath(edgeMap:Dictionary):void
 		{
-			var length:uint, i:uint;
-			
-			var list:Array;
-			var collect:Vector.<RenderEdge>;
-			for (var style:uint = _maxIndex; style >= 1; style--)
+			for (var styleIndex:* in edgeMap)
 			{
-				collect = new Vector.<RenderEdge>;
-				
-				list = _map1[style];
-				if (list)
+				var parts:Vector.<ShapeEdge> = edgeMap[styleIndex];
+				if (parts && parts.length)
 				{
-					for (i = 0, length = list.length; i < length; i++)
+					var edge:ShapeEdge = parts[0];
+					var path:Vector.<ShapeEdge> = Vector.<ShapeEdge>([edge]);
+					
+					var prevEdge:ShapeEdge, index:int;
+					var map:Dictionary = createEdgeKeyMap(Vector.<ShapeEdge>(parts));
+					while (parts.length > 0)
 					{
-						collect.push((list[i] as ShapeEdge).tearOff(false));
+						index = 0;
+						while (index < parts.length)
+						{
+							if (prevEdge == null || (parts[index].x1 - prevEdge.x2 == 0 && parts[index].y1 - prevEdge.y2 == 0))
+							{
+								edge = parts.splice(index, 1)[0];
+								path.push(edge);
+								
+								removeEdgeFromKeyMap(edge, map);
+								prevEdge = edge;
+							}
+							else
+							{
+								var key:String = prevEdge.x2 + "_" + prevEdge.y2;
+								edge = map[key]? map[key][0] : null;
+								if (edge)
+								{
+									index = parts.indexOf(edge);
+								}
+								else
+								{
+									prevEdge = null;
+									index = 0;
+								}
+							}
+						}
+					}
+					
+					edgeMap[styleIndex] = path;
+				}
+			}
+			
+		}
+		
+		private function createEdgeKeyMap(path:Vector.<ShapeEdge>):Dictionary
+		{
+			var map:Dictionary = new Dictionary(true);
+			for (var i:int = 0; i < path.length; i++)
+			{
+				var key:String = getEdgeKey(path[i]);
+				if (!map[key]) map[key] = new Vector.<ShapeEdge>();
+				map[key].push(path[i]);
+			}
+			
+			return map;
+		}
+		
+		private function removeEdgeFromKeyMap(edge:ShapeEdge, map:Dictionary):void
+		{
+			if (!edge) return;
+			
+			var key:String = getEdgeKey(edge);
+			if (map[key])
+			{
+				var list:Vector.<ShapeEdge> = map[key];
+				if (list.length > 1)
+				{
+					var index:int = list.indexOf(edge);
+					if (index >= 0)
+					{
+						list.splice(index, 1);
 					}
 				}
-				
-				list = _map0[style];
-				if (list)
+				else
 				{
-					for (i = 0, length = list.length; i < length; i++)
-					{
-						collect.push((list[i] as ShapeEdge).tearOff(true));
-					}
-				}				
-				
-				encloseArea(collect, style);
+					delete map[key];
+				}
+			}
+		}
+		
+		private function getEdgeKey(edge:ShapeEdge):String
+		{
+			return edge.x1 + "_" + edge.y1;
+		}
+		
+		private function stripShapePath(edgeMap:Dictionary):Vector.<ShapeEdge>
+		{
+			var indices:Array = [];
+			for (var styleIndex:* in edgeMap)
+			{
+				indices.push(styleIndex);
 			}
 			
-			_map0 = new Dictionary(true);
-			_map1 = new Dictionary(true);
+			indices.sort(Array.NUMERIC);
 			
-			var edge:ShapeEdge;
-			for (i = 0, length = _edges.length; i < length; i++)
+			var path:Vector.<ShapeEdge> = new Vector.<ShapeEdge>();
+			for (var i:int = 0; i < indices.length; i++)
 			{
-				edge = _edges[i];
-				if (!edge.lineStyle) continue;
+				styleIndex = indices[i];
+				path = path.concat(edgeMap[styleIndex]);
+			}
+			
+			return path;
+		}
+		
+		private function commit():void
+		{
+			joinStyledPath(_fillEdgeMap);
+			joinStyledPath(_lineEdgeMap);
+			
+			var path:Vector.<ShapeEdge> = stripShapePath(_fillEdgeMap);
+			
+			_canvas.lineStyle(NaN);
+			
+			var index:uint = uint.MAX_VALUE;
+			var pos:Point = new Point(Number.MAX_VALUE, Number.MAX_VALUE);
+			var edge:ShapeEdge, prev:ShapeEdge;
+			for (var n:int = 0; n < path.length; n++)
+			{
+				edge = path[n];
+				if (index != edge.fillStyle)
+				{
+					if (index != uint.MAX_VALUE)
+					{
+						_canvas.endFill();
+					}
+					
+					index = edge.fillStyle;
+					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
+					
+					changeFillStyle(_fillStyles[index - 1]);
+				}
 				
-				changeLineStyle(_lineStyles[edge.lineStyle - 1]);
-				
-				_canvas.beginFill(0, 0);
-				_canvas.moveTo(edge.x1, edge.y1);
+				if (edge.x1 != pos.x || edge.y1 != pos.y)
+				{
+					_canvas.moveTo(edge.x1, edge.y1);
+				}
 				
 				if (edge.curved)
 				{
@@ -238,117 +379,39 @@ package com.larrio.dump.flash.display.shape.collector
 					_canvas.lineTo(edge.x2, edge.y2);
 				}
 				
-				_canvas.lineStyle(NaN);
+				pos.setTo(edge.x2, edge.y2);
+			}
+			
+			if (index != uint.MAX_VALUE)
+			{
 				_canvas.endFill();
 			}
 			
-			_edges = [];
-			_maxIndex = 0;
+			_canvas.beginFill(0, 0);
+			
+			drawShapeOutline(stripShapePath(_lineEdgeMap));
 		}
 		
-		/**
-		 * 在同一样式的边界里面查找封闭区域并着色
-		 */		
-		private function encloseArea(list:Vector.<RenderEdge>, style:uint):void
+		private function drawShapeOutline(path:Vector.<ShapeEdge>):void
 		{
-			var map:Dictionary = new Dictionary(false);
+			var styleIndex:uint = uint.MAX_VALUE;
+			var pos:Point = new Point(Number.MAX_VALUE, Number.MAX_VALUE);
 			
-			var edge:RenderEdge;
-			var key:String, skey:String;
-			
-			var length:uint, i:uint;
-			for (i = 0, length = list.length; i < length; i++)
+			var edge:ShapeEdge;
+			for (var n:int = 0; n < path.length; n++)
 			{
-				edge = list[i];
-				key = createKey(edge.x1, edge.y1);
-				if (!map[key]) map[key] = [];
-				map[key].push(edge);
-			}
-			
-			var loops:Array = [];
-			var parts:Vector.<RenderEdge>;
-			
-			var visit:Dictionary, item:RenderEdge;
-			for (i = 0, length = list.length; i < length; i++)
-			{
-				edge = list[i];
-				if (edge.loop) continue;
-				
-				edge.loop = true;
-				parts = new Vector.<RenderEdge>;
-				parts.push(edge);
-				
-				visit = new Dictionary(true);
-				for (skey = createKey(edge.x1, edge.y1);;)
+				edge = path[n];
+				if (styleIndex != edge.lineStyle)
 				{
-					key = createKey(edge.x2, edge.y2);
-					if (key == skey)
-					{
-						for each (item in parts) item.loop = true;
-						loops.push(parts);
-						break;
-					}
-					
-					if (!map[key] || !map[key].length) break;
-					
-					item = seekNextEdge(map[key], (i < list.length - 1)? list[i + 1] : null, visit);
-					if (!item) break;
-					
-					edge = item;
-					visit[edge] = true;
-					
-					parts.push(edge);
+					styleIndex = edge.lineStyle;
+					changeLineStyle(_lineStyles[styleIndex - 1]);
 				}
-			}
-			   
-			_canvas.lineStyle(NaN);
-			
-			_fillStyles && changeFillStyle(_fillStyles[style - 1]);
-			for each (parts in loops) renderColor(parts);
-			
-			_canvas.endFill();
-		}
-		
-		/**
-		 * 查找下一个边界
-		 */		
-		private function seekNextEdge(list:Array, edge:RenderEdge, visit:Dictionary):RenderEdge
-		{
-			if (!edge) return null;
-			
-			var item:RenderEdge;
-			
-			var length:uint, i:uint;
-			for (i = 0, length = list.length; i < length; i++)
-			{
-				item = list[i];
-				if (item == edge && !item.loop)
+				
+				if (edge.x1 != pos.x || edge.y1 != pos.y)
 				{
-					list.splice(i, 1);
-					return item;
+					_canvas.moveTo(edge.x1, edge.y1);
 				}
-			}
-			
-			for (i = 0, length = list.length; i < length; i++)
-			{
-				item = list[i];
-				if (!item.loop && !visit[item]) return item;
-			}
-			
-			return null;
-		}
-		
-		/**
-		 * 绘制封闭区域并着色
-		 */		
-		private function renderColor(list:Vector.<RenderEdge>):void
-		{
-			var edge:RenderEdge;
-			
-			_canvas.moveTo(list[0].x1, list[0].y1);
-			for (var i:int = 0, length:uint = list.length; i < length; i++)
-			{
-				edge = list[i];
+				
 				if (edge.curved)
 				{
 					_canvas.curveTo(edge.ctrX, edge.ctrY, edge.x2, edge.y2);
@@ -357,10 +420,13 @@ package com.larrio.dump.flash.display.shape.collector
 				{
 					_canvas.lineTo(edge.x2, edge.y2);
 				}
+				
+				pos.setTo(edge.x2, edge.y2);
 			}
 		}		
 	}
 }
+import com.larrio.dump.utils.cloneObject;
 
 class ShapeEdge
 {
@@ -374,6 +440,7 @@ class ShapeEdge
 	public var ctrY:Number;
 	
 	public var lineStyle:uint;
+	public var fillStyle:uint;
 	
 	public var curved:Boolean;
 	
@@ -382,40 +449,23 @@ class ShapeEdge
 		this.curved = curved;
 	}
 	
-	public function tearOff(reverse:Boolean):RenderEdge
+	public function clone():ShapeEdge
 	{
-		var edge:RenderEdge = new RenderEdge(this.curved);
-		if(reverse)
-		{
-			edge.x1 = this.x2;
-			edge.y1 = this.y2;
-			
-			edge.x2 = this.x1;
-			edge.y2 = this.y1;
-		}
-		else
-		{
-			edge.x1 = this.x1;
-			edge.y1 = this.y1;
-			
-			edge.x2 = this.x2;
-			edge.y2 = this.y2;
-		}
+		return cloneObject(this) as ShapeEdge;
+	}
+	
+	public function reverse():ShapeEdge
+	{
+		var edge:ShapeEdge = new ShapeEdge(this.curved);
+		edge.x1 = this.x2;
+		edge.y1 = this.y2;
+		
+		edge.x2 = this.x1;
+		edge.y2 = this.y1;
 		
 		edge.ctrX = this.ctrX;
 		edge.ctrY = this.ctrY;
 		
 		return edge;
 	}
-}
-
-class RenderEdge extends ShapeEdge
-{
-	public var loop:Boolean;
-	
-	public function RenderEdge(curved:Boolean)
-	{
-		super(curved);
-	}
-	
 }

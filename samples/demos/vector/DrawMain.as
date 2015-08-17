@@ -12,8 +12,14 @@ package demos.vector
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	import flash.utils.Timer;
 	
-	[SWF(width="1024", height="768", frameRate="60")]
+	[SWF(width="1024", height="768", frameRate="60", backgroundColor="#CCCCCC")]
 	
 	/**
 	 * 
@@ -22,13 +28,24 @@ package demos.vector
 	 */
 	public class DrawMain extends Sprite
 	{
-		[Embed(source="../../../libs/joker.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/diy/24/shape-01.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcards/Card_2004/shape-06.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcards/Card_2008/shape-05.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/f0f1.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
 		private var _steps:Array;
 		private var _index:uint;
 		
 		private var _brush:Graphics;
+		private var _container:Shape;
+		
+		private var _indicator:TextField;
 		
 		/**
 		 * 构造函数
@@ -36,6 +53,12 @@ package demos.vector
 		 */
 		public function DrawMain()
 		{
+			_indicator = new TextField();
+			_indicator.defaultTextFormat = new TextFormat("Menlo", 20, 0xFF0000, true);
+			_indicator.autoSize = TextFieldAutoSize.LEFT;
+			_indicator.mouseEnabled = false;
+			addChild(_indicator);
+			
 			var swf:SWFile = new SWFile(new FileByteArray());
 			
 			var shapeTag:DefineShapeTag;
@@ -56,29 +79,47 @@ package demos.vector
 				if (shapeTag) break;
 			}
 			
+			_container = new Shape();
+			addChild(_container);
 			
-			var shape:Shape = new Shape();
-			shape.scaleX = shape.scaleY = 3;
-			addChild(shape);
-			
-			_brush = shape.graphics;
+			_brush = _container.graphics;
 			
 			var collector:IShapeCollector;
 			collector = new VectorCollector(shapeTag.shape);
+			trace(shapeTag.bounds);
 //			collector = new ShapeInfoCollector(shapeTag.shape);
 			
 			var canvas:SimpleCanvas;
 			collector.drawVectorOn(canvas = new SimpleCanvas());
 			
+			var bounds:Rectangle = canvas.bounds;
+			trace(bounds);
+			
+			const MARGIN:Number = 30;
+			_container.scaleX = _container.scaleY = Math.min((stage.stageWidth - MARGIN) / bounds.width, (stage.stageHeight - MARGIN) / bounds.height);
+			_container.x = (stage.stage.stageWidth - bounds.width * _container.scaleX) / 2 - bounds.x * _container.scaleX;
+			_container.y = (stage.stage.stageHeight - bounds.height * _container.scaleY) / 2 - bounds.y * _container.scaleY;
+			
 			_steps = canvas.steps;
 			addEventListener(Event.ENTER_FRAME, frameHandler);
 			
+//			var timer:Timer = new Timer(100);
+//			timer.addEventListener(TimerEvent.TIMER, timerHandler);
+//			timer.start();
+		}
+		
+		private function timerHandler(e:TimerEvent):void
+		{
+			var bounds:Rectangle = _container.getBounds(this);
+			_container.x = (stage.stageWidth - bounds.width) / 2;
+			_container.y = (stage.stageHeight - bounds.height) / 2;
 		}
 		
 		protected function frameHandler(event:Event = null):void
 		{
 			if (_index >= _steps.length)
 			{
+				_indicator.text = "COMPLETE";
 				removeEventListener(Event.ENTER_FRAME, arguments.callee);
 				return;
 			}

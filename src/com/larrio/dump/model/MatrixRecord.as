@@ -122,7 +122,6 @@ package com.larrio.dump.model
 			
 			var b:Number = this.skew1;
 			var c:Number = this.skew0;
-			
 			return new Matrix(a, b, c, d, this.translateX, this.translateY);
 		}
 		

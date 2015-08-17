@@ -9,7 +9,7 @@ package com.larrio.dump.model.shape
 	 * @author larryhou
 	 * @createTime Dec 28, 2012 3:11:30 PM
 	 */
-	public class StraightEdgeRecord extends ShapeRecord
+	public class StraightEdgeShapeRecord extends ShapeRecord
 	{
 		private var _numbits:uint;
 		private var _lineFlag:uint;
@@ -22,7 +22,7 @@ package com.larrio.dump.model.shape
 		 * 构造函数
 		 * create a [StraightEdgeRecord] object
 		 */
-		public function StraightEdgeRecord(shape:uint)
+		public function StraightEdgeShapeRecord(shape:uint)
 		{
 			super(shape);
 		}

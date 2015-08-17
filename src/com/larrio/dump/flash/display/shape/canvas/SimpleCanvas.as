@@ -5,6 +5,8 @@ package com.larrio.dump.flash.display.shape.canvas
 	import flash.display.LineScaleMode;
 	import flash.display.SpreadMethod;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * 用来收集API数据
@@ -14,6 +16,7 @@ package com.larrio.dump.flash.display.shape.canvas
 	public class SimpleCanvas implements ICanvas
 	{
 		private var _steps:Array;
+		private var _bounds:Rectangle;
 		
 		/**
 		 * 构造函数
@@ -22,6 +25,7 @@ package com.larrio.dump.flash.display.shape.canvas
 		public function SimpleCanvas()
 		{
 			_steps = [];
+			_bounds = new Rectangle()
 		}
 		
 		public function lineStyle(thickness:Number = NaN, color:uint = 0, alpha:Number = 1.0, pixelHinting:Boolean = false, scaleMode:String = LineScaleMode.NORMAL, caps:String = null, joints:String = null, miterLimit:Number = 3):void
@@ -32,16 +36,28 @@ package com.larrio.dump.flash.display.shape.canvas
 		public function moveTo(x:Number, y:Number):void
 		{
 			_steps.push({method: "moveTo", params: arguments});
+			caculateShapeBounds(x, y);
 		}
 		
 		public function lineTo(x:Number, y:Number):void
 		{
 			_steps.push({method: "lineTo", params: arguments});
+			caculateShapeBounds(x, y);
+		}
+		
+		private function caculateShapeBounds(x:Number, y:Number):void
+		{
+			_bounds.left   = Math.min(x, _bounds.left);
+			_bounds.right  = Math.max(x, _bounds.right);
+			_bounds.top    = Math.min(y, _bounds.top);
+			_bounds.bottom = Math.max(y, _bounds.bottom);
 		}
 		
 		public function curveTo(controlX:Number, controlY:Number, anchorX:Number, anchorY:Number):void
 		{
 			_steps.push({method: "curveTo", params: arguments});
+			caculateShapeBounds(controlX, controlY);
+			caculateShapeBounds(anchorX, anchorY);
 		}
 		
 		public function beginFill(color:uint, alpha:Number = 1.0):void
@@ -57,6 +73,7 @@ package com.larrio.dump.flash.display.shape.canvas
 		public function beginGradientFill(type:String, colors:Array, alphas:Array, ratios:Array, matrix:Matrix = null, spreadMethod:String = SpreadMethod.PAD, interpolationMethod:String = InterpolationMethod.RGB, focalPointRatio:Number = 0):void
 		{
 			_steps.push({method: "beginGradientFill", params: arguments});
+//			trace(JSON.stringify(arguments));
 		}
 		
 		public function endFill():void
@@ -71,5 +88,9 @@ package com.larrio.dump.flash.display.shape.canvas
 		 */		
 		public function get steps():Array { return _steps; }
 
+		/**
+		 * 矢量图绘画空间
+		 */		
+		public function get bounds():Rectangle { return _bounds; }
 	}
 }

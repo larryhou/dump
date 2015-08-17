@@ -66,6 +66,7 @@ package com.larrio.dump.model
 				bytes.position = 0;
 				uncompressSWF(bytes, compressMethod, _length);
 				
+				decoder.length = position + 1;
 				decoder.position = position;
 				decoder.writeBytes(bytes);
 				decoder.position = position;

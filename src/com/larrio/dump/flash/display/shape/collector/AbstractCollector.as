@@ -2,7 +2,7 @@ package com.larrio.dump.flash.display.shape.collector
 {
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
 	import com.larrio.dump.model.colors.RGBAColor;
-	import com.larrio.dump.model.shape.CurvedEdgeRecord;
+	import com.larrio.dump.model.shape.CurvedEdgeShapeRecord;
 	import com.larrio.dump.model.shape.FillStyle;
 	import com.larrio.dump.model.shape.FocalGradient;
 	import com.larrio.dump.model.shape.GradRecord;
@@ -10,8 +10,8 @@ package com.larrio.dump.flash.display.shape.collector
 	import com.larrio.dump.model.shape.LineStyle2;
 	import com.larrio.dump.model.shape.Shape;
 	import com.larrio.dump.model.shape.ShapeRecord;
-	import com.larrio.dump.model.shape.StraightEdgeRecord;
-	import com.larrio.dump.model.shape.StyleChangeRecord;
+	import com.larrio.dump.model.shape.StraightEdgeShapeRecord;
+	import com.larrio.dump.model.shape.StyleChangeShapeRecord;
 	import com.larrio.math.fixed;
 	
 	import flash.display.CapsStyle;
@@ -59,36 +59,36 @@ package com.larrio.dump.flash.display.shape.collector
 			
 			for (var i:int = 0, length:uint = records.length; i < length; i++)
 			{
-				if (records[i] is CurvedEdgeRecord)
+				if (records[i] is CurvedEdgeShapeRecord)
 				{
-					drawCurvedEdge(records[i] as CurvedEdgeRecord);					
+					drawCurvedEdge(records[i] as CurvedEdgeShapeRecord);					
 				}
 				else
-				if (records[i] is StraightEdgeRecord)
+				if (records[i] is StraightEdgeShapeRecord)
 				{
-					drawStraightEdge(records[i] as StraightEdgeRecord);
+					drawStraightEdge(records[i] as StraightEdgeShapeRecord);
 				}
 				else
-				if (records[i] is StyleChangeRecord)
+				if (records[i] is StyleChangeShapeRecord)
 				{
-					changeStyle(records[i] as StyleChangeRecord);
+					changeShapeStyle(records[i] as StyleChangeShapeRecord);
 				}
 			}			
 		}
 		
-		protected function changeStyle(record:StyleChangeRecord):void
+		protected function changeShapeStyle(record:StyleChangeShapeRecord):void
 		{
 			// TODO Auto Generated method stub
 			
 		}
 		
-		protected function drawStraightEdge(recorder:StraightEdgeRecord):void
+		protected function drawStraightEdge(recorder:StraightEdgeShapeRecord):void
 		{
 			// TODO Auto Generated method stub
 			
 		}
 		
-		protected function drawCurvedEdge(record:CurvedEdgeRecord):void
+		protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			// TODO Auto Generated method stub
 			
@@ -226,7 +226,7 @@ package com.larrio.dump.flash.display.shape.collector
 							alphas.push(1);
 						}
 						
-						ratios.push(record.ratio / 0xFF);
+						ratios.push(record.ratio);
 					}
 					
 					var spread:String;
