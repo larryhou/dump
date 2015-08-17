@@ -228,7 +228,7 @@ package com.larrio.dump.flash.display.shape.collector
 			return Math.round(value * 100000) / 100000;
 		}
 		
-		private function joinStyledPath(edgeMap:Dictionary):void
+		private function joinEdgesToPath(edgeMap:Dictionary):void
 		{
 			for (var styleIndex:* in edgeMap)
 			{
@@ -339,8 +339,8 @@ package com.larrio.dump.flash.display.shape.collector
 		
 		private function commit():void
 		{
-			joinStyledPath(_fillEdgeMap);
-			joinStyledPath(_lineEdgeMap);
+			joinEdgesToPath(_fillEdgeMap);
+			joinEdgesToPath(_lineEdgeMap);
 			
 			var path:Vector.<ShapeEdge> = stripShapePath(_fillEdgeMap);
 			
