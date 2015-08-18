@@ -360,7 +360,6 @@ package com.larrio.dump.flash.display.shape.collector
 			
 			joinEdgesToPath(_fillEdgeMap);
 			joinEdgesToPath(_lineEdgeMap);
-			trace("// Fills");
 			var path:Vector.<ShapeEdge> = stripShapePath(_fillEdgeMap);
 			
 			_canvas.lineStyle(NaN);
@@ -382,7 +381,6 @@ package com.larrio.dump.flash.display.shape.collector
 					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
 					
 					changeFillStyle(_fillStyles[index - 1]);
-					trace("// ChangeFillStyle ->" + index);
 				}
 				
 				if (edge.x1 != pos.x || edge.y1 != pos.y)
@@ -412,7 +410,6 @@ package com.larrio.dump.flash.display.shape.collector
 		
 		private function drawShapeOutline(path:Vector.<ShapeEdge>):void
 		{
-			trace("// Lines");
 			var styleIndex:uint = uint.MAX_VALUE;
 			var pos:Point = new Point(Number.MAX_VALUE, Number.MAX_VALUE);
 			
@@ -425,7 +422,6 @@ package com.larrio.dump.flash.display.shape.collector
 					styleIndex = edge.lineStyle;
 					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
 					changeLineStyle(_lineStyles[styleIndex - 1]);
-					trace("// ChangeLineStyle ->" + styleIndex);
 				}
 				
 				if (edge.x1 != pos.x || edge.y1 != pos.y)
