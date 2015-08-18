@@ -2,7 +2,6 @@ package com.larrio.dump.flash.display.shape.collector
 {
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
 	import com.larrio.dump.model.shape.CurvedEdgeShapeRecord;
-	import com.larrio.dump.model.shape.EndShapeRecord;
 	import com.larrio.dump.model.shape.FillStyle;
 	import com.larrio.dump.model.shape.LineStyle;
 	import com.larrio.dump.model.shape.Shape;
@@ -443,7 +442,6 @@ package com.larrio.dump.flash.display.shape.collector
 		}		
 	}
 }
-import com.larrio.dump.utils.cloneObject;
 
 class ShapeEdge
 {
@@ -464,11 +462,6 @@ class ShapeEdge
 	public function ShapeEdge(curved:Boolean)
 	{
 		this.curved = curved;
-	}
-	
-	public function clone():ShapeEdge
-	{
-		return cloneObject(this) as ShapeEdge;
 	}
 	
 	public function reverse():ShapeEdge
