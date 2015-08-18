@@ -111,6 +111,7 @@ package com.larrio.dump.model.shape
 		 * delta Y
 		 */		
 		public function get deltaY():int { return _deltaY; }
-
+		
+		override public function get type():uint { return ShapeRecordType.STRAIGHT_EDGE_SHAPE_RECORD; }
 	}
 }

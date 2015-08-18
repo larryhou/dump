@@ -7,6 +7,7 @@ package com.larrio.dump.flash.display.shape.collector
 	import com.larrio.dump.model.shape.LineStyle;
 	import com.larrio.dump.model.shape.Shape;
 	import com.larrio.dump.model.shape.ShapeRecord;
+	import com.larrio.dump.model.shape.ShapeRecordType;
 	import com.larrio.dump.model.shape.ShapeWithStyle;
 	import com.larrio.dump.model.shape.StraightEdgeShapeRecord;
 	import com.larrio.dump.model.shape.StyleChangeShapeRecord;
@@ -73,25 +74,32 @@ package com.larrio.dump.flash.display.shape.collector
 			var records:Vector.<ShapeRecord> = _shape.records;
 			for (var i:int = 0, length:uint = records.length; i < length; i++)
 			{
-				if (records[i] is StraightEdgeShapeRecord)
+				switch (records[i].type)
 				{
-					drawStraightEdge(records[i] as StraightEdgeShapeRecord);
-				}
-				else
-				if (records[i] is CurvedEdgeShapeRecord)
-				{
-					drawCurvedEdge(records[i] as CurvedEdgeShapeRecord);
-				}
-				else
-				if (records[i] is StyleChangeShapeRecord)
-				{
-					changeShapeStyle(records[i] as StyleChangeShapeRecord);
-				}
-				else
-				if (records[i] is EndShapeRecord)
-				{
-					processShapeParts(_parts, _lineStyle, _fillStyle0, _fillStyle1);
-					commit();
+					case ShapeRecordType.STLYE_CHANGE_SHAPE_RECORD:
+					{
+						changeShapeStyle(records[i] as StyleChangeShapeRecord);
+						break;
+					}
+						
+					case ShapeRecordType.STRAIGHT_EDGE_SHAPE_RECORD:
+					{
+						drawStraightEdge(records[i] as StraightEdgeShapeRecord);
+						break;
+					}
+						
+					case ShapeRecordType.CURVED_EDGE_SHAPE_RECORD:
+					{
+						drawCurvedEdge(records[i] as CurvedEdgeShapeRecord);
+						break;
+					}
+						
+					case ShapeRecordType.END_SHAPE_RECORD:
+					{
+						processShapeParts(_parts, _lineStyle, _fillStyle0, _fillStyle1);
+						commit();
+						break;
+					}
 				}
 			}	
 		}
@@ -110,7 +118,7 @@ package com.larrio.dump.flash.display.shape.collector
 			if (record.stateLineStyle || record.stateFillStyle0 || record.stateFillStyle1)
 			{
 				processShapeParts(_parts, _lineStyle, _fillStyle0, _fillStyle1);
-				_parts.length = 0;
+				_parts = new Vector.<ShapeEdge>();
 			}
 			
 			if (record.stateNewStyles)
@@ -131,7 +139,7 @@ package com.larrio.dump.flash.display.shape.collector
 				_lineEdgeMap = new Dictionary(true);
 				_fillEdgeMap = new Dictionary(true);
 				_fillStyle0 = 0;
-				_fillStyle1 = 0;				
+				_fillStyle1 = 0;
 			}
 			else
 			{
@@ -155,16 +163,6 @@ package com.larrio.dump.flash.display.shape.collector
 		private function processShapeParts(parts:Vector.<ShapeEdge>, lineStyle:int, fillStyle0:int, fillStyle1:int):void
 		{
 			var i:int;
-			if (lineStyle != 0)
-			{
-				if (!_lineEdgeMap[lineStyle]) _lineEdgeMap[lineStyle] = new Vector.<ShapeEdge>();
-				for (i = 0; i < parts.length; i++)
-				{
-					parts[i].lineStyle = lineStyle;
-					_lineEdgeMap[lineStyle].push(parts[i]);
-				}
-			}
-			
 			var edge:ShapeEdge;
 			if (fillStyle0 != 0)
 			{
@@ -185,7 +183,18 @@ package com.larrio.dump.flash.display.shape.collector
 				{
 					edge = parts[i];
 					edge.fillStyle = fillStyle1;
+					
 					_fillEdgeMap[fillStyle1].push(edge);
+				}
+			}
+			
+			if (lineStyle != 0)
+			{
+				if (!_lineEdgeMap[lineStyle]) _lineEdgeMap[lineStyle] = new Vector.<ShapeEdge>();
+				for (i = 0; i < parts.length; i++)
+				{
+					parts[i].lineStyle = lineStyle;
+					_lineEdgeMap[lineStyle].push(parts[i]);
 				}
 			}
 		}
@@ -225,7 +234,7 @@ package com.larrio.dump.flash.display.shape.collector
 		
 		private function trim(value:Number):Number
 		{
-			return Math.round(value * 100000) / 100000;
+			return Math.round(value * 10000) / 10000;
 		}
 		
 		private function joinEdgesToPath(edgeMap:Dictionary):void
@@ -341,7 +350,7 @@ package com.larrio.dump.flash.display.shape.collector
 		{
 			joinEdgesToPath(_fillEdgeMap);
 			joinEdgesToPath(_lineEdgeMap);
-			
+			trace("// Fills");
 			var path:Vector.<ShapeEdge> = stripShapePath(_fillEdgeMap);
 			
 			_canvas.lineStyle(NaN);
@@ -392,6 +401,7 @@ package com.larrio.dump.flash.display.shape.collector
 		
 		private function drawShapeOutline(path:Vector.<ShapeEdge>):void
 		{
+			trace("// Lines");
 			var styleIndex:uint = uint.MAX_VALUE;
 			var pos:Point = new Point(Number.MAX_VALUE, Number.MAX_VALUE);
 			
@@ -401,7 +411,6 @@ package com.larrio.dump.flash.display.shape.collector
 				edge = path[n];
 				if (styleIndex != edge.lineStyle)
 				{
-					_canvas.lineStyle(NaN);
 					styleIndex = edge.lineStyle;
 					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
 					changeLineStyle(_lineStyles[styleIndex - 1]);

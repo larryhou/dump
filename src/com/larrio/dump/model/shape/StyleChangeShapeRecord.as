@@ -43,11 +43,11 @@ package com.larrio.dump.model.shape
 			_numfbits = _inumfbits = numfbits;
 			_numlbits = _inumlbits = numlbits;
 			
-			_stateMoveTo = flag & 1;
-			_stateFillStyle0 = (flag >>= 1) & 1;
-			_stateFillStyle1 = (flag >>= 1) & 1;
-			_stateLineStyle = (flag >>= 1) & 1;
-			_stateNewStyles = (flag >> 1) & 1;
+			_stateNewStyles  = (flag >>> 4) & 1;
+			_stateLineStyle  = (flag >>> 3) & 1;
+			_stateFillStyle1 = (flag >>> 2) & 1;
+			_stateFillStyle0 = (flag >>> 1) & 1;
+			_stateMoveTo     = (flag >>> 0) & 1;
 			
 			super(shape);
 		}
@@ -255,6 +255,8 @@ package com.larrio.dump.model.shape
 		 * 是否需要移动
 		 */		
 		public function get stateMoveTo():uint { return _stateMoveTo; }
+		
+		override public function get type():uint { return ShapeRecordType.STLYE_CHANGE_SHAPE_RECORD; }
 
 	}
 }

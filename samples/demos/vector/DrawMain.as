@@ -127,6 +127,7 @@ package demos.vector
 			
 			var step:Object = _steps[_index++];
 			(_brush[step.method] as Function).apply(null, step.params);
+			trace(JSON.stringify(step));
 			switch(step.method)
 			{
 				case "moveTo": //case "lineTo": case "curveTo":

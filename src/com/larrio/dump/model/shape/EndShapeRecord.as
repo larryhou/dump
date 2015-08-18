@@ -15,5 +15,7 @@ package com.larrio.dump.model.shape
 		{
 			super(0);
 		}
+		
+		override public function get type():uint { return ShapeRecordType.END_SHAPE_RECORD; }
 	}
 }

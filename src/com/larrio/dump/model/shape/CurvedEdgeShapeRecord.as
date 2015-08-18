@@ -96,6 +96,8 @@ package com.larrio.dump.model.shape
 		 * Y anchor point change.
 		 */		
 		public function get deltaAnchorY():int { return _deltaAnchorY; }
+		
+		override public function get type():uint { return ShapeRecordType.CURVED_EDGE_SHAPE_RECORD; }
 
 	}
 }
