@@ -17,7 +17,6 @@ package demos.vector
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-	import flash.utils.Timer;
 	
 	[SWF(width="1024", height="768", frameRate="60", backgroundColor="#CCCCCC")]
 	
@@ -29,10 +28,10 @@ package demos.vector
 	public class DrawMain extends Sprite
 	{
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
-//		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/24/shape-01.swf", mimeType="application/octet-stream")]
-		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2004/shape-06.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2008/shape-05.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
@@ -101,19 +100,7 @@ package demos.vector
 			_container.y = (stage.stage.stageHeight - bounds.height * _container.scaleY) / 2 - bounds.y * _container.scaleY;
 			
 			_steps = canvas.steps;
-//			trace(JSON.stringify(canvas.steps));
 			addEventListener(Event.ENTER_FRAME, frameHandler);
-			
-//			var timer:Timer = new Timer(100);
-//			timer.addEventListener(TimerEvent.TIMER, timerHandler);
-//			timer.start();
-		}
-		
-		private function timerHandler(e:TimerEvent):void
-		{
-			var bounds:Rectangle = _container.getBounds(this);
-			_container.x = (stage.stageWidth - bounds.width) / 2;
-			_container.y = (stage.stageHeight - bounds.height) / 2;
 		}
 		
 		protected function frameHandler(event:Event = null):void
@@ -127,7 +114,6 @@ package demos.vector
 			
 			var step:Object = _steps[_index++];
 			(_brush[step.method] as Function).apply(null, step.params);
-			trace(JSON.stringify(step));
 			switch(step.method)
 			{
 				case "moveTo": //case "lineTo": case "curveTo":

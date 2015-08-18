@@ -171,7 +171,7 @@ package com.larrio.dump.flash.display.shape.collector
 		{
 			var i:int;
 			var edge:ShapeEdge;
-			if (fillStyle0 != 0 && fillStyle0 > _fillStyleOffset)
+			if (fillStyle0 != 0)
 			{
 				if (!_fillEdgeMap[fillStyle0]) _fillEdgeMap[fillStyle0] = new Vector.<ShapeEdge>();
 				for (i = parts.length - 1; i >= 0; i--)
@@ -251,8 +251,8 @@ package com.larrio.dump.flash.display.shape.collector
 				var parts:Vector.<ShapeEdge> = edgeMap[styleIndex];
 				if (parts && parts.length)
 				{
-					var edge:ShapeEdge = parts[0];
-					var path:Vector.<ShapeEdge> = Vector.<ShapeEdge>([edge]);
+					var edge:ShapeEdge;
+					var path:Vector.<ShapeEdge> = Vector.<ShapeEdge>([]);
 					
 					var prevEdge:ShapeEdge, index:int;
 					var map:Dictionary = createEdgeKeyMap(Vector.<ShapeEdge>(parts));
