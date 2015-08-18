@@ -111,8 +111,8 @@ package com.larrio.dump.flash.display.shape.collector
 		{
 			if (record.stateMoveTo)
 			{
-				_position.x = trim(record.moveToX / TWIPS_PER_PIXEL);
-				_position.y = trim(record.moveToY / TWIPS_PER_PIXEL);
+				_position.x = record.moveToX / TWIPS_PER_PIXEL;
+				_position.y = record.moveToY / TWIPS_PER_PIXEL;
 			}
 			
 			if (record.stateLineStyle || record.stateFillStyle0 || record.stateFillStyle1)
@@ -205,11 +205,11 @@ package com.larrio.dump.flash.display.shape.collector
 		override protected function drawStraightEdge(record:StraightEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(false);
-			edge.x1 = _position.x;
-			edge.y1 = _position.y;
+			edge.x1 = trim(_position.x);
+			edge.y1 = trim(_position.y);
 			
-			edge.x2 = _position.x = trim(_position.x + record.deltaX / TWIPS_PER_PIXEL);
-			edge.y2 = _position.y = trim(_position.y + record.deltaY / TWIPS_PER_PIXEL);
+			edge.x2 = trim(_position.x += record.deltaX / TWIPS_PER_PIXEL);
+			edge.y2 = trim(_position.y += record.deltaY / TWIPS_PER_PIXEL);
 			
 			_parts.push(edge);
 		}
@@ -220,14 +220,14 @@ package com.larrio.dump.flash.display.shape.collector
 		override protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(true);
-			edge.x1 = _position.x;
-			edge.y1 = _position.y;
+			edge.x1 = trim(_position.x);
+			edge.y1 = trim(_position.y);
 			
-			edge.ctrX = _position.x = trim(_position.x + record.deltaControlX / TWIPS_PER_PIXEL);
-			edge.ctrY = _position.y = trim(_position.y + record.deltaControlY / TWIPS_PER_PIXEL);
+			edge.ctrX = trim(_position.x += record.deltaControlX / TWIPS_PER_PIXEL);
+			edge.ctrY = trim(_position.y += record.deltaControlY / TWIPS_PER_PIXEL);
 			
-			edge.x2 = _position.x = trim(_position.x + record.deltaAnchorX / TWIPS_PER_PIXEL);
-			edge.y2 = _position.y = trim(_position.y + record.deltaAnchorY / TWIPS_PER_PIXEL);
+			edge.x2 = trim(_position.x += record.deltaAnchorX / TWIPS_PER_PIXEL);
+			edge.y2 = trim(_position.y += record.deltaAnchorY / TWIPS_PER_PIXEL);
 			
 			_parts.push(edge);
 		}
