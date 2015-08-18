@@ -60,6 +60,11 @@ package com.larrio.dump.flash.display.shape.canvas
 			_graphics.beginGradientFill.apply(null, arguments);
 		}
 		
+		public function lineGradientStyle(type:String, colors:Array, alphas:Array, ratios:Array, matrix:Matrix = null, spreadMethod:String = SpreadMethod.PAD, interpolationMethod:String = InterpolationMethod.RGB, focalPointRatio:Number = 0):void
+		{
+			_graphics.lineGradientStyle.apply(null, arguments);
+		}
+		
 		public function endFill():void
 		{
 			_graphics.endFill();

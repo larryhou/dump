@@ -77,7 +77,6 @@ package com.larrio.dump.model.shape
 					{
 						// end
 						record = new EndShapeRecord()
-						break;
 					}
 				}
 				
@@ -89,6 +88,7 @@ package com.larrio.dump.model.shape
 				}
 				
 				_records.push(record);
+				if (record is EndShapeRecord) break;
 			}	
 			
 			if (_size)

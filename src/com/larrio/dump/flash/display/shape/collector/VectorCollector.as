@@ -387,8 +387,6 @@ package com.larrio.dump.flash.display.shape.collector
 				_canvas.endFill();
 			}
 			
-			_canvas.beginFill(0, 0);
-			
 			drawShapeOutline(stripShapePath(_lineEdgeMap));
 		}
 		
@@ -403,7 +401,9 @@ package com.larrio.dump.flash.display.shape.collector
 				edge = path[n];
 				if (styleIndex != edge.lineStyle)
 				{
+					_canvas.lineStyle(NaN);
 					styleIndex = edge.lineStyle;
+					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
 					changeLineStyle(_lineStyles[styleIndex - 1]);
 				}
 				
