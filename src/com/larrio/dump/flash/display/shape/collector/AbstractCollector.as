@@ -6,7 +6,6 @@ package com.larrio.dump.flash.display.shape.collector
 	import com.larrio.dump.model.shape.FillStyle;
 	import com.larrio.dump.model.shape.FocalGradient;
 	import com.larrio.dump.model.shape.GradRecord;
-	import com.larrio.dump.model.shape.Gradient;
 	import com.larrio.dump.model.shape.LineStyle;
 	import com.larrio.dump.model.shape.LineStyle2;
 	import com.larrio.dump.model.shape.Shape;

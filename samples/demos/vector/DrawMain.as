@@ -12,7 +12,6 @@ package demos.vector
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -28,8 +27,8 @@ package demos.vector
 	public class DrawMain extends Sprite
 	{
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
-		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
-//		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/24/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2004/shape-06.swf", mimeType="application/octet-stream")]
