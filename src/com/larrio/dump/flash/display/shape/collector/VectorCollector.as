@@ -29,7 +29,6 @@ package com.larrio.dump.flash.display.shape.collector
 		private var _fillStyle1:uint;
 		private var _fillStyleOffset:int;
 		private var _lineStyleOffset:int;
-		private var _maxFillStyleIndex:uint;
 		
 		private var _lineStyle:uint;
 		
@@ -37,6 +36,7 @@ package com.larrio.dump.flash.display.shape.collector
 		private var _fillStyles:Vector.<FillStyle>;
 		
 		private var _parts:Vector.<ShapeEdge>;
+		private var _commitCount:uint;
 		
 		/**
 		 * 构造函数
@@ -70,6 +70,11 @@ package com.larrio.dump.flash.display.shape.collector
 		{
 			_canvas = canvas;
 			_position = new Point(0, 0);
+			
+			var styleChangeRecords:Vector.<ShapeRecord> = _shape.records.filter(function(record:ShapeRecord, ...args):Boolean
+			{
+				return record.type == ShapeRecordType.STLYE_CHANGE_SHAPE_RECORD;
+			});
 			
 			var records:Vector.<ShapeRecord> = _shape.records;
 			for (var i:int = 0, length:uint = records.length; i < length; i++)
@@ -145,17 +150,20 @@ package com.larrio.dump.flash.display.shape.collector
 			{
 				if (record.stateLineStyle)
 				{
-					_lineStyle = _lineStyleOffset + record.lineStyle;
+					_lineStyle = record.lineStyle;
+					if (record.lineStyle > 0) _lineStyle += _lineStyleOffset;
 				}
 				
 				if (record.stateFillStyle0)
 				{
-					_fillStyle0 = _fillStyleOffset + record.fillStyle0;
+					_fillStyle0 = record.fillStyle0;
+					if (_fillStyle0 > 0) _fillStyle0 += _fillStyleOffset;
 				}
 				
 				if (record.stateFillStyle1)
 				{
-					_fillStyle1 = _fillStyleOffset + record.fillStyle1;
+					_fillStyle1 = record.fillStyle1;
+					if (_fillStyle1 > 0) _fillStyle1 += _fillStyleOffset;
 				}
 			}			
 		}
@@ -164,7 +172,7 @@ package com.larrio.dump.flash.display.shape.collector
 		{
 			var i:int;
 			var edge:ShapeEdge;
-			if (fillStyle0 != 0)
+			if (fillStyle0 != 0 && fillStyle0 > _fillStyleOffset)
 			{
 				if (!_fillEdgeMap[fillStyle0]) _fillEdgeMap[fillStyle0] = new Vector.<ShapeEdge>();
 				for (i = parts.length - 1; i >= 0; i--)
@@ -348,6 +356,8 @@ package com.larrio.dump.flash.display.shape.collector
 		
 		private function commit():void
 		{
+			_commitCount++;
+			
 			joinEdgesToPath(_fillEdgeMap);
 			joinEdgesToPath(_lineEdgeMap);
 			trace("// Fills");
@@ -372,6 +382,7 @@ package com.larrio.dump.flash.display.shape.collector
 					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
 					
 					changeFillStyle(_fillStyles[index - 1]);
+					trace("// ChangeFillStyle ->" + index);
 				}
 				
 				if (edge.x1 != pos.x || edge.y1 != pos.y)
@@ -414,6 +425,7 @@ package com.larrio.dump.flash.display.shape.collector
 					styleIndex = edge.lineStyle;
 					pos.setTo(Number.MAX_VALUE, Number.MAX_VALUE);
 					changeLineStyle(_lineStyles[styleIndex - 1]);
+					trace("// ChangeLineStyle ->" + styleIndex);
 				}
 				
 				if (edge.x1 != pos.x || edge.y1 != pos.y)
