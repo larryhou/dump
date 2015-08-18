@@ -70,11 +70,6 @@ package com.larrio.dump.flash.display.shape.collector
 			_canvas = canvas;
 			_position = new Point(0, 0);
 			
-			var styleChangeRecords:Vector.<ShapeRecord> = _shape.records.filter(function(record:ShapeRecord, ...args):Boolean
-			{
-				return record.type == ShapeRecordType.STLYE_CHANGE_SHAPE_RECORD;
-			});
-			
 			var records:Vector.<ShapeRecord> = _shape.records;
 			for (var i:int = 0, length:uint = records.length; i < length; i++)
 			{
@@ -359,6 +354,8 @@ package com.larrio.dump.flash.display.shape.collector
 			
 			joinEdgesToPath(_fillEdgeMap);
 			joinEdgesToPath(_lineEdgeMap);
+			
+			trace("// Fills " + _commitCount);
 			var path:Vector.<ShapeEdge> = stripShapePath(_fillEdgeMap);
 			
 			_canvas.lineStyle(NaN);
@@ -409,6 +406,10 @@ package com.larrio.dump.flash.display.shape.collector
 		
 		private function drawShapeOutline(path:Vector.<ShapeEdge>):void
 		{
+			if (path.length == 0) return;
+			
+			trace("// Lines " + _commitCount);
+			
 			var styleIndex:uint = uint.MAX_VALUE;
 			var pos:Point = new Point(Number.MAX_VALUE, Number.MAX_VALUE);
 			

@@ -28,12 +28,18 @@ package demos.vector
 	{
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcrops/Crop_10_2/shape-01.swf", mimeType="application/octet-stream")]
 		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/24/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2004/shape-06.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2008/shape-05.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/dogs/FDog13/shape-27.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/dogs/FDog15/shape-20.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/dogs/FDog3/shape-27.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/dogs/FDog32/shape-94.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/serials/serial_4/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/f0f1.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		

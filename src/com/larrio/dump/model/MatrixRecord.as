@@ -3,8 +3,6 @@ package com.larrio.dump.model
 	import com.larrio.dump.codec.FileDecoder;
 	import com.larrio.dump.codec.FileEncoder;
 	import com.larrio.dump.interfaces.ICodec;
-	import com.larrio.math.fixed;
-	import com.larrio.math.unfixed;
 	
 	import flash.geom.Matrix;
 	
@@ -50,16 +48,16 @@ package com.larrio.dump.model
 			if (_scale)
 			{
 				_sbits = decoder.readUB(5);
-				_scaleX = decoder.readUB(_sbits);
-				_scaleY = decoder.readUB(_sbits);
+				_scaleX = decoder.readSB(_sbits);
+				_scaleY = decoder.readSB(_sbits);
 			}
 			
 			_rotate = Boolean(decoder.readUB(1));
 			if (_rotate)
 			{
 				_rbits = decoder.readUB(5);
-				_skew0 = decoder.readUB(_rbits);
-				_skew1 = decoder.readUB(_rbits);
+				_skew0 = decoder.readSB(_rbits);
+				_skew1 = decoder.readSB(_rbits);
 			}
 			
 			_tbits = decoder.readUB(5);
@@ -80,16 +78,16 @@ package com.larrio.dump.model
 			if (_scale)
 			{
 				encoder.writeUB(_sbits, 5);
-				encoder.writeUB(_scaleX, _sbits);
-				encoder.writeUB(_scaleY, _sbits);
+				encoder.writeSB(_scaleX, _sbits);
+				encoder.writeSB(_scaleY, _sbits);
 			}
 			
 			encoder.writeUB(int(_rotate), 1);
 			if (_rotate)
 			{
 				encoder.writeUB(_rbits, 5);
-				encoder.writeUB(_skew0, _rbits);
-				encoder.writeUB(_skew1, _rbits);
+				encoder.writeSB(_skew0, _rbits);
+				encoder.writeSB(_skew1, _rbits);
 			}
 			
 			encoder.writeUB(_tbits, 5);
@@ -120,8 +118,8 @@ package com.larrio.dump.model
 			var a:Number = this.scaleX;
 			var d:Number = this.scaleY;
 			
-			var b:Number = this.skew1;
-			var c:Number = this.skew0;
+			var b:Number = this.skew0;
+			var c:Number = this.skew1;
 			return new Matrix(a, b, c, d, this.translateX, this.translateY);
 		}
 		
@@ -135,8 +133,8 @@ package com.larrio.dump.model
 			this.scaleX = value.a;
 			this.scaleY = value.d;
 			
-			this.skew1 = value.b;
-			this.skew0 = value.c;
+			this.skew0 = value.b;
+			this.skew1 = value.c;
 			
 			this.translateX = value.tx;
 			this.translateY = value.ty;
@@ -149,41 +147,41 @@ package com.larrio.dump.model
 		/**
 		 * 横向缩放：16.16 fixed-point
 		 */		
-		public function get scaleX():Number { return fixed(_scaleX, 15, 16); }
+		public function get scaleX():Number { return int(_scaleX) / (1 << 16); }
 		public function set scaleX(value:Number):void
 		{
 			_scale = true;
-			_scaleX = unfixed(value, 15, 16);
+			_scaleX = value * (1 << 16);
 		}
 
 		/**
 		 * 竖向缩放：16.16 fixed-point
 		 */		
-		public function get scaleY():Number { return fixed(_scaleY, 15, 16); }
+		public function get scaleY():Number { return int(_scaleY) / (1 << 16); }
 		public function set scaleY(value:Number):void
 		{
 			_scale = true;
-			_scaleY = unfixed(value, 15, 16);
+			_scaleY = value * (1 << 16);
 		}
 
 		/**
 		 * first rotate and skew：16.16 fixed-point
 		 */		
-		public function get skew0():Number { return fixed(_skew0, 15, 16); }
+		public function get skew0():Number { return int(_skew0) / (1 << 16); }
 		public function set skew0(value:Number):void
 		{
 			_rotate = true;
-			_skew0 = unfixed(value, 15, 16);
+			_skew0 = value * (1 << 16);
 		}
 
 		/**
 		 * second rotate and skew：16.16 fixed-point
 		 */		
-		public function get skew1():Number { return fixed(_skew1, 15, 16); }
+		public function get skew1():Number { return int(_skew1) / (1 << 16); }
 		public function set skew1(value:Number):void
 		{
 			_rotate = true;
-			_skew1 = unfixed(value, 15, 16);
+			_skew1 = value * (1 << 16);
 		}
 
 		/**
