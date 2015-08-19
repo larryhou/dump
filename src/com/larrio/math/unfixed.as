@@ -13,9 +13,6 @@ package com.larrio.math
 	 */		
 	public function unfixed(value:Number, high:uint, low:uint):uint
 	{
-		var integer:int = value >> 0;
-		var decimal:Number = Math.abs(value - integer);
-		
-		return (unsign(integer, high) << low) | (decimal * (1 << low) >> 0/* 可能会导致精度丢失 */);
+		return unsign(value * (1 << low) >> 0/* 可能会导致精度丢失 */, high + low);
 	}
 }

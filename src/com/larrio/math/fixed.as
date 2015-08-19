@@ -13,10 +13,6 @@ package com.larrio.math
 	 */
 	public function fixed(value:uint, high:uint, low:uint):Number
 	{
-		var shift:uint = 32 - low;
-		var decimal:Number = ((value << shift) >>> shift) / (1 << low);
-		
-		var integer:int = sign(value >>> low, high);
-		return integer >= 0? (integer + decimal) : (integer - decimal);
+		return sign(value, high + low) / (1 << low);
 	}
 }
