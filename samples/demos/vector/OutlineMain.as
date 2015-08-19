@@ -1,10 +1,10 @@
 package demos.vector
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.flash.display.shape.canvas.CanvasContainer;
+	import com.larrio.dump.flash.display.shape.canvas.ContainerCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.GraphicsCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
-	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.StepRecordCanvas;
 	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
@@ -50,13 +50,13 @@ package demos.vector
 				if (shapeTag) break;
 			}
 			
-			var outline:SimpleCanvas;
+			var outline:StepRecordCanvas;
 			var list:Vector.<ICanvas> = new Vector.<ICanvas>();
 			list.push(new GraphicsCanvas(graphics));
-			list.push(outline = new SimpleCanvas());
+			list.push(outline = new StepRecordCanvas());
 			
 			var collector:OutlineCollector = new OutlineCollector(shapeTag.shape, true);
-			collector.drawVectorOn(new CanvasContainer(list));
+			collector.drawVectorOn(new ContainerCanvas(list));
 			
 			var step:Object;
 			for (var i:int = 0; i < outline.steps.length; i++)

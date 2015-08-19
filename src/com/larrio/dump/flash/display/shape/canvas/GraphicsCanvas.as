@@ -68,6 +68,6 @@ package com.larrio.dump.flash.display.shape.canvas
 		public function endFill():void
 		{
 			_graphics.endFill();
-		}		
+		}
 	}
 }

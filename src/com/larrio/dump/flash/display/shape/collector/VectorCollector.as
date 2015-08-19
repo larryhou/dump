@@ -19,7 +19,7 @@ package com.larrio.dump.flash.display.shape.collector
 	 * @author doudou
 	 * @createTime Mar 27, 2013 11:41:12 PM
 	 */
-	public class VectorCollector extends AbstractCollector
+	public class VectorCollector extends ShapeCollector
 	{
 		private var _fillEdgeMap:Dictionary;
 		private var _lineEdgeMap:Dictionary;

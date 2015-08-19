@@ -1,7 +1,9 @@
 package demos.vector 
 {
 	import com.larrio.dump.SWFile;
-	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.ContainerCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.JSONCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.StepRecordCanvas;
 	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
@@ -91,12 +93,15 @@ package demos.vector
 			var collector:IShapeCollector;
 			collector = new VectorCollector(shapeTag.shape);
 			trace(shapeTag.bounds);
-//			collector = new ShapeInfoCollector(shapeTag.shape);
 			
-			var canvas:SimpleCanvas;
-			collector.drawVectorOn(canvas = new SimpleCanvas());
+			var recordCanvas:StepRecordCanvas, jsonCanvas:JSONCanvas;
+			var canvasContainer:ContainerCanvas = new ContainerCanvas();
+			canvasContainer.addCanvas(recordCanvas = new StepRecordCanvas());
+			canvasContainer.addCanvas(jsonCanvas = new JSONCanvas());
+			collector.drawVectorOn(canvasContainer);
+			trace(jsonCanvas.jsonObject);
 			
-			var bounds:Rectangle = canvas.bounds;
+			var bounds:Rectangle = recordCanvas.bounds;
 			trace(bounds);
 			
 			const MARGIN:Number = 30;
@@ -104,7 +109,7 @@ package demos.vector
 			_container.x = (stage.stage.stageWidth - bounds.width * _container.scaleX) / 2 - bounds.x * _container.scaleX;
 			_container.y = (stage.stage.stageHeight - bounds.height * _container.scaleY) / 2 - bounds.y * _container.scaleY;
 			
-			_steps = canvas.steps;
+			_steps = recordCanvas.steps;
 			addEventListener(Event.ENTER_FRAME, frameHandler);
 		}
 		

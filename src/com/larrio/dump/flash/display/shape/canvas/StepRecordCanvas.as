@@ -12,16 +12,16 @@ package com.larrio.dump.flash.display.shape.canvas
 	 * @author larryhou
 	 * @createTime Mar 26, 2013 12:33:21 PM
 	 */
-	public class SimpleCanvas implements ICanvas
+	public class StepRecordCanvas implements ICanvas
 	{
 		private var _steps:Array;
 		private var _bounds:Rectangle;
 		
 		/**
 		 * 构造函数
-		 * create a [GhostCanvas] object
+		 * create a [StepRecordCanvas] object
 		 */
-		public function SimpleCanvas()
+		public function StepRecordCanvas()
 		{
 			_steps = [];
 			_bounds = new Rectangle()

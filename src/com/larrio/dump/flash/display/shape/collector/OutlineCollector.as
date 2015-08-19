@@ -13,7 +13,7 @@ package com.larrio.dump.flash.display.shape.collector
 	 * @author larryhou
 	 * @createTime Mar 29, 2013 2:04:10 PM
 	 */
-	public class OutlineCollector extends AbstractCollector
+	public class OutlineCollector extends ShapeCollector
 	{
 		private var _styles:Vector.<LineStyle>;
 		private var _includeInvisible:Boolean;
@@ -113,6 +113,5 @@ package com.larrio.dump.flash.display.shape.collector
 		{
 			_includeInvisible = value;
 		}
-
 	}
 }

@@ -27,7 +27,7 @@ package com.larrio.dump.flash.display.shape.collector
 	 * @author larryhou
 	 * @createTime Mar 29, 2013 2:06:11 PM
 	 */
-	public class AbstractCollector implements IShapeCollector
+	public class ShapeCollector implements IShapeCollector
 	{
 		protected static const TWIPS_PER_PIXEL:uint = 20;
 		
@@ -40,7 +40,7 @@ package com.larrio.dump.flash.display.shape.collector
 		 * 构造函数
 		 * create a [AbstractCollector] object
 		 */
-		public function AbstractCollector(shape:Shape = null)
+		public function ShapeCollector(shape:Shape = null)
 		{
 			shape && load(shape);
 		}

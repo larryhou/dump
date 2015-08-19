@@ -3,7 +3,7 @@ package demos.font
 	import com.greensock.TweenLite;
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.flash.display.font.GlyphCollector;
-	import com.larrio.dump.flash.display.shape.canvas.SimpleCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.StepRecordCanvas;
 	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
 	import com.larrio.dump.tags.DefineFont2Tag;
 	import com.larrio.dump.tags.SWFTag;
@@ -78,7 +78,7 @@ package demos.font
 //			collector = list[0];
 			
 			var chars:String = "積發";
-			var canvas:SimpleCanvas = new SimpleCanvas();
+			var canvas:StepRecordCanvas = new StepRecordCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();
 			
