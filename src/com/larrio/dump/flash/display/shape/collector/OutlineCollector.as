@@ -46,7 +46,7 @@ package com.larrio.dump.flash.display.shape.collector
 			super.drawVectorOn(canvas);
 		}
 		
-		override protected function changeShapeStyle(record:StyleChangeShapeRecord):void
+		override protected function processShapeStyle(record:StyleChangeShapeRecord):void
 		{
 			if (record.stateMoveTo)
 			{
@@ -86,7 +86,7 @@ package com.larrio.dump.flash.display.shape.collector
 			}
 		}
 		
-		override protected function drawStraightEdge(recorder:StraightEdgeShapeRecord):void
+		override protected function processStraightEdge(recorder:StraightEdgeShapeRecord):void
 		{
 			_position.x += recorder.deltaX / TWIPS_PER_PIXEL;
 			_position.y += recorder.deltaY / TWIPS_PER_PIXEL;
@@ -94,7 +94,7 @@ package com.larrio.dump.flash.display.shape.collector
 			_canvas.lineTo(_position.x, _position.y);
 		}
 		
-		override protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
+		override protected function processCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			var ctrlX:Number = _position.x += record.deltaControlX / TWIPS_PER_PIXEL;
 			var ctrlY:Number = _position.y += record.deltaControlY / TWIPS_PER_PIXEL;

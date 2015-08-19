@@ -77,19 +77,19 @@ package com.larrio.dump.flash.display.shape.collector
 				{
 					case ShapeRecordType.STLYE_CHANGE_SHAPE_RECORD:
 					{
-						changeShapeStyle(records[i] as StyleChangeShapeRecord);
+						processShapeStyle(records[i] as StyleChangeShapeRecord);
 						break;
 					}
 						
 					case ShapeRecordType.STRAIGHT_EDGE_SHAPE_RECORD:
 					{
-						drawStraightEdge(records[i] as StraightEdgeShapeRecord);
+						processStraightEdge(records[i] as StraightEdgeShapeRecord);
 						break;
 					}
 						
 					case ShapeRecordType.CURVED_EDGE_SHAPE_RECORD:
 					{
-						drawCurvedEdge(records[i] as CurvedEdgeShapeRecord);
+						processCurvedEdge(records[i] as CurvedEdgeShapeRecord);
 						break;
 					}
 						
@@ -106,7 +106,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 切换线条、填充样式
 		 */		
-		override protected function changeShapeStyle(record:StyleChangeShapeRecord):void
+		override protected function processShapeStyle(record:StyleChangeShapeRecord):void
 		{
 			if (record.stateMoveTo)
 			{
@@ -204,7 +204,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 处理直线
 		 */		
-		override protected function drawStraightEdge(record:StraightEdgeShapeRecord):void
+		override protected function processStraightEdge(record:StraightEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(false);
 			edge.x1 = trim(_position.x);
@@ -219,7 +219,7 @@ package com.larrio.dump.flash.display.shape.collector
 		/**
 		 * 处理二阶贝塞尔曲线
 		 */		
-		override protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
+		override protected function processCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			var edge:ShapeEdge = new ShapeEdge(true);
 			edge.x1 = trim(_position.x);
@@ -401,10 +401,10 @@ package com.larrio.dump.flash.display.shape.collector
 				_canvas.endFill();
 			}
 			
-			drawShapeOutline(stripShapePath(_lineEdgeMap));
+			strokeOnPath(stripShapePath(_lineEdgeMap));
 		}
 		
-		private function drawShapeOutline(path:Vector.<ShapeEdge>):void
+		private function strokeOnPath(path:Vector.<ShapeEdge>):void
 		{
 			if (path.length == 0) return;
 			

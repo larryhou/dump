@@ -61,34 +61,34 @@ package com.larrio.dump.flash.display.shape.collector
 			{
 				if (records[i] is CurvedEdgeShapeRecord)
 				{
-					drawCurvedEdge(records[i] as CurvedEdgeShapeRecord);					
+					processCurvedEdge(records[i] as CurvedEdgeShapeRecord);					
 				}
 				else
 				if (records[i] is StraightEdgeShapeRecord)
 				{
-					drawStraightEdge(records[i] as StraightEdgeShapeRecord);
+					processStraightEdge(records[i] as StraightEdgeShapeRecord);
 				}
 				else
 				if (records[i] is StyleChangeShapeRecord)
 				{
-					changeShapeStyle(records[i] as StyleChangeShapeRecord);
+					processShapeStyle(records[i] as StyleChangeShapeRecord);
 				}
 			}			
 		}
 		
-		protected function changeShapeStyle(record:StyleChangeShapeRecord):void
+		protected function processShapeStyle(record:StyleChangeShapeRecord):void
 		{
 			// TODO Auto Generated method stub
 			
 		}
 		
-		protected function drawStraightEdge(recorder:StraightEdgeShapeRecord):void
+		protected function processStraightEdge(recorder:StraightEdgeShapeRecord):void
 		{
 			// TODO Auto Generated method stub
 			
 		}
 		
-		protected function drawCurvedEdge(record:CurvedEdgeShapeRecord):void
+		protected function processCurvedEdge(record:CurvedEdgeShapeRecord):void
 		{
 			// TODO Auto Generated method stub
 			
