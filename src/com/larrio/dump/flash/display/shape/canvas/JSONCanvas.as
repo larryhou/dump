@@ -113,7 +113,7 @@ package com.larrio.dump.flash.display.shape.canvas
 		public function endFill():void
 		{
 			var data:Object = {};
-			steps.push(["END_FILL"]);
+			steps.push(["END_FILL", {}]);
 		}
 		
 		public function get jsonObject():String { return JSON.stringify(steps); }
