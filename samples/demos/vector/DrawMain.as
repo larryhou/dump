@@ -14,10 +14,16 @@ package demos.vector
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	[SWF(width="1024", height="768", frameRate="60", backgroundColor="#CCCCCC")]
 	
@@ -28,6 +34,7 @@ package demos.vector
 	 */
 	public class DrawMain extends Sprite
 	{
+		[Embed(source="../../../libs/assets/allcrops/Crop_1808_Seed.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10_2/shape-01.swf", mimeType="application/octet-stream")]
@@ -36,7 +43,7 @@ package demos.vector
 //		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2004/shape-06.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2008/shape-05.swf", mimeType="application/octet-stream")]
-		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/dogs/FDog13/shape-27.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/dogs/FDog15/shape-20.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/dogs/FDog3/shape-27.swf", mimeType="application/octet-stream")]
@@ -45,6 +52,9 @@ package demos.vector
 //		[Embed(source="../../../libs/f0f1.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
+		[Embed(source="../../../bin/crops/crops.cfg", mimeType="application/octet-stream")]
+		private var CfgByteArray:Class;
+		
 		private var _steps:Array;
 		private var _index:uint;
 		
@@ -52,6 +62,9 @@ package demos.vector
 		private var _container:Shape;
 		
 		private var _indicator:TextField;
+		
+		private var _assets:Dictionary;
+		private var _answer:String;
 		
 		/**
 		 * 构造函数
@@ -65,7 +78,69 @@ package demos.vector
 			_indicator.mouseEnabled = false;
 			addChild(_indicator);
 			
-			var swf:SWFile = new SWFile(new FileByteArray());
+			_assets = new Dictionary(false);
+			
+			var data:ByteArray = new CfgByteArray();
+			var cfg:String = data.readMultiByte(data.length, "UTF-8");
+			var list:Array = cfg.split("\n").filter(function(item:String, ...args):Boolean
+			{
+				return item.length > 0;
+			});
+			
+			_assets = new Dictionary(false);
+			for (var i:int = 0; i < list.length; i++)
+			{
+				var item:Array = list[i].split("\t");
+				_assets[item[0]] = item[1];
+			}
+			
+			randomCropSWF();
+//			processSWFBytes(new FileByteArray());
+			
+			stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
+		}
+		
+		private function stageClickHandler(e:MouseEvent):void
+		{
+			if (e.ctrlKey)
+			{
+				randomCropSWF();
+			}
+		}
+		
+		private function randomCropSWF():void
+		{
+			_brush && _brush.clear();
+			
+			var list:Array = [];
+			for (var key:String in _assets)
+			{
+				list.push(key);
+			}
+			
+			var index:int = list.length * Math.random() >> 0;
+			var url:String = "crops/" + list[index] + ".swf";
+			
+			_answer = _assets[list[index]];
+			_index = 0;
+			
+			var loader:URLLoader = new URLLoader();
+			loader.dataFormat = URLLoaderDataFormat.BINARY;
+			loader.addEventListener(Event.COMPLETE, completeHandler);
+			loader.load(new URLRequest(url));
+		}
+		
+		private function completeHandler(e:Event):void
+		{
+			var loader:URLLoader = e.currentTarget as URLLoader;
+			loader.removeEventListener(Event.COMPLETE, completeHandler);
+			
+			processSWFBytes(loader.data as ByteArray);
+		}
+		
+		private function processSWFBytes(data:ByteArray):void
+		{
+			var swf:SWFile = new SWFile(data);
 			
 			var shapeTag:DefineShapeTag;
 			for each(var tag:SWFTag in swf.tags)
@@ -85,7 +160,7 @@ package demos.vector
 				if (shapeTag) break;
 			}
 			
-			_container = new Shape();
+			_container ||= new Shape();
 			addChild(_container);
 			
 			_brush = _container.graphics;
@@ -119,6 +194,7 @@ package demos.vector
 			{
 				_indicator.text = "COMPLETE";
 				removeEventListener(Event.ENTER_FRAME, arguments.callee);
+				trace(_answer);
 				return;
 			}
 			

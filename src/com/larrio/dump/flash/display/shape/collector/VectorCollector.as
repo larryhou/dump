@@ -159,7 +159,7 @@ package com.larrio.dump.flash.display.shape.collector
 					_fillStyle1 = record.fillStyle1;
 					if (_fillStyle1 > 0) _fillStyle1 += _fillStyleOffset;
 				}
-			}			
+			}
 		}
 		
 		private function processShapeParts(parts:Vector.<ShapeEdge>, lineStyle:int, fillStyle0:int, fillStyle1:int):void
