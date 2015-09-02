@@ -121,6 +121,7 @@ package demos.vector
 			var index:int = list.length * Math.random() >> 0;
 			var url:String = "crops/" + list[index] + ".swf";
 			
+			_indicator.text = "";
 			_answer = _assets[list[index]];
 			_index = 0;
 			
