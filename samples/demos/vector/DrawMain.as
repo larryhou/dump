@@ -3,6 +3,7 @@ package demos.vector
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.flash.display.shape.canvas.ContainerCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.JSONCanvas;
+	import com.larrio.dump.flash.display.shape.canvas.SVGImageCanvas;
 	import com.larrio.dump.flash.display.shape.canvas.StepRecordCanvas;
 	import com.larrio.dump.flash.display.shape.collector.IShapeCollector;
 	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
@@ -34,11 +35,11 @@ package demos.vector
 	 */
 	public class DrawMain extends Sprite
 	{
-		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
-//		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/dogs/FDog13/shape-27.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/f0f1.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
@@ -172,12 +173,14 @@ package demos.vector
 			collector = new VectorCollector(shapeTag.shape);
 			trace(shapeTag.bounds);
 			
-			var recordCanvas:StepRecordCanvas, jsonCanvas:JSONCanvas;
+			var recordCanvas:StepRecordCanvas, jsonCanvas:JSONCanvas, svgCanvas:SVGImageCanvas;
 			var canvasContainer:ContainerCanvas = new ContainerCanvas();
 			canvasContainer.addCanvas(recordCanvas = new StepRecordCanvas());
 			canvasContainer.addCanvas(jsonCanvas = new JSONCanvas());
+			canvasContainer.addCanvas(svgCanvas = new SVGImageCanvas());
 			collector.drawVectorOn(canvasContainer);
 			trace(jsonCanvas.jsonObject);
+			trace(svgCanvas.export());
 			
 			var bounds:Rectangle = recordCanvas.bounds;
 			trace(bounds);
