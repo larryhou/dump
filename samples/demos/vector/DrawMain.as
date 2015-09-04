@@ -53,6 +53,7 @@ package demos.vector
 		private var FileByteArray:Class;
 		
 		[Embed(source="../../../bin/crops/crops.cfg", mimeType="application/octet-stream")]
+//		[Embed(source="../../../bin/diys/diys.cfg", mimeType="application/octet-stream")]
 		private var CfgByteArray:Class;
 		
 		private var _steps:Array;
@@ -73,7 +74,7 @@ package demos.vector
 		public function DrawMain()
 		{
 			_indicator = new TextField();
-			_indicator.defaultTextFormat = new TextFormat("Menlo", 20, 0xFF0000, true);
+			_indicator.defaultTextFormat = new TextFormat("Menlo", 50, 0xFF0000, true);
 			_indicator.autoSize = TextFieldAutoSize.LEFT;
 			_indicator.mouseEnabled = false;
 			addChild(_indicator);
@@ -91,7 +92,7 @@ package demos.vector
 			for (var i:int = 0; i < list.length; i++)
 			{
 				var item:Array = list[i].split("\t");
-				_assets[item[0]] = item[1];
+				_assets[item[0]] = item.slice(1);
 			}
 			
 			randomCropSWF();
@@ -118,17 +119,27 @@ package demos.vector
 				list.push(key);
 			}
 			
+			if (!list.length)
+			{
+				_indicator.text = "EMPTY";
+				return;
+			}
+			
 			var index:int = list.length * Math.random() >> 0;
-			var url:String = "crops/" + list[index] + ".swf";
+			key = list[index];
+			
+			var item:Array = _assets[key];
 			
 			_indicator.text = "";
-			_answer = _assets[list[index]];
+			_answer = item[1];
 			_index = 0;
+			
+			delete _assets[key];
 			
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.addEventListener(Event.COMPLETE, completeHandler);
-			loader.load(new URLRequest(url));
+			loader.load(new URLRequest(item[0]));
 		}
 		
 		private function completeHandler(e:Event):void
@@ -193,7 +204,7 @@ package demos.vector
 		{
 			if (_index >= _steps.length)
 			{
-				_indicator.text = "COMPLETE";
+				_indicator.text = _answer || "COMPLETE";
 				removeEventListener(Event.ENTER_FRAME, arguments.callee);
 				trace(_answer);
 				return;
