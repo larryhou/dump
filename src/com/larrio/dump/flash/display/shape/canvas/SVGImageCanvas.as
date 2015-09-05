@@ -87,6 +87,7 @@ package com.larrio.dump.flash.display.shape.canvas
 					_image.g.appendChild(_path);
 				}
 				_data = null;
+				_path = null;
 			}
 		}
 		
