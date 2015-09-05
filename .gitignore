@@ -2,7 +2,8 @@
 bin/
 bin-debug/
 bin-release/
-.DS_Store
+*.DS_Store
+.gitignore
 
 # Other files and folders
 .settings/
