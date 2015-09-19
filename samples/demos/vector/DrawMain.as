@@ -37,15 +37,16 @@ package demos.vector
 	{
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
-//		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
-		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/dogs/FDog13/shape-27.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/f0f1.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
 		
-		[Embed(source="../../../bin/crops/crops.cfg", mimeType="application/octet-stream")]
+//		[Embed(source="../../../bin/crops/crops.cfg", mimeType="application/octet-stream")]
 //		[Embed(source="../../../bin/diys/diys.cfg", mimeType="application/octet-stream")]
+		[Embed(source="../../../bin/shapes/shapes.cfg", mimeType="application/octet-stream")]
 		private var CfgByteArray:Class;
 		
 		private var _steps:Array;
@@ -87,8 +88,8 @@ package demos.vector
 				_assets[item[0]] = item.slice(1);
 			}
 			
-//			randomCropSWF();
-			processSWFBytes(new FileByteArray());
+			randomCropSWF();
+//			processSWFBytes(new FileByteArray());
 			
 			stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
 		}
