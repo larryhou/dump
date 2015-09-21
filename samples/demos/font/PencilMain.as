@@ -19,8 +19,7 @@ package demos.font
 	import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	
-	[SWF(frameRate="60", width="600", height="400")]
-	
+	[SWF(frameRate="60", width="800", height="600")]
 	
 	/**
 	 * 
@@ -77,7 +76,7 @@ package demos.font
 	
 //			collector = list[0];
 			
-			var chars:String = "積發";
+			var chars:String = "講師";
 			var canvas:StepRecordCanvas = new StepRecordCanvas();
 			
 			var outline:OutlineCollector = new OutlineCollector();
@@ -93,8 +92,8 @@ package demos.font
 			_steps = canvas.steps;
 			
 			_container = new Sprite();
-			_container.y = 300;
-			_container.scaleX = _container.scaleY = 1 / 5;
+			_container.y = 400;
+			_container.scaleX = _container.scaleY = 0.4;
 			addChild(_container);
 			
 			_glyph = new Shape();
