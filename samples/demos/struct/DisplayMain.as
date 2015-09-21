@@ -1,4 +1,4 @@
-package demos.placeObject
+package demos.struct
 {
 	import com.larrio.dump.SWFile;
 	import com.larrio.dump.tags.DefineShapeTag;

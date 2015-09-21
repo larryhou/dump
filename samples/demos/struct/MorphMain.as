@@ -1,4 +1,4 @@
-package demos.redrawShape
+package demos.struct
 {
 	import com.larrio.dump.SWFile;
 	
