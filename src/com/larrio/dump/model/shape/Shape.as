@@ -93,8 +93,9 @@ package com.larrio.dump.model.shape
 			
 			if (_size)
 			{
-				offset = decoder.position - offset;
-				assertTrue(offset == _size);
+//				offset = decoder.position - offset;
+				decoder.position = offset + _size;
+//				assertTrue(offset == _size);
 			}
 		}
 		

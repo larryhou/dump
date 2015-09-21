@@ -161,11 +161,11 @@ package com.larrio.dump
 				
 				tag.dict = _dict;
 				
-				try
-				{
+//				try
+//				{
 					tag.decode(_decoder);
-				} 
-				catch(error:Error) {}
+//				} 
+//				catch(error:Error) {}
 				
 				if (tag.type == TagType.SYMBOL_CLASS)
 				{

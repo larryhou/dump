@@ -39,7 +39,7 @@ package com.larrio.dump.model.shape
 			
 			super.decode(decoder);
 			
-			assertTrue(decoder.bytesAvailable == 0);
+//			assertTrue(decoder.bytesAvailable == 0);
 		}
 		
 		/**
