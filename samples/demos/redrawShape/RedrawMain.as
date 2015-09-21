@@ -33,7 +33,7 @@ package demos.redrawShape
 	 * @author larryhou
 	 * @createTime Mar 25, 2013 3:16:12 PM
 	 */
-	public class DrawMain extends Sprite
+	public class RedrawMain extends Sprite
 	{
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
@@ -64,7 +64,7 @@ package demos.redrawShape
 		 * 构造函数
 		 * create a [JokerMain] object
 		 */
-		public function DrawMain()
+		public function RedrawMain()
 		{
 			_indicator = new TextField();
 			_indicator.defaultTextFormat = new TextFormat("Menlo", 50, 0xFF0000, true);

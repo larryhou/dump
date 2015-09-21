@@ -6,13 +6,13 @@ package demos.redrawShape
 	import com.larrio.dump.flash.display.shape.canvas.ICanvas;
 	import com.larrio.dump.flash.display.shape.canvas.StepRecordCanvas;
 	import com.larrio.dump.flash.display.shape.collector.OutlineCollector;
-	import com.larrio.dump.flash.display.shape.collector.VectorCollector;
 	import com.larrio.dump.tags.DefineShapeTag;
 	import com.larrio.dump.tags.SWFTag;
 	import com.larrio.dump.tags.TagType;
 	
 	import flash.display.Sprite;
 	
+	[SWF(width="1024", height="768")]
 	
 	/**
 	 * 
@@ -49,6 +49,8 @@ package demos.redrawShape
 				
 				if (shapeTag) break;
 			}
+			
+			this.scaleX = this.scaleY = 3.0
 			
 			var outline:StepRecordCanvas;
 			var list:Vector.<ICanvas> = new Vector.<ICanvas>();
