@@ -18,7 +18,7 @@ package demos.struct
 	 * @author larryhou
 	 * @createTime Apr 8, 2013 12:17:55 AM
 	 */
-	public class DisplayMain extends Sprite
+	public class PlaceObjectMain extends Sprite
 	{
 		[Embed(source="../../../libs/joker.swf", mimeType="application/octet-stream")]
 		private var FileByteArray:Class;
@@ -27,7 +27,7 @@ package demos.struct
 		 * 构造函数
 		 * create a [DisplayMain] object
 		 */
-		public function DisplayMain()
+		public function PlaceObjectMain()
 		{
 			var swf:SWFile = new SWFile(new FileByteArray());
 			
