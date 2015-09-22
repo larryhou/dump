@@ -37,8 +37,8 @@ package demos.redrawShape
 	{
 //		[Embed(source="../../../libs/assets/allcrops/Crop_15/shape-10.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcrops/Crop_10/shape-11.swf", mimeType="application/octet-stream")]
-//		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
-		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
+		[Embed(source="../../../libs/assets/diy/49/shape-01.swf", mimeType="application/octet-stream")]
+//		[Embed(source="../../../libs/assets/diy/17/shape-02.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/allcards/Card_2005/shape-05.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/assets/dogs/FDog13/shape-27.swf", mimeType="application/octet-stream")]
 //		[Embed(source="../../../libs/f0f1.swf", mimeType="application/octet-stream")]
@@ -50,7 +50,7 @@ package demos.redrawShape
 		private var CfgByteArray:Class;
 		
 		// 快进模式
-		private const FAST_FORWARD_MODE:Boolean = false;
+		private const FAST_FORWARD_MODE:Boolean = true;
 		
 		private var _steps:Array;
 		private var _index:uint;
@@ -91,8 +91,8 @@ package demos.redrawShape
 				_assets[item[0]] = item.slice(1);
 			}
 			
-			randomCropSWF();
-//			processSWFBytes(new FileByteArray());
+//			randomCropSWF();
+			processSWFBytes(new FileByteArray());
 			
 			stage.addEventListener(MouseEvent.CLICK, stageClickHandler);
 		}
@@ -175,19 +175,20 @@ package demos.redrawShape
 			
 			var collector:IShapeCollector;
 			collector = new VectorCollector(shapeTag.shape);
-			trace(shapeTag.bounds);
+//			trace(shapeTag.bounds);
 			
+			trace("FMT_CMD");
 			var recordCanvas:StepRecordCanvas, jsonCanvas:JSONCanvas, svgCanvas:SVGImageCanvas;
 			var canvasContainer:ContainerCanvas = new ContainerCanvas();
 			canvasContainer.addCanvas(recordCanvas = new StepRecordCanvas());
 			canvasContainer.addCanvas(jsonCanvas = new JSONCanvas());
 			canvasContainer.addCanvas(svgCanvas = new SVGImageCanvas());
 			collector.drawVectorOn(canvasContainer);
-			trace(jsonCanvas.jsonObject);
-			trace(svgCanvas.export());
+			trace("FMT_JSN\n" + jsonCanvas.jsonObject);
+			trace("FMT_SVG\n" + svgCanvas.export());
 			
 			var bounds:Rectangle = recordCanvas.bounds;
-			trace(bounds);
+//			trace(bounds);
 			
 			const MARGIN:Number = 30;
 			_container.scaleX = _container.scaleY = Math.min((stage.stageWidth - MARGIN) / bounds.width, (stage.stageHeight - MARGIN) / bounds.height);
