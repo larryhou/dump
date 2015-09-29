@@ -192,7 +192,7 @@ package com.larrio.dump.flash.display.shape.canvas
 			
 			gradient.@["gradientUnits"] = "userSpaceOnUse";
 			gradient.@["spreadMethod"] = spreadMethod || "pad";
-			gradient.@["id"] = "G" + (++_gradIndex);
+			gradient.@["id"] = "S" + (++_gradIndex);
 			for (var i:int = 0; i < colors.length; i++)
 			{
 				var stop:XML = new XML("<stop/>");
