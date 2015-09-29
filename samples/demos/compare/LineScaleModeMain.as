@@ -3,7 +3,7 @@ package demos.compare
 	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
 
-	[SWF(width="1024", height="768")]
+	[SWF(width="1024", height="768", backgroundColor="#000000")]
 	/**
 	 * 
 	 * @author larryhou
@@ -32,7 +32,7 @@ package demos.compare
 				var sy:Number = ((i - 1) % 2) + 1;
 				if (sx > 1) sx = SCALE;
 				if (sy > 1) sy = SCALE;
-				var item:Circle = new Circle(48, 0xFF0000, params[3]);
+				var item:Circle = new Circle(48, params[3]);
 				item.scaleX = sx;
 				item.scaleY = sy;
 				item.x = position + item.width / 2 + 10;
@@ -47,9 +47,9 @@ import flash.display.Shape;
 
 class Circle extends Shape
 {
-	public function Circle(radius:Number, color:uint, mode:String)
+	public function Circle(radius:Number, mode:String)
 	{
-		graphics.lineStyle(1, color, 1, false, mode, null, null, 3);
+		graphics.lineStyle(1, 0xFFFFFF, 1, false, mode, null, null, 3);
 		graphics.drawCircle(0, 0, radius);
 	}
 }

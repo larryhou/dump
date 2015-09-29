@@ -46,7 +46,7 @@ class GradientRegion extends Shape
 	public function GradientRegion(method:String)
 	{
 		var r_w:Number = 960;
-		var r_h:Number = 300;
+		var r_h:Number = 200;
 		var g_w:Number = 200;
 		var g_h:Number = r_h;
 		var matrix:Matrix = new Matrix();
